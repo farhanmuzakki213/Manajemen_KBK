@@ -5,7 +5,7 @@
             <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
         </div>
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-lg-6">
                 <div class="team-member">
                     <img class="mx-auto rounded-circle" src="frontend/landing-page/assets/img/team/1.jpg" alt="..." />
                     <h4>Parveen Anand</h4>
@@ -15,7 +15,7 @@
                     <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Parveen Anand LinkedIn Profile"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-6">
                 <div class="team-member">
                     <img class="mx-auto rounded-circle" src="frontend/landing-page/assets/img/team/2.jpg" alt="..." />
                     <h4>Diana Petersen</h4>
