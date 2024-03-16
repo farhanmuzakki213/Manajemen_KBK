@@ -7,9 +7,19 @@
       "default",
       {
         "ignore": [
-          "backdrop-filter"
+          "backdrop-filter",
+          "-webkit-text-size-adjust",
+          "-webkit-overflow-scrolling"
         ]
       }
     ]
-  }
+  },
+  "browserslist": [
+    "defaults",
+    "not ie 11",
+    "not and_ff <= 113",
+    "not ios_saf <= 16.5",
+    "not safari <= 16.5",
+    "not firefox <= 113"
+  ]
 }
