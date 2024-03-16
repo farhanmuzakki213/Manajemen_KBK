@@ -1,4 +1,4 @@
-<section class="page-section bg-light" id="team">
+<section class="page-section bg-light" id="struktural">
     <div class="container">
         <div class="text-center">
             <h2 class="section-heading text-uppercase">Our Amazing Team</h2>
