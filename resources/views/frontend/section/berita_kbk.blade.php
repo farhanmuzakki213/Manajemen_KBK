@@ -1,100 +1,88 @@
 <section class="page-section bg-light" id="berita">
     <div class="container">
         <div class="text-center">
-            <h2 class="section-heading text-uppercase">Portfolio</h2>
-            <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+            <h2 class="section-heading text-uppercase">Berita</h2>
+            <h3 class="section-subheading text-muted">Informasi KBK di fakultas teknologi informasi</h3>
         </div>
-        <div class="row">
-            <div class="col-lg-4 col-sm-6 mb-4">
-                <!-- Portfolio item 1-->
-                <div class="portfolio-item">
-                    <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal1">
-                        <div class="portfolio-hover">
-                            <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
-                        </div>
-                        <img class="img-fluid" src="frontend/landing-page/assets/img/portfolio/1.jpg" alt="..." />
-                    </a>
-                    <div class="portfolio-caption">
-                        <div class="portfolio-caption-heading">Threads</div>
-                        <div class="portfolio-caption-subheading text-muted">Illustration</div>
+        <div class="row row-cols-1 row-cols-md-3 g-4 py-5">
+            <div class="col">
+                <div class="card-berita">
+                    <img src="{{asset('frontend/landing-page/assets/img/berita/414x289.png')}}" class="card-img-top-berita" alt="...">
+                    <div class="card-body-berita">
+                        <h5 class="card-title-berita">Judul Berita</h5>
+                        <p class="card-text-berita">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam
+                            dignissimos accusantium amet similique velit iste.</p>
+                    </div>
+                    <div class="mb-2 d-flex justify-content-around">
+                        <button class="btn btn-primary">Read more</button>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-sm-6 mb-4">
-                <!-- Portfolio item 2-->
-                <div class="portfolio-item">
-                    <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal2">
-                        <div class="portfolio-hover">
-                            <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
-                        </div>
-                        <img class="img-fluid" src="frontend/landing-page/assets/img/portfolio/2.jpg" alt="..." />
-                    </a>
-                    <div class="portfolio-caption">
-                        <div class="portfolio-caption-heading">Explore</div>
-                        <div class="portfolio-caption-subheading text-muted">Graphic Design</div>
+            <div class="col">
+                <div class="card-berita">
+                    <img src="{{asset('frontend/landing-page/assets/img/berita/414x289.png')}}" class="card-img-top-berita" alt="...">
+                    <div class="card-body-berita">
+                        <h5 class="card-title-berita">Judul Berita</h5>
+                        <p class="card-text-berita">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam
+                            dignissimos accusantium amet similique velit iste.</p>
+                    </div>
+                    <div class="mb-2 d-flex justify-content-around">
+                        <button class="btn btn-primary">Read more</button>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4 col-sm-6 mb-4">
-                <!-- Portfolio item 3-->
-                <div class="portfolio-item">
-                    <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal3">
-                        <div class="portfolio-hover">
-                            <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
-                        </div>
-                        <img class="img-fluid" src="frontend/landing-page/assets/img/portfolio/3.jpg" alt="..." />
-                    </a>
-                    <div class="portfolio-caption">
-                        <div class="portfolio-caption-heading">Finish</div>
-                        <div class="portfolio-caption-subheading text-muted">Identity</div>
+            </div> 
+            <div class="col">
+                <div class="card-berita">
+                    <img src="{{asset('frontend/landing-page/assets/img/berita/414x289.png')}}" class="card-img-top-berita" alt="...">
+                    <div class="card-body-berita">
+                        <h5 class="card-title-berita">Judul Berita</h5>
+                        <p class="card-text-berita">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam
+                            dignissimos accusantium amet similique velit iste.</p>
+                    </div>
+                    <div class="mb-2 d-flex justify-content-around">
+                        <button class="btn btn-primary">Read more</button>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4 col-sm-6 mb-4 mb-lg-0">
-                <!-- Portfolio item 4-->
-                <div class="portfolio-item">
-                    <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal4">
-                        <div class="portfolio-hover">
-                            <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
-                        </div>
-                        <img class="img-fluid" src="frontend/landing-page/assets/img/portfolio/4.jpg" alt="..." />
-                    </a>
-                    <div class="portfolio-caption">
-                        <div class="portfolio-caption-heading">Lines</div>
-                        <div class="portfolio-caption-subheading text-muted">Branding</div>
+            </div> 
+            <div class="col">
+                <div class="card-berita">
+                    <img src="{{asset('frontend/landing-page/assets/img/berita/414x289.png')}}" class="card-img-top-berita" alt="...">
+                    <div class="card-body-berita">
+                        <h5 class="card-title-berita">Judul Berita</h5>
+                        <p class="card-text-berita">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam
+                            dignissimos accusantium amet similique velit iste.</p>
+                    </div>
+                    <div class="mb-2 d-flex justify-content-around">
+                        <button class="btn btn-primary">Read more</button>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4 col-sm-6 mb-4 mb-sm-0">
-                <!-- Portfolio item 5-->
-                <div class="portfolio-item">
-                    <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal5">
-                        <div class="portfolio-hover">
-                            <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
-                        </div>
-                        <img class="img-fluid" src="frontend/landing-page/assets/img/portfolio/5.jpg" alt="..." />
-                    </a>
-                    <div class="portfolio-caption">
-                        <div class="portfolio-caption-heading">Southwest</div>
-                        <div class="portfolio-caption-subheading text-muted">Website Design</div>
+            </div> 
+            <div class="col">
+                <div class="card-berita">
+                    <img src="{{asset('frontend/landing-page/assets/img/berita/414x289.png')}}" class="card-img-top-berita" alt="...">
+                    <div class="card-body-berita">
+                        <h5 class="card-title-berita">Judul Berita</h5>
+                        <p class="card-text-berita">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam
+                            dignissimos accusantium amet similique velit iste.</p>
+                    </div>
+                    <div class="mb-2 d-flex justify-content-around">
+                        <button class="btn btn-primary">Read more</button>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4 col-sm-6">
-                <!-- Portfolio item 6-->
-                <div class="portfolio-item">
-                    <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal6">
-                        <div class="portfolio-hover">
-                            <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
-                        </div>
-                        <img class="img-fluid" src="frontend/landing-page/assets/img/portfolio/6.jpg" alt="..." />
-                    </a>
-                    <div class="portfolio-caption">
-                        <div class="portfolio-caption-heading">Window</div>
-                        <div class="portfolio-caption-subheading text-muted">Photography</div>
+            </div> 
+            <div class="col">
+                <div class="card-berita">
+                    <img src="{{asset('frontend/landing-page/assets/img/berita/414x289.png')}}" class="card-img-top-berita" alt="...">
+                    <div class="card-body-berita">
+                        <h5 class="card-title-berita">Judul Berita</h5>
+                        <p class="card-text-berita">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam
+                            dignissimos accusantium amet similique velit iste.</p>
+                    </div>
+                    <div class="mb-2 d-flex justify-content-around">
+                        <button class="btn btn-primary">Read more</button>
                     </div>
                 </div>
-            </div>
+            </div>     
         </div>
     </div>
 </section>
