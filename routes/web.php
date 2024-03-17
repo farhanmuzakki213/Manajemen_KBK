@@ -24,11 +24,14 @@ Route::get('/', function () {
     return view('frontend.master');
 });
 
+Route::get('/dashboard', function () {
+    return view('admin.content.dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
 // Admin
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin/logout', [AdminController::class, 'destroy'])->name('admin.logout');
     Route::get('/example', [AdminController::class, 'example'])->name('example');
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 });
 
 
