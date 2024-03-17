@@ -28,12 +28,44 @@
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                     <span class="hide-menu">Data Entry</span>
                 </li>
+                {{-- <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('example')}}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Example</span>
+                    </a>
+                </li> --}}
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('admin.DataDosen')}}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('dosen')}}" aria-expanded="false">
                         <span>
                             <i class="ti ti-aperture"></i>
                         </span>
                         <span class="hide-menu">Dosen</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('jurusan')}}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Jurusan</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('prodi')}}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Prodi</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('thnakademik')}}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Tahun Akademik </span>
                     </a>
                 </li>
             </ul>
