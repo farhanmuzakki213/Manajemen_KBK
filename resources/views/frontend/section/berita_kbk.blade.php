@@ -1,10 +1,4 @@
 <style>
-    * {
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-    }
-
     .card {
         border-radius: 30px;
         box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
@@ -75,7 +69,7 @@
     }
 </style>
 
-<div class="container py-5">
+<div class="container py-5 bg-light">
     <h1 class="text-center">Berita</h1>
     <div class="row row-cols-1 row-cols-md-3 g-4 py-5">
         <div class="col">
