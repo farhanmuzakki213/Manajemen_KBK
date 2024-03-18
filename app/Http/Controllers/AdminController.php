@@ -19,7 +19,7 @@ class AdminController extends Controller
         return redirect('/');
     }
 
-    public function DataDosen(){
-        return view('admin.content.DataDosen');
+    public function example(){
+        return view('admin.content.example');
     }
 }

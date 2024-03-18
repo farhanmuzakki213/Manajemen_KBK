@@ -10898,7 +10898,7 @@ p {
 
 @media (min-width: 768px) {
   section {
-    padding: 9rem 0;
+    padding-top: 9rem;
   }
 }
 .btn-xl {
@@ -11063,7 +11063,7 @@ header.masthead .masthead-heading {
     font-style: Arial;
     line-height: 2rem;
     margin-bottom: 1rem;
-    margin-left: 12rem;
+    margin-left: 9rem;
   }
   header.masthead .masthead-heading {
     font-size: 4.5rem;

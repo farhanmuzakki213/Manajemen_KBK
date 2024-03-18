@@ -17,6 +17,9 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{{asset('frontend/landing-page/css/styles.css')}}" rel="stylesheet" />
         <link href="{{asset('frontend/landing-page/css/berita.css')}}" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" crossorigin="">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.css">
+        <link rel="stylesheet" href="{{asset('frontend/landing-page/css/struktur.css')}}">
     </head>
     <body id="page-top">
         <!-- Navigation-->
@@ -33,13 +36,10 @@
         @include('frontend.body.pop_up')
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        
+        <!-- Core theme JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="{{asset('frontend/landing-page/js/scripts.js')}}"></script>
-        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-        <!-- * *                               SB Forms JS                               * *-->
-        <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
-        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+        <script src="{{asset('frontend/landing-page/js/main.js')}}"></script>
     </body>
 </html>
