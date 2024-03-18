@@ -27,12 +27,6 @@ a {
   text-decoration: none;
 }
 
-img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-}
-
 /*=============== CARD ===============*/
 .container-main {
   display: flex;
@@ -77,6 +71,9 @@ img {
   margin: 0 auto;
   position: relative;
   z-index: 5;
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 .card__shadow {
