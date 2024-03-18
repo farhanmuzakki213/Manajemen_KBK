@@ -10,10 +10,9 @@
                         </div>
 
                         <div class="card__data">
-                            <h3 class="card__name">Kell Dawx</h3>
+                            <h3 class="card__name">Deni Satria</h3>
                             <p class="card__description">
-                                Passionate about development and design,
-                                I carry out projects at the request of users.
+                                Jabatan Fungsional : Proggramming
                             </p>
 
                             <a href="#" class="card__button">View More</a>
@@ -27,10 +26,41 @@
                         </div>
 
                         <div class="card__data">
-                            <h3 class="card__name">Lotw Fox</h3>
+                            <h3 class="card__name">Cipto Prabowo</h3>
                             <p class="card__description">
-                                Passionate about development and design,
-                                I carry out projects at the request of users.
+                                Jabatan Fungsional : IT infrastructur
+                            </p>
+
+                            <a href="#" class="card__button">View More</a>
+                        </div>
+                    </article>
+
+                    <article class="card__article swiper-slide">
+                        <div class="card__image">
+                            <img src="{{ asset('frontend/landing-page/assets/img/struktur/avatar-1.png') }}" alt="image" class="card__img">
+                            <div class="card__shadow"></div>
+                        </div>
+
+                        <div class="card__data">
+                            <h3 class="card__name">Ervan Asri</h3>
+                            <p class="card__description">
+                                Jabatan Fungsional : Proggramming
+                            </p>
+
+                            <a href="#" class="card__button">View More</a>
+                        </div>
+                    </article>
+
+                    <article class="card__article swiper-slide">
+                        <div class="card__image">
+                            <img src="{{ asset('frontend/landing-page/assets/img/struktur/avatar-2.png') }}" alt="image" class="card__img">
+                            <div class="card__shadow"></div>
+                        </div>
+
+                        <div class="card__data">
+                            <h3 class="card__name">Alde Alanda</h3>
+                            <p class="card__description">
+                                Jabatan Fungsional : <br> Networking 
                             </p>
 
                             <a href="#" class="card__button">View More</a>
@@ -44,10 +74,9 @@
                         </div>
 
                         <div class="card__data">
-                            <h3 class="card__name">Sara Mit</h3>
+                            <h3 class="card__name">Meri Azmi</h3>
                             <p class="card__description">
-                                Passionate about development and design,
-                                I carry out projects at the request of users.
+                                Jabatan Fungsional : <br> CAIT
                             </p>
 
                             <a href="#" class="card__button">View More</a>
@@ -61,27 +90,9 @@
                         </div>
 
                         <div class="card__data">
-                            <h3 class="card__name">Jenny Wert</h3>
+                            <h3 class="card__name">Yulherniwati</h3>
                             <p class="card__description">
-                                Passionate about development and design,
-                                I carry out projects at the request of users.
-                            </p>
-
-                            <a href="#" class="card__button">View More</a>
-                        </div>
-                    </article>
-
-                    <article class="card__article swiper-slide">
-                        <div class="card__image">
-                            <img src="{{ asset('frontend/landing-page/assets/img/struktur/avatar-5.png') }}" alt="image" class="card__img">
-                            <div class="card__shadow"></div>
-                        </div>
-
-                        <div class="card__data">
-                            <h3 class="card__name">Lexa Kin</h3>
-                            <p class="card__description">
-                                Passionate about development and design,
-                                I carry out projects at the request of users.
+                                Jabatan Fungsional : <br> CAIT
                             </p>
 
                             <a href="#" class="card__button">View More</a>
