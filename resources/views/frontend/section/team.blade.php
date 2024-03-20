@@ -27,7 +27,7 @@
             </div>
             <div class="col-lg-4">
                 <div class="team-member">
-                    <img class="mx-auto rounded-circle" src="frontend/landing-page/assets/img/team/arif.jpg" alt="..." />
+                    <img class="mx-auto rounded-circle" src="frontend/landing-page/assets/img/team/arip.jpg" alt="..." />
                     <h4>Arif Kurniawan</h4>
                     <p class="text-muted">UI/UX Designer</p>
                     <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Larry Parker Twitter Profile"><i class="fab fa-twitter"></i></a>
