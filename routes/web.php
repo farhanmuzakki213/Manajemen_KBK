@@ -1,6 +1,6 @@
 <?php
 
-use Database\Seeders\BeritaSeeder;
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DosenController;
