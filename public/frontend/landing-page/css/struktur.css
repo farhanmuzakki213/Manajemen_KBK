@@ -175,3 +175,10 @@ a {
     right: -1rem;
   }
 }
+
+@media screen and (min-width: 1400px) {
+  .card__container {
+    max-width: 1700px;
+  }
+
+}

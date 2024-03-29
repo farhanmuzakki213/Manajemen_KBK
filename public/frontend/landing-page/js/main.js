@@ -21,5 +21,8 @@ const swiperCards = new Swiper(".card__content", {
     968: {
       slidesPerView: 3,
     },
+    1400: {
+      slidesPerView: 5,
+    },
   },
 });

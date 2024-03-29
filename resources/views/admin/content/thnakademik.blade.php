@@ -31,8 +31,8 @@
                                     <tbody>                                        
                                         @foreach ($data_thnakd as $data)
                                         <tr class="table-Light">
-                                            <th>{{$data->id_thnakd}}</th>
-                                            <th>{{$data->thn_ajaran}}</th>
+                                            <th>{{$data->id_smt_thnakd}}</th>
+                                            <th>{{$data->smt_thnakd}}</th>
                                             <th>{{$data->status}}</th>
                                         </tr>
                                         @endforeach

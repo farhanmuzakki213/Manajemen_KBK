@@ -11,27 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('dosen', function (Blueprint $table) {
-            $table->id('id_dosen');
-            $table->string('nama_dosen');
-            $table->string('nidn');
-            $table->string('nip');
-            $table->string('gender');
-            $table->bigInteger('jurusan_id')->unsigned();
+        Schema::create('pimpinan_prodi', function (Blueprint $table) {
+            $table->id('id_pimpinan_jurusan');
+            $table->bigInteger('jabatan_pimpinan_id')->unsigned();
             $table->bigInteger('prodi_id')->unsigned();
-            $table->string('email');
-            $table->string('password');
-            $table->string('image')->nullable();
+            $table->bigInteger('dosen_id')->unsigned();
+            $table->string('periode');
             $table->enum('status', ['0', '1'])->default(1);
         });
 
-        Schema::table('dosen', function (Blueprint $table) {
-            $table->foreign('jurusan_id')->references('id_jurusan')->on('jurusan')
+        Schema::table('pimpinan_prodi', function (Blueprint $table) {
+            $table->foreign('dosen_id')->references('id_dosen')->on('dosen')
+                    ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('jabatan_pimpinan_id')->references('id_jabatan_pimpinan')->on('jabatan_pimpinan')
                     ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('prodi_id')->references('id_prodi')->on('prodi')
                     ->onUpdate('cascade')->onDelete('cascade');
         });
-            
     }
 
     /**
@@ -39,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('dosen');
+        Schema::dropIfExists('pimpinan_prodi');
     }
 };

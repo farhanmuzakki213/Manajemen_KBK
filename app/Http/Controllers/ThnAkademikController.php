@@ -12,8 +12,8 @@ class ThnAkademikController extends Controller
      */
     public function index()
     {
-        $data_thnakd = DB::table('thnakd')
-            ->orderByDesc('id_thnakd')
+        $data_thnakd = DB::table('smt_thnakd')
+            ->orderByDesc('id_smt_thnakd')
             ->get();
         return view('admin.content.thnakademik', compact('data_thnakd'));
     }

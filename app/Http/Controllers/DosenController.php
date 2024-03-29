@@ -47,7 +47,6 @@ class DosenController extends Controller
 
         ];
 
-        DB:table('dosen')->insert($data);
     }
 
     /**
