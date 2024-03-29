@@ -72,7 +72,7 @@
 <section class="page-section bg-light" id="berita">
     <div class="container py-1">
         <h1 class="text-center mb-5">Berita</h1>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="row row-cols-1 row-cols-md-3 g-4">  
             @foreach ($data_berita as $index => $data)
                 <div class="col">
                     <div class="card" id="card{{ $index }}">
