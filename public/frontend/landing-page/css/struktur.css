@@ -64,6 +64,7 @@ a {
   text-align: center;
   position: relative;
   z-index: 10;
+  height: 212px;
 }
 
 .card__img {

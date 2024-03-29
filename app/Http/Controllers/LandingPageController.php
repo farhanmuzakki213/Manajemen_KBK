@@ -12,7 +12,7 @@ class LandingPageController extends Controller
      */
     public function index()
     {
-        $data_pegurus_kbk = DB::table('pengurus_kbk')
+        $data_pengurus_kbk = DB::table('pengurus_kbk')
             ->join('jenis_kbk', 'pengurus_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
             ->join('jabatan_kbk', 'pengurus_kbk.jabatan_kbk_id', '=', 'jabatan_kbk.id_jabatan_kbk')
             ->join('dosen', 'pengurus_kbk.dosen_id', '=', 'dosen.id_dosen')
@@ -24,7 +24,7 @@ class LandingPageController extends Controller
             ->orderByDesc('id_berita')
             ->get();
             
-        return view('frontend.master', compact('data_berita', 'data_pegurus_kbk'));
+        return view('frontend.master', compact('data_berita', 'data_pengurus_kbk'));
         //dd(compact('data_berita', 'data_pegurus_kbk'));
     } 
 

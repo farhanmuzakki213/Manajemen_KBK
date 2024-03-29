@@ -4,6 +4,8 @@
         <div class="card__container swiper">
             <div class="card__content">
                 <div class="swiper-wrapper">
+                    
+                    @foreach ($data_pengurus_kbk as $data)
                     <article class="card__article swiper-slide">
                         <div class="card__image">
                             <img src="{{ asset('frontend/landing-page/assets/img/struktur/avatar-1.png') }}" alt="image" class="card__img">
@@ -11,16 +13,17 @@
                         </div>
 
                         <div class="card__data">
-                            <h3 class="card__name">Deni Satria</h3>
+                            <h3 class="card__name">{{ $data->nama_dosen }}</h3>
                             <p class="card__description">
-                                Jabatan Fungsional : Proggramming
+                                {{ $data->jabatan }}
                             </p>
 
                             <a href="#" class="card__button">View More</a>
                         </div>
                     </article>
+                    @endforeach
 
-                    <article class="card__article swiper-slide">
+                    {{-- <article class="card__article swiper-slide">
                         <div class="card__image">
                             <img src="{{ asset('frontend/landing-page/assets/img/struktur/avatar-2.png') }}" alt="image" class="card__img">
                             <div class="card__shadow"></div>
@@ -98,7 +101,8 @@
 
                             <a href="#" class="card__button">View More</a>
                         </div>
-                    </article>
+                    </article> --}}
+
                 </div>
             </div>
 
