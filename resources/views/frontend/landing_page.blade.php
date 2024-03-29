@@ -31,9 +31,7 @@
             @yield('landing_page')
         </section>
         <!-- Footer-->
-        @include('frontend.body.footer')
-        <!-- Portfolio Modals-->
-        @include('frontend.body.pop_up')
+        @include('frontend.body.footer')        
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
