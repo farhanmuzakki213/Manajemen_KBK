@@ -57,7 +57,7 @@ class Pengurus_kbkController extends Controller
             'dosen_id' => $request->nama_dosen,
             'jabatan_kbk_id' => $request->jabatan,
         ];
-        Pengurus_kbk::create($data);
+        pengurus_kbk::create($data);
         return redirect()->route('pengurus_kbk');
         //dd($request->all());
     }
@@ -82,7 +82,7 @@ class Pengurus_kbkController extends Controller
         //dd(compact('data_dosen', 'data_jabatan_kbk', 'data_jenis_kbk'));
 
 
-        $data_pengurus_kbk = Pengurus_kbk::where('id_pengurus', $id)->first();
+        $data_pengurus_kbk = pengurus_kbk::where('id_pengurus', $id)->first();
         //dd($data_pengurus_kbk);
 
         return view('admin.content.form.pengurus_kbk_edit', compact('data_dosen', 'data_jabatan_kbk', 'data_jenis_kbk', 'data_pengurus_kbk'));
@@ -107,7 +107,7 @@ class Pengurus_kbkController extends Controller
             'dosen_id' => $request->nama_dosen,
             'jabatan_kbk_id' => $request->jabatan,
         ];
-        Pengurus_kbk::where('id_pengurus', $id)->update($data);
+        pengurus_kbk::where('id_pengurus', $id)->update($data);
         return redirect()->route('pengurus_kbk');
     }
 
@@ -116,10 +116,10 @@ class Pengurus_kbkController extends Controller
      */
     public function delete(Request $request, string $id)
     {
-        $data_pengurus_kbk = Pengurus_kbk::where('id_pengurus', $id)->first();
+        $data_pengurus_kbk = pengurus_kbk::where('id_pengurus', $id)->first();
 
         if ($data_pengurus_kbk) {
-            Pengurus_kbk::where('id_pengurus', $id)->delete();
+            pengurus_kbk::where('id_pengurus', $id)->delete();
         }
         return redirect()->route('pengurus_kbk');
 
