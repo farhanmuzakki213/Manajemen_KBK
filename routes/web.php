@@ -1,9 +1,12 @@
 <?php
 
+use Database\Seeders\BeritaSeeder;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\DosenPengampuMatkul;
 use App\Http\Controllers\ProdiController;
+use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\Kurikulum;
 use App\Http\Controllers\Matkul;
@@ -13,7 +16,6 @@ use App\Http\Controllers\Pengurus_kbkController;
 use App\Http\Controllers\PimpinanJurusan;
 use App\Http\Controllers\PimpinanProdi;
 use Illuminate\Routing\Route as RoutingRoute;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +31,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('frontend.master');
 });
+
+
+Route::get('/contoh', [BeritaController::class, 'index']);
+
+
 
 Route::get('/dashboard', function () {
     return view('admin.content.dashboard');
