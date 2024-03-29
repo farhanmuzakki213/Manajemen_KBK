@@ -15,7 +15,10 @@
                         <div class="card__data">
                             <h3 class="card__name">{{ $data->nama_dosen }}</h3>
                             <p class="card__description">
-                                {{ $data->jabatan }}
+                                Jabatan : {{ $data->jabatan }}
+                            </p>
+                            <p class="card__description">
+                                Bidang : {{ $data->jenis_kbk }}
                             </p>
 
                             <a href="#" class="card__button">View More</a>

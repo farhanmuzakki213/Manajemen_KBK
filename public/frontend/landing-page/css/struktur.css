@@ -42,6 +42,9 @@ a {
   margin-inline: 1.75rem;
   border-radius: 1.25rem;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .card__article {
@@ -64,7 +67,10 @@ a {
   text-align: center;
   position: relative;
   z-index: 10;
-  height: 212px;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .card__img {
@@ -91,15 +97,15 @@ a {
 }
 
 .card__name {
-  font-size: var(--h2-font-size);
+  font-size: var(--h3-font-size);
   color: var(--second-color);
   margin-bottom: .75rem;
 }
 
 .card__description {
   font-weight: 500;
-  margin-bottom: 1.75rem;
   color: #fff;
+  text-align: center;
 }
 
 .card__button {
@@ -109,6 +115,7 @@ a {
   border-radius: .25rem;
   color: var(--dark-color);
   font-weight: 600;
+  margin-top: auto;
 }
 
 /* Swiper class */
