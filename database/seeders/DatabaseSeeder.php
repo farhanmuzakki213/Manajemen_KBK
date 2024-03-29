@@ -23,9 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call([ThnakdSeeder::class,]);
         $this->call([ProdiSeeder::class,]);
         $this->call([DosenSeeder::class,]);
-<<<<<<< HEAD
         $this->call([BeritaSeeder::class,]);
-=======
         $this->call([JabatanPimpinanSeeder::class,]);
         $this->call([KelasSeeder::class,]);
         $this->call([KurikulumSeeder::class,]);
@@ -44,6 +42,5 @@ class DatabaseSeeder extends Seeder
         $this->call([ProposalTASeeder::class,]);
         $this->call([PenugasanReviewerProposalTASeeder::class,]);
         $this->call([HasilReviewProposalTASeeder::class,]);
->>>>>>> 240c3f920d23fad4acff97086be106c94b4d18ca
     }
 }
