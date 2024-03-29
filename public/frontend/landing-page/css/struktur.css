@@ -102,6 +102,10 @@ a {
   margin-bottom: .75rem;
 }
 
+h3, h6 {
+  height: 38.4px;
+}
+
 .card__description {
   font-weight: 500;
   color: #fff;
