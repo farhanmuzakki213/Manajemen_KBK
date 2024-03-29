@@ -68,58 +68,47 @@
         line-height: 2.5;
     }
 </style>
-<section class="page-section bg-light" id="struktural">
-    <div class="container py-5 bg-light">
-        <h1 class="text-center">Berita</h1>
-        <div class="row row-cols-1 row-cols-md-3 g-4 py-5">
-            <div class="col">
-                <div class="card">
-                    <img src="frontend/landing-page/assets/img/berita/berita1.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h4 class="card-title">Pekan IT Politeknik Negeri Padang 2023 : The Digital Revolution</h4>
-                        <p class="card-text" style="height: 100px; overflow: hidden;">Politeknik Negeri Padang, melalui
-                            Jurusan Teknologi Informasi, siap mengguncang dunia Teknologi Informasi dengan acara besar,
-                            “Pekan IT Politeknik Negeri Padang 2023.” Acara ini akan menggugah semangat generasi muda,
-                            terutama pelajar SLTA di seluruh Sumatera Barat, untuk mengejar pengetahuan tentang
-                            Teknologi Informasi. Dengan tema “The Digital Revolution – Transforming Industry and
-                            Everyday Life,” acara ini menawarkan beragam kegiatan yang tidak hanya mendalam, tetapi juga
-                            menginspirasi.</p>
-                        <div class="mb-5 d-flex justify-content-around">
-                            <a href="#" class="btn btn-primary">Read More</a>
+
+<section class="page-section bg-light" id="berita">
+    <div class="container py-1">
+        <h1 class="text-center mb-5">Berita</h1>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @foreach ($data_berita as $index => $data)
+                <div class="col">
+                    <div class="card" id="card{{ $index }}">
+                        <img src="{{ $data->foto_sampul }}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h4 class="card-title">{{ $data->judul }}</h4>
+                            <p class="card-text" style="height: 100px; overflow: hidden;"
+                                id="isi_berita{{ $index }}">{{ $data->isi_berita }}</p>
+                            <div class="text-center">
+                                <a href="#" class="btn btn-primary read-more"
+                                    data-target="{{ $index }}">Read More</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <img src="frontend/landing-page/assets/img/berita/berita2.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h4 class="card-title">Tiga Program Studi di PSDKU Raih Akreditasi Baik Sekali</h4>
-                        <p class="card-text" style="height: 100px; overflow: hidden;">Ketiga program studi yang berhasil
-                            meraih akreditasi “Baik Sekali” adalah Prodi Manajemen Informatika di PSDKU Kabupaten
-                            Pelalawan, Prodi Sistem Informasi di PSDKU Kabupaten Tanah Datar, dan Prodi Teknik Komputer
-                            di PSDKU Kabupaten Solok Selatan. Prestasi ini merupakan hasil dari upaya dan kerja keras
-                            para dosen, staf, dan mahasiswa dalam menjaga kualitas pendidikan di tiga program studi
-                            tersebut.</p>
-                        <div class="mb-5 d-flex justify-content-around">
-                            <a href="#" class="btn btn-primary">Read More</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <img src="frontend/landing-page/assets/img/berita/berita3.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h4 class="card-title">Jadwal Perkuliahan Semester Genap TA 2021/2022</h4>
-                        <p class="card-text" style="height: 100px; overflow: hidden;">Jadwal Perkuliahan saat ini sudah
-                            tersedia dan dapat dilihat pada link presensi.pnp.ac.id/ti</p>
-                        <div class="mb-5 d-flex justify-content-around">
-                            <a href="#" class="btn btn-primary">Read More</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endforeach
+
         </div>
     </div>
 </section>
+
+{{-- <script>
+    document.querySelectorAll('.read-more').forEach(item => {
+        item.addEventListener('click', event => {
+            event.preventDefault();
+            const targetIndex = item.getAttribute('data-target');
+            const card = document.getElementById('card' + targetIndex);
+            const isiBerita = document.getElementById('isi_berita' + targetIndex);
+
+            if (isiBerita.style.height === '100px') {
+                isiBerita.style.height = 'auto';
+                card.querySelector('.read-more').innerText = 'Read Less';
+            } else {
+                isiBerita.style.height = '100px';
+                card.querySelector('.read-more').innerText = 'Read More';
+            }
+        });
+    });
+</script> --}}

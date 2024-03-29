@@ -1,13 +1,15 @@
 <?php
 
+use Database\Seeders\BeritaSeeder;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\ProdiController;
+use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\JurusanController;
-use App\Http\Controllers\ThnAkademikController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Routing\Route as RoutingRoute;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ThnAkademikController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +25,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('frontend.master');
 });
+
+
+Route::get('/contoh', [BeritaController::class, 'index']);
+
+
 
 Route::get('/dashboard', function () {
     return view('admin.content.dashboard');
