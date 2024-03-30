@@ -51,7 +51,7 @@
                                             <option value="{{ $jabatan_kbk->id_jabatan_kbk }}">{{ $jabatan_kbk->jabatan }}</option>
                                         @endforeach
                                     </select>
-                                    @error('jabatan_kbk')
+                                    @error('jabatan')
                                         <small>{{ $message}}</small>
                                     @enderror
                                 </div>
