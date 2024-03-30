@@ -5,11 +5,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\DosenPengampuMatkul;
+use App\Http\Controllers\JenisKbkController;
 use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\Kurikulum;
 use App\Http\Controllers\LandingPageController;
-use App\Http\Controllers\Matkul;
+use App\Http\Controllers\MatkulController;
 use App\Http\Controllers\ThnAkademikController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Pengurus_kbkController;
@@ -76,6 +77,26 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/pengurus_kbk/delete/{id}', [Pengurus_kbkController::class, 'delete'])->middleware(['auth', 'verified'])->name('pengurus_kbk.delete');
 });
 
+// Jenis KBK
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/data_kbk', [JenisKbkController::class, 'index'])->middleware(['auth', 'verified'])->name('jenis_kbk');
+    Route::post('/data_kbk/store', [JenisKbkController::class, 'store'])->middleware(['auth', 'verified'])->name('jenis_kbk.store');
+    Route::get('/data_kbk/create', [JenisKbkController::class, 'create'])->middleware(['auth', 'verified'])->name('jenis_kbk.create');
+    Route::get('/data_kbk/edit/{id}', [JenisKbkController::class, 'edit'])->middleware(['auth', 'verified'])->name('jenis_kbk.edit');
+    Route::put('/data_kbk/update/{id}', [JenisKbkController::class, 'update'])->middleware(['auth', 'verified'])->name('jenis_kbk.update');
+    Route::delete('/data_kbk/delete/{id}', [JenisKbkController::class, 'delete'])->middleware(['auth', 'verified'])->name('jenis_kbk.delete');
+});
+
+// Matkul
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/matkul', [MatkulController::class, 'index'])->middleware(['auth', 'verified'])->name('matkul');
+    Route::post('/matkul/store', [MatkulController::class, 'store'])->middleware(['auth', 'verified'])->name('matkul.store');
+    Route::get('/matkul/create', [MatkulController::class, 'create'])->middleware(['auth', 'verified'])->name('matkul.create');
+    Route::get('/matkul/edit/{id}', [MatkulController::class, 'edit'])->middleware(['auth', 'verified'])->name('matkul.edit');
+    Route::put('/matkul/update/{id}', [MatkulController::class, 'update'])->middleware(['auth', 'verified'])->name('matkul.update');
+    Route::delete('/matkul/delete/{id}', [MatkulController::class, 'delete'])->middleware(['auth', 'verified'])->name('matkul.delete');
+});
+
 // Profil
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -93,11 +114,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // Kurikulum
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/kurikulum', [Kurikulum::class, 'index'])->middleware(['auth', 'verified'])->name('kurikulum');
-});
-
-// Matkul
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/matkul', [Matkul::class, 'index'])->middleware(['auth', 'verified'])->name('matkul');
 });
 
 // Pimpinan Jurusan
