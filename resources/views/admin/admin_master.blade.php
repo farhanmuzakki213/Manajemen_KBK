@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{{ asset('backend/assets/css/admin.css') }}" />
     <!-- Custom styles for this DataTable -->
     <link href="{{ asset('backend/assets/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <body>

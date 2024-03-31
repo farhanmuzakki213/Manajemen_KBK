@@ -26,16 +26,8 @@
                 </li>
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Data Entry</span>
+                    <span class="hide-menu">Table View</span>
                 </li>
-                {{-- <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('example')}}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-aperture"></i>
-                        </span>
-                        <span class="hide-menu">Example</span>
-                    </a>
-                </li> --}}
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('dosen')}}" aria-expanded="false">
                         <span>
@@ -83,15 +75,7 @@
                         </span>
                         <span class="hide-menu">Kurikulum </span>
                     </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('matkul')}}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-aperture"></i>
-                        </span>
-                        <span class="hide-menu">Matkul </span>
-                    </a>
-                </li>
+                </li>                
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('pimpinanjurusan')}}" aria-expanded="false">
                         <span>
@@ -108,12 +92,41 @@
                         <span class="hide-menu">Pimpinan Prodi </span>
                     </a>
                 </li>
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Data Entry</span>
+                </li>
+                {{-- <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('example')}}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Example</span>
+                    </a>
+                </li> --}}
+                
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('pengurus_kbk')}}" aria-expanded="false">
                         <span>
                             <i class="ti ti-aperture"></i>
                         </span>
                         <span class="hide-menu">Pengurus KBK </span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('matkul')}}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Matkul </span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('jenis_kbk')}}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Data KBK </span>
                     </a>
                 </li>
             </ul>

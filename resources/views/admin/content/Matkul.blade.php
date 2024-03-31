@@ -9,7 +9,8 @@
                     <!-- Data Mata Kuliah -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Aksi</h6>
+                            <p><a href="{{ route('matkul.create') }}" class="btn btn-primary"><i
+                                class="bi bi-file-earmark-plus"></i> New</a></p>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -19,15 +20,9 @@
                                             <th>#</th>
                                             <th>Kode Matkul</th>
                                             <th>Nama Matkul</th>
-                                            <th>TP</th>
-                                            <th>SKS</th>
-                                            <th>Jam</th>
-                                            <th>SKS Teori</th>
-                                            <th>SKS Praktek</th>
-                                            <th>Jam Teori</th>
-                                            <th>Jam Praktek</th>
                                             <th>Semester</th>
                                             <th>Nama Kurikulum</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -35,15 +30,9 @@
                                             <th>#</th>
                                             <th>Kode Matkul</th>
                                             <th>Nama Matkul</th>
-                                            <th>TP</th>
-                                            <th>SKS</th>
-                                            <th>Jam</th>
-                                            <th>SKS Teori</th>
-                                            <th>SKS Praktek</th>
-                                            <th>Jam Teori</th>
-                                            <th>Jam Praktek</th>
                                             <th>Semester</th>
                                             <th>Nama Kurikulum</th>
+                                            <th>Action</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>                                        
@@ -52,16 +41,86 @@
                                             <th>{{$data->id_matkul}}</th>
                                             <th>{{$data->kode_matkul}}</th>
                                             <th>{{$data->nama_matkul}}</th>
-                                            <th>{{$data->TP}}</th>
-                                            <th>{{$data->sks}}</th>
-                                            <th>{{$data->jam}}</th>
-                                            <th>{{$data->sks_teori}}</th>
-                                            <th>{{$data->sks_praktek}}</th>
-                                            <th>{{$data->jam_teori}}</th>
-                                            <th>{{$data->jam_praktek}}</th>
                                             <th>{{$data->semester}}</th>
                                             <th>{{$data->nama_kurikulum}}</th>
+                                            <th>
+                                                <a href="{{ route('matkul.edit', ['id' => $data->id_matkul]) }}"
+                                                    class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
+                                                <a data-bs-toggle="modal"
+                                                    data-bs-target="#staticBackdrop{{ $data->id_matkul }}"
+                                                    class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                                                <a data-bs-toggle="modal"
+                                                    data-bs-target="#detail{{-- {{ $data->id_jenis_kbk }} --}}"
+                                                    class="btn btn-secondary"><i class="bi bi-three-dots-vertical"></i></a>
+                                            </th>
                                         </tr>
+                                        {{-- Modal Konfirmasi hapus data --}}
+                                        <div class="modal fade" id="staticBackdrop{{ $data->id_matkul }}"
+                                            data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                            aria-labelledby="staticBackdropLabel" aria-hidden="true">>
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title fs-5" id="staticBackdropLabel">Konfirmasi
+                                                            Hapus Data</h4>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Apakah kamu yakin ingin menghapus data Ini
+                                                            <b>{{ $data->kode_matkul }}</b>
+                                                        </p>
+                                                    </div>
+                                                    <div class="modal-footer justify-content-between">
+
+                                                        <form
+                                                            action="{{ route('matkul.delete', ['id' => $data->id_matkul]) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="button" class="btn btn-default"
+                                                                data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary">Ya,
+                                                                Hapus</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {{-- Modal Detail Tabel --}}
+                                        <div class="modal fade" id="detail" tabindex="-1"
+                                            aria-labelledby="detailLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="detailLabel">New message
+                                                        </h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form>
+                                                            <div class="mb-3">
+                                                                <label for="recipient-name"
+                                                                    class="col-form-label">Recipient:</label>
+                                                                <input type="text" class="form-control"
+                                                                    id="recipient-name">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="message-text"
+                                                                    class="col-form-label">Message:</label>
+                                                                <textarea class="form-control" id="message-text"></textarea>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-primary"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         @endforeach
                                     </tbody>
                                 </table>
