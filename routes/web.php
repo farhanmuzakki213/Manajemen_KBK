@@ -30,6 +30,9 @@ use Illuminate\Routing\Route as RoutingRoute;
 
 Route::get('/', [LandingPageController::class, 'index']);
 
+// Detail Berita
+Route::get('/berita/{id_berita}', [LandingPageController::class, 'detail']);
+
 
 Route::get('/dashboard', function () {
     return view('admin.content.dashboard');
