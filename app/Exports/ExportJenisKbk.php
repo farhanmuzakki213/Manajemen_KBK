@@ -15,6 +15,9 @@ class ExportJenisKbk implements FromCollection, WithHeadings
     public function collection()
     {
         $data_jenis_kbk = DB::table('jenis_kbk')
+        ->select(
+            'jenis_kbk.jenis_kbk', 
+            'jenis_kbk.deskripsi')
             ->orderBy('id_jenis_kbk')
             ->get();
         return $data_jenis_kbk;
@@ -26,7 +29,6 @@ class ExportJenisKbk implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'id_jenis_kbk',
             'jenis_kbk',
             'deskripsi'
         ];

@@ -19,7 +19,6 @@ class ExportDosenPengampuMatkul implements FromCollection, WithHeadings
             ->join('kelas', 'dosen_matkul.kelas_id', '=', 'kelas.id_kelas')
             ->join('smt_thnakd', 'dosen_matkul.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
             ->select(
-                'dosen_matkul.id_dosen_matkul',
                 'dosen.nama_dosen', 
                 'matkul.nama_matkul', 
                 'kelas.nama_kelas', 

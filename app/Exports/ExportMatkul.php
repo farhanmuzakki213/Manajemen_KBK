@@ -16,7 +16,6 @@ class ExportMatkul implements FromCollection, WithHeadings
     {
         $data_matkul = Matkul::join('kurikulum', 'matkul.kurikulum_id', '=', 'kurikulum.id_kurikulum')
             ->select(
-                'matkul.id_matkul',
                 'matkul.kode_matkul',
                 'matkul.nama_matkul',
                 'matkul.TP',
@@ -40,7 +39,6 @@ class ExportMatkul implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'id_matkul',
             'kode matkul',
             'nama_matkul',
             'TP',

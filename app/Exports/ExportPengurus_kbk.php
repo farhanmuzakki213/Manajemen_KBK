@@ -18,7 +18,6 @@ class ExportPengurus_kbk implements FromCollection, WithHeadings
             ->join('jabatan_kbk', 'pengurus_kbk.jabatan_kbk_id', '=', 'jabatan_kbk.id_jabatan_kbk')
             ->join('dosen', 'pengurus_kbk.dosen_id', '=', 'dosen.id_dosen')
             ->select(
-                'pengurus_kbk.id_pengurus',
                 'jenis_kbk.jenis_kbk',
                 'jabatan_kbk.jabatan',
                 'dosen.nama_dosen',
@@ -36,7 +35,6 @@ class ExportPengurus_kbk implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'id_pengurus',
             'jenis_kbk',
             'jabatan',
             'nama_dosen',
