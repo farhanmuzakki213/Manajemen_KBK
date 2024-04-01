@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Matkul;
 use Illuminate\Http\Request;
+use App\Exports\ExportMatkul;
+use App\Imports\ImportMatkul;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
+
 
 class MatkulController extends Controller
 {
@@ -20,7 +24,17 @@ class MatkulController extends Controller
             ->orderByDesc('id_matkul')
             ->get();
         return view('admin.content.Matkul', compact('data_matkul'));
+     }
+
+    public function export_excel(){
+        return Excel::download(new ExportMatkul, "Matkul.xlsx");
     }
+
+    public function import(Request $request){
+        Excel::import(new ImportMatkul, $request->file('file'));
+        return redirect('matkul');
+    }
+
 
     /**
      * Show the form for creating a new resource.
