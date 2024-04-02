@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportDosenPengampuMatkul;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DosenPengampuMatkul extends Controller
 {
@@ -29,6 +31,10 @@ class DosenPengampuMatkul extends Controller
     public function create()
     {
         //
+    }
+
+    public function export_excel(){
+        return Excel::download(new ExportDosenPengampuMatkul, "Matkul_Ampu.xlsx");
     }
 
     /**

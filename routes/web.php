@@ -16,6 +16,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Pengurus_kbkController;
 use App\Http\Controllers\PimpinanJurusan;
 use App\Http\Controllers\PimpinanProdi;
+use App\Models\Pengurus_kbk;
 use Illuminate\Routing\Route as RoutingRoute;
 
 /*
@@ -75,6 +76,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/pengurus_kbk/edit/{id}', [Pengurus_kbkController::class, 'edit'])->middleware(['auth', 'verified'])->name('pengurus_kbk.edit');
     Route::put('/pengurus_kbk/update/{id}', [Pengurus_kbkController::class, 'update'])->middleware(['auth', 'verified'])->name('pengurus_kbk.update');
     Route::delete('/pengurus_kbk/delete/{id}', [Pengurus_kbkController::class, 'delete'])->middleware(['auth', 'verified'])->name('pengurus_kbk.delete');
+    Route::get('/pengurus_kbk/export/excel', [Pengurus_kbkController::class, 'export_excel'])->name('pengurus_kbk.export');
+    Route::post('/pengurus_kbk/import', [Pengurus_kbkController::class, 'import'])->name('pengurus_kbk.import');
 });
 
 // Jenis KBK
@@ -85,6 +88,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/data_kbk/edit/{id}', [JenisKbkController::class, 'edit'])->middleware(['auth', 'verified'])->name('jenis_kbk.edit');
     Route::put('/data_kbk/update/{id}', [JenisKbkController::class, 'update'])->middleware(['auth', 'verified'])->name('jenis_kbk.update');
     Route::delete('/data_kbk/delete/{id}', [JenisKbkController::class, 'delete'])->middleware(['auth', 'verified'])->name('jenis_kbk.delete');
+    Route::get('/data_kbk/export/excel', [JenisKbkController::class, 'export_excel'])->name('jenis_kbk.export');
+    Route::post('/data_kbk/import', [JenisKbkController::class, 'import'])->name('jenis_kbk.import');
 });
 
 // Matkul
@@ -95,6 +100,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/matkul/edit/{id}', [MatkulController::class, 'edit'])->middleware(['auth', 'verified'])->name('matkul.edit');
     Route::put('/matkul/update/{id}', [MatkulController::class, 'update'])->middleware(['auth', 'verified'])->name('matkul.update');
     Route::delete('/matkul/delete/{id}', [MatkulController::class, 'delete'])->middleware(['auth', 'verified'])->name('matkul.delete');
+    Route::get('/matkul/export/excel', [MatkulController::class, 'export_excel'])->name('matkul.export');
+    Route::post('/matkul/import', [MatkulController::class, 'import'])->name('matkul.import');
 });
 
 // Profil
@@ -109,6 +116,7 @@ require __DIR__.'/auth.php';
 // Dosen Pengampu Matkul
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/DosenPengampuMatkul', [DosenPengampuMatkul::class, 'index'])->middleware(['auth', 'verified'])->name('DosenPengampuMatkul');
+    Route::get('/DosenPengampuMatkul/export/excel', [DosenPengampuMatkul::class, 'export_excel'])->name('DosenPengampuMatkul.export');
 });
 
 // Kurikulum
@@ -125,3 +133,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/pimpinamprodi', [PimpinanProdi::class, 'index'])->middleware(['auth', 'verified'])->name('pimpinanprodi');
 });
+
+

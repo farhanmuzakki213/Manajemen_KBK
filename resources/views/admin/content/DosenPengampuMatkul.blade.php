@@ -8,8 +8,11 @@
                 <div class="container-fluid">
                     <!-- DataDosen Pengampu Mata Kuliah -->
                     <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Aksi</h6>
+                        <div class="card-header py-2">
+                            <div class="d-grid gap-2 d-md-block">
+                                <a href="{{ route('DosenPengampuMatkul.export') }}" class="btn btn-primary me-md-3"><i
+                                        class="bi bi-box-arrow-in-up"></i> Export</a>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -37,8 +40,8 @@
                                         <tr class="table-Light">
                                             <th>{{$data->id_dosen_matkul}}</th>
                                             <th>{{$data->nama_dosen}}</th>
-                                            <th>{{$data->nama_kelas}}</th>
                                             <th>{{$data->nama_matkul}}</th>
+                                            <th>{{$data->nama_kelas}}</th>
                                             <th>{{$data->smt_thnakd}}</th>
                                         </tr>
                                         @endforeach

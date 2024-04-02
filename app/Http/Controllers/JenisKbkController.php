@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\JenisKbk;
 use Illuminate\Http\Request;
+use App\Exports\ExportJenisKbk;
+use App\Imports\ImportJenisKbk;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class JenisKbkController extends Controller
 {
@@ -20,6 +23,15 @@ class JenisKbkController extends Controller
         return view('admin.content.jenis_kbk', compact('data_jenis_kbk'));
     }
 
+    public function export_excel(){
+        return Excel::download(new ExportJenisKbk, "Datakbk.xlsx");
+    }
+
+    public function import(Request $request){
+        Excel::import(new ImportJenisKbk, $request->file('file'));
+        return redirect('data_kbk');
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -27,6 +39,7 @@ class JenisKbkController extends Controller
     {
         return view('admin.content.form.jenis_kbk_form');
     }
+
 
     /**
      * Store a newly created resource in storage.
