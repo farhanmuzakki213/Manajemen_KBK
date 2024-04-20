@@ -8,10 +8,45 @@
                 <div class="container-fluid">
                     <!-- DataPengurus KBK -->
                     <div class="card shadow mb-4">
+
                         <div class="card-header py-3">
-                            <p><a href="{{ route('pengurus_kbk.create') }}" class="btn btn-primary"><i
-                                        class="bi bi-file-earmark-plus"></i> New</a></p>
+                            <div class="d-grid gap-2 d-md-block">
+                            <a href="{{ route('pengurus_kbk.create') }}" class="btn btn-primary me-md-3"><i
+                                        class="bi bi-file-earmark-plus"></i> New</a>
+                            <a href="{{ route('pengurus_kbk.export') }}" class="btn btn-primary me-md-3"><i class="bi bi-box-arrow-in-up"></i> Export</a>
+                            <a data-bs-toggle="modal" data-bs-target="#import{{-- {{ $data->id_jenis_kbk }} --}}" class="btn btn-primary"><i class="bi bi-box-arrow-in-down"></i> Import</a>
                         </div>
+                        </div>
+
+                         {{-- Modal Import --}}
+                    <div class="modal fade" id="import" tabindex="-1" aria-labelledby="importLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="importlabel">New message
+                                </h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="post" action="{{ route('pengurus_kbk.import') }}" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="mb-3">
+                                        <label for="file" class="col-form-label">Import File</label>
+                                        <input type="file" class="form-control" name="file" id="file">
+                                        @error('file')
+                                              <small>{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                    <div class="mb-3">
+                                        <button type="submit" class="btn btn-primary">Upload</button>
+                                    </div>
+                                </form>
+                            </div>                                   
+                        </div>
+                    </div>
+                </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

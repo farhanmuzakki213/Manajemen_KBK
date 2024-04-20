@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportPengurus_kbk;
+use App\Imports\ImportPengurusKbk;
 use App\Models\Pengurus_kbk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Pengurus_kbkController extends Controller
 {
@@ -22,6 +25,15 @@ class Pengurus_kbkController extends Controller
             ->orderByDesc('id_pengurus')
             ->get();
         return view('admin.content.pengurus_kbk', compact('data_pengurus_kbk'));
+    }
+
+    public function export_excel(){
+        return Excel::download(new ExportPengurus_kbk, "Pengurus_kbk.xlsx");
+    }
+
+    public function import(Request $request){
+        Excel::import(new ImportPengurusKbk, $request->file('file'));
+        return redirect('pengurus_kbk');
     }
 
     /**
