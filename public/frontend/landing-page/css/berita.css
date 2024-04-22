@@ -1,0 +1,31 @@
+.card-img-top-berita{
+    border-radius: 50px;
+    padding: 20px;
+    width: 414px;
+    height: 289px;
+}
+.card-berita{
+    border-radius: 30px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+    width: 416px;
+    height: 520px;
+}
+.card-body-berita{
+    padding: 25px;
+    margin-top: -15px;
+    width: 414px;
+    height: 154px;
+}
+
+.card-text-berita{
+    width: 364px;
+    height: 72px;
+}
+.btn-primary-berita{
+    border-radius: 50px;
+    width: 120px;
+}
+.btn-primary-berita:hover{
+    background-color: black;
+    border: none;
+}

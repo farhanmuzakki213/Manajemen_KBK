@@ -1,100 +1,114 @@
+<style>
+    .card {
+        border-radius: 30px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+    }
+
+    .card-img-top {
+        border-radius: 50px;
+        padding: 20px;
+        object-fit: cover;
+        height: 200px;
+    }
+
+    .card-body {
+        padding: 25px;
+        margin-top: -15px;
+        height: 310px;
+        overflow: hidden;
+    }
+
+    .btn-primary {
+        border-radius: 50px;
+        width: 120px;
+        margin-bottom: 600px;
+    }
+
+    .btn-primary:hover {
+        background-color: black;
+        border: none;
+    }
+
+    h3,
+    h6 {
+        color: rgb(0, 0, 0);
+    }
+
+    .detail-content {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        line-height: 2.5;
+    }
+
+    .detail-content .image-container {
+        flex: 0 0 40%;
+        padding: 20px;
+    }
+
+    .detail-content .image-container img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 50px;
+        object-fit: cover;
+    }
+
+    .detail-content .text-container {
+        flex: 0 0 60%;
+        padding: 60px;
+    }
+
+    .detail-content h3 {
+        margin-bottom: 10px;
+        line-height: 2.5;
+    }
+
+    .detail-content h6 {
+        margin-bottom: 10px;
+        line-height: 2.5;
+    }
+</style>
+
 <section class="page-section bg-light" id="berita">
-    <div class="container">
-        <div class="text-center">
-            <h2 class="section-heading text-uppercase">Portfolio</h2>
-            <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
-        </div>
-        <div class="row">
-            <div class="col-lg-4 col-sm-6 mb-4">
-                <!-- Portfolio item 1-->
-                <div class="portfolio-item">
-                    <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal1">
-                        <div class="portfolio-hover">
-                            <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+    <div class="container py-1">
+        <h1 class="text-center mb-5">Berita</h1>
+        <div class="row row-cols-1 row-cols-md-3 g-4">  
+            @foreach ($data_berita as $index => $data)
+                <div class="col">
+                    <div class="card" id="card{{ $index }}">
+                        <img src="{{ $data->foto_sampul }}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h4 class="card-title">{{ $data->judul }}</h4>
+                            <p class="card-text" style="height: 100px; overflow: hidden;"
+                                id="isi_berita{{ $index }}">{{ $data->isi_berita }}</p>
+                            <div class="text-center">
+                                <a href="#" class="btn btn-primary read-more"
+                                    data-target="{{ $index }}">Read More</a>
+                            </div>
                         </div>
-                        <img class="img-fluid" src="frontend/landing-page/assets/img/portfolio/1.jpg" alt="..." />
-                    </a>
-                    <div class="portfolio-caption">
-                        <div class="portfolio-caption-heading">Threads</div>
-                        <div class="portfolio-caption-subheading text-muted">Illustration</div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4 col-sm-6 mb-4">
-                <!-- Portfolio item 2-->
-                <div class="portfolio-item">
-                    <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal2">
-                        <div class="portfolio-hover">
-                            <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
-                        </div>
-                        <img class="img-fluid" src="frontend/landing-page/assets/img/portfolio/2.jpg" alt="..." />
-                    </a>
-                    <div class="portfolio-caption">
-                        <div class="portfolio-caption-heading">Explore</div>
-                        <div class="portfolio-caption-subheading text-muted">Graphic Design</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-sm-6 mb-4">
-                <!-- Portfolio item 3-->
-                <div class="portfolio-item">
-                    <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal3">
-                        <div class="portfolio-hover">
-                            <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
-                        </div>
-                        <img class="img-fluid" src="frontend/landing-page/assets/img/portfolio/3.jpg" alt="..." />
-                    </a>
-                    <div class="portfolio-caption">
-                        <div class="portfolio-caption-heading">Finish</div>
-                        <div class="portfolio-caption-subheading text-muted">Identity</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-sm-6 mb-4 mb-lg-0">
-                <!-- Portfolio item 4-->
-                <div class="portfolio-item">
-                    <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal4">
-                        <div class="portfolio-hover">
-                            <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
-                        </div>
-                        <img class="img-fluid" src="frontend/landing-page/assets/img/portfolio/4.jpg" alt="..." />
-                    </a>
-                    <div class="portfolio-caption">
-                        <div class="portfolio-caption-heading">Lines</div>
-                        <div class="portfolio-caption-subheading text-muted">Branding</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-sm-6 mb-4 mb-sm-0">
-                <!-- Portfolio item 5-->
-                <div class="portfolio-item">
-                    <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal5">
-                        <div class="portfolio-hover">
-                            <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
-                        </div>
-                        <img class="img-fluid" src="frontend/landing-page/assets/img/portfolio/5.jpg" alt="..." />
-                    </a>
-                    <div class="portfolio-caption">
-                        <div class="portfolio-caption-heading">Southwest</div>
-                        <div class="portfolio-caption-subheading text-muted">Website Design</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-sm-6">
-                <!-- Portfolio item 6-->
-                <div class="portfolio-item">
-                    <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal6">
-                        <div class="portfolio-hover">
-                            <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
-                        </div>
-                        <img class="img-fluid" src="frontend/landing-page/assets/img/portfolio/6.jpg" alt="..." />
-                    </a>
-                    <div class="portfolio-caption">
-                        <div class="portfolio-caption-heading">Window</div>
-                        <div class="portfolio-caption-subheading text-muted">Photography</div>
-                    </div>
-                </div>
-            </div>
+            @endforeach
+
         </div>
     </div>
 </section>
+
+{{-- <script>
+    document.querySelectorAll('.read-more').forEach(item => {
+        item.addEventListener('click', event => {
+            event.preventDefault();
+            const targetIndex = item.getAttribute('data-target');
+            const card = document.getElementById('card' + targetIndex);
+            const isiBerita = document.getElementById('isi_berita' + targetIndex);
+
+            if (isiBerita.style.height === '100px') {
+                isiBerita.style.height = 'auto';
+                card.querySelector('.read-more').innerText = 'Read Less';
+            } else {
+                isiBerita.style.height = '100px';
+                card.querySelector('.read-more').innerText = 'Read More';
+            }
+        });
+    });
+</script> --}}
