@@ -66,6 +66,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dosen', [DosenController::class, 'index'])->name('dosen');
     Route::post('/dosen', [DosenController::class, 'store']);
+    Route::get('/dosen/show/{id}', [DosenController::class, 'show'])->middleware(['auth', 'verified'])->name('dosen.show');
 });
 
 // Pengurus_KBK
@@ -99,6 +100,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/matkul/create', [MatkulController::class, 'create'])->middleware(['auth', 'verified'])->name('matkul.create');
     Route::get('/matkul/edit/{id}', [MatkulController::class, 'edit'])->middleware(['auth', 'verified'])->name('matkul.edit');
     Route::put('/matkul/update/{id}', [MatkulController::class, 'update'])->middleware(['auth', 'verified'])->name('matkul.update');
+    Route::get('/matkul/show/{id}', [MatkulController::class, 'show'])->middleware(['auth', 'verified'])->name('matkul.show');
     Route::delete('/matkul/delete/{id}', [MatkulController::class, 'delete'])->middleware(['auth', 'verified'])->name('matkul.delete');
     Route::get('/matkul/export/excel', [MatkulController::class, 'export_excel'])->name('matkul.export');
     Route::post('/matkul/import', [MatkulController::class, 'import'])->name('matkul.import');

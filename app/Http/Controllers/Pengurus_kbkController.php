@@ -79,8 +79,15 @@ class Pengurus_kbkController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data_dosen = DB::table('dosen')->get();
+        $data_jabatan_kbk = DB::table('jabatan_kbk')->get();
+        $data_jenis_kbk = DB::table('jenis_kbk')->get();
+    
+        $detail_pengurus_kbk = pengurus_kbk::where('id_pengurus', $id)->first();
+        
+        return view('admin.content.pengurus_kbk', compact('data_dosen', 'data_jabatan_kbk', 'data_jenis_kbk', 'detail_pengurus_kbk'));
     }
+    
 
     /**
      * Show the form for editing the specified resource.
