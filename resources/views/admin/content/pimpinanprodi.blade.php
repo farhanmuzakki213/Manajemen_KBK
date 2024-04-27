@@ -42,7 +42,13 @@
                                             <th>{{$data->jabatan_pimpinan}}</th>
                                             <th>{{$data->prodi}}</th>
                                             <th>{{$data->periode}}</th>
-                                            <th>{{$data->status}}</th>
+                                            <th>
+                                                @if ($data->status == 0)
+                                                    Tidak Aktif
+                                                @else
+                                                    Aktif
+                                                @endif
+                                            </th>
                                         </tr>
                                         @endforeach
                                     </tbody>

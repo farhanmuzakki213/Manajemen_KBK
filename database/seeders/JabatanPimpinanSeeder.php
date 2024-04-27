@@ -14,16 +14,17 @@ class JabatanPimpinanSeeder extends Seeder
     public function run(): void
     {
         $JPData = [
-            ['Ketua Jurusan', 'KAJUR', '1'],
-            ['Sekretaris Jurusan', 'SEKJUR', '1'],
-            ['Koordinator Program', 'KAPRODI', '1']
+            [1, 'Ketua Jurusan', 'KAJUR', '1'],
+            [2, 'Sekretaris Jurusan', 'SEKJUR', '1'],
+            [3, 'Koordinator Program', 'KAPRODI', '1']
         ];
 
         foreach ($JPData as $data) {
             DB::table('jabatan_pimpinan')->insert([
-                'jabatan_pimpinan' => $data[0],
-                'kode_jabatan_pimpinan' => $data[1],
-                'status' => $data[2]
+                'id_jabatan_pimpinan' => $data[0],
+                'jabatan_pimpinan' => $data[1],
+                'kode_jabatan_pimpinan' => $data[2],
+                'status' => $data[3]
             ]);
         }
     }

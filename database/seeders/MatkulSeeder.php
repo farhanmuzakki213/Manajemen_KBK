@@ -14,24 +14,25 @@ class MatkulSeeder extends Seeder
     public function run(): void
     {
         $matkulData = [
-            ['RPL3205', 'Pengantar Rekayasa Perangkat Lunak', 'T', 2, 2, 2, 0, 2, 0, 2, 5],
-            ['RPL3403', 'Kecerdasan Buatan', 'T/P', 3, 5, 2, 1, 2, 3, 4, 5],
-            ['RPL3401', 'Pemrograman Web Framework', 'P', 2, 6, 0, 2, 0, 6, 4, 5]
+            ['13', 'RPL3205', 'Pengantar Rekayasa Perangkat Lunak', 'T', 2, 2, 2, 0, 2, 0, 2, 5],
+            ['14', 'RPL3403', 'Kecerdasan Buatan', 'T/P', 3, 5, 2, 1, 2, 3, 4, 5],
+            ['15', 'RPL3401', 'Pemrograman Web Framework', 'P', 2, 6, 0, 2, 0, 6, 4, 5]
         ];
 
         foreach ($matkulData as $data) {
             DB::table('matkul')->insert([
-                'kode_matkul' => $data[0],
-                'nama_matkul' => $data[1],
-                'TP' => $data[2],
-                'sks' => $data[3],
-                'jam' => $data[4],
-                'sks_teori' => $data[5],
-                'sks_praktek' => $data[6],
-                'jam_teori' => $data[7],
-                'jam_praktek' => $data[8],
-                'semester' => $data[9],
-                'kurikulum_id' => $data[9]
+                'id_matkul' => $data[0],
+                'kode_matkul' => $data[1],
+                'nama_matkul' => $data[2],
+                'TP' => $data[3],
+                'sks' => $data[4],
+                'jam' => $data[5],
+                'sks_teori' => $data[6],
+                'sks_praktek' => $data[7],
+                'jam_teori' => $data[8],
+                'jam_praktek' => $data[9],
+                'semester' => $data[10],
+                'kurikulum_id' => $data[11]
             ]);
         }
     }

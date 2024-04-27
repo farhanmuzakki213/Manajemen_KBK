@@ -57,7 +57,13 @@
                                             <th>{{$data->email}}</th>
                                             <th>{{$data->password}}</th>
                                             <th>{{$data->image}}</th>
-                                            <th>{{$data->status}}</th>
+                                            <th>
+                                                @if ($data->status == 0)
+                                                    Tidak Aktif
+                                                @else
+                                                    Aktif
+                                                @endif
+                                            </th>
                                         </tr>
                                         @endforeach
                                     </tbody>
