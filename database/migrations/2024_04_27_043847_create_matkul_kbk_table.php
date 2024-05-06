@@ -11,22 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('dosen_matkul', function (Blueprint $table) {
-            $table->bigInteger('id_dosen_matkul')->primary();
-            $table->bigInteger('dosen_id');
+        Schema::create('matkul_kbk', function (Blueprint $table) {
+            $table->bigInteger('id_matkul_kbk')->primary();
             $table->bigInteger('matkul_id');
-            $table->bigInteger('kelas_id');
-            $table->bigInteger('smt_thnakd_id');
+            $table->bigInteger('jenis_kbk_id');
+            $table->bigInteger('kurikulum_id');
         });
 
-        Schema::table('dosen_matkul', function (Blueprint $table) {
-            $table->foreign('dosen_id')->references('id_dosen')->on('dosen')
-                    ->onUpdate('cascade')->onDelete('cascade');
+        Schema::table('matkul_kbk', function (Blueprint $table) {
             $table->foreign('matkul_id')->references('id_matkul')->on('matkul')
                     ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('kelas_id')->references('id_kelas')->on('kelas')
+            $table->foreign('jenis_kbk_id')->references('id_jenis_kbk')->on('jenis_kbk')
                     ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('smt_thnakd_id')->references('id_smt_thnakd')->on('smt_thnakd')
+            $table->foreign('kurikulum_id')->references('id_kurikulum')->on('kurikulum')
                     ->onUpdate('cascade')->onDelete('cascade');
         });
     }
@@ -36,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('dosen_matkul');
+        Schema::dropIfExists('matkul_kbk');
     }
 };

@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('smt_thnakd', function (Blueprint $table) {
-            $table->id('id_smt_thnakd');
+            $table->bigInteger('id_smt_thnakd')->primary();
+            $table->string('kode_smt_thnakd');
             $table->string('smt_thnakd');
             $table->enum('status', ['0', '1'])->default(1);
         });

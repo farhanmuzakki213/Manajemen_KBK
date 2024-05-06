@@ -14,16 +14,17 @@ class PengurusKBKSeeder extends Seeder
     public function run(): void
     {
         $PengurusData = [
-            [2, 3, 1, '1'],
-            [1, 6, 1, '1']
+            [1, 2, 40, 1, '1'],
+            [2, 1, 52, 1, '1']
         ];
 
         foreach ($PengurusData as $data) {
             DB::table('pengurus_kbk')->insert([
-                'jenis_kbk_id' => $data[0],
-                'dosen_id' => $data[1],
-                'jabatan_kbk_id' => $data[2],
-                'status' => $data[3]
+                'id_pengurus' => $data[0],
+                'jenis_kbk_id' => $data[1],
+                'dosen_id' => $data[2],
+                'jabatan_kbk_id' => $data[3],
+                'status' => $data[4]
             ]);
         }
     }

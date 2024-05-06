@@ -14,16 +14,17 @@ class DosenMatkulSeeder extends Seeder
     public function run(): void
     {
         $dosenMatkulData = [
-            [21, 1, 1, 3],
-            [7, 1, 2, 3]
+            [1, 220, 14, 1, 3],
+            [2, 66, 15, 2, 3]
         ];
 
         foreach ($dosenMatkulData as $data) {
             DB::table('dosen_matkul')->insert([
-                'dosen_id' => $data[0],
-                'matkul_id' => $data[1],
-                'kelas_id' => $data[2],
-                'smt_thnakd_id' => $data[3]
+                'id_dosen_matkul' => $data[0],
+                'dosen_id' => $data[1],
+                'matkul_id' => $data[2],
+                'kelas_id' => $data[3],
+                'smt_thnakd_id' => $data[4]
             ]);
         }
     }

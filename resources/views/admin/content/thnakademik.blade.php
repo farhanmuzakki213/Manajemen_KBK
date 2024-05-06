@@ -17,6 +17,7 @@
                                     <thead>
                                         <tr class="table-info">
                                             <th>#</th>
+                                            <th>Kode Tahun Ajaran</th>
                                             <th>Tahun Ajaran</th>
                                             <th>Status</th>
                                         </tr>
@@ -24,6 +25,7 @@
                                     <tfoot>
                                         <tr class="table-info">
                                             <th>#</th>
+                                            <th>Kode Tahun Ajaran</th>
                                             <th>Tahun Ajaran</th>
                                             <th>Status</th>
                                         </tr>
@@ -32,8 +34,15 @@
                                         @foreach ($data_thnakd as $data)
                                         <tr class="table-Light">
                                             <th>{{$data->id_smt_thnakd}}</th>
+                                            <th>{{$data->kode_smt_thnakd}}</th>
                                             <th>{{$data->smt_thnakd}}</th>
-                                            <th>{{$data->status}}</th>
+                                            <th>
+                                                @if ($data->status == 0)
+                                                    Tidak Aktif
+                                                @else
+                                                    Aktif
+                                                @endif
+                                            </th>
                                         </tr>
                                         @endforeach
                                     </tbody>

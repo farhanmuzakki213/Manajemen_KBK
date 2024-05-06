@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class PimpinanProdiSeeder extends Seeder
+class MatkulKBKSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,17 +14,16 @@ class PimpinanProdiSeeder extends Seeder
     public function run(): void
     {
         $PPData = [
-            [1, 3, 20, 160, '2022-2026', '1']
+            [1, 14, 1, 5],
+            [2, 13, 1, 5]
         ];
 
         foreach ($PPData as $data) {
             DB::table('pimpinan_prodi')->insert([
-                'id_pimpinan_prodi' => $data[0],
-                'jabatan_pimpinan_id' => $data[1],
-                'prodi_id' => $data[2],
-                'dosen_id' => $data[3],
-                'periode' => $data[4],
-                'status' => $data[5]
+                'id_matkul_kbk' => $data[0],
+                'matkul_id' => $data[1],
+                'jenis_kbk_id' => $data[2],
+                'kurikulum_id' => $data[3]
             ]);
         }
     }

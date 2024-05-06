@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('penugasan_reviewer_proposal_ta', function (Blueprint $table) {
-            $table->id('id_penugasan');
-            $table->bigInteger('proposal_ta_id')->unsigned();
-            $table->bigInteger('dosen_id')->unsigned();
+            $table->bigInteger('id_penugasan')->primary();
+            $table->bigInteger('proposal_ta_id');
+            $table->bigInteger('dosen_id');
             $table->date('tanggal_penugasan');
         });
 

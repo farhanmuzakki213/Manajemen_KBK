@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ver_uas', function (Blueprint $table) {
-            $table->id('id_ver_uas');
-            $table->bigInteger('dosen_id')->unsigned();
+            $table->bigInteger('id_ver_uas')->primary();
+            $table->bigInteger('dosen_id');
             $table->string('file');
-            $table->enum('status', ['diverifikasi', 'tidak diverifikasi']);
+            $table->enum('status', ['0', '1'])->default(1)->comment('0: Tidak Diverifikasi, 1: Diverifikasi');
             $table->text('catatan')->nullable();
             $table->date('tanggal_diverifikasi');
         });
