@@ -59,10 +59,20 @@
                                             {{-- <th>{{$data->email}}</th>
                                             <th>{{$data->password}}</th>
                                             <th>{{$data->image}}</th>
+
                                             <th>{{$data->status}}</th> --}}
                                             <th>
                                                 <a data-bs-toggle="modal" data-bs-target="#detail{{ $data->id_dosen }}" class="btn btn-secondary"><i class="bi bi-three-dots-vertical"></i></a>
                                             </th>
+
+                                            <th>
+                                                @if ($data->status == 0)
+                                                    Tidak Aktif
+                                                @else
+                                                    Aktif
+                                                @endif
+                                            </th>
+
                                         </tr>
 
                                         {{-- Modal Detail Tabel --}}

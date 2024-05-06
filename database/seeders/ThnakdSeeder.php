@@ -16,14 +16,20 @@ class ThnakdSeeder extends Seeder
     {
         DB::table('smt_thnakd')->insert([
             [
+                'id_smt_thnakd' => '1',
+                'kode_smt_thnakd' => '20222',
                 'smt_thnakd' => '2022/2023-Genap',
                 'status' => '0',
             ],
             [
+                'id_smt_thnakd' => '2',
+                'kode_smt_thnakd' => '20231',
                 'smt_thnakd' => '2023/2024-Ganjil',
                 'status' => '0',
             ],
             [
+                'id_smt_thnakd' => '3',
+                'kode_smt_thnakd' => '20232',
                 'smt_thnakd' => '2023/2024-Genap',
                 'status' => '1',
             ]

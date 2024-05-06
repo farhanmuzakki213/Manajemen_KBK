@@ -14,16 +14,17 @@ class JenisKBKSeeder extends Seeder
     public function run(): void
     {
         $JenisData = [
-            ['Programming', ''],
-            ['IT Infrastruktur', ''],
-            ['Networking', ''],
-            ['CAIT', '']
+            [1, 'Programming', ''],
+            [2, 'IT Infrastruktur', ''],
+            [3, 'Networking', ''],
+            [4, 'CAIT', '']
         ];
 
         foreach ($JenisData as $data) {
             DB::table('jenis_kbk')->insert([
-                'jenis_kbk' => $data[0],
-                'deskripsi' => $data[1]
+                'id_jenis_kbk' => $data[0],
+                'jenis_kbk' => $data[1],
+                'deskripsi' => $data[2]
             ]);
         }
     }
