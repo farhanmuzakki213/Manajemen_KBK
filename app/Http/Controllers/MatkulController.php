@@ -90,9 +90,13 @@ class MatkulController extends Controller
      * Display the specified resource.
      */
     public function show(string $id)
-    {
-        //
-    }
+{
+    $data_matkul = Matkul::findOrFail($id);
+    $data_kurikulum = DB::table('kurikulum')->get();
+
+    return view('admin.content.Matkul', compact('data_matkul', 'data_kurikulum'));
+}
+
 
     /**
      * Show the form for editing the specified resource.
