@@ -18,6 +18,7 @@ class RPSController extends Controller
             ->join('matkul', 'rep_rps.matkul_id', '=', 'matkul.id_matkul')
             ->join('dosen', 'ver_rps.dosen_id', '=', 'dosen.id_dosen')
             ->select('rep_rps.*', 'ver_rps.*', 'dosen.*','matkul.*','smt_thnakd.*')
+            ->where('matkul.smt_thnakd_id', '=', 3)
             ->orderByDesc('id_rep_rps')
             ->get();
             //dd($data_rps);
@@ -29,7 +30,7 @@ class RPSController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -37,7 +38,7 @@ class RPSController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return view('admin.content.RPS');
     }
 
     /**

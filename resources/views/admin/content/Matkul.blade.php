@@ -60,6 +60,7 @@
                                             <th>Nama Matkul</th>
                                             <th>Semester</th>
                                             <th>Nama Kurikulum</th>
+                                            <th>Tahun Akademik</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -70,6 +71,7 @@
                                             <th>Nama Matkul</th>
                                             <th>Semester</th>
                                             <th>Nama Kurikulum</th>
+                                            <th>Tahun Akademik</th>
                                             <th>Action</th>
                                         </tr>
                                     </tfoot>
@@ -81,6 +83,7 @@
                                                 <th>{{ $data->nama_matkul }}</th>
                                                 <th>{{ $data->semester }}</th>
                                                 <th>{{ $data->nama_kurikulum }}</th>
+                                                <th>{{ $data->smt_thnakd }}</th>
                                                 <th>
                                                     <a href="{{ route('matkul.edit', ['id' => $data->id_matkul]) }}"
                                                         class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>

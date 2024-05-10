@@ -155,6 +155,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // RPS
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/rps', [RPSController::class, 'index'])->middleware(['auth', 'verified'])->name('rps');
+    Route::post('/rps/store', [RPSController::class, 'store'])->middleware(['auth', 'verified'])->name('rps.store');
+    Route::get('/rps/create', [RPSController::class, 'create'])->middleware(['auth', 'verified'])->name('rps.create');
 });
 
 // Soal_UAS

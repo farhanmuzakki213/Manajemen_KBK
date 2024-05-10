@@ -127,6 +127,20 @@
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>
+                                <div class="mb-3">
+                                    <label for="smt_thnakd" class="form-label">Semerter Tahun Akademik</label>
+                                    <select class="form-select" aria-label="Default select example" name="smt_thnakd"
+                                        id="smt_thnakd">
+                                        <option selected disabled>Pilih Semerter Tahun Akademik</option>
+                                        @foreach ($data_smt_thnakd as $data)
+                                            <option value="{{ $data->id_smt_thnakd }}">{{ $data->smt_thnakd }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('smt_thnakd')
+                                        <small>{{ $message }}</small>
+                                    @enderror
+                                </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
                         </div>
