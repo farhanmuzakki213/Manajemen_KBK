@@ -25,7 +25,7 @@ class PimpinanJurusanSeeder extends Seeder
                 'jurusan_id' => $data[2],
                 'dosen_id' => $data[3],
                 'periode' => $data[4],
-                'status' => $data[5]
+                'status_pimpinan_jurusan' => $data[5]
             ]);
         }
     }

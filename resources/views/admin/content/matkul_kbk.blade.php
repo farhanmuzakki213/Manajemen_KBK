@@ -4,16 +4,16 @@
         <div class="card">
             <div class="card-body">
                 <!-- Page Heading -->
-                <h5 class="card-title fw-semibold mb-4">Data Mata Kuliah</h5>
+                <h5 class="card-title fw-semibold mb-4">Data Mata Kuliah KBK</h5>
                 <div class="container-fluid">
                     <!-- Data Mata Kuliah -->
                     <div class="card shadow mb-4">
 
                         <div class="card-header py-2">
                             <div class="d-grid gap-2 d-md-block">
-                                <a href="{{ route('matkul.create') }}" class="btn btn-primary me-md-3"><i
+                                <a href="{{ route('matkul_kbk.create') }}" class="btn btn-primary me-md-3"><i
                                         class="bi bi-file-earmark-plus"></i> New</a>
-                                <a href="{{ route('matkul.export') }}" class="btn btn-primary me-md-3"><i
+                                <a href="{{-- {{ route('matkul_kbk.export') }} --}}" class="btn btn-primary me-md-3"><i
                                         class="bi bi-box-arrow-in-up"></i> Export</a>
                                 <a data-bs-toggle="modal" data-bs-target="#import{{-- {{ $data->id_jenis_kbk }} --}}" class="btn btn-primary"><i class="bi bi-box-arrow-in-down"></i> Import</a>
                             </div>
@@ -31,7 +31,7 @@
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form method="post" action="{{ route('matkul.import') }}" enctype="multipart/form-data">
+                                        <form method="post" action="{{-- {{ route('matkul.import') }} --}}" enctype="multipart/form-data">
                                             @csrf
                                             <div class="mb-3">
                                                 <label for="file" class="col-form-label">Import File</label>
@@ -57,7 +57,7 @@
                                         <tr class="table-info">
                                             <th>#</th>
                                             <th>Kode Matkul</th>
-                                            <th>Nama Matkul</th>
+                                            <th>Jenis KBK</th>
                                             <th>Semester</th>
                                             <th>Nama Kurikulum</th>
                                             <th>Action</th>
@@ -67,31 +67,31 @@
                                         <tr class="table-info">
                                             <th>#</th>
                                             <th>Kode Matkul</th>
-                                            <th>Nama Matkul</th>
+                                            <th>Jenis KBK</th>
                                             <th>Semester</th>
                                             <th>Nama Kurikulum</th>
                                             <th>Action</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        @foreach ($data_matkul as $data)
+                                        @foreach ($data_matkul_kbk as $data)
                                             <tr class="table-Light">
-                                                <th>{{ $data->id_matkul }}</th>
+                                                <th>{{ $data->id_matkul_kbk }}</th>
                                                 <th>{{ $data->kode_matkul }}</th>
-                                                <th>{{ $data->nama_matkul }}</th>
+                                                <th>{{ $data->jenis_kbk }}</th>
                                                 <th>{{ $data->semester }}</th>
                                                 <th>{{ $data->nama_kurikulum }}</th>
                                                 <th>
-                                                    <a href="{{ route('matkul.edit', ['id' => $data->id_matkul]) }}"
+                                                    <a href="{{ route('matkul_kbk.edit', ['id' => $data->id_matkul_kbk]) }}"
                                                         class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
                                                     <a data-bs-toggle="modal"
-                                                        data-bs-target="#staticBackdrop{{ $data->id_matkul }}"
+                                                        data-bs-target="#staticBackdrop{{ $data->id_matkul_kbk }}"
                                                         class="btn btn-danger"><i class="bi bi-trash"></i></a>
-                                                    <a data-bs-toggle="modal" data-bs-target="#detail{{ $data->id_matkul }}" class="btn btn-secondary"><i class="bi bi-three-dots-vertical"></i></a>
+                                                    <a data-bs-toggle="modal" data-bs-target="#detail{{ $data->id_matkul_kbk }}" class="btn btn-secondary"><i class="bi bi-three-dots-vertical"></i></a>
                                                 </th>
                                             </tr>
                                             {{-- Modal Konfirmasi hapus data --}}
-                                            <div class="modal fade" id="staticBackdrop{{ $data->id_matkul }}"
+                                            <div class="modal fade" id="staticBackdrop{{ $data->id_matkul_kbk }}"
                                                 data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                                                 aria-labelledby="staticBackdropLabel" aria-hidden="true">>
                                                 <div class="modal-dialog modal-dialog-centered">
@@ -110,7 +110,7 @@
                                                         <div class="modal-footer justify-content-between">
 
                                                             <form
-                                                                action="{{ route('matkul.delete', ['id' => $data->id_matkul]) }}"
+                                                                action="{{ route('matkul_kbk.delete', ['id' => $data->id_matkul_kbk]) }}"
                                                                 method="POST">
                                                                 @csrf
                                                                 @method('DELETE')

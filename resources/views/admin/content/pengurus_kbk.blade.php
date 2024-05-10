@@ -56,6 +56,7 @@
                                             <th>Nama</th>
                                             <th>Jenis_KBK</th>
                                             <th>Jabatan</th>
+                                            <th>Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -65,6 +66,7 @@
                                             <th>Nama</th>
                                             <th>Jenis_KBK</th>
                                             <th>Jabatan</th>
+                                            <th>Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </tfoot>
@@ -74,7 +76,14 @@
                                                 <th>{{ $data->id_pengurus }}</th>
                                                 <th>{{ $data->nama_dosen }}</th>
                                                 <th>{{ $data->jenis_kbk }}</th>
-                                                <th>{{ $data->jabatan }}</th>
+                                                <th>{{ $data->deskripsi }}</th>
+                                                <th>
+                                                    @if ($data->status_pengurus_kbk == 0)
+                                                        Tidak Aktif
+                                                    @else
+                                                        Aktif
+                                                    @endif
+                                                </th>
                                                 <th>
                                                     <a href="{{ route('pengurus_kbk.edit', ['id' => $data->id_pengurus]) }}"
                                                         class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>

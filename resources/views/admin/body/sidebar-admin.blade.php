@@ -53,6 +53,14 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('matkul')}}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Matkul</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('thnakademik')}}" aria-expanded="false">
                         <span>
                             <i class="ti ti-aperture"></i>
@@ -114,11 +122,11 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('matkul')}}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('matkul_kbk')}}" aria-expanded="false">
                         <span>
                             <i class="ti ti-aperture"></i>
                         </span>
-                        <span class="hide-menu">Matkul </span>
+                        <span class="hide-menu">Matkul KBK</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
@@ -127,6 +135,26 @@
                             <i class="ti ti-aperture"></i>
                         </span>
                         <span class="hide-menu">Data KBK </span>
+                    </a>
+                </li>
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Kepala Prodi</span>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('rps')}}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">RPS </span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('soal_uas')}}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Soal UAS </span>
                     </a>
                 </li>
             </ul>

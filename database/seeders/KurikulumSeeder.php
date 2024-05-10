@@ -29,7 +29,7 @@ class KurikulumSeeder extends Seeder
                 'nama_kurikulum' => $data[2],
                 'tahun' => $data[3],
                 'prodi_id' => $data[4],
-                'status' => $data[5]
+                'status_kurikulum' => $data[5]
             ]);
         }
     }

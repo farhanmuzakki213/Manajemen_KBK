@@ -43,12 +43,12 @@
                                             <th>{{$data->tahun}}</th>
                                             <th>{{$data->prodi}}</th>
                                             <th>
-                                                @if ($data->status == 0)
+                                                @if ($data->status_kurikulum == 0)
                                                     Tidak Aktif
                                                 @else
                                                     Aktif
                                                 @endif
-                                            </th>
+                                            </th>
                                         </tr>
                                         @endforeach
                                     </tbody>

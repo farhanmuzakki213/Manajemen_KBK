@@ -24,7 +24,7 @@ class PimpinanProdiSeeder extends Seeder
                 'prodi_id' => $data[2],
                 'dosen_id' => $data[3],
                 'periode' => $data[4],
-                'status' => $data[5]
+                'status_pimpinan_prodi' => $data[5]
             ]);
         }
     }

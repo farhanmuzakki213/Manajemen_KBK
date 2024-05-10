@@ -18,6 +18,13 @@
                                 @csrf
                                 @method('PUT')
                                 <div class="mb-3">
+                                    <label for="id_matkul" class="form-label">ID Matkul</label>
+                                    <input type="number" class="form-control" id="id_matkul" name="id_matkul" value="{{$data_matkul->id_matkul}}">
+                                    @error('id_matkul')
+                                        <small>{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
                                     <label for="kode_matkul" class="form-label">Kode MataKuliah</label>
                                     <input type="text" class="form-control" id="kode_matkul" name="kode_matkul" value="{{$data_matkul->kode_matkul}}">
                                     @error('kode_matkul')

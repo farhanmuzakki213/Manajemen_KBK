@@ -23,7 +23,7 @@ class VerRPSSeeder extends Seeder
                 'id_ver_rps' => $data[0],
                 'dosen_id' => $data[1],
                 'file' => $data[2],
-                'status' => $data[3],
+                'status_ver_rps' => $data[3],
                 'catatan' => $data[4],
                 'tanggal_diverifikasi' => $data[5]
             ]);

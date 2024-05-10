@@ -24,7 +24,7 @@ class PengurusKBKSeeder extends Seeder
                 'jenis_kbk_id' => $data[1],
                 'dosen_id' => $data[2],
                 'jabatan_kbk_id' => $data[3],
-                'status' => $data[4]
+                'status_pengurus_kbk' => $data[4]
             ]);
         }
     }

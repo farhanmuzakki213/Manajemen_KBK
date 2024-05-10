@@ -18,6 +18,13 @@
                                 @csrf
                                 @method('PUT')
                                 <div class="mb-3">
+                                    <label for="id_pengurus" class="form-label">ID Pengurus</label>
+                                    <input type="number" class="form-control" id="id_pengurus" name="id_pengurus" value="{{$data_pengurus_kbk->id_pengurus}}">
+                                    @error('id_pengurus')
+                                        <small>{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
                                     <label for="nama_dosen" class="form-label">Nama Dosen</label>
                                     <select class="form-select" aria-label="Default select example" name="nama_dosen"
                                         id="nama_dosen" required>
@@ -57,13 +64,24 @@
                                         @foreach ($data_jabatan_kbk as $jabatan_kbk)
                                             <option value="{{ $jabatan_kbk->id_jabatan_kbk }}"
                                                 {{ $jabatan_kbk->id_jabatan_kbk == $data_pengurus_kbk->jabatan_kbk_id ? 'selected' : '' }}>
-                                                {{ $jabatan_kbk->jabatan }}
+                                                {{ $jabatan_kbk->deskripsi }}
                                             </option>
                                         @endforeach
                                     </select>
                                     @error('jabatan_kbk')
                                         <small>{{ $message }}</small>
                                     @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="status" class="form-label">Status</label><br>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="status" id="aktif" value="1" {{ $data_pengurus_kbk->status_pengurus_kbk == 1 ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="aktif">Aktif</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="status" id="tidak_aktif" value="0" {{ $data_pengurus_kbk->status_pengurus_kbk == 0 ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="tidak_aktif">Tidak Aktif</label>
+                                    </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>

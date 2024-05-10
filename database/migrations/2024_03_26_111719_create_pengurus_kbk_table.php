@@ -16,7 +16,7 @@ return new class extends Migration
             $table->bigInteger('jenis_kbk_id');
             $table->bigInteger('dosen_id');
             $table->bigInteger('jabatan_kbk_id');
-            $table->enum('status', ['0', '1'])->default(1)->comment('0: Tidak Aktif, 1: Aktif');
+            $table->enum('status_pengurus_kbk', ['0', '1'])->default(1)->comment('0: Tidak Aktif, 1: Aktif');
         });
 
         Schema::table('pengurus_kbk', function (Blueprint $table) {

@@ -981,7 +981,7 @@ class MahasiswaSeeder extends Seeder
                 'jurusan_id' => $data[3],
                 'prodi_id' => $data[4],
                 'gender' => $data[5],
-                'status' => $data[6]
+                'status_mahasiswa' => $data[6]
             ]);
         }
     }

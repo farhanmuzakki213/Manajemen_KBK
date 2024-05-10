@@ -4,9 +4,9 @@
         <div class="card">
             <div class="card-body">
                 <!-- Page Heading -->
-                <h5 class="card-title fw-semibold mb-4">Data Pimpinan Jurusan</h5>
+                <h5 class="card-title fw-semibold mb-4">Data Dosen</h5>
                 <div class="container-fluid">
-                    <!-- Data Pimpinan Jurusan -->
+                    <!-- DataDosen -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Aksi</h6>
@@ -17,40 +17,47 @@
                                     <thead>
                                         <tr class="table-info">
                                             <th>#</th>
-                                            <th>Nama Dosen</th>
-                                            <th>Jabatan Pimpinan</th>
+                                            <th>Name</th>
+                                            <th>Nidn</th>
+                                            <th>Nip</th>
+                                            <th>gender</th>
                                             <th>Jurusan</th>
-                                            <th>Periode</th>
+                                            <th>prodi</th>
+                                            <th>Email</th>
+                                            <th>Password</th>
+                                            <th>Foto</th>
                                             <th>Status</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr class="table-info">
                                             <th>#</th>
-                                            <th>Nama Dosen</th>
-                                            <th>Jabatan Pimpinan</th>
+                                            <th>Name</th>
+                                            <th>Nidn</th>
+                                            <th>Nip</th>
+                                            <th>gender</th>
                                             <th>Jurusan</th>
-                                            <th>Periode</th>
+                                            <th>prodi</th>
+                                            <th>Email</th>
+                                            <th>Password</th>
+                                            <th>Foto</th>
                                             <th>Status</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>                                        
-                                        @foreach ($data_pimpinan_jurusan as $data)
                                         <tr class="table-Light">
-                                            <th>{{$data->id_pimpinan_jurusan}}</th>
-                                            <th>{{$data->nama_dosen}}</th>
-                                            <th>{{$data->jabatan_pimpinan}}</th>
-                                            <th>{{$data->jurusan}}</th>
-                                            <th>{{$data->periode}}</th>
-                                            <th>
-                                                @if ($data->status_pimpinan_jurusan == 0)
-                                                    Tidak Aktif
-                                                @else
-                                                    Aktif
-                                                @endif
-                                            </th>
+                                            <th>id</th>
+                                            <th>nama</th>
+                                            <th>Nidn</th>
+                                            <th>Nip</th>
+                                            <th>gender</th>
+                                            <th>Jurusan</th>
+                                            <th>prodi</th>
+                                            <th>Email</th>
+                                            <th>Password</th>
+                                            <th>Foto</th>
+                                            <th>Status</th>
                                         </tr>
-                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>

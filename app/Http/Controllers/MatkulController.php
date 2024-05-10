@@ -24,7 +24,7 @@ class MatkulController extends Controller
             ->orderByDesc('id_matkul')
             ->get();
         return view('admin.content.Matkul', compact('data_matkul'));
-     }
+    }
 
     public function export_excel(){
         return Excel::download(new ExportMatkul, "Matkul.xlsx");
@@ -52,6 +52,7 @@ class MatkulController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'id_matkul' => 'required',
             'kode_matkul' => 'required',
             'nama_matkul' => 'required',
             'tp' => 'required',
@@ -69,6 +70,7 @@ class MatkulController extends Controller
         if ($validator->fails()) return redirect()->back()->withInput()->withErrors($validator);
 
         $data = [
+            'id_matkul' => $request->id_matkul,
             'kode_matkul' => $request->kode_matkul,
             'nama_matkul' => $request->nama_matkul,
             'TP' => $request->tp,
@@ -118,6 +120,7 @@ class MatkulController extends Controller
     public function update(Request $request, string $id)
     {
         $validator = Validator::make($request->all(), [
+            'id_matkul' => 'required',
             'kode_matkul' => 'required',
             'nama_matkul' => 'required',
             'tp' => 'required',
@@ -135,6 +138,7 @@ class MatkulController extends Controller
         if ($validator->fails()) return redirect()->back()->withInput()->withErrors($validator);
 
         $data = [
+            'id_matkul' => $request->id_matkul,
             'kode_matkul' => $request->kode_matkul,
             'nama_matkul' => $request->nama_matkul,
             'TP' => $request->tp,

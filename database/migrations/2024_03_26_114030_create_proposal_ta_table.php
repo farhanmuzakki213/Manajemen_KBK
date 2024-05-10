@@ -15,7 +15,7 @@ return new class extends Migration
             $table->bigInteger('id_proposal_ta')->primary();
             $table->bigInteger('mahasiswa_id');
             $table->string('judul');
-            $table->string('status');
+            $table->string('status_proposal_ta');
             $table->string('file');
             $table->bigInteger('pembimbing_satu');
             $table->bigInteger('pembimbing_dua');

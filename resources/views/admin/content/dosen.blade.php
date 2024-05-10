@@ -25,8 +25,8 @@
                                             <th>prodi</th>
                                             {{-- <th>Email</th>
                                             <th>Password</th>
-                                            <th>Foto</th>
-                                            <th>Status</th> --}}
+                                            <th>Foto</th>--}}
+                                            <th>Status</th> 
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -41,8 +41,8 @@
                                             <th>prodi</th>
                                             {{-- <th>Email</th>
                                             <th>Password</th>
-                                            <th>Foto</th>
-                                            <th>Status</th> --}}
+                                            <th>Foto</th>--}}
+                                            <th>Status</th> 
                                             <th>Action</th>
                                         </tr>
                                     </tfoot>
@@ -62,16 +62,17 @@
 
                                             <th>{{$data->status}}</th> --}}
                                             <th>
-                                                <a data-bs-toggle="modal" data-bs-target="#detail{{ $data->id_dosen }}" class="btn btn-secondary"><i class="bi bi-three-dots-vertical"></i></a>
-                                            </th>
-
-                                            <th>
-                                                @if ($data->status == 0)
+                                                @if ($data->status_dosen == 0)
                                                     Tidak Aktif
                                                 @else
                                                     Aktif
                                                 @endif
-                                            </th>
+                                            </th>
+                                            <th>
+                                                <a data-bs-toggle="modal" data-bs-target="#detail{{ $data->id_dosen }}" class="btn btn-secondary"><i class="bi bi-three-dots-vertical"></i></a>
+                                            </th>
+
+                                            
 
                                         </tr>
 
@@ -133,7 +134,7 @@
                                                         <div class="mb-3">
                                                             <label for="message-text"
                                                                 class="col-form-label">Status</label>
-                                                            <input class="form-control" id="message-text" value="{{ $data->status }}" readonly></input>
+                                                            <input class="form-control" id="message-text" value="{{ $data->status_dosen }}" readonly></input>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">

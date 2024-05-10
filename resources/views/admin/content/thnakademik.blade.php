@@ -37,12 +37,12 @@
                                             <th>{{$data->kode_smt_thnakd}}</th>
                                             <th>{{$data->smt_thnakd}}</th>
                                             <th>
-                                                @if ($data->status == 0)
+                                                @if ($data->status_smt_thnakd == 0)
                                                     Tidak Aktif
                                                 @else
                                                     Aktif
                                                 @endif
-                                            </th>
+                                            </th>
                                         </tr>
                                         @endforeach
                                     </tbody>

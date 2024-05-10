@@ -43,12 +43,12 @@
                                             <th>{{$data->prodi}}</th>
                                             <th>{{$data->periode}}</th>
                                             <th>
-                                                @if ($data->status == 0)
+                                                @if ($data->status_pimpinan_prodi == 0)
                                                     Tidak Aktif
                                                 @else
                                                     Aktif
                                                 @endif
-                                            </th>
+                                            </th>
                                         </tr>
                                         @endforeach
                                     </tbody>

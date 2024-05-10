@@ -24,7 +24,7 @@ class JabatanPimpinanSeeder extends Seeder
                 'id_jabatan_pimpinan' => $data[0],
                 'jabatan_pimpinan' => $data[1],
                 'kode_jabatan_pimpinan' => $data[2],
-                'status' => $data[3]
+                'status_jabatan_pimpinan' => $data[3]
             ]);
         }
     }

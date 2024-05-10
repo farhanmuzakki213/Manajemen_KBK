@@ -17,11 +17,14 @@ return new class extends Migration
             $table->string('nama_kurikulum');
             $table->string('tahun');
             $table->bigInteger('prodi_id');
-            $table->enum('status', ['0', '1'])->default(1)->comment('0: Tidak Aktif, 1: Aktif');
+            $table->enum('status_kurikulum', ['0', '1'])->default(1)->comment('0: Tidak Aktif, 1: Aktif');
+            $table->bigInteger('smt_thnakd_id');
         });
 
         Schema::table('kurikulum', function (Blueprint $table) {
             $table->foreign('prodi_id')->references('id_prodi')->on('prodi')
+                    ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('smt_thnakd_id')->references('id_smt_thnakd')->on('smt_thnakd')
                     ->onUpdate('cascade')->onDelete('cascade');
         });
     }

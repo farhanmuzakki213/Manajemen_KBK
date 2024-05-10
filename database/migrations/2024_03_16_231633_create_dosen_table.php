@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('password');
             $table->string('image')->nullable();
-            $table->enum('status', ['0', '1'])->default(1);
+            $table->enum('status_dosen', ['0', '1'])->default(1);
         });
 
         Schema::table('dosen', function (Blueprint $table) {

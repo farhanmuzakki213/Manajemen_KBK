@@ -71,7 +71,7 @@ class DosenSeeder extends Seeder
                 'email' => $data[7],
                 'password' => $data[8],
                 'image' => $data[9],
-                'status' => $data[10]
+                'status_dosen' => $data[10]
             ]);
         }
     }
