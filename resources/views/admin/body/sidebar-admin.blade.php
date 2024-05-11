@@ -3,7 +3,7 @@
     <div>
         <div class="brand-logo d-flex align-items-center justify-content-between my-2">
             <a href="{{ route('dashboard') }}" class="text-nowrap logo-img">
-                <img src="{{asset('backend/assets/images/logos/ti-logo.png')}}" width="180" alt="" />
+                <img src="{{ asset('backend/assets/images/logos/ti-logo.png') }}" width="180" alt="" />
             </a>
             <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                 <i class="ti ti-x fs-8"></i>
@@ -29,7 +29,7 @@
                     <span class="hide-menu">Table View</span>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('dosen')}}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('dosen') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-aperture"></i>
                         </span>
@@ -37,7 +37,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('jurusan')}}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('jurusan') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-aperture"></i>
                         </span>
@@ -45,7 +45,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('prodi')}}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('prodi') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-aperture"></i>
                         </span>
@@ -53,7 +53,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('matkul')}}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('matkul') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-aperture"></i>
                         </span>
@@ -61,7 +61,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('thnakademik')}}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('thnakademik') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-aperture"></i>
                         </span>
@@ -69,7 +69,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('DosenPengampuMatkul')}}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('DosenPengampuMatkul') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-aperture"></i>
                         </span>
@@ -77,15 +77,15 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('kurikulum')}}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('kurikulum') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-aperture"></i>
                         </span>
                         <span class="hide-menu">Kurikulum </span>
                     </a>
-                </li>                
+                </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('pimpinanjurusan')}}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('pimpinanjurusan') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-aperture"></i>
                         </span>
@@ -93,7 +93,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('pimpinanprodi')}}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('pimpinanprodi') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-aperture"></i>
                         </span>
@@ -112,9 +112,9 @@
                         <span class="hide-menu">Example</span>
                     </a>
                 </li> --}}
-                
+
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('pengurus_kbk')}}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('pengurus_kbk') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-aperture"></i>
                         </span>
@@ -122,7 +122,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('matkul_kbk')}}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('matkul_kbk') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-aperture"></i>
                         </span>
@@ -130,7 +130,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('jenis_kbk')}}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('jenis_kbk') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-aperture"></i>
                         </span>
@@ -142,19 +142,39 @@
                     <span class="hide-menu">Kepala Prodi</span>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('rps')}}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('rep_rps') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-aperture"></i>
                         </span>
-                        <span class="hide-menu">RPS </span>
+                        <span class="hide-menu">Repositori RPS </span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('soal_uas')}}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('rep_soal_uas') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-aperture"></i>
                         </span>
-                        <span class="hide-menu">Soal UAS </span>
+                        <span class="hide-menu">Repositori Soal UAS </span>
+                    </a>
+                </li>
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Pengurus KBK</span>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('ver_rps') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Verifikasi RPS </span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('ver_soal_uas') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Verifikasi Soal UAS </span>
                     </a>
                 </li>
             </ul>

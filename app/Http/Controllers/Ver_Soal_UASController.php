@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class Soal_UASController extends Controller
+class Ver_Soal_UASController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('admin.content.Soal_UAS');
+        return view('admin.content.Ver_Soal_UAS');
     }
 
     /**

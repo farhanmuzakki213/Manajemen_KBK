@@ -19,7 +19,7 @@ class MatkulKBKSeeder extends Seeder
         ];
 
         foreach ($PPData as $data) {
-            DB::table('pimpinan_prodi')->insert([
+            DB::table('matkul_kbk')->insert([
                 'id_matkul_kbk' => $data[0],
                 'matkul_id' => $data[1],
                 'jenis_kbk_id' => $data[2],

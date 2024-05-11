@@ -17,9 +17,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Pengurus_kbkController;
 use App\Http\Controllers\PimpinanJurusan;
 use App\Http\Controllers\PimpinanProdi;
-use App\Http\Controllers\RPSController;
-use App\Http\Controllers\Soal_UASController;
-use App\Models\Pengurus_kbk;
+use App\Http\Controllers\Rep_RPSController;
+use App\Http\Controllers\Rep_Soal_UASController;
+use App\Http\Controllers\Ver_RPSController;
+use App\Http\Controllers\Ver_Soal_UASController;
 use Illuminate\Routing\Route as RoutingRoute;
 
 /*
@@ -152,14 +153,30 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/pimpinamprodi', [PimpinanProdi::class, 'index'])->middleware(['auth', 'verified'])->name('pimpinanprodi');
 });
 
-// RPS
+// Repositori RPS
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/rps', [RPSController::class, 'index'])->middleware(['auth', 'verified'])->name('rps');
-    Route::post('/rps/store', [RPSController::class, 'store'])->middleware(['auth', 'verified'])->name('rps.store');
-    Route::get('/rps/create', [RPSController::class, 'create'])->middleware(['auth', 'verified'])->name('rps.create');
+    Route::get('/repositori_rps', [Rep_RPSController::class, 'index'])->middleware(['auth', 'verified'])->name('rep_rps');
+    Route::post('/repositori_rps/store', [Rep_RPSController::class, 'store'])->middleware(['auth', 'verified'])->name('rep_rps.store');
+    Route::get('/repositori_rps/create', [Rep_RPSController::class, 'create'])->middleware(['auth', 'verified'])->name('rep_rps.create');
 });
 
-// Soal_UAS
+// Repositori Soal_UAS
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/soal_uas', [Soal_UASController::class, 'index'])->middleware(['auth', 'verified'])->name('soal_uas');
+    Route::get('/repositori_soal_uas', [Rep_Soal_UASController::class, 'index'])->middleware(['auth', 'verified'])->name('rep_soal_uas');
+});
+
+// Verifikasi RPS
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/verifikasi_rps', [Ver_RPSController::class, 'index'])->middleware(['auth', 'verified'])->name('ver_rps');
+    Route::post('/verifikasi_rps/store', [Ver_RPSController::class, 'store'])->middleware(['auth', 'verified'])->name('ver_rps.store');
+    Route::get('/verifikasi_rps/create', [Ver_RPSController::class, 'create'])->middleware(['auth', 'verified'])->name('ver_rps.create');
+    Route::get('/verifikasi_rps/edit/{id}', [Ver_RPSController::class, 'edit'])->middleware(['auth', 'verified'])->name('ver_rps.edit');
+    Route::put('/verifikasi_rps/update/{id}', [Ver_RPSController::class, 'update'])->middleware(['auth', 'verified'])->name('ver_rps.update');
+    Route::get('/verifikasi_rps/show/{id}', [Ver_RPSController::class, 'show'])->middleware(['auth', 'verified'])->name('ver_rps.show');
+    Route::delete('/verifikasi_rps/delete/{id}', [Ver_RPSController::class, 'delete'])->middleware(['auth', 'verified'])->name('ver_rps.delete');
+});
+
+// Verifikasi Soal_UAS
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/verifikasi_soal_uas', [Ver_Soal_UASController::class, 'index'])->middleware(['auth', 'verified'])->name('ver_soal_uas');
 });

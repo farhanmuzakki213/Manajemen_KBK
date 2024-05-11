@@ -14,9 +14,9 @@ class MatkulSeeder extends Seeder
     public function run(): void
     {
         $matkulData = [
-            ['13', 'RPL3205', 'Pengantar Rekayasa Perangkat Lunak', 'T', 2, 2, 2, 0, 2, 0, 2, 5, 3],
-            ['14', 'RPL3403', 'Kecerdasan Buatan', 'T/P', 3, 5, 2, 1, 2, 3, 4, 5, 3],
-            ['15', 'RPL3401', 'Pemrograman Web Framework', 'P', 2, 6, 0, 2, 0, 6, 4, 5, 2]
+            ['13', 'RPL3205', 'Pengantar Rekayasa Perangkat Lunak', 'T', 2, 2, 2, 0, 2, 0, 2, 5/* , 3 */],
+            ['14', 'RPL3403', 'Kecerdasan Buatan', 'T/P', 3, 5, 2, 1, 2, 3, 4, 5/* , 3 */],
+            ['15', 'RPL3401', 'Pemrograman Web Framework', 'P', 2, 6, 0, 2, 0, 6, 3, 5/* , 2 */]
         ];
 
         foreach ($matkulData as $data) {
@@ -32,8 +32,8 @@ class MatkulSeeder extends Seeder
                 'jam_teori' => $data[8],
                 'jam_praktek' => $data[9],
                 'semester' => $data[10],
-                'kurikulum_id' => $data[11],
-                'smt_thnakd_id' => $data[12]
+                'kurikulum_id' => $data[11]/* ,
+                'smt_thnakd_id' => $data[12] */
             ]);
         }
     }
