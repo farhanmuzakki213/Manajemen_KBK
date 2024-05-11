@@ -4,7 +4,7 @@
         <div class="card">
             <div class="card-body">
                 <!-- Page Heading -->
-                <h5 class="card-title fw-semibold mb-4">Data RPS</h5>
+                <h5 class="card-title fw-semibold mb-4">Data Repositori RPS</h5>
                 <div class="container-fluid">
                     <!-- DataRPS -->
                     <div class="card shadow mb-4">
@@ -37,7 +37,7 @@
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        @foreach ($data_rps as $data)
+                                        @foreach ($data_rep_rps as $data)
                                             <tr class="table-Light">
                                                 <th>{{ $data->id_rep_rps }}</th>
                                                 <th>{{ $data->nama_matkul }}</th>

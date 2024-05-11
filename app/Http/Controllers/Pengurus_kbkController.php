@@ -60,6 +60,7 @@ class Pengurus_kbkController extends Controller
             'jenis_kbk' => 'required',
             'nama_dosen' => 'required',
             'jabatan' => 'required',
+            'status' => 'required',
 
         ]);
 
@@ -70,6 +71,7 @@ class Pengurus_kbkController extends Controller
             'jenis_kbk_id' => $request->jenis_kbk,
             'dosen_id' => $request->nama_dosen,
             'jabatan_kbk_id' => $request->jabatan,
+            'status_pengurus_kbk' => $request->status,
         ];
         pengurus_kbk::create($data);
         return redirect()->route('pengurus_kbk');

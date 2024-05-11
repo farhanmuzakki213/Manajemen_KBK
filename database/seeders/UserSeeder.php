@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
@@ -12,12 +14,16 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('users')->insert([
-            [
-                'name' => 'admin',
-                'email' => 'admin@gmail.com',
-                'password' => '$2y$12$GSstXCIdpTiJ.SMmbWRRXOJr910XXxIsbwNZp.FsJzPwhft82Os2q',
-            ]
-        ]);
+        $UserData = [
+            ['admin', 'admin@gmail.com', Hash::make('admin123')]
+        ];
+
+        foreach ($UserData as $data) {
+            DB::table('users')->insert([
+                'name' => $data[0],
+                'email' => $data[1],
+                'password' => $data[2],
+            ]);
+        }
     }
 }
