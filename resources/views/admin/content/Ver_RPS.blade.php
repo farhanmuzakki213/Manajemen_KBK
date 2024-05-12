@@ -57,7 +57,9 @@
                                                             Diverifikasi
                                                         @endif
                                                     </th>
-                                                    <th>{{ $data->file }}</th>
+                                                    <th><a href="{{ asset('storage/uploads/ver_rps_files/' . $data->file) }}">{{ $data->file }}</a>
+                                                    </th>
+
                                                     <th>
                                                         <a href="{{ route('ver_rps.edit', ['id' => $data->id_ver_rps]) }}"
                                                             class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>

@@ -66,7 +66,7 @@ class MatkulController extends Controller
             'jam_praktek' => 'required',
             'semester' => 'required',
             'kurikulum' => 'required',
-            /* 'smt_thnakd' => 'required', */
+            'smt_thnakd' => 'required',
 
         ]);
 
@@ -85,7 +85,7 @@ class MatkulController extends Controller
             'jam_praktek' => $request->jam_praktek,
             'semester' => $request->semester,
             'kurikulum_id' => $request->kurikulum,
-            /* 'smt_thnakd_id' => $request->smt_thnakd, */
+            'smt_thnakd_id' => $request->smt_thnakd,
         ];
         Matkul::create($data);
         return redirect()->route('matkul');
@@ -138,7 +138,7 @@ class MatkulController extends Controller
             'jam_praktek' => 'required',
             'semester' => 'required',
             'kurikulum' => 'required',
-            /* 'smt_thnakd' => 'required', */
+            'smt_thnakd' => 'required',
 
         ]);
 
@@ -157,7 +157,7 @@ class MatkulController extends Controller
             'jam_praktek' => $request->jam_praktek,
             'semester' => $request->semester,
             'kurikulum_id' => $request->kurikulum,
-            /* 'smt_thnakd_id' => $request->smt_thnakd, */
+            'smt_thnakd_id' => $request->smt_thnakd,
         ];
         Matkul::where('id_matkul', $id)->update($data);
         return redirect()->route('matkul');

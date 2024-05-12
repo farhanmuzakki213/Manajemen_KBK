@@ -130,7 +130,7 @@
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>
-                                {{-- <div class="mb-3">
+                                <div class="mb-3">
                                     <label for="smt_thnakd" class="form-label">Semester Tahun Akademi</label>
                                     <select class="form-select" aria-label="Default select example" name="smt_thnakd"
                                         id="smt_thnakd">
@@ -145,7 +145,7 @@
                                     @error('smt_thnakd')
                                         <small>{{ $message }}</small>
                                     @enderror
-                                </div>  --}}                        
+                                </div>                         
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
                         </div>

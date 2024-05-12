@@ -10,6 +10,7 @@ class Ver_RPS extends Model
     protected $fillable = [
         'id_ver_rps',
         'dosen_id',
+        'matkul_id',
         'file',
         'status_ver_rps',
         'catatan',
@@ -19,6 +20,7 @@ class Ver_RPS extends Model
     public static $rules = [
         'id_ver_rps' => 'required',
         'dosen_id' => 'required',
+        'matkul_id' => 'required',
         'file' => 'required|file', // Validasi file
         'status_ver_rps' => 'required',
         'catatan' => 'required',

@@ -37,6 +37,19 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3">
+                                    <label for="nama_matkul" class="form-label">Nama Mata Kuliah</label>
+                                    <select class="form-select" aria-label="Default select example" name="nama_matkul"
+                                        id="nama_matkul" required>
+                                        <option selected disabled>Pilih Nama Mata Kuliah</option>
+                                        @foreach ($data_matkul as $matkul)
+                                            <option value="{{ $matkul->id_matkul }}">{{ $matkul->nama_matkul }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('nama_matkul')
+                                        <small>{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
                                     <label for="upload_file" class="form-label">Upload File</label>
                                     <input type="file" class="form-control" id="upload_file" name="upload_file">
                                     @error('upload_file')
@@ -71,10 +84,10 @@
                                     <div class="input-group date">
                                         <input type="date" class="form-control" id="date" name="date" />
                                     </div>
+                                    @error('date')
+                                        <small>{{ $message }}</small>
+                                    @enderror
                                 </div>
-                                @error('date')
-                                    <small>{{ $message }}</small>
-                                @enderror
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
                         </div>
