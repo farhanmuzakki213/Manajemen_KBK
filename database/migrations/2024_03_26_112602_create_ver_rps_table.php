@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('ver_rps', function (Blueprint $table) {
             $table->bigInteger('id_ver_rps')->primary();
+            $table->bigInteger('rep_rps_id');
             $table->bigInteger('dosen_id');
-            $table->bigInteger('matkul_id');
             $table->string('file');
             $table->enum('status_ver_rps', ['0', '1'])->default(1)->comment('0: Tidak Diverifikasi, 1: Diverifikasi');
             $table->text('catatan')->nullable();
@@ -24,7 +24,7 @@ return new class extends Migration
         Schema::table('ver_rps', function (Blueprint $table) {
             $table->foreign('dosen_id')->references('id_dosen')->on('dosen')
                 ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('matkul_id')->references('id_matkul')->on('matkul')
+            $table->foreign('rep_rps_id')->references('id_rep_rps')->on('rep_rps')
                 ->onUpdate('cascade')->onDelete('cascade');
         });
     }

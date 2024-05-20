@@ -14,8 +14,8 @@ class HasilReviewProposalTASeeder extends Seeder
     public function run(): void
     {
         $HasilData = [
-            [1, 1, 'Lulus', '', '2024-03-17'],
-            [2, 2, 'Lulus', '', '2024-02-18']
+            [1, 1, 'diterima', '', '2024-03-17'],
+            [2, 2, 'ditolak', '', '2024-02-18']
         ];
 
         foreach ($HasilData as $data) {
