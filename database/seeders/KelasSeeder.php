@@ -14,16 +14,17 @@ class KelasSeeder extends Seeder
     public function run(): void
     {
         $kelasData = [
-            ['TRPL1A', 'TRPL 1A', 3, 1],
-            ['TRPL1B', 'TRPL 1B', 3, 3]
+            [1, 'TRPL1A', 'TRPL 1A', 20, 1],
+            [2, 'TRPL1B', 'TRPL 1B', 20, 3]
         ];
 
         foreach ($kelasData as $data) {
             DB::table('kelas')->insert([
-                'kode_kelas' => $data[0],
-                'nama_kelas' => $data[1],
-                'prodi_id' => $data[2],
-                'smt_thnakd_id' => $data[3]
+                'id_kelas' => $data[0],
+                'kode_kelas' => $data[1],
+                'nama_kelas' => $data[2],
+                'prodi_id' => $data[3],
+                'smt_thnakd_id' => $data[4]
             ]);
         }
     }

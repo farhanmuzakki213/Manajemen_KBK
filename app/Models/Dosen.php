@@ -9,7 +9,7 @@ class Dosen extends Model
 {
     use HasFactory;
     protected $fillabel = [
-        'nama_dosen', 'nidn', 'nip', 'gender', 'jurusan_id', 'prodi_id', 'email', 'password', 'image', 'status'
+        'nama_dosen', 'nidn', 'nip', 'gender', 'jurusan_id', 'prodi_id', 'email', 'password', 'image', 'status_dosen'
     ];
     protected $table = 'dosen';
 }

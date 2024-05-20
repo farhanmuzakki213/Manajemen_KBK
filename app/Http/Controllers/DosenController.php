@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dosen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -54,7 +55,11 @@ class DosenController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data_dosen = Dosen::findOrFail($id);
+        $data_jurusan = DB::table('jurusan')->get();
+        $data_prodi = DB::table('prodi')->get();
+    
+        return view('admin.content.Dosen', compact('data_dosen', 'data_jurusan', 'data_prodi'));
     }
 
     /**

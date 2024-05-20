@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('mahasiswa', function (Blueprint $table) {
-            $table->id('id_mahasiswa');
-            $table->string('nama');
+            $table->bigInteger('id_mahasiswa')->primary();
             $table->string('nim');
+            $table->string('nama');
+            $table->bigInteger('jurusan_id');
+            $table->bigInteger('prodi_id');
             $table->string('gender');
-            $table->bigInteger('jurusan_id')->unsigned();
-            $table->bigInteger('prodi_id')->unsigned();
-            $table->enum('status', ['0', '1'])->default(1);
+            $table->enum('status_mahasiswa', ['0', '1'])->default(1)->comment('0: Tidak Aktif, 1: Aktif');
         });
 
         Schema::table('mahasiswa', function (Blueprint $table) {

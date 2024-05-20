@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('hasil_review_proposal_ta', function (Blueprint $table) {
-            $table->id('id_hasil');
-            $table->bigInteger('penugasan_id')->unsigned();
+            $table->bigInteger('id_hasil')->primary();
+            $table->bigInteger('penugasan_id');
             $table->string('hasil');
             $table->text('catatan')->nullable();
             $table->date('tanggal_review');

@@ -14,18 +14,19 @@ class RepUASSeeder extends Seeder
     public function run(): void
     {
         $RepUASData = [
-            [3, 1, 3, '', '2024-01-30', '2024-01-30'],
-            [3, 2, 1, '', '2024-02-28', '2024-02-28']
+            [1, 3, 1, 13, '', '2024-01-30', '2024-01-30'],
+            [2, 3, 2, 14, '', '2024-02-28', '2024-02-28']
         ];
 
         foreach ($RepUASData as $data) {
             DB::table('rep_uas')->insert([
-                'smt_thnakd_id' => $data[0],
-                'ver_uas_id' => $data[1],
-                'matkul_id' => $data[2],
-                'file' => $data[3],
-                'created_at' => $data[4],
-                'updated_at' => $data[5]
+                'id_rep_uas' => $data[0],
+                'smt_thnakd_id' => $data[1],
+                'ver_uas_id' => $data[2],
+                'matkul_id' => $data[3],
+                'file' => $data[4],
+                'created_at' => $data[5],
+                'updated_at' => $data[6]
             ]);
         }
     }

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('matkul', function (Blueprint $table) {
-            $table->id('id_matkul');
+            $table->bigInteger('id_matkul')->primary();
             $table->string('kode_matkul');
             $table->string('nama_matkul');
             $table->enum('TP', ['T', 'P', 'T/P']);
@@ -23,12 +23,16 @@ return new class extends Migration
             $table->string('jam_teori');
             $table->string('jam_praktek');
             $table->string('semester');
-            $table->bigInteger('kurikulum_id')->unsigned();
+            $table->bigInteger('kurikulum_id');
+            $table->bigInteger('smt_thnakd_id');
         });
 
         Schema::table('matkul', function (Blueprint $table) {
             $table->foreign('kurikulum_id')->references('id_kurikulum')->on('kurikulum')
                     ->onUpdate('cascade')->onDelete('cascade');
+                    
+            $table->foreign('smt_thnakd_id')->references('id_smt_thnakd')->on('smt_thnakd')
+            ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

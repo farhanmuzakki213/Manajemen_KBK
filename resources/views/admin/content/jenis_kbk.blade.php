@@ -79,9 +79,9 @@
                                                     <a data-bs-toggle="modal"
                                                         data-bs-target="#staticBackdrop{{ $data->id_jenis_kbk }}"
                                                         class="btn btn-danger"><i class="bi bi-trash"></i></a>
-                                                    <a data-bs-toggle="modal"
-                                                        data-bs-target="#detail{{-- {{ $data->id_jenis_kbk }} --}}"
-                                                        class="btn btn-secondary"><i class="bi bi-three-dots-vertical"></i></a>
+                                                    {{-- <a data-bs-toggle="modal"
+                                                        data-bs-target="#detail
+                                                        class="btn btn-secondary"><i class="bi bi-three-dots-vertical"></i></a> --}}
                                                 </th>
                                             </tr>
                                             {{-- Modal Konfirmasi hapus data --}}

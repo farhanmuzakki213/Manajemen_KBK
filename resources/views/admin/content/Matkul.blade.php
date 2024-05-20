@@ -37,7 +37,7 @@
                                                 <label for="file" class="col-form-label">Import File</label>
                                                 <input type="file" class="form-control" name="file" id="file">
                                                 @error('file')
-                                                      <small>{{ $message }}</small>
+                                                    <small>{{ $message }}</small>
                                                 @enderror
                                             </div>
                                             <div class="mb-3">
@@ -60,6 +60,7 @@
                                             <th>Nama Matkul</th>
                                             <th>Semester</th>
                                             <th>Nama Kurikulum</th>
+                                            <th>Tahun Akademik</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -70,6 +71,7 @@
                                             <th>Nama Matkul</th>
                                             <th>Semester</th>
                                             <th>Nama Kurikulum</th>
+                                            <th>Tahun Akademik</th>
                                             <th>Action</th>
                                         </tr>
                                     </tfoot>
@@ -81,15 +83,14 @@
                                                 <th>{{ $data->nama_matkul }}</th>
                                                 <th>{{ $data->semester }}</th>
                                                 <th>{{ $data->nama_kurikulum }}</th>
+                                                <th>{{ $data->smt_thnakd }}</th>
                                                 <th>
                                                     <a href="{{ route('matkul.edit', ['id' => $data->id_matkul]) }}"
                                                         class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
                                                     <a data-bs-toggle="modal"
                                                         data-bs-target="#staticBackdrop{{ $data->id_matkul }}"
                                                         class="btn btn-danger"><i class="bi bi-trash"></i></a>
-                                                    <a data-bs-toggle="modal" data-bs-target="#detail{{-- {{ $data->id_jenis_kbk }} --}}"
-                                                        class="btn btn-secondary"><i
-                                                            class="bi bi-three-dots-vertical"></i></a>
+                                                    <a data-bs-toggle="modal" data-bs-target="#detail{{ $data->id_matkul }}" class="btn btn-secondary"><i class="bi bi-three-dots-vertical"></i></a>
                                                 </th>
                                             </tr>
                                             {{-- Modal Konfirmasi hapus data --}}
@@ -127,28 +128,68 @@
                                             </div>
 
                                             {{-- Modal Detail Tabel --}}
-                                            <div class="modal fade" id="detail" tabindex="-1"
-                                                aria-labelledby="detailLabel" aria-hidden="true">
+                                            <div class="modal fade" id="detail{{ $data->id_matkul }}" tabindex="-1" aria-labelledby="detailLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h1 class="modal-title fs-5" id="detailLabel">New message
-                                                            </h1>
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            <h5 class="modal-title fs-5" id="detailLabel">Detail Matkul</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <form>
                                                                 <div class="mb-3">
-                                                                    <label for="recipient-name"
-                                                                        class="col-form-label">Recipient:</label>
-                                                                    <input type="text" class="form-control"
-                                                                        id="recipient-name">
+                                                                    <label for="kode_matkul" class="col-form-label">Kode Matkul</label>
+                                                                    <input type="text" class="form-control" id="kode_matkul" value="{{ $data->kode_matkul }}" readonly>
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label for="message-text"
-                                                                        class="col-form-label">Message:</label>
-                                                                    <textarea class="form-control" id="message-text"></textarea>
+                                                                        class="col-form-label">Nama Matkul</label>
+                                                                    <input class="form-control" id="message-text" value="{{ $data->nama_matkul }}" readonly></input>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="message-text"
+                                                                        class="col-form-label">TP</label>
+                                                                    <input class="form-control" id="message-text"value="{{ $data->TP }}" readonly></input>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="message-text"
+                                                                        class="col-form-label">sks</label>
+                                                                    <input class="form-control" id="message-text" value="{{ $data->sks }}" readonly></input>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="message-text"
+                                                                        class="col-form-label">Jam</label>
+                                                                    <input class="form-control" id="message-text" value="{{ $data->jam }}" readonly></input>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="message-text"
+                                                                        class="col-form-label">sks teori</label>
+                                                                    <input class="form-control" id="message-text" value="{{ $data->sks_teori }}" readonly></input>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="message-text"
+                                                                        class="col-form-label">sks praktek</label>
+                                                                    <input class="form-control" id="message-text" value="{{ $data->sks_praktek }}" readonly></input>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="message-text"
+                                                                        class="col-form-label">Jam teori</label>
+                                                                    <input class="form-control" id="message-text" value="{{ $data->jam_teori }}" readonly></input>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="message-text"
+                                                                        class="col-form-label">Jam praktek</label>
+                                                                    <input class="form-control" id="message-text" value="{{ $data->jam_praktek }}" readonly></input>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="message-text"
+                                                                        class="col-form-label">Semester</label>
+                                                                    <input class="form-control" id="message-text" value="{{ $data->semester }}" readonly></input>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="message-text"
+                                                                        class="col-form-label">Kurikulum</label>
+                                                                    <input class="form-control" id="message-text" value="{{ $data->nama_kurikulum }}" readonly></input>
                                                                 </div>
                                                             </form>
                                                         </div>

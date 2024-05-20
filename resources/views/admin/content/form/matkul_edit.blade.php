@@ -18,6 +18,13 @@
                                 @csrf
                                 @method('PUT')
                                 <div class="mb-3">
+                                    <label for="id_matkul" class="form-label">ID Matkul</label>
+                                    <input type="number" class="form-control" id="id_matkul" name="id_matkul" value="{{$data_matkul->id_matkul}}">
+                                    @error('id_matkul')
+                                        <small>{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
                                     <label for="kode_matkul" class="form-label">Kode MataKuliah</label>
                                     <input type="text" class="form-control" id="kode_matkul" name="kode_matkul" value="{{$data_matkul->kode_matkul}}">
                                     @error('kode_matkul')
@@ -122,7 +129,23 @@
                                     @error('kurikulum')
                                         <small>{{ $message }}</small>
                                     @enderror
-                                </div>                          
+                                </div>
+                                <div class="mb-3">
+                                    <label for="smt_thnakd" class="form-label">Semester Tahun Akademi</label>
+                                    <select class="form-select" aria-label="Default select example" name="smt_thnakd"
+                                        id="smt_thnakd">
+                                        <option selected disabled>Pilih Semester Tahun Akademi</option>
+                                        @foreach ($data_smt_thnakd as $data)
+                                            <option value="{{ $data->id_smt_thnakd }}"
+                                                {{ $data->id_smt_thnakd == $data_matkul->smt_thnakd_id ? 'selected' : ''}}>
+                                                {{ $data->smt_thnakd }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('smt_thnakd')
+                                        <small>{{ $message }}</small>
+                                    @enderror
+                                </div>                         
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
                         </div>

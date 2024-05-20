@@ -56,6 +56,7 @@
                                             <th>Nama</th>
                                             <th>Jenis_KBK</th>
                                             <th>Jabatan</th>
+                                            <th>Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -65,6 +66,7 @@
                                             <th>Nama</th>
                                             <th>Jenis_KBK</th>
                                             <th>Jabatan</th>
+                                            <th>Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </tfoot>
@@ -74,16 +76,23 @@
                                                 <th>{{ $data->id_pengurus }}</th>
                                                 <th>{{ $data->nama_dosen }}</th>
                                                 <th>{{ $data->jenis_kbk }}</th>
-                                                <th>{{ $data->jabatan }}</th>
+                                                <th>{{ $data->deskripsi }}</th>
+                                                <th>
+                                                    @if ($data->status_pengurus_kbk == 0)
+                                                        Tidak Aktif
+                                                    @else
+                                                        Aktif
+                                                    @endif
+                                                </th>
                                                 <th>
                                                     <a href="{{ route('pengurus_kbk.edit', ['id' => $data->id_pengurus]) }}"
                                                         class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
                                                     <a data-bs-toggle="modal"
                                                         data-bs-target="#staticBackdrop{{ $data->id_pengurus }}"
                                                         class="btn btn-danger"><i class="bi bi-trash"></i></a>
-                                                    <a data-bs-toggle="modal"
-                                                        data-bs-target="#detail{{-- {{ $data->id_pengurus }} --}}"
-                                                        class="btn btn-secondary"><i class="bi bi-three-dots-vertical"></i></a>
+                                                    {{-- <a data-bs-toggle="modal"
+                                                        data-bs-target="#detail"
+                                                        class="btn btn-secondary"><i class="bi bi-three-dots-vertical"></i></a> --}}
                                                 </th>
                                             </tr>
                                             {{-- Modal Konfirmasi hapus data --}}
@@ -121,38 +130,38 @@
                                             </div>
 
                                             {{-- Modal Detail Tabel --}}
-                                            <div class="modal fade" id="detail" tabindex="-1"
-                                                aria-labelledby="detailLabel" aria-hidden="true">
+                                            <div class="modal fade" id="detail" tabindex="-1" aria-labelledby="detailLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h1 class="modal-title fs-5" id="detailLabel">New message
-                                                            </h1>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Close"></button>
+                                                            <h5 class="modal-title" id="detailLabel">Detail Pengurus KBK</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <form>
-                                                                <div class="mb-3">
-                                                                    <label for="recipient-name"
-                                                                        class="col-form-label">Recipient:</label>
-                                                                    <input type="text" class="form-control"
-                                                                        id="recipient-name">
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="message-text"
-                                                                        class="col-form-label">Message:</label>
-                                                                    <textarea class="form-control" id="message-text"></textarea>
-                                                                </div>
-                                                            </form>
+                                                            <div class="mb-3">
+                                                                <label for="nama_dosen" class="form-label">Nama Dosen:</label>
+                                                                <input type="text" class="form-control" id="nama_dosen" readonly>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="jenis_kbk" class="form-label">Jenis KBK:</label>
+                                                                <input type="text" class="form-control" id="jenis_kbk" readonly>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="jabatan_kbk" class="form-label">Jabatan:</label>
+                                                                <input type="text" class="form-control" id="jabatan_kbk" readonly>
+                                                            </div>
+                                                            <!-- tambahkan input untuk atribut lainnya jika diperlukan -->
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-primary"
-                                                                data-bs-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            
+                                            
+                                            
+                                            
                                         @endforeach
                                     </tbody>
                                 </table>

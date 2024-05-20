@@ -9,7 +9,7 @@ class Kurikulum extends Model
 {
     use HasFactory;
     protected $fillabel = [
-        'kode_kurikulum', 'nama_kurikulum', 'tahun', 'prodi_id', 'status'
+        'kode_kurikulum', 'nama_kurikulum', 'tahun', 'prodi_id', 'status_kurikulum'
     ];
     protected $table = 'kurikulum';
 }
