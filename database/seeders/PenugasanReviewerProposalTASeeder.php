@@ -23,7 +23,8 @@ class PenugasanReviewerProposalTASeeder extends Seeder
                 'id_penugasan' => $data[0],
                 'proposal_ta_id' => $data[1],
                 'dosen_id' => $data[2],
-                'tanggal_penugasan' => $data[3]
+                'tanggal_penugasan' => $data[3],
+                'status' => $data[4] ?? 'diajukan'
             ]);
         }
     }

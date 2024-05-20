@@ -14,18 +14,19 @@ class VerUASSeeder extends Seeder
     public function run(): void
     {
         $VerUASData = [
-            [1, 357, '', 1, '', '2023-12-25'],
-            [2, 220, '', 1, '', '2024-02-12']
+            [1, 1, 357, '', 1, '', '2023-12-25'],
+            [2, 2, 220, '', 1, '', '2024-02-12'],
         ];
 
         foreach ($VerUASData as $data) {
             DB::table('ver_uas')->insert([
                 'id_ver_uas' => $data[0],
-                'dosen_id' => $data[1],
-                'file' => $data[2],
-                'status_ver_uas' => $data[3],
-                'catatan' => $data[4],
-                'tanggal_diverifikasi' => $data[5]
+                'rep_uas_id' => $data[1],
+                'dosen_id' => $data[2],
+                'file' => $data[3],
+                'status_ver_uas' => $data[4],
+                'catatan' => $data[5],
+                'tanggal_diverifikasi' => $data[6]
             ]);
         }
     }
