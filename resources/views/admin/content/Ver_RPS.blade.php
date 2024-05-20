@@ -4,7 +4,7 @@
         <div class="card">
             <div class="card-body">
                 <!-- Page Heading -->
-                <h5 class="card-title fw-semibold mb-4">Data Dosen</h5>
+                <h5 class="card-title fw-semibold mb-4">Data Verifikasi RPS</h5>
                 <div class="container-fluid">
                     <!-- DataDosen -->
                     <div class="card shadow mb-4">
@@ -57,7 +57,7 @@
                                                             Diverifikasi
                                                         @endif
                                                     </th>
-                                                    <th><a href="{{ asset('storage/uploads/ver_rps_files/' . $data->file) }}">{{ $data->file }}</a>
+                                                    <th><a href="{{ asset('storage/uploads/ver_rps_files/' . $data->file) }}" target="_blank">{{ $data->file }}</a>
                                                     </th>
 
                                                     <th>
