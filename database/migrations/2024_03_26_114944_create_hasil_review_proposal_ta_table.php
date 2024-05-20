@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('hasil_review_proposal_ta', function (Blueprint $table) {
             $table->bigInteger('id_hasil')->primary();
             $table->bigInteger('penugasan_id');
-            $table->string('hasil');
+            $table->enum('hasil', ['ditolak', 'direvisi', 'diterima']);
             $table->text('catatan')->nullable();
             $table->date('tanggal_review');
         });

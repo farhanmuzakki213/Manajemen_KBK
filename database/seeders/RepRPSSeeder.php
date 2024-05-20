@@ -14,15 +14,15 @@ class RepRPSSeeder extends Seeder
     public function run(): void
     {
         $RepRPSData = [
-            [1, 3, 1, 13, '', '2024-01-30', '2024-01-30'],
-            [2, 3, 2, 14, '', '2024-02-28', '2024-02-28']
+            [1, 3, 40, 13, '', '2024-01-30', '2024-01-30'],
+            [2, 3, 50, 14, '', '2024-02-28', '2024-02-28']
         ];
 
         foreach ($RepRPSData as $data) {
             DB::table('rep_rps')->insert([
                 'id_rep_rps' => $data[0],
                 'smt_thnakd_id' => $data[1],
-                'ver_rps_id' => $data[2],
+                'dosen_id' => $data[2],
                 'matkul_id' => $data[3],
                 'file' => $data[4],
                 'created_at' => $data[5],
