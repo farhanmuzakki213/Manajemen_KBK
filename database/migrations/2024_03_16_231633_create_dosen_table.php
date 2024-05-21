@@ -23,12 +23,15 @@ return new class extends Migration
             $table->string('password');
             $table->string('image')->nullable();
             $table->enum('status_dosen', ['0', '1'])->default(1);
+            $table->bigInteger('hak_akses_id')->nullable();
         });
 
         Schema::table('dosen', function (Blueprint $table) {
             $table->foreign('jurusan_id')->references('id_jurusan')->on('jurusan')
                     ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('prodi_id')->references('id_prodi')->on('prodi')
+                    ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('hak_akses_id')->references('id_hak_akses')->on('hak_akses')
                     ->onUpdate('cascade')->onDelete('cascade');
         });
             

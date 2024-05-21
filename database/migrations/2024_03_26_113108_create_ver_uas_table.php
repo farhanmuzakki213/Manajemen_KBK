@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('ver_uas', function (Blueprint $table) {
             $table->bigInteger('id_ver_uas')->primary();
+            $table->bigInteger('rep_uas_id');
             $table->bigInteger('dosen_id');
             $table->string('file');
             $table->enum('status_ver_uas', ['0', '1'])->default(1)->comment('0: Tidak Diverifikasi, 1: Diverifikasi');
@@ -22,6 +23,8 @@ return new class extends Migration
 
         Schema::table('ver_uas', function (Blueprint $table) {
             $table->foreign('dosen_id')->references('id_dosen')->on('dosen')
+                    ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('rep_uas_id')->references('id_rep_uas')->on('rep_uas')
                     ->onUpdate('cascade')->onDelete('cascade');
         });
     }
