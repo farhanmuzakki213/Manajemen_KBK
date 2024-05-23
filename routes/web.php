@@ -21,6 +21,8 @@ use App\Http\Controllers\Rep_RPSController;
 use App\Http\Controllers\Rep_Soal_UASController;
 use App\Http\Controllers\Ver_RPSController;
 use App\Http\Controllers\Ver_Soal_UASController;
+use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\ReviewProposalTAController;
 use Illuminate\Routing\Route as RoutingRoute;
 
 /*
@@ -47,7 +49,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/example', [AdminController::class, 'example'])->name('example');
 });
 
-
+// Mahasiswa
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->middleware(['auth', 'verified'])->name('mahasiswa');
+});
 
 // Jurusan
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -179,4 +184,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // Verifikasi Soal_UAS
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/verifikasi_soal_uas', [Ver_Soal_UASController::class, 'index'])->middleware(['auth', 'verified'])->name('ver_soal_uas');
+});
+
+
+// ReviewProposalTA
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/review_proposal_ta', [ReviewProposalTAController::class, 'index'])->middleware(['auth', 'verified'])->name('review_proposal_ta');
+    Route::post('/review_proposal_ta/store', [ReviewProposalTAController::class, 'store'])->middleware(['auth', 'verified'])->name('review_proposal_ta.store');
+    Route::get('/review_proposal_ta/create', [ReviewProposalTAController::class, 'create'])->middleware(['auth', 'verified'])->name('review_proposal_ta.create');
+    Route::get('/review_proposal_ta/edit/{id}', [ReviewProposalTAController::class, 'edit'])->middleware(['auth', 'verified'])->name('review_proposal_ta.edit');
+    Route::put('/review_proposal_ta/update/{id}', [ReviewProposalTAController::class, 'update'])->middleware(['auth', 'verified'])->name('review_proposal_ta.update');
+    Route::delete('/review_proposal_ta/delete/{id}', [ReviewProposalTAController::class, 'delete'])->middleware(['auth', 'verified'])->name('review_proposal_ta.delete');
 });

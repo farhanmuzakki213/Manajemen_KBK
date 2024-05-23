@@ -37,6 +37,14 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('mahasiswa') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Mahasiswa</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('jurusan') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-aperture"></i>
@@ -175,6 +183,18 @@
                             <i class="ti ti-aperture"></i>
                         </span>
                         <span class="hide-menu">Verifikasi Soal UAS </span>
+                    </a>
+                </li>
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Dosen KBK</span>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('review_proposal_ta') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Review Proposal TA</span>
                     </a>
                 </li>
             </ul>

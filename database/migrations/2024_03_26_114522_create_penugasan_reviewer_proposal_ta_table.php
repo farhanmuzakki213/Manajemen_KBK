@@ -16,7 +16,7 @@ return new class extends Migration
             $table->bigInteger('proposal_ta_id');
             $table->bigInteger('dosen_id');
             $table->date('tanggal_penugasan');
-            $table->string('status')->default('diajukan');
+            $table->enum('status', ['diajukan', 'sedang di proses'])->default('diajukan');
         });
 
         Schema::table('penugasan_reviewer_proposal_ta', function (Blueprint $table) {
