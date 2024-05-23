@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\ReviewProposalTAModel;
+use Barryvdh\Debugbar\Facades\Debugbar as FacadesDebugbar;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class ReviewProposalTAController extends Controller
 {
@@ -59,12 +62,10 @@ class ReviewProposalTAController extends Controller
     public function edit(string $id)
     {
         $data_dosen = DB::table('dosen')->get();
-        $data_mahasiswa = DB::table('mahasiswa')->get();
-        $data_proposal_ta = DB::table('proposal_ta')->get();
         $data_review_proposal_ta = ReviewProposalTAModel::where('id_penugasan', $id)->first();
 
-        debug(compact('data_dosen', 'data_proposal_ta', 'data_review_proposal_ta', 'data_mahasiswa'));
-        return view('admin.content.form.review_proposal_ta_edit', compact('data_dosen', 'data_proposal_ta', 'data_review_proposal_ta', 'data_mahasiswa'));
+        debug(compact('data_dosen', 'data_review_proposal_ta'));
+        return view('admin.content.form.review_proposal_ta_edit', compact('data_dosen', 'data_review_proposal_ta'));
 
     }
 
@@ -73,7 +74,27 @@ class ReviewProposalTAController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'id_penugasan' => 'required',
+            'nama_dosen' => 'required',
+            'status' => 'required',
+            'catatan',
+            'date' => 'required|date',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator);
+        }
+        $data = [
+            'id_penugasan' => $request->id_penugasan,
+            'dosen_id' => $request->nama_dosen,
+            'status_review_proposal' => $request->status,
+            'catatan' => $request->catatan,
+            'tanggal_review' => $request->date,
+        ];
+        //dd($request->all());
+        ReviewProposalTAModel::where('id_penugasan', $id)->update($data);
+        return redirect()->route('review_proposal_ta')->with('success', 'Data berhasil diperbarui.');
     }
 
     /**

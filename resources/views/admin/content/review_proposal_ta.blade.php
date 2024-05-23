@@ -10,8 +10,8 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-2">
                             <div class="d-grid gap-2 d-md-block">
-                                <a href="{{ route('review_proposal_ta.create') }}" class="btn btn-primary me-md-3"><i
-                                        class="bi bi-file-earmark-plus"></i> New</a>
+                                {{-- <a href="{{ route('review_proposal_ta.create') }}" class="btn btn-primary me-md-3"><i
+                                        class="bi bi-file-earmark-plus"></i> New</a> --}}
                             </div>
                         </div>
                         <div class="card-body">
@@ -23,6 +23,7 @@
                                             <th>Nama Mahasiswa</th>
                                             <th>Judul</th>
                                             <th>Tanggal Pengajuan</th>
+                                            <th>Tanggal Review</th>
                                             <th>Status</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -33,6 +34,7 @@
                                             <th>Nama Mahasiswa</th>
                                             <th>Judul</th>
                                             <th>Tanggal Pengajuan</th>
+                                            <th>Tanggal Review</th>
                                             <th>Status</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -44,6 +46,7 @@
                                                 <th>{{ $data->nama }}</th>
                                                 <th>{{ $data->judul }}</th>
                                                 <th>{{ $data->tanggal_penugasan }}</th>
+                                                <th>{{ $data->tanggal_review }}</th>
                                                 <th>
                                                     @if ($data->status_review_proposal == 0)
                                                         Di Ajukan

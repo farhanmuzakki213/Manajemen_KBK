@@ -14,31 +14,10 @@
                                     <p><a href="{{ route('review_proposal_ta') }}" class="btn btn-success"> Kembali</a></p>
                                 </div>
                             </div>
-                            <form method="post" action="{{ route('review_proposal_ta.update', ['id' => $data_review_proposal_ta->id_penugasan]) }}">
+                            <form method="post" action="{{ route('review_proposal_ta.update', ['id' => $data_review_proposal_ta->id_penugasan]) }}" enctype="multipart/form-data">
                                 @csrf
-                                <div class="mb-3">
-                                    <label for="id_review_proposal_ta" class="form-label">ID Review Proposal TA</label>
-                                    <input type="number" class="form-control" id="id_review_proposal_ta" name="id_review_proposal_ta">
-                                    @error('id_review_proposal_ta')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </div>                                                                                              
-                                <div class="mb-3">
-                                    <label for="nama_mahasiswa" class="form-label">Nama Mahasiswa</label>
-                                    <select class="form-select" aria-label="Default select example" name="nama_mahasiswa" id="nama_mahasiswa" required>
-                                        <option selected disabled>Pilih Nama Mahasiswa</option>
-                                        @foreach ($data_mahasiswa as $mahasiswa)
-                                            <option value="{{ $mahasiswa->id_mahasiswa }}"
-                                                {{ $mahasiswa->id_mahasiswa == $data_proposal_ta->mahasiswa_id ? 'selected' : '' }}>
-                                                {{ $mahasiswa->nama_mahasiswa }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('nama_mahasiswa')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </div>
-                                
+                                @method('PUT')
+                                <input type="number" class="form-control" id="id_penugasan" name="id_penugasan" value="{{ $data_review_proposal_ta->id_penugasan }}">                         
                                 <div class="mb-3">
                                     <label for="nama_dosen" class="form-label">Nama Dosen</label>
                                     <select class="form-select" aria-label="Default select example" name="nama_dosen"
@@ -55,20 +34,39 @@
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>
-                                {{-- <div class="mb-3">
-                                    <label for="smt_thnakd" class="form-label">Semerter Tahun Akademik</label>
-                                    <select class="form-select" aria-label="Default select example" name="smt_thnakd"
-                                        id="smt_thnakd">
-                                        <option selected disabled>Pilih Semerter Tahun Akademik</option>
-                                        @foreach ($data_smt_thnakd as $data)
-                                            <option value="{{ $data->id_smt_thnakd }}">{{ $data->smt_thnakd }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('smt_thnakd')
+                                <div class="mb-3">
+                                    <label for="status" class="form-label">Status</label><br>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="status" id="aktif" value="0" {{ $data_review_proposal_ta->status_review_proposal == 0 ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="aktif">Di ajukan</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="status" id="aktif" value="1" {{ $data_review_proposal_ta->status_review_proposal == 1 ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="aktif">Di Tolak</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="status" id="aktif" value="2" {{ $data_review_proposal_ta->status_review_proposal == 2 ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="aktif">Di Revisi</label>
+                                    </div> 
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="status" id="aktif" value="3" {{ $data_review_proposal_ta->status_review_proposal == 3 ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="aktif">Di Terima</label>
+                                    </div>                                   
+                                </div>
+                                <div class="mb-3">
+                                    <label for="catatan" class="form-label">Catatan</label>
+                                    <textarea class="form-control" id="catatan" name="catatan" rows="3">{{ $data_review_proposal_ta->catatan }}</textarea>
+                                    @error('catatan')
                                         <small>{{ $message }}</small>
                                     @enderror
-                                </div> --}}
+                                </div>
+                                <div class="mb-3">
+                                    {{-- <label for="date" class="form-label">Tanggal Review</label> --}}
+                                    <input type="hidden" class="form-control" id="date" name="date" value="{{ \Carbon\Carbon::now()->toDateString() }}">
+                                    @error('date')
+                                        <small>{{ $message }}</small>
+                                    @enderror
+                                </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
                         </div>
