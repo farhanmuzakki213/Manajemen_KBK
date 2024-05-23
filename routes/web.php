@@ -24,6 +24,7 @@ use App\Http\Controllers\Ver_RPSController;
 use App\Http\Controllers\Ver_Soal_UASController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\ReviewProposalTAController;
+use App\Http\Controllers\UasController;
 use Illuminate\Routing\Route as RoutingRoute;
 
 /*
@@ -199,6 +200,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/upload_rps/update/{id}', [RpsController::class, 'update'])->middleware(['auth', 'verified'])->name('rps.update');
     Route::get('/upload_rps/show/{id}', [RpsController::class, 'show'])->middleware(['auth', 'verified'])->name('rps.show');
     Route::delete('/upload_rps/delete/{id}', [RpsController::class, 'delete'])->middleware(['auth', 'verified'])->name('rps.delete');
+});
+
+// UAS
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/upload_soal_uas', [UasController::class, 'index'])->middleware(['auth', 'verified'])->name('soal_uas');
+    Route::post('/upload_soal_uas/store', [UasController::class, 'store'])->middleware(['auth', 'verified'])->name('soal_uas.store');
+    Route::get('/upload_soal_uas/create', [UasController::class, 'create'])->middleware(['auth', 'verified'])->name('soal_uas.create');
+    Route::get('/upload_soal_uas/edit/{id}', [UasController::class, 'edit'])->middleware(['auth', 'verified'])->name('soal_uas.edit');
+    Route::put('/upload_soal_uas/update/{id}', [UasController::class, 'update'])->middleware(['auth', 'verified'])->name('soal_uas.update');
+    Route::get('/upload_soal_uas/show/{id}', [UasController::class, 'show'])->middleware(['auth', 'verified'])->name('soal_uas.show');
+    Route::delete('/upload_soal_uas/delete/{id}', [UasController::class, 'delete'])->middleware(['auth', 'verified'])->name('soal_uas.delete');
 });
 
 

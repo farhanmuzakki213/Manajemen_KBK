@@ -199,7 +199,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('ver_soal_uas') }}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('soal_uas') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-aperture"></i>
                         </span>

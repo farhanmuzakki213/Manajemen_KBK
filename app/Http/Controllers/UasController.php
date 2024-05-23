@@ -2,28 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Rep_RPS;
+use App\Models\Rep_UAS;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
-class RpsController extends Controller
+class UasController extends Controller
 {
+    
+
     public function index()
     {
-        $data_rps = DB::table('rep_rps')
-            ->join('smt_thnakd', 'rep_rps.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
-            // ->join('ver_rps', 'rep_rps.ver_rps_id', '=', 'ver_rps.id_ver_rps')
-            ->join('matkul', 'rep_rps.matkul_id', '=', 'matkul.id_matkul')
-            ->join('dosen', 'rep_rps.dosen_id', '=', 'dosen.id_dosen')
-            ->select('rep_rps.*', 'dosen.*','matkul.*','smt_thnakd.*')
+        $data_uas = DB::table('rep_uas')
+            ->join('smt_thnakd', 'rep_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
+            // ->join('ver_uas', 'rep_uas.ver_uas_id', '=', 'ver_uas.id_ver_uas')
+            ->join('matkul', 'rep_uas.matkul_id', '=', 'matkul.id_matkul')
+            ->join('dosen', 'rep_uas.dosen_id', '=', 'dosen.id_dosen')
+            ->select('rep_uas.*', 'dosen.*','matkul.*','smt_thnakd.*')
             // ->where('smt_thnakd.status_smt_thnakd', '=', '1')
-            ->orderByDesc('id_rep_rps')
+            ->orderByDesc('id_rep_uas')
             ->get();
-            //dd($data_rps);
-        return view('admin.content.rps', compact('data_rps'));
+            //dd($data_uas);
+        return view('admin.content.uas', compact('data_uas'));
     }
 
     
@@ -36,9 +38,9 @@ class RpsController extends Controller
         $data_thnakd = DB::table('smt_thnakd')->get();
         $data_dosen = DB::table('dosen')->get();
         $data_matkul = DB::table('matkul')->get();
-        // $data_ver_rps = DB::table('ver_rps')->get();
+        // $data_ver_uas = DB::table('ver_uas')->get();
 
-        return view('admin.content.form.rps_form', compact('data_thnakd', 'data_dosen', 'data_matkul'));
+        return view('admin.content.form.uas_form', compact('data_thnakd', 'data_dosen', 'data_matkul'));
     }
 
     /**
@@ -47,7 +49,7 @@ class RpsController extends Controller
     public function store(Request $request)
 {
     $validator = Validator::make($request->all(), [
-        'id_rep_rps' => 'required',
+        'id_rep_uas' => 'required',
         'smt_thnakd' => 'required',
         'nama_dosen' => 'required',
         'nama_matkul' => 'required',
@@ -61,19 +63,19 @@ class RpsController extends Controller
     if ($request->hasFile('upload_file')) {
         $file = $request->file('upload_file');
         $filename = $file->getClientOriginalName();
-        $path = 'public/uploads/rps_files/';
+        $path = 'public/uploads/soal_uas_files/';
         $file->storeAs($path, $filename);
 
         $data = [
-            'id_rep_rps' => $request->id_rep_rps,
+            'id_rep_uas' => $request->id_rep_uas,
             'smt_thnakd_id' => $request->smt_thnakd,
             'dosen_id' => $request->nama_dosen,
             'matkul_id' => $request->nama_matkul,
             'file' => $filename,
         ];
 
-        Rep_RPS::create($data);
-        return redirect()->route('rps')->with('success', 'Data berhasil disimpan.');
+        Rep_UAS::create($data);
+        return redirect()->route('soal_uas')->with('success', 'Data berhasil disimpan.');
     } else {
         return redirect()->back()->withInput()->withErrors(['upload_file' => 'File harus diunggah.']);
     }
@@ -88,9 +90,9 @@ class RpsController extends Controller
         $data_thnakd = DB::table('smt_thnakd')->get();
         $data_dosen = DB::table('dosen')->get();
         $data_matkul = DB::table('matkul')->get();
-        // $data_ver_rps = DB::table('ver_rps')->get();
+        // $data_ver_uas = DB::table('ver_uas')->get();
 
-        return view('admin.content.form.rps', compact('data_thnakd', 'data_dosen', 'data_matkul'));
+        return view('admin.content.form.uas', compact('data_thnakd', 'data_dosen', 'data_matkul'));
     }
 
     /**
@@ -102,9 +104,9 @@ class RpsController extends Controller
         $data_dosen = DB::table('dosen')->get();
         $data_matkul = DB::table('matkul')->get();
 
-        $data_rps = Rep_RPS::where('id_rep_rps', $id)->first();
-        //dd(compact('data_dosen', 'data_matkul', 'data_ver_rps'));
-        return view('admin.content.form.rps_edit', compact('data_thnakd', 'data_dosen', 'data_matkul', 'data_rps'));
+        $data_uas = Rep_UAS::where('id_rep_uas', $id)->first();
+        //dd(compact('data_dosen', 'data_matkul', 'data_ver_uas'));
+        return view('admin.content.form.uas_edit', compact('data_thnakd', 'data_dosen', 'data_matkul', 'data_uas'));
     }
 
     /**
@@ -113,7 +115,7 @@ class RpsController extends Controller
     public function update(Request $request, string $id)
     {
         $validator = Validator::make($request->all(), [
-            'id_rep_rps' => 'required',
+            'id_rep_uas' => 'required',
             'smt_thnakd' => 'required',
             'nama_dosen' => 'required',
             'nama_matkul' => 'required',
@@ -123,9 +125,9 @@ class RpsController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
         }
-        $id_rep_rps = Rep_RPS::where('id_rep_rps', $id);
+        $id_rep_uas = Rep_UAS::where('id_rep_uas', $id);
         $data = [
-            'id_rep_rps' => $request->id_rep_rps,
+            'id_rep_uas' => $request->id_rep_uas,
             'smt_thnakd_id' => $request->smt_thnakd,
             'dosen_id' => $request->nama_dosen,
             'matkul_id' => $request->nama_matkul,
@@ -137,7 +139,7 @@ class RpsController extends Controller
             $file = $request->file('upload_file');
             $filename = $file->getClientOriginalName(); // Mendapatkan nama asli file
 
-            $path = 'public/uploads/rps_files/';
+            $path = 'public/uploads/soal_uas_files/';
             $file->storeAs($path, $filename); // Simpan file dengan nama aslinya
             /* // Hapus file lama jika ada
             if ($oldFilePath) {
@@ -148,8 +150,8 @@ class RpsController extends Controller
         }
         
         /* dd($request->all()); */
-        $id_rep_rps->update($data);
-        return redirect()->route('rps')->with('success', 'Data berhasil diperbarui.');
+        $id_rep_uas->update($data);
+        return redirect()->route('soal_uas')->with('success', 'Data berhasil diperbarui.');
     }
 
     /**
@@ -157,20 +159,21 @@ class RpsController extends Controller
      */
     public function delete(string $id)
     {
-        $data_rep_rps = Rep_RPS::where('id_rep_rps', $id)->first();
+        $data_rep_uas = Rep_UAS::where('id_rep_uas', $id)->first();
 
         // Menghapus file terkait jika ada
-        if ($data_rep_rps->file) {
-            Storage::delete($data_rep_rps->file);
+        if ($data_rep_uas->file) {
+            Storage::delete($data_rep_uas->file);
         }
 
         // Menghapus data dari basis data
-        if ($data_rep_rps) {
-            Rep_RPS::where('id_rep_rps', $id)->delete();
+        if ($data_rep_uas) {
+            Rep_UAS::where('id_rep_uas', $id)->delete();
         }
 
-        return redirect()->route('rps')->with('success', 'Data berhasil dihapus.');
+        return redirect()->route('soal_uas')->with('success', 'Data berhasil dihapus.');
 
         //dd($data_matkul);
     }
+
 }
