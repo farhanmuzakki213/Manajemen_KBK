@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Rep_RPS extends Model
 {
     use HasFactory;
-    protected $fillable = ['smt_thnakd','ver_rps_id','matkul_id','file','create_at','update_at'];
+    protected $fillable = ['id_rep_rps', 'smt_thnakd_id', 'dosen_id', 'matkul_id', 'file'];
     protected $table = 'rep_rps';
     public $timestamps = true;
 }

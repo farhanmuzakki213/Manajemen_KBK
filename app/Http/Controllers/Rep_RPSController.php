@@ -14,10 +14,10 @@ class Rep_RPSController extends Controller
     {
         $data_rep_rps = DB::table('rep_rps')
             ->join('smt_thnakd', 'rep_rps.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
-            ->join('ver_rps', 'rep_rps.ver_rps_id', '=', 'ver_rps.id_ver_rps')
+            // ->join('ver_rps', 'rep_rps.ver_rps_id', '=', 'ver_rps.id_ver_rps')
             ->join('matkul', 'rep_rps.matkul_id', '=', 'matkul.id_matkul')
-            ->join('dosen', 'ver_rps.dosen_id', '=', 'dosen.id_dosen')
-            ->select('rep_rps.*', 'ver_rps.*', 'dosen.*','matkul.*','smt_thnakd.*')
+            ->join('dosen', 'rep_rps.dosen_id', '=', 'dosen.id_dosen')
+            ->select('rep_rps.*', 'dosen.*','matkul.*','smt_thnakd.*')
             ->where('smt_thnakd.status_smt_thnakd', '=', '1')
             ->orderByDesc('id_rep_rps')
             ->get();

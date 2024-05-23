@@ -29,6 +29,7 @@
         <!-- Services-->
         <section class="content">
             @yield('landing_page')
+            @yield('detail_berita')
         </section>
         <!-- Footer-->
         @include('frontend.body.footer')        

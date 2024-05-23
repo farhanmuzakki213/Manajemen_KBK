@@ -76,14 +76,7 @@
                         <span class="hide-menu">Tahun Akademik </span>
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('DosenPengampuMatkul') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-aperture"></i>
-                        </span>
-                        <span class="hide-menu">Dosen Pengampu Matkul </span>
-                    </a>
-                </li>
+             
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('kurikulum') }}" aria-expanded="false">
                         <span>
@@ -183,6 +176,34 @@
                             <i class="ti ti-aperture"></i>
                         </span>
                         <span class="hide-menu">Verifikasi Soal UAS </span>
+                    </a>
+                </li>
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Dosen Pengampu</span>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('DosenPengampuMatkul') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Dosen Pengampu Matkul </span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('rps') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Upload RPS </span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('ver_soal_uas') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Upload Soal UAS </span>
                     </a>
                 </li>
                 <li class="nav-small-cap">
