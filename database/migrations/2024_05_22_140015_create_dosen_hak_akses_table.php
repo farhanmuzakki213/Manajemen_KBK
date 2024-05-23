@@ -11,20 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ver_uas', function (Blueprint $table) {
-            $table->bigInteger('id_ver_uas')->primary();
-            $table->bigInteger('rep_uas_id');
+        Schema::create('dosen_hak_akses', function (Blueprint $table) {
+            $table->bigInteger('id_dosen_hak_akses')->primary();
             $table->bigInteger('dosen_id');
-            $table->string('file');
-            $table->enum('status_ver_uas', ['diverifikasi', 'tidak diverifikasi']);
-            $table->text('catatan')->nullable();
-            $table->date('tanggal_diverifikasi');
+            $table->bigInteger('hak_akses_id');
         });
 
-        Schema::table('ver_uas', function (Blueprint $table) {
+        Schema::table('dosen_hak_akses', function (Blueprint $table) {
             $table->foreign('dosen_id')->references('id_dosen')->on('dosen')
                     ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('rep_uas_id')->references('id_rep_uas')->on('rep_uas')
+            $table->foreign('hak_akses_id')->references('id_hak_akses')->on('hak_akses')
                     ->onUpdate('cascade')->onDelete('cascade');
         });
     }
@@ -34,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ver_uas');
+        Schema::dropIfExists('dosen_hak_akses');
     }
 };

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->bigInteger('jurusan_id');
             $table->bigInteger('dosen_id');
             $table->string('periode');
-            $table->enum('status_pimpinan_jurusan', ['0', '1'])->default(1)->comment('0: Tidak Aktif, 1: Aktif');
+            $table->enum('status_pimpinan_jurusan', ['0', '1'])->default(1);
         });
 
         Schema::table('pimpinan_jurusan', function (Blueprint $table) {
