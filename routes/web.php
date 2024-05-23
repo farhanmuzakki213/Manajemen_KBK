@@ -19,6 +19,7 @@ use App\Http\Controllers\PimpinanJurusan;
 use App\Http\Controllers\PimpinanProdi;
 use App\Http\Controllers\Rep_RPSController;
 use App\Http\Controllers\Rep_Soal_UASController;
+use App\Http\Controllers\RpsController;
 use App\Http\Controllers\Ver_RPSController;
 use App\Http\Controllers\Ver_Soal_UASController;
 use Illuminate\Routing\Route as RoutingRoute;
@@ -182,4 +183,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // Verifikasi Soal_UAS
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/verifikasi_soal_uas', [Ver_Soal_UASController::class, 'index'])->middleware(['auth', 'verified'])->name('ver_soal_uas');
+});
+
+// RPS
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/upload_rps', [RpsController::class, 'index'])->middleware(['auth', 'verified'])->name('rps');
+    Route::post('/upload_rps/store', [RpsController::class, 'store'])->middleware(['auth', 'verified'])->name('rps.store');
+    Route::get('/upload_rps/create', [RpsController::class, 'create'])->middleware(['auth', 'verified'])->name('rps.create');
+    Route::get('/upload_rps/edit/{id}', [RpsController::class, 'edit'])->middleware(['auth', 'verified'])->name('rps.edit');
+    Route::put('/upload_rps/update/{id}', [RpsController::class, 'update'])->middleware(['auth', 'verified'])->name('rps.update');
+    Route::get('/upload_rps/show/{id}', [RpsController::class, 'show'])->middleware(['auth', 'verified'])->name('rps.show');
+    Route::delete('/upload_rps/delete/{id}', [RpsController::class, 'delete'])->middleware(['auth', 'verified'])->name('rps.delete');
 });
