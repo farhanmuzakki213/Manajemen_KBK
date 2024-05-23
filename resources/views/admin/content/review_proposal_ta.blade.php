@@ -38,19 +38,30 @@
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        @foreach ($data_hasil_review_proposal_ta as $data)
+                                        @foreach ($data_review_proposal_ta as $data)
                                             <tr class="table-Light">
                                                 <th>{{ $data->id_penugasan }}</th>
                                                 <th>{{ $data->nama }}</th>
                                                 <th>{{ $data->judul }}</th>
                                                 <th>{{ $data->tanggal_penugasan }}</th>
-                                                <th>{{ $data->status }}</th>
+                                                <th>
+                                                    @if ($data->status_review_proposal == 0)
+                                                        Di Ajukan
+                                                    @elseif ($data->status_review_proposal == 1)
+                                                        Di Tolak
+                                                    @elseif ($data->status_review_proposal == 2)
+                                                        Di Revisi
+                                                    @else
+                                                        Di Terima
+                                                    @endif
+                                                </th>
                                                 <th>
                                                     <a href="{{ route('review_proposal_ta.edit', ['id' => $data->id_penugasan]) }}"
                                                         class="btn btn-primary mb-2"><i
                                                             class="bi bi-pencil-square"></i>Review</a>
-                                                    <a href="{{ route('review_proposal_ta.edit', ['id' => $data->id_penugasan]) }}"
-                                                        class="btn btn-primary"><i class="bi bi-file-earmark-arrow-down"></i>File</a>
+                                                    <a href="{{ route('review_proposal_ta', ['id' => $data->id_penugasan]) }}"
+                                                        class="btn btn-primary"><i
+                                                            class="bi bi-file-earmark-arrow-down"></i>File</a>
                                                     {{-- <a data-bs-toggle="modal"
                                                         data-bs-target="#staticBackdrop{{ $data->id_penugasan }}"
                                                         class="btn btn-danger"><i class="bi bi-trash"></i></a> --}}

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ReviewProposalTAModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -12,17 +13,16 @@ class ReviewProposalTAController extends Controller
      */
     public function index()
     {
-        $data_hasil_review_proposal_ta = DB::table('hasil_review_proposal_ta')
-            ->join('penugasan_reviewer_proposal_ta', 'hasil_review_proposal_ta.penugasan_id', '=', 'penugasan_reviewer_proposal_ta.id_penugasan')
-            ->join('proposal_ta', 'penugasan_reviewer_proposal_ta.proposal_ta_id', '=', 'proposal_ta.id_proposal_ta')
-            ->join('dosen', 'penugasan_reviewer_proposal_ta.dosen_id', '=', 'dosen.id_dosen')
+        $data_review_proposal_ta = DB::table('review_proposal_ta')
+            ->join('proposal_ta', 'review_proposal_ta.proposal_ta_id', '=', 'proposal_ta.id_proposal_ta')
+            ->join('dosen', 'review_proposal_ta.dosen_id', '=', 'dosen.id_dosen')
             ->join('mahasiswa', 'proposal_ta.mahasiswa_id', '=', 'mahasiswa.id_mahasiswa')
-            ->select('hasil_review_proposal_ta.*', 'penugasan_reviewer_proposal_ta.*', 'proposal_ta.*', 'mahasiswa.*', 'dosen.*')
-            ->orderByDesc('id_hasil')
+            ->select('review_proposal_ta.*', 'review_proposal_ta.*', 'proposal_ta.*', 'mahasiswa.*', 'dosen.*')
+            ->orderByDesc('id_penugasan')
             ->get();
 
-        debug($data_hasil_review_proposal_ta);
-        return view('admin.content.review_proposal_ta', compact('data_hasil_review_proposal_ta'));
+        debug($data_review_proposal_ta);
+        return view('admin.content.review_proposal_ta', compact('data_review_proposal_ta'));
     }
 
     /**
@@ -46,7 +46,11 @@ class ReviewProposalTAController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data_dosen = DB::table('dosen')->get();
+        $data_mahasiswa = DB::table('mahasiswa')->get();
+        $data_proposal_ta = DB::table('proposal_ta')->get();
+
+        return view('admin.content.review_proposal_ta', compact('data_dosen', 'data_proposal_ta', 'data_mahasiswa'));
     }
 
     /**
@@ -54,7 +58,14 @@ class ReviewProposalTAController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data_dosen = DB::table('dosen')->get();
+        $data_mahasiswa = DB::table('mahasiswa')->get();
+        $data_proposal_ta = DB::table('proposal_ta')->get();
+        $data_review_proposal_ta = ReviewProposalTAModel::where('id_penugasan', $id)->first();
+
+        debug(compact('data_dosen', 'data_proposal_ta', 'data_review_proposal_ta', 'data_mahasiswa'));
+        return view('admin.content.form.review_proposal_ta_edit', compact('data_dosen', 'data_proposal_ta', 'data_review_proposal_ta', 'data_mahasiswa'));
+
     }
 
     /**

@@ -14,8 +14,8 @@ class VerRPSSeeder extends Seeder
     public function run(): void
     {
         $VerRPSData = [
-            [1, 1, 357, '', 1, '', '2023-12-25'],
-            [2, 2, 220, '', 1, '', '2024-02-12'],
+            [1, 1, 357, '', '0', '', '2023-12-25'],
+            [2, 2, 220, '', '0', '', '2024-02-12'],
         ];
 
         foreach ($VerRPSData as $data) {

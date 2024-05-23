@@ -16,7 +16,7 @@ return new class extends Migration
             $table->bigInteger('rep_rps_id');
             $table->bigInteger('dosen_id');
             $table->string('file');
-            $table->enum('status_ver_rps', ['0', '1'])->default(1)->comment('0: Tidak Diverifikasi, 1: Diverifikasi');
+            $table->enum('status_ver_rps', ['0', '1'])->default('0')->comment('0: Tidak Diverifikasi, 1: Diverifikasi');
             $table->text('catatan')->nullable();
             $table->date('tanggal_diverifikasi');
         });
