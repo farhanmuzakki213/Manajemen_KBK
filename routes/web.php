@@ -7,6 +7,7 @@ use App\Http\Controllers\PimpinanProdi;
 use App\Http\Controllers\RpsController;
 use App\Http\Controllers\UasController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Berita_Ver_UASController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\PimpinanJurusan;
 use App\Http\Controllers\ProdiController;
@@ -175,6 +176,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // Repositori Soal_UAS
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/repositori_soal_uas', [Rep_Soal_UASController::class, 'index'])->middleware(['auth', 'verified'])->name('rep_soal_uas');
+    Route::post('/repositori_soal_uas/store', [Rep_Soal_UASController::class, 'store'])->middleware(['auth', 'verified'])->name('rep_soal_uas.store');
 });
 
 // Verifikasi RPS
@@ -191,6 +193,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // Verifikasi Soal_UAS
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/verifikasi_soal_uas', [Ver_Soal_UASController::class, 'index'])->middleware(['auth', 'verified'])->name('ver_soal_uas');
+    Route::post('/verifikasi_soal_uas/store', [Ver_Soal_UASController::class, 'store'])->middleware(['auth', 'verified'])->name('ver_soal_uas.store');
+    Route::get('/verifikasi_soal_uas/create', [Ver_Soal_UASController::class, 'create'])->middleware(['auth', 'verified'])->name('ver_soal_uas.create');
+    Route::get('/verifikasi_soal_uas/edit/{id}', [Ver_Soal_UASController::class, 'edit'])->middleware(['auth', 'verified'])->name('ver_soal_uas.edit');
+    Route::put('/verifikasi_soal_uas/update/{id}', [Ver_Soal_UASController::class, 'update'])->middleware(['auth', 'verified'])->name('ver_soal_uas.update');
+    Route::get('/verifikasi_soal_uas/show/{id}', [Ver_Soal_UASController::class, 'show'])->middleware(['auth', 'verified'])->name('ver_soal_uas.show');
+    Route::delete('/verifikasi_soal_uas/delete/{id}', [Ver_Soal_UASController::class, 'delete'])->middleware(['auth', 'verified'])->name('ver_soal_uas.delete');
+});
+
+// Berita Acara Verifikasi Soal_UAS
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/Berita_Acara_verifikasi_soal_uas', [Berita_Ver_UASController::class, 'index'])->middleware(['auth', 'verified'])->name('berita_ver_uas');
 });
 
 // RPS
