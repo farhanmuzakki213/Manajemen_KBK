@@ -17,8 +17,8 @@
                             <form method="post" action="{{ route('review_proposal_ta.update', ['id' => $data_review_proposal_ta->id_penugasan]) }}" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
-                                <input type="number" class="form-control" id="id_penugasan" name="id_penugasan" value="{{ $data_review_proposal_ta->id_penugasan }}">                         
-                                <div class="mb-3">
+                                <input type="hidden" class="form-control" id="id_penugasan" name="id_penugasan" value="{{ $data_review_proposal_ta->id_penugasan }}">                         
+                                {{-- <div class="mb-3">
                                     <label for="nama_dosen" class="form-label">Nama Dosen</label>
                                     <select class="form-select" aria-label="Default select example" name="nama_dosen"
                                         id="nama_dosen" required>
@@ -33,7 +33,7 @@
                                     @error('nama_dosen')
                                         <small>{{ $message }}</small>
                                     @enderror
-                                </div>
+                                </div> --}}
                                 <div class="mb-3">
                                     <label for="status" class="form-label">Status</label><br>
                                     <div class="form-check form-check-inline">

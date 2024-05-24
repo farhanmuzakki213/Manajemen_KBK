@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('review_proposal_ta', function (Blueprint $table) {
             $table->bigInteger('id_penugasan')->primary();
             $table->bigInteger('proposal_ta_id');
-            $table->bigInteger('dosen_id');
+            $table->bigInteger('reviewer_satu');
+            $table->bigInteger('reviewer_dua');
             $table->enum('status_review_proposal', ['0', '1', '2', '3'])->default('0')->comment('0: Di Ajukan, 1: Di Tolak, 2: Di Revisi, 3: Di Terima');
             $table->text('catatan')->nullable();
             $table->date('tanggal_penugasan');
@@ -23,9 +24,11 @@ return new class extends Migration
 
         Schema::table('review_proposal_ta', function (Blueprint $table) {
             $table->foreign('proposal_ta_id')->references('id_proposal_ta')->on('proposal_ta')
-                    ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('dosen_id')->references('id_dosen')->on('dosen')
-                    ->onUpdate('cascade')->onDelete('cascade');
+                ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('reviewer_satu')->references('id_dosen')->on('dosen')
+                ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('reviewer_dua')->references('id_dosen')->on('dosen')
+                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id_ver_rps')->primary();
             $table->bigInteger('rep_rps_id');
             $table->bigInteger('dosen_id');
-            $table->string('file_verifikasi');
+            $table->string('file_verifikasi')->nullable();
             $table->enum('status_ver_rps', ['0', '1'])->default('0')->comment('0: Tidak Diverifikasi, 1: Diverifikasi');
             $table->text('catatan')->nullable();
             $table->date('tanggal_diverifikasi');

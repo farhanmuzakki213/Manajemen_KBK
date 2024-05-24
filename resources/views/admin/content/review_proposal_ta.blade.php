@@ -21,7 +21,6 @@
                                         <tr class="table-info">
                                             <th>#</th>
                                             <th>Nama Mahasiswa</th>
-                                            <th>Judul</th>
                                             <th>Tanggal Pengajuan</th>
                                             <th>Tanggal Review</th>
                                             <th>Status</th>
@@ -32,7 +31,6 @@
                                         <tr class="table-info">
                                             <th>#</th>
                                             <th>Nama Mahasiswa</th>
-                                            <th>Judul</th>
                                             <th>Tanggal Pengajuan</th>
                                             <th>Tanggal Review</th>
                                             <th>Status</th>
@@ -44,7 +42,6 @@
                                             <tr class="table-Light">
                                                 <th>{{ $data->id_penugasan }}</th>
                                                 <th>{{ $data->nama }}</th>
-                                                <th>{{ $data->judul }}</th>
                                                 <th>{{ $data->tanggal_penugasan }}</th>
                                                 <th>{{ $data->tanggal_review }}</th>
                                                 <th>
@@ -58,19 +55,22 @@
                                                         Di Terima
                                                     @endif
                                                 </th>
-                                                <th>
-                                                    <a href="{{ route('review_proposal_ta.edit', ['id' => $data->id_penugasan]) }}"
-                                                        class="btn btn-primary mb-2"><i
-                                                            class="bi bi-pencil-square"></i>Review</a>
-                                                    <a href="{{ route('review_proposal_ta', ['id' => $data->id_penugasan]) }}"
-                                                        class="btn btn-primary"><i
-                                                            class="bi bi-file-earmark-arrow-down"></i>File</a>
-                                                    {{-- <a data-bs-toggle="modal"
-                                                        data-bs-target="#staticBackdrop{{ $data->id_penugasan }}"
-                                                        class="btn btn-danger"><i class="bi bi-trash"></i></a> --}}
-                                                    {{-- <a data-bs-toggle="modal"
-                                                        data-bs-target="#detail"
-                                                        class="btn btn-secondary"><i class="bi bi-three-dots-vertical"></i></a> --}}
+                                                <th style="width: 10%;">
+                                                    <div class="row">
+                                                        <a href="{{ route('review_proposal_ta.edit', ['id' => $data->id_penugasan]) }}"
+                                                            class="btn btn-primary mb-2 d-flex align-items-center"><i
+                                                                class="bi bi-pencil-square"></i>Review</a>
+                                                        <a href="{{ route('review_proposal_ta', ['id' => $data->id_penugasan]) }}"
+                                                            class="btn btn-primary mb-2 d-flex align-items-center"><i
+                                                                class="bi bi-file-earmark-arrow-down"></i>File</a>
+                                                        {{-- <a data-bs-toggle="modal"
+                                                            data-bs-target="#staticBackdrop{{ $data->id_penugasan }}"
+                                                            class="btn btn-danger"><i class="bi bi-trash"></i></a> --}}
+                                                        <a data-bs-toggle="modal"
+                                                            data-bs-target="#detail{{ $data->id_penugasan }}"
+                                                            class="btn btn-primary d-flex align-items-center"><i
+                                                                class="bi bi-three-dots-vertical"></i>Detail</a>
+                                                    </div>
                                                 </th>
                                             </tr>
                                             {{-- Modal Konfirmasi hapus data --}}
@@ -86,8 +86,8 @@
                                                                 aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <p>Apakah kamu yakin ingin menghapus data user
-                                                                <b>{{ $data->nama_dosen }}</b>
+                                                            <p>Apakah kamu yakin ingin menghapus data ini?
+                                                                <b>{{ $data->nama }}</b>
                                                             </p>
                                                         </div>
                                                         <div class="modal-footer justify-content-between">
@@ -108,7 +108,7 @@
                                             </div>
 
                                             {{-- Modal Detail Tabel --}}
-                                            <div class="modal fade" id="detail" tabindex="-1"
+                                            <div class="modal fade" id="detail{{ $data->id_penugasan }}" tabindex="-1"
                                                 aria-labelledby="detailLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
@@ -120,21 +120,20 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="mb-3">
-                                                                <label for="nama_dosen" class="form-label">Nama
-                                                                    Dosen:</label>
+                                                                <label for="nama_dosen" class="form-label">Reviewer
+                                                                    1:</label>
                                                                 <input type="text" class="form-control" id="nama_dosen"
-                                                                    readonly>
+                                                                    value="{{ $data->reviewer_satu_nama}}" readonly>
                                                             </div>
                                                             <div class="mb-3">
-                                                                <label for="jenis_kbk" class="form-label">Jenis
-                                                                    KBK:</label>
-                                                                <input type="text" class="form-control" id="jenis_kbk"
-                                                                    readonly>
+                                                                <label for="nama_dosen" class="form-label">Reviewer
+                                                                    2:</label>
+                                                                <input type="text" class="form-control" id="nama_dosen"
+                                                                    value="{{ $data->reviewer_dua_nama }}" readonly>
                                                             </div>
                                                             <div class="mb-3">
-                                                                <label for="jabatan_kbk" class="form-label">Jabatan:</label>
-                                                                <input type="text" class="form-control" id="jabatan_kbk"
-                                                                    readonly>
+                                                                <label for="Judul" class="form-label">Judul</label>
+                                                                <textarea class="form-control" id="Judul" name="Judul" rows="3" readonly>{{ $data->judul }}</textarea>
                                                             </div>
                                                             <!-- tambahkan input untuk atribut lainnya jika diperlukan -->
                                                         </div>

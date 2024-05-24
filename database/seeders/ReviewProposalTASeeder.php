@@ -14,18 +14,19 @@ class ReviewProposalTASeeder extends Seeder
     public function run(): void
     {
         $PenugasanData = [
-            [1, 487, 122, NULL, '2024-03-17', '2024-03-17'],
-            [2, 729, 361, NULL, '2024-02-18', '2024-02-18']
+            [1, 487, 122, 127, NULL, '2024-03-17', '2024-03-17'],
+            [2, 729, 361, 160, NULL, '2024-02-18', '2024-02-18']
         ];
 
         foreach ($PenugasanData as $data) {
             DB::table('review_proposal_ta')->insert([
                 'id_penugasan' => $data[0],
                 'proposal_ta_id' => $data[1],
-                'dosen_id' => $data[2],
-                'catatan' => $data[3],
-                'tanggal_penugasan' => $data[4],
-                'tanggal_review' => $data[5]
+                'reviewer_satu' => $data[2],
+                'reviewer_dua' => $data[3],
+                'catatan' => $data[4],
+                'tanggal_penugasan' => $data[5],
+                'tanggal_review' => $data[6]
             ]);
         }
     }
