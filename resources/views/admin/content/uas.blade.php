@@ -62,11 +62,11 @@
                                                 <th>
                                                     
                                                         <a href="{{ route('soal_uas.edit', ['id' => $data->id_rep_uas]) }}"
-                                                            class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
+                                                            class="btn btn-primary mb-2"><i class="bi bi-pencil-square"></i></a>
                                                         <a data-bs-toggle="modal"
                                                             data-bs-target="#staticBackdrop{{ $data->id_rep_uas }}"
                                                             class="btn btn-danger"><i class="bi bi-trash"></i></a>
-                                                        <a data-bs-toggle="modal" data-bs-target="#detail{{ $data->id_rep_uas }}" class="btn btn-secondary"><i class="bi bi-three-dots-vertical"></i></a>
+                                                        {{-- <a data-bs-toggle="modal" data-bs-target="#detail{{ $data->id_rep_uas }}" class="btn btn-secondary"><i class="bi bi-three-dots-vertical"></i></a> --}}
         
                                                     {{-- <a data-bs-toggle="modal"
                                                         data-bs-target="#detail{{ $data->id_rep_uas }}"
