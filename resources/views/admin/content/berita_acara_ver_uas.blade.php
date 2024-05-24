@@ -4,15 +4,15 @@
         <div class="card">
             <div class="card-body">
                 <!-- Page Heading -->
-                <h5 class="card-title fw-semibold mb-4">Data Verifikasi Soal UAS</h5>
+                <h5 class="card-title fw-semibold mb-4">Berita Acara Verifikasi Soal UAS</h5>
                 <div class="container-fluid">
                     <!-- DataDosen -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <div class="card-header py-2">
                                 <div class="d-grid gap-2 d-md-block">
-                                    <a href="{{ route('ver_soal_uas.create') }}" class="btn btn-primary me-md-3"><i
-                                            class="bi bi-file-earmark-plus"></i> New</a>
+                                    {{-- <a href="{{ route('berita_acara_ver_uas.create') }}" class="btn btn-primary me-md-3"><i
+                                            class="bi bi-file-earmark-plus"></i> New</a> --}}
                                 </div>
                             </div>
                             <div class="card-body">
@@ -27,7 +27,7 @@
                                                 <th>File Verifikasi</th>
                                                 <th>Status</th>
                                                 <th>Tanggal Verifikasi</th>
-                                                <th>Aksi</th>
+                                            
                                             </tr>
                                         </thead>
                                         <tfoot>
@@ -39,7 +39,7 @@
                                                 <th>File Verifikasi</th>
                                                 <th>Status</th>
                                                 <th>Tanggal Verifikasi</th>
-                                                <th>Aksi</th>
+                                             
                                             </tr>
                                         </tfoot>
                                         <tbody>
@@ -60,7 +60,7 @@
                                                     </th>
                                                     <th>{{ $data->tanggal_diverifikasi }}</th>
 
-                                                    <th>
+                                                    {{-- <th>
                                                         <a href="{{ route('ver_soal_uas.edit', ['id' => $data->id_ver_uas]) }}"
                                                             class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
                                                         <a data-bs-toggle="modal"
@@ -70,10 +70,10 @@
                                                             data-bs-target="#detail{{ $data->id_ver_uas }}"
                                                             class="btn btn-secondary"><i
                                                                 class="bi bi-three-dots-vertical"></i></a>
-                                                    </th>
+                                                    </th> --}}
                                                 </tr>
                                                 {{-- Modal Konfirmasi hapus data --}}
-                                                <div class="modal fade" id="staticBackdrop{{ $data->id_ver_uas }}"
+                                                {{-- <div class="modal fade" id="staticBackdrop{{ $data->id_ver_uas }}"
                                                     data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                                                     aria-labelledby="staticBackdropLabel" aria-hidden="true">>
                                                     <div class="modal-dialog modal-dialog-centered">
@@ -105,9 +105,9 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> --}}
                                                 {{-- Modal Detail Tabel --}}
-                                                <div class="modal fade" id="detail{{ $data->id_ver_uas }}" tabindex="-1"
+                                                {{-- <div class="modal fade" id="detail{{ $data->id_ver_uas }}" tabindex="-1"
                                                     aria-labelledby="detailLabel" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered">
                                                         <div class="modal-content">
@@ -146,7 +146,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> --}}
                                             @endforeach
                                         </tbody>
                                     </table>
