@@ -171,6 +171,22 @@
                     <span class="hide-menu">Pengurus KBK</span>
                 </li>
                 <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('PenugasanReview') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Penugasan Review </span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('HasilReview') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Hasil Review </span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('ver_rps') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-aperture"></i>
@@ -184,14 +200,6 @@
                             <i class="ti ti-aperture"></i>
                         </span>
                         <span class="hide-menu">Verifikasi Soal UAS </span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('penugasan_review_proposal_ta') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-aperture"></i>
-                        </span>
-                        <span class="hide-menu">Review Proposal TA</span>
                     </a>
                 </li>
                 <li class="nav-small-cap">

@@ -2,22 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportHasil_final_proposal;
 use App\Models\ReviewProposalTAModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
-class HAsilReviewProposalTAController extends Controller
+class HAsilFinalProposalTAController extends Controller
 {
     
     public function index()
     {
         $data_review_proposal_ta = DB::table('review_proposal_ta')
             ->join('proposal_ta', 'review_proposal_ta.proposal_ta_id', '=', 'proposal_ta.id_proposal_ta')
-            ->join('dosen', 'review_proposal_ta.dosen_id', '=', 'dosen.id_dosen')
+            ->join('dosen as reviewer_satu', 'review_proposal_ta.reviewer_satu', '=', 'reviewer_satu.id_dosen')
+            ->join('dosen as reviewer_dua', 'review_proposal_ta.reviewer_dua', '=', 'reviewer_dua.id_dosen')
+            ->join('dosen as pembimbing_satu', 'proposal_ta.pembimbing_satu', '=', 'pembimbing_satu.id_dosen')
+            ->join('dosen as pembimbing_dua', 'proposal_ta.pembimbing_dua', '=', 'pembimbing_dua.id_dosen')
             ->join('mahasiswa', 'proposal_ta.mahasiswa_id', '=', 'mahasiswa.id_mahasiswa')
-            ->select('review_proposal_ta.*', 'review_proposal_ta.*', 'proposal_ta.*', 'mahasiswa.*', 'dosen.*')
-            ->orderByDesc('id_penugasan')
+            ->select('review_proposal_ta.*', 'proposal_ta.*', 'mahasiswa.*', 'reviewer_satu.nama_dosen as reviewer_satu_nama', 'reviewer_dua.nama_dosen as reviewer_dua_nama', 'pembimbing_satu.nama_dosen as pembimbing_satu_nama', 'pembimbing_dua.nama_dosen as pembimbing_dua_nama')
+            ->orderByDesc('review_proposal_ta.id_penugasan')
             ->get();
 
         debug($data_review_proposal_ta);
@@ -29,11 +35,7 @@ class HAsilReviewProposalTAController extends Controller
      */
     public function create()
     {
-        $data_dosen = DB::table('dosen')->get();
-        $data_mahasiswa = DB::table('mahasiswa')->get();
-        $data_proposal_ta = DB::table('proposal_ta')->get();
-
-        return view('admin.content.hasil_review_proposal_ta', compact('data_dosen', 'data_proposal_ta', 'data_mahasiswa'));
+        //
     }
 
     /**
@@ -49,11 +51,7 @@ class HAsilReviewProposalTAController extends Controller
      */
     public function show(string $id)
     {
-        $data_dosen = DB::table('dosen')->get();
-        $data_mahasiswa = DB::table('mahasiswa')->get();
-        $data_proposal_ta = DB::table('proposal_ta')->get();
-
-        return view('admin.content.hasil_review_proposal_ta', compact('data_dosen', 'data_proposal_ta', 'data_mahasiswa'));
+        //
     }
 
     /**
@@ -61,14 +59,8 @@ class HAsilReviewProposalTAController extends Controller
      */
     public function edit(string $id)
     {
-        $data_dosen = DB::table('dosen')->get();
-        // $data_mahasiswa = DB::table('mahasiswa')->get();
-        $data_proposal_ta = DB::table('proposal_ta')->get();
-        $data_review_proposal_ta = ReviewProposalTAModel::where('id_hasil', $id)->first();
-
-        debug(compact('data_dosen', 'data_proposal_ta', 'data_review_proposal_ta'));
-        return view('admin.content.form.hasil_review_proposal_ta_edit', compact('data_dosen', 'data_proposal_ta', 'data_review_proposal_ta'));
-
+        Session::flash('error', 'Status Review Proposal belum Di Terima');
+        return redirect()->route('hasil_review_proposal_ta');
     }
 
     /**
@@ -79,27 +71,25 @@ class HAsilReviewProposalTAController extends Controller
         {
             $validator = Validator::make($request->all(), [
                 'id_penugasan' => 'required',
-                'nama_dosen' => 'required',
                 'status' => 'required',
-                'catatan',
-                'date' => 'required|date',
             ]);
     
             if ($validator->fails()) {
                 return redirect()->back()->withInput()->withErrors($validator);
             }
             $data = [
-                'id_penugasan' => $request->id_hasil,
-                'dosen_id' => $request->nama_dosen,
-                'status_review_proposal' => $request->status,
-                'catatan' => $request->catatan,
-                'tanggal_review' => $request->date,
+                'id_penugasan' => $request->id_penugasan,
+                'status_final_proposal' => $request->status,
             ];
             //dd($request->all());
             ReviewProposalTAModel::where('id_penugasan', $id)->update($data);
             return redirect()->route('hasil_review_proposal_ta')->with('success', 'Data berhasil diperbarui.');
         }
-    }    
+    }
+    
+    public function export_excel(){
+        return Excel::download(new ExportHasil_final_proposal, "hasil_final_proposal.xlsx");
+    }
 
     /**
      * Remove the specified resource from storage.

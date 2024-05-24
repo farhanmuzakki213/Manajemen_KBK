@@ -12,14 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('review_proposal_ta', function (Blueprint $table) {
-            $table->bigInteger('id_penugasan')->primary();
+            $table->uuid('id_penugasan')->primary();
             $table->bigInteger('proposal_ta_id');
             $table->bigInteger('reviewer_satu');
             $table->bigInteger('reviewer_dua');
             $table->enum('status_review_proposal', ['0', '1', '2', '3'])->default('0')->comment('0: Di Ajukan, 1: Di Tolak, 2: Di Revisi, 3: Di Terima');
+            $table->enum('status_final_proposal', ['0', '1'])->default('0')->comment('0: Belum Final, 1: Final');
             $table->text('catatan')->nullable();
             $table->date('tanggal_penugasan');
-            $table->date('tanggal_review');
+            $table->date('tanggal_review')->nullable();
         });
 
         Schema::table('review_proposal_ta', function (Blueprint $table) {

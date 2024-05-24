@@ -26,8 +26,8 @@ use App\Http\Controllers\Pengurus_kbkController;
 use App\Http\Controllers\Rep_Soal_UASController;
 use App\Http\Controllers\Ver_Soal_UASController;
 use App\Http\Controllers\ReviewProposalTAController;
-use App\Http\Controllers\HAsilReviewProposalTAController;
-use App\Http\Controllers\PenugasanReviewProposalTAController;
+use App\Http\Controllers\HasilFinalProposalTAController;
+use App\Http\Controllers\PenugasanReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -226,22 +226,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/review_proposal_ta/delete/{id}', [ReviewProposalTAController::class, 'delete'])->middleware(['auth', 'verified'])->name('review_proposal_ta.delete');
 });
 
-// PenugsanReviewProposalTA
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/penugasan_review_proposal_ta', [PenugasanReviewProposalTAController::class, 'index'])->middleware(['auth', 'verified'])->name('penugasan_review_proposal_ta');
-    Route::post('/penugasan_review_proposal_ta/store', [PenugasanReviewProposalTAController::class, 'store'])->middleware(['auth', 'verified'])->name('penugasan_review_proposal_ta.store');
-    Route::get('/penugasan_review_proposal_ta/create', [PenugasanReviewProposalTAController::class, 'create'])->middleware(['auth', 'verified'])->name('penugasan_review_proposal_ta.create');
-    Route::get('/penugasan_review_proposal_ta/edit/{id}', [PenugasanReviewProposalTAController::class, 'edit'])->middleware(['auth', 'verified'])->name('penugasan_review_proposal_ta.edit');
-    Route::put('/penugasan_review_proposal_ta/update/{id}', [PenugasanReviewProposalTAController::class, 'update'])->middleware(['auth', 'verified'])->name('penugasan_review_proposal_ta.update');
-    Route::delete('/penugasan_review_proposal_ta/delete/{id}', [PenugasanReviewProposalTAController::class, 'delete'])->middleware(['auth', 'verified'])->name('penugasan_review_proposal_ta.delete');
-});
-
 // HasilReviewProposalTA
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/hasil_review_proposal_ta', [HAsilReviewProposalTAController::class, 'index'])->middleware(['auth', 'verified'])->name('hasil_review_proposal_ta');
-    Route::post('/hasil_review_proposal_ta/store', [HAsilReviewProposalTAController::class, 'store'])->middleware(['auth', 'verified'])->name('hasil_review_proposal_ta.store');
-    Route::get('/hasil_review_proposal_ta/create', [HAsilReviewProposalTAController::class, 'create'])->middleware(['auth', 'verified'])->name('hasil_review_proposal_ta.create');
-    Route::get('/hasil_review_proposal_ta/edit/{id}', [HAsilReviewProposalTAController::class, 'edit'])->middleware(['auth', 'verified'])->name('hasil_review_proposal_ta.edit');
-    Route::put('/hasil_review_proposal_ta/update/{id}', [HAsilReviewProposalTAController::class, 'update'])->middleware(['auth', 'verified'])->name('hasil_review_proposal_ta.update');
-    Route::delete('/hasil_review_proposal_ta/delete/{id}', [HAsilReviewProposalTAController::class, 'delete'])->middleware(['auth', 'verified'])->name('hasil_review_proposal_ta.delete');
+    Route::get('/hasil_review_proposal_ta', [HasilFinalProposalTAController::class, 'index'])->middleware(['auth', 'verified'])->name('hasil_review_proposal_ta');
+    Route::get('/hasil_review_proposal_ta/edit/{id}', [HasilFinalProposalTAController::class, 'edit'])->middleware(['auth', 'verified'])->name('hasil_review_proposal_ta.edit');
+    Route::put('/hasil_review_proposal_ta/update/{id}', [HasilFinalProposalTAController::class, 'update'])->middleware(['auth', 'verified'])->name('hasil_review_proposal_ta.update');
+    Route::get('/hasil_review_proposal_ta/export/excel', [HasilFinalProposalTAController::class, 'export_excel'])->name('hasil_review_proposal_ta.export');
+});
+// Penugasan Reviewer Proposal TA
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/PenugasanReview', [PenugasanReviewController::class, 'index'])->middleware(['auth', 'verified'])->name('PenugasanReview');
+    Route::post('/PenugasanReview/store', [PenugasanReviewController::class, 'store'])->middleware(['auth', 'verified'])->name('PenugasanReview.store');
+    Route::get('/PenugasanReview/create', [PenugasanReviewController::class, 'create'])->middleware(['auth', 'verified'])->name('PenugasanReview.create');
+    Route::get('/PenugasanReview/edit/{id}', [PenugasanReviewController::class, 'edit'])->middleware(['auth', 'verified'])->name('PenugasanReview.edit');
+    Route::put('/PenugasanReview/update/{id}', [PenugasanReviewController::class, 'update'])->middleware(['auth', 'verified'])->name('PenugasanReview.update');
+    Route::delete('/PenugasanReview/delete/{id}', [PenugasanReviewController::class, 'delete'])->middleware(['auth', 'verified'])->name('PenugasanReview.delete');
+});
+
+// Hasil Review Proposal TA
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/HasilReview', [PenugasanReviewController::class, 'hasil'])->middleware(['auth', 'verified'])->name('HasilReview');
+
 });

@@ -19,8 +19,10 @@ class ReviewProposalTASeeder extends Seeder
         ];
 
         foreach ($PenugasanData as $data) {
+            $prefix = 'PR';
+            $nextNumber = $this->getNextNumber($prefix);
             DB::table('review_proposal_ta')->insert([
-                'id_penugasan' => $data[0],
+                'id_penugasan' => $prefix . $nextNumber,
                 'proposal_ta_id' => $data[1],
                 'reviewer_satu' => $data[2],
                 'reviewer_dua' => $data[3],
@@ -29,5 +31,22 @@ class ReviewProposalTASeeder extends Seeder
                 'tanggal_review' => $data[6]
             ]);
         }
+    }
+    private function getNextNumber($prefix)
+    {
+        // Ambil ID terakhir dengan prefix yang sama
+        $lastEntry = DB::table('review_proposal_ta')
+            ->where('id_penugasan', 'like', $prefix . '%')
+            ->orderBy('id_penugasan', 'desc')
+            ->first();
+
+        // Jika tidak ada entri sebelumnya, kembalikan angka pertama
+        if (!$lastEntry) {
+            return 1;
+        }
+
+        // Ambil angka terakhir dari ID terakhir dan tambahkan 1
+        $lastNumber = intval(substr($lastEntry->id_penugasan, strlen($prefix)));
+        return $lastNumber + 1;
     }
 }

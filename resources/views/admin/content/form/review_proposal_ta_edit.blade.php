@@ -17,23 +17,7 @@
                             <form method="post" action="{{ route('review_proposal_ta.update', ['id' => $data_review_proposal_ta->id_penugasan]) }}" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
-                                <input type="hidden" class="form-control" id="id_penugasan" name="id_penugasan" value="{{ $data_review_proposal_ta->id_penugasan }}">                         
-                                {{-- <div class="mb-3">
-                                    <label for="nama_dosen" class="form-label">Nama Dosen</label>
-                                    <select class="form-select" aria-label="Default select example" name="nama_dosen"
-                                        id="nama_dosen" required>
-                                        <option selected disabled>Pilih Nama Dosen</option>
-                                        @foreach ($data_dosen as $dosen)
-                                            <option value="{{ $dosen->id_dosen }}"
-                                                {{ $dosen->id_dosen == $data_review_proposal_ta->dosen_id ? 'selected' : '' }}>
-                                                {{ $dosen->nama_dosen }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('nama_dosen')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </div> --}}
+                                <input type="hidden" class="form-control" id="id_penugasan" name="id_penugasan" value="{{ $data_review_proposal_ta->id_penugasan }}">
                                 <div class="mb-3">
                                     <label for="status" class="form-label">Status</label><br>
                                     <div class="form-check form-check-inline">

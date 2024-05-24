@@ -75,7 +75,7 @@ class Ver_RPSController extends Controller
             'nama_matkul' => 'required',
             'nama_dosen' => 'required',
             'upload_file' => 'nullable|mimes:pdf', // File tidak wajib diunggah
-            'status_ver_rps' => 'nullable',
+            'status' => 'nullable',
             'catatan' => 'nullable',
             'date' => 'required|date',
         ]);
@@ -101,7 +101,7 @@ class Ver_RPSController extends Controller
 
         // Menyimpan catatan hanya jika diisi
         $catatan = $request->filled('catatan') ? $request->catatan : null;
-        $status_ver_rps = $request->filled('status_ver_rps') ? $request->status_ver_rps : null;
+        $status = $request->filled('status') ? $request->status : null;
 
         $data = [
             'id_ver_rps' => $request->id_ver_rps,
@@ -114,8 +114,8 @@ class Ver_RPSController extends Controller
         if ($filename !== '') {
             $data['file_verifikasi'] = $filename;
         }
-        if ($status_ver_rps !== null) {
-            $data['status_ver_rps'] = $status_ver_rps;
+        if ($status !== null) {
+            $data['status_ver_rps'] = $status;
         }
 
         // Hanya menambahkan field 'catatan' jika diisi
@@ -169,7 +169,7 @@ class Ver_RPSController extends Controller
             'nama_matkul' => 'required',
             'nama_dosen' => 'required',
             'upload_file' => 'nullable|mimes:pdf', // File tidak wajib diunggah
-            'status_ver_rps' => 'nullable',
+            'status' => 'nullable',
             'catatan' => 'nullable',
             'date' => 'required|date',
         ]);
@@ -204,7 +204,7 @@ class Ver_RPSController extends Controller
 
         // Menyimpan catatan hanya jika diisi
         $catatan = $request->filled('catatan') ? $request->catatan : null;
-        $status_ver_rps = $request->filled('status_ver_rps') ? $request->status_ver_rps : null;
+        $status = $request->filled('status') ? $request->status : null;
 
         $data = [
             'id_ver_rps' => $request->id_ver_rps,
@@ -219,8 +219,8 @@ class Ver_RPSController extends Controller
         }
 
         // Hanya menambahkan field 'status_ver_rps' jika diisi
-        if ($status_ver_rps !== null) {
-            $data['status_ver_rps'] = $status_ver_rps;
+        if ($status !== null) {
+            $data['status_ver_rps'] = $status;
         }
 
         // Hanya menambahkan field 'catatan' jika diisi

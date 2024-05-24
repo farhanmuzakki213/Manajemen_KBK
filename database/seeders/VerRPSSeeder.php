@@ -11,24 +11,6 @@ class VerRPSSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    /* public function run(): void
-    {
-        $VerRPSData = [
-            [1, 1, 357, '0', '', '2023-12-25'],
-            [2, 2, 220, '0', '', '2024-02-12'],
-        ];
-
-        foreach ($VerRPSData as $data) {
-            DB::table('ver_rps')->insert([
-                'id_ver_rps' => $data[0],
-                'rep_rps_id' => $data[1],
-                'dosen_id' => $data[2],
-                'status_ver_rps' => $data[3],
-                'catatan' => $data[4],
-                'tanggal_diverifikasi' => $data[5]
-            ]);
-        }
-    } */
     public function run(): void
     {
         $VerRPSData = [
