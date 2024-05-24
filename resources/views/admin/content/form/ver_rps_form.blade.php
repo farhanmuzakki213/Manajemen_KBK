@@ -17,8 +17,8 @@
                             <form method="post" action="{{ route('ver_rps.store') }}"  enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="id_ver_rps" class="form-label">ID Verifikasi RPS</label>
-                                    <input type="number" class="form-control" id="id_ver_rps" name="id_ver_rps">
+                                    {{-- <label for="id_ver_rps" class="form-label">ID Verifikasi RPS</label> --}}
+                                    <input type="hidden" class="form-control" id="id_ver_rps" name="id_ver_rps" value="{{ 'VRPS' . $nextNumber }}" readonly>
                                     @error('id_ver_rps')
                                         <small>{{ $message }}</small>
                                     @enderror
@@ -41,8 +41,8 @@
                                     <select class="form-select" aria-label="Default select example" name="nama_matkul"
                                         id="nama_matkul" required>
                                         <option selected disabled>Pilih Nama Mata Kuliah</option>
-                                        @foreach ($data_matkul as $matkul)
-                                            <option value="{{ $matkul->id_matkul }}">{{ $matkul->nama_matkul }}</option>
+                                        @foreach ($data_rep_rps as $rep_rps)
+                                            <option value="{{ $rep_rps->id_matkul && $rep_rps->id_rep_rps}}">{{ $rep_rps->kode_matkul }} | {{ $rep_rps->nama_matkul }}</option>
                                         @endforeach
                                     </select>
                                     @error('nama_matkul')
@@ -50,7 +50,7 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="upload_file" class="form-label">Upload File</label>
+                                    <label for="upload_file" class="form-label">Upload File Verifikasi</label>
                                     <input type="file" class="form-control" id="upload_file" name="upload_file">
                                     @error('upload_file')
                                         <small>{{ $message }}</small>
@@ -79,10 +79,10 @@
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>
-                                <label for="date" class=" col-form-label">Tanggal Verifikasi</label>
+                                {{-- <label for="date" class=" col-form-label">Tanggal Verifikasi</label> --}}
                                 <div class="col-5 mb-3">
                                     <div class="input-group date">
-                                        <input type="date" class="form-control" id="date" name="date" />
+                                        <input type="hidden" class="form-control" id="date" name="date" value="{{ \Carbon\Carbon::now()->toDateString() }}"/>
                                     </div>
                                     @error('date')
                                         <small>{{ $message }}</small>
