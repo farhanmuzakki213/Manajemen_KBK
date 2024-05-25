@@ -748,7 +748,7 @@ class ProposalTASeeder extends Seeder
                 'mahasiswa_id' => $data[1],
                 'judul' => $data[2],
                 'status_proposal_ta' => $data[3],
-                'file' => $data[4],
+                'file_proposal' => $data[4],
                 'pembimbing_satu' => $data[5],
                 'pembimbing_dua' => $data[6]
             ]);

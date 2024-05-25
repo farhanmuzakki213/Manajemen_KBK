@@ -7,7 +7,6 @@ use App\Http\Controllers\PimpinanProdi;
 use App\Http\Controllers\RpsController;
 use App\Http\Controllers\UasController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\Berita_Ver_UASController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\PimpinanJurusan;
 use App\Http\Controllers\ProdiController;
@@ -21,14 +20,16 @@ use App\Http\Controllers\DosenPengampuMatkul;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\MatkulKBKController;
 use Illuminate\Routing\Route as RoutingRoute;
+use App\Http\Controllers\ProposalTAController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\ThnAkademikController;
 use App\Http\Controllers\Pengurus_kbkController;
 use App\Http\Controllers\Rep_Soal_UASController;
 use App\Http\Controllers\Ver_Soal_UASController;
+use App\Http\Controllers\Berita_Ver_UASController;
+use App\Http\Controllers\PenugasanReviewController;
 use App\Http\Controllers\ReviewProposalTAController;
 use App\Http\Controllers\HasilFinalProposalTAController;
-use App\Http\Controllers\PenugasanReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -228,6 +229,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/upload_soal_uas/delete/{id}', [UasController::class, 'delete'])->middleware(['auth', 'verified'])->name('soal_uas.delete');
 });
 
+// ProposalTA
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/proposal_ta', [ProposalTAController::class, 'index'])->middleware(['auth', 'verified'])->name('proposal_ta');
+    Route::post('/proposal_ta/store', [ProposalTAController::class, 'store'])->middleware(['auth', 'verified'])->name('proposal_ta.store');
+    Route::get('/proposal_ta/create', [ProposalTAController::class, 'create'])->middleware(['auth', 'verified'])->name('proposal_ta.create');
+    Route::get('/proposal_ta/edit/{id}', [ProposalTAController::class, 'edit'])->middleware(['auth', 'verified'])->name('proposal_ta.edit');
+    Route::put('/proposal_ta/update/{id}', [ProposalTAController::class, 'update'])->middleware(['auth', 'verified'])->name('proposal_ta.update');
+    Route::delete('/proposal_ta/delete/{id}', [ProposalTAController::class, 'delete'])->middleware(['auth', 'verified'])->name('proposal_ta.delete');
+});
 
 // ReviewProposalTA
 Route::middleware(['auth', 'verified'])->group(function () {
