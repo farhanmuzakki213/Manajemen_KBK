@@ -4,7 +4,7 @@
         <div class="card">
             <div class="card-body">
                 <!-- Page Heading -->
-                <h5 class="card-title fw-semibold mb-4">Data Repositori uas</h5>
+                <h5 class="card-title fw-semibold mb-4">Data UAS</h5>
                 @if (Session::has('success'))
                     <div id="delay" class="alert alert-success" role="alert">
                         {{ Session::get('success') }}
@@ -24,7 +24,7 @@
                     }, 5000); // 5000 milliseconds = 5 detik
                 </script>
                 <div class="container-fluid">
-                    <!-- Datauas -->
+                    <!-- DataRPS -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Aksi</h6>
@@ -37,8 +37,10 @@
                                             <th>#</th>
                                             <th>Mata Kuliah</th>
                                             <th>Semester</th>
-                                            <th>Dosen</th>
-                                            {{-- <th>Status</th> --}}
+                                            <th>Dosen Upload</th>
+                                            <th>Prodi</th>
+                                            <th>Dosen Verifikasi</th>
+                                            <th>Status</th>
                                             <th>Aksi</th>
 
                                         </tr>
@@ -49,48 +51,90 @@
                                             <th>#</th>
                                             <th>Mata Kuliah</th>
                                             <th>Semester</th>
-                                            <th>Dosen</th>
-                                            {{-- <th>Status</th> --}}
+                                            <th>Dosen Upload</th>
+                                            <th>Prodi</th>
+                                            <th>Dosen Verifikasi</th>
+                                            <th>Status</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
                                         @foreach ($data_rep_soal_uas as $data)
                                             <tr class="table-Light">
-                                                <th>{{ $data->rep_uas_id }}</th>
+                                                <th>{{ $data->id_rep_uas }}</th>
                                                 <th>{{ $data->nama_matkul }}</th>
                                                 <th>{{ $data->semester }}</th>
-                                                <th>{{ $data->nama_dosen }}</th>
-                                                {{-- <th>
+                                                <th>{{ $data->nama_dosen_upload }}</th>
+                                                <th>{{ $data->prodi }}</th>
+                                                <th>{{ $data->nama_dosen_verifikasi }}</th>
+                                                <th>
                                                     @if ($data->status_ver_uas == 0)
                                                         Tidak Diverifikasi
                                                     @else
                                                         Diverifikasi
                                                     @endif
-                                                </th> --}}
+                                                </th>
                                                 <th>
                                                     <a data-bs-toggle="modal"
                                                         data-bs-target="#detail{{ $data->id_rep_uas }}"
-                                                        class="btn btn-secondary"><i
-                                                            class="bi bi-three-dots-vertical"></i></a>
+                                                        class="btn btn-secondary d-flex align-items-center"><i
+                                                                class="bi bi-three-dots-vertical"></i>Detail</a>
                                                 </th>
                                             </tr>
-                                            <div class="modal fade" id="detail{{ $data->id_rep_uas }}" aria-hidden="true"
-                                                aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                                            <div class="modal fade" id="detail{{ $data->id_rep_uas }}" tabindex="-1" aria-labelledby="detailLabel"
+                                                aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Detail</h1>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        <div class="modal-header bg-primary text-white">
+                                                            <h5 class="modal-title" id="detailLabel">Detail UAS</h5>
+                                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                                                                 aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            isi detail uas beserta file
+                                                            <div class="mb-3">
+                                                                <label for="nama_matkul" class="form-label">Mata Kuliah</label>
+                                                                <input type="text" class="form-control" id="nama_matkul" value="{{ $data->nama_matkul }}"
+                                                                    readonly>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="semester" class="form-label">Semester</label>
+                                                                <input type="text" class="form-control" id="semester" value="{{ $data->semester }}" readonly>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="dosen_upload" class="form-label">Dosen Upload</label>
+                                                                <input type="text" class="form-control" id="dosen_upload" value="{{ $data->nama_dosen_upload }}" readonly>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="prodi" class="form-label">Program Studi</label>
+                                                                <input type="text" class="form-control" id="prodi" value="{{ $data->prodi }}" readonly>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="dosen_verifikasi" class="form-label">Dosen Verifikasi</label>
+                                                                <input type="text" class="form-control" id="dosen_verifikasi" value="{{ $data->nama_dosen_verifikasi }}" readonly>
+                                                            </div>
+                                                          
+                                                            <div class="mb-3">
+                                                                <label for="status" class="form-label">Status Proposal</label>
+                                                                <input type="text" class="form-control" id="status"
+                                                                    value="{{ $data->status_ver_uas == 0 ? 'Tidak Diverifikasi' : ($data->status_ver_uas == 1 ? 'Diverifikasi' : '') }}"
+                                                                    readonly>
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label for="created_at" class="form-label">Tanggal Di Upload</label>
+                                                                <input type="text" class="form-control" id="created_at" value="{{ \Carbon\Carbon::parse($data->created_at)->format('Y-m-d') }}" readonly>
+                                                            </div>
+                                                            
+                                                            <div class="mb-3">
+                                                                <label for="tanggal_diverifikasi" class="form-label">Tanggal Verifikasi</label>
+                                                                <input type="text" class="form-control" id="tanggal_diverifikasi" value="{{ $data->tanggal_diverifikasi }}" readonly>
+                                                            </div>
+                                    
+                                                            
+                                                            
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button class="btn btn-primary"
-                                                                data-bs-target="#exampleModalToggle2"
-                                                                data-bs-toggle="modal">Verifikasi</button>
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -13,11 +13,14 @@ class Rep_Soal_UASController extends Controller
     public function index()
     {
         $data_rep_soal_uas = DB::table('ver_uas')
-        ->join('dosen', 'ver_uas.dosen_id', '=', 'dosen.id_dosen')
         ->join('rep_uas', 'ver_uas.rep_uas_id', '=', 'rep_uas.id_rep_uas')
-        ->join('matkul', 'rep_uas.matkul_id', '=', 'matkul.id_matkul')
         ->join('smt_thnakd', 'rep_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
-        ->select('ver_uas.*', 'ver_uas.*', 'rep_uas.*', 'dosen.*', 'matkul.*', 'smt_thnakd.*')
+        // ->join('ver_rps', 'rep_rps.ver_rps_id', '=', 'ver_rps.id_ver_rps')
+        ->join('matkul', 'rep_uas.matkul_id', '=', 'matkul.id_matkul')
+        ->join('dosen as dosen_upload', 'rep_uas.dosen_id', '=', 'dosen_upload.id_dosen')
+        ->join('prodi', 'dosen_upload.prodi_id', '=', 'prodi.id_prodi')
+        ->join('dosen as dosen_verifikasi', 'ver_uas.dosen_id', '=', 'dosen_verifikasi.id_dosen')
+        ->select('ver_uas.*', 'rep_uas.*', 'dosen_upload.nama_dosen as nama_dosen_upload', 'prodi.*', 'dosen_verifikasi.nama_dosen as nama_dosen_verifikasi', 'matkul.*','smt_thnakd.*')
         ->where('smt_thnakd.status_smt_thnakd', '=', '1')
         ->orderByDesc('id_ver_uas')
         ->get();

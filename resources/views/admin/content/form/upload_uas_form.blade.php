@@ -18,11 +18,13 @@
                                 @csrf
                                 <div class="mb-3">
                                     <label for="id_rep_uas" class="form-label">ID Repositori UAS</label>
-                                    <input type="number" class="form-control" id="id_rep_uas" name="id_rep_uas" value="{{ 'VRPS' . $nextNumber }}" readonly>
+                                    <input type="text" class="form-control" id="id_rep_uas" name="id_rep_uas" value="{{ $nextNumber }}" readonly>
                                     @error('id_rep_uas')
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>
+                                
+                                
                                 <div class="mb-3">
                                     <label for="nama_matkul" class="form-label">Mata Kuliah</label>
                                     <select class="form-select" aria-label="Default select example" name="nama_matkul" id="nama_matkul" required>

@@ -18,7 +18,7 @@
                                 @csrf
                                 <div class="mb-3">
                                     <label for="id_rep_rps" class="form-label">ID RPS</label>
-                                    <input type="text" class="form-control" id="id_rep_rps" name="id_rep_rps" value="{{ 'VRPS' . $nextNumber }}"readonly>
+                                    <input type="text" class="form-control" id="id_rep_rps" name="id_rep_rps" value="{{ 'RRPS' . $nextNumber }}"readonly>
                                     @error('id_rep_rps')
                                         <small>{{ $message }}</small>
                                     @enderror

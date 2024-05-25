@@ -40,10 +40,10 @@ class Upload_UasController extends Controller
         $data_dosen = DB::table('dosen')->get();
         $data_matkul = DB::table('matkul')->get();
         // $data_ver_uas = DB::table('ver_uas')->get();
-
+    
         return view('admin.content.form.upload_uas_form', compact('data_thnakd', 'data_dosen', 'data_matkul', 'nextNumber'));
     }
-
+    
     private function getNextNumber($prefix)
     {
         // Ambil ID terakhir dengan prefix yang sama
@@ -51,15 +51,15 @@ class Upload_UasController extends Controller
             ->where('id_rep_uas', 'like', $prefix . '%')
             ->orderBy('id_rep_uas', 'desc')
             ->first();
-
+    
         // Jika tidak ada entri sebelumnya, kembalikan angka pertama
         if (!$lastEntry) {
-            return 1;
+            return $prefix . '1';
         }
-
+    
         // Ambil angka terakhir dari ID terakhir dan tambahkan 1
         $lastNumber = intval(substr($lastEntry->id_rep_uas, strlen($prefix)));
-        return $lastNumber + 1;
+        return $prefix . ($lastNumber + 1);
     }
 
     /**
@@ -125,7 +125,7 @@ class Upload_UasController extends Controller
 
         $data_uas = Rep_UAS::where('id_rep_uas', $id)->first();
         //dd(compact('data_dosen', 'data_matkul', 'data_ver_uas'));
-        return view('admin.content.upload_form.uas_edit', compact('data_thnakd', 'data_dosen', 'data_matkul', 'data_uas'));
+        return view('admin.content.form.upload_uas_edit', compact('data_thnakd', 'data_dosen', 'data_matkul', 'data_uas'));
     }
 
     /**

@@ -17,8 +17,8 @@
                             <form method="post" action="{{ route('ver_rps.store') }}"  enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
-                                    {{-- <label for="id_ver_rps" class="form-label">ID Verifikasi RPS</label> --}}
-                                    <input type="hidden" class="form-control" id="id_ver_rps" name="id_ver_rps" value="{{ 'VRPS' . $nextNumber }}" readonly>
+                                    <label for="id_ver_rps" class="form-label">ID Verifikasi RPS</label>
+                                    <input type="text" class="form-control" id="id_ver_rps" name="id_ver_rps" value="{{ $nextNumber }}" readonly>
                                     @error('id_ver_rps')
                                         <small>{{ $message }}</small>
                                     @enderror

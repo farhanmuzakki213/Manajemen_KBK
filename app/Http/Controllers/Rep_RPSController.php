@@ -12,14 +12,17 @@ class Rep_RPSController extends Controller
      */
     public function index()
     {
-        $data_rep_rps = DB::table('rep_rps')
+        $data_rep_rps = DB::table('ver_rps')
+            ->join('rep_rps', 'ver_rps.rep_rps_id', '=', 'rep_rps.id_rep_rps')
             ->join('smt_thnakd', 'rep_rps.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
             // ->join('ver_rps', 'rep_rps.ver_rps_id', '=', 'ver_rps.id_ver_rps')
             ->join('matkul', 'rep_rps.matkul_id', '=', 'matkul.id_matkul')
-            ->join('dosen', 'rep_rps.dosen_id', '=', 'dosen.id_dosen')
-            ->select('rep_rps.*', 'dosen.*','matkul.*','smt_thnakd.*')
+            ->join('dosen as dosen_upload', 'rep_rps.dosen_id', '=', 'dosen_upload.id_dosen')
+            ->join('prodi', 'dosen_upload.prodi_id', '=', 'prodi.id_prodi')
+            ->join('dosen as dosen_verifikasi', 'ver_rps.dosen_id', '=', 'dosen_verifikasi.id_dosen')
+            ->select('ver_rps.*', 'rep_rps.*', 'dosen_upload.nama_dosen as nama_dosen_upload', 'prodi.*', 'dosen_verifikasi.nama_dosen as nama_dosen_verifikasi', 'matkul.*','smt_thnakd.*')
             ->where('smt_thnakd.status_smt_thnakd', '=', '1')
-            ->orderByDesc('id_rep_rps')
+            ->orderByDesc('id_ver_rps')
             ->get();
             //dd($data_rep_rps);
         return view('admin.content.Rep_RPS', compact('data_rep_rps'));
