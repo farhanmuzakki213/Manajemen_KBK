@@ -27,6 +27,10 @@ class MatkulSeeder extends Seeder
             ['23', 'RPL3602', 'Manajemen Proyek Perangkat Lunak', 'T/P', 4, 6, 3, 1, 3, 3, 6, 5],
             ['24', 'RPL3604', 'Proyek 3', 'P', 3, 9, 0, 3, 0, 9, 6, 5],
             ['25', 'RPL2601', 'Metodologi Penelitian', 'T', 3, 3, 3, 0, 3, 0, 6, 5],
+            ['26', 'CEN3110', 'Komunikasi Data', 'T', 2, 2, 2, 0, 2, 0, 2, 6],
+            ['27', 'CEN3304', 'Internet Of Things (IOT)', 'T/P', 3, 5, 2, 1, 2, 3, 4, 6],
+            ['28', 'ISY3403', 'Pemrograman Mobile', 'T/P', 3, 5, 2, 1, 2, 3, 4, 7],
+            ['29', 'ISY3405', 'Keamanan Sistem Informasi', 'T', 2, 2, 2, 0, 2, 0, 4, 7]
         ];
 
         foreach ($matkulData as $data) {
