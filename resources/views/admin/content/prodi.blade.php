@@ -5,6 +5,24 @@
             <div class="card-body">
                 <!-- Page Heading -->
                 <h5 class="card-title fw-semibold mb-4">Data Prodi</h5>
+                @if (Session::has('success'))
+                    <div id="delay" class="alert alert-success" role="alert">
+                        {{ Session::get('success') }}
+                    </div>
+                @endif
+                @if (Session::has('error'))
+                    <div id="delay" class="alert alert-danger" role="alert">
+                        {{ Session::get('error') }}
+                    </div>
+                @endif
+                <script>
+                    setTimeout(function() {
+                        var element = document.getElementById('delay');
+                        if (element) {
+                            element.parentNode.removeChild(element);
+                        }
+                    }, 5000); // 5000 milliseconds = 5 detik
+                </script>
                 <div class="container-fluid">
                     <!-- Data Prodi -->
                     <div class="card shadow mb-4">
