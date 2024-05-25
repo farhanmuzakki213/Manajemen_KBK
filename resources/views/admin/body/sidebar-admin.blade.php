@@ -24,9 +24,18 @@
                         <span class="hide-menu">Dashboard</span>
                     </a>
                 </li>
+                
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Table View</span>
+                    <span class="hide-menu">Admin</span>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('rep_proposal_ta') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Repositori Proposal TA </span>
+                    </a>
                 </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('dosen') }}" aria-expanded="false">
@@ -101,23 +110,9 @@
                         <span class="hide-menu">Pimpinan Prodi </span>
                     </a>
                 </li>
-
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Admin</span>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('proposal_ta') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-aperture"></i>
-                        </span>
-                        <span class="hide-menu">Proposal TA</span>
-                    </a>
-                </li>
-
-                <li class="nav-small-cap">
-                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Data Entry</span>
+                    <span class="hide-menu">Data Entry Admin</span>
                 </li>
                 {{-- <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('example')}}" aria-expanded="false">
@@ -150,6 +145,18 @@
                             <i class="ti ti-aperture"></i>
                         </span>
                         <span class="hide-menu">Data KBK </span>
+                    </a>
+                </li>
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Kepala Jurusan</span>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('rep_proposal_ta_jurusan') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Repositori Proposal TA Jurusan</span>
                     </a>
                 </li>
                 <li class="nav-small-cap">
