@@ -47,7 +47,6 @@ class MatkulSeeder extends Seeder
                 'jam_praktek' => $data[9],
                 'semester' => $data[10],
                 'kurikulum_id' => $data[11]
-                // 'smt_thnakd_id' => $data[12]
             ]);
         }
     }
