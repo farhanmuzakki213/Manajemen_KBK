@@ -21,11 +21,14 @@ class ExportPengurus_kbk implements FromCollection, WithHeadings
                 'jenis_kbk.jenis_kbk',
                 'jabatan_kbk.jabatan',
                 'dosen.nama_dosen',
-                'pengurus_kbk.status')
+                'pengurus_kbk.status_pengurus_kbk')
 
             ->orderBy('id_pengurus')
-            ->get();
-            
+            ->get()
+            ->map(function ($item) {
+                $item->status_pengurus_kbk = $item->status_pengurus_kbk == 0 ? 'Tidak Aktif' : 'Aktif';
+                return $item;
+            });
         return $data_pengurus_kbk;
     }
 
@@ -38,7 +41,7 @@ class ExportPengurus_kbk implements FromCollection, WithHeadings
             'jenis_kbk',
             'jabatan',
             'nama_dosen',
-            'status'
+            'status_pengurus_kbk'
         ];
     }
 }

@@ -24,9 +24,18 @@
                         <span class="hide-menu">Dashboard</span>
                     </a>
                 </li>
+                
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Table View</span>
+                    <span class="hide-menu">Admin</span>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('rep_proposal_ta') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Repositori Proposal TA </span>
+                    </a>
                 </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('dosen') }}" aria-expanded="false">
@@ -34,6 +43,14 @@
                             <i class="ti ti-aperture"></i>
                         </span>
                         <span class="hide-menu">Dosen</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('mahasiswa') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Mahasiswa</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
@@ -68,14 +85,7 @@
                         <span class="hide-menu">Tahun Akademik </span>
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('DosenPengampuMatkul') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-aperture"></i>
-                        </span>
-                        <span class="hide-menu">Dosen Pengampu Matkul </span>
-                    </a>
-                </li>
+             
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('kurikulum') }}" aria-expanded="false">
                         <span>
@@ -102,7 +112,7 @@
                 </li>
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Data Entry</span>
+                    <span class="hide-menu">Data Entry Admin</span>
                 </li>
                 {{-- <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('example')}}" aria-expanded="false">
@@ -139,6 +149,18 @@
                 </li>
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Kepala Jurusan</span>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('rep_proposal_ta_jurusan') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Repositori Proposal TA Jurusan</span>
+                    </a>
+                </li>
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                     <span class="hide-menu">Kepala Prodi</span>
                 </li>
                 <li class="sidebar-item">
@@ -157,9 +179,41 @@
                         <span class="hide-menu">Repositori Soal UAS </span>
                     </a>
                 </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('hasil_review_proposal_ta') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Hasil Review Proposal TA</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('berita_ver_uas') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Berita Acara Verifikasi UAS</span>
+                    </a>
+                </li>
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                     <span class="hide-menu">Pengurus KBK</span>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('PenugasanReview') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Penugasan Review </span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('HasilReview') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Hasil Review </span>
+                    </a>
                 </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('ver_rps') }}" aria-expanded="false">
@@ -175,6 +229,46 @@
                             <i class="ti ti-aperture"></i>
                         </span>
                         <span class="hide-menu">Verifikasi Soal UAS </span>
+                    </a>
+                </li>
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Dosen Pengampu</span>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('DosenPengampuMatkul') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Dosen Pengampu Matkul </span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('rps') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Upload RPS </span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('soal_uas') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Upload Soal UAS </span>
+                    </a>
+                </li>
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Dosen KBK</span>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('review_proposal_ta') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Review Proposal TA</span>
                     </a>
                 </li>
             </ul>

@@ -5,6 +5,24 @@
             <div class="card-body">
                 <!-- Page Heading -->
                 <h5 class="card-title fw-semibold mb-4">Data Repositori RPS</h5>
+                @if (Session::has('success'))
+                    <div id="delay" class="alert alert-success" role="alert">
+                        {{ Session::get('success') }}
+                    </div>
+                @endif
+                @if (Session::has('error'))
+                    <div id="delay" class="alert alert-danger" role="alert">
+                        {{ Session::get('error') }}
+                    </div>
+                @endif
+                <script>
+                    setTimeout(function() {
+                        var element = document.getElementById('delay');
+                        if (element) {
+                            element.parentNode.removeChild(element);
+                        }
+                    }, 5000); // 5000 milliseconds = 5 detik
+                </script>
                 <div class="container-fluid">
                     <!-- DataRPS -->
                     <div class="card shadow mb-4">
@@ -20,7 +38,7 @@
                                             <th>Mata Kuliah</th>
                                             <th>Semester</th>
                                             <th>Dosen</th>
-                                            <th>Status</th>
+                                            {{-- <th>Status</th> --}}
                                             <th>Aksi</th>
 
                                         </tr>
@@ -32,7 +50,7 @@
                                             <th>Mata Kuliah</th>
                                             <th>Semester</th>
                                             <th>Dosen</th>
-                                            <th>Status</th>
+                                            {{-- <th>Status</th> --}}
                                             <th>Aksi</th>
                                         </tr>
                                     </tfoot>
@@ -43,13 +61,13 @@
                                                 <th>{{ $data->nama_matkul }}</th>
                                                 <th>{{ $data->semester }}</th>
                                                 <th>{{ $data->nama_dosen }}</th>
-                                                <th>
+                                                {{-- <th>
                                                     @if ($data->status_ver_rps == 0)
                                                         Tidak Diverifikasi
                                                     @else
                                                         Diverifikasi
                                                     @endif
-                                                </th>
+                                                </th> --}}
                                                 <th>
                                                     <a data-bs-toggle="modal"
                                                         data-bs-target="#detail{{ $data->id_rep_rps }}"

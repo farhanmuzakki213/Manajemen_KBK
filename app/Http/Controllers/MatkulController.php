@@ -20,8 +20,8 @@ class MatkulController extends Controller
     {
         $data_matkul = DB::table('matkul')
             ->join('kurikulum', 'matkul.kurikulum_id', '=', 'kurikulum.id_kurikulum')
-            ->join('smt_thnakd', 'matkul.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
-            ->select('matkul.*', 'kurikulum.*', 'smt_thnakd.*')
+            // ->join('smt_thnakd', 'matkul.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
+            ->select('matkul.*', 'kurikulum.*')
             ->orderByDesc('id_matkul')
             ->get();
         return view('admin.content.Matkul', compact('data_matkul'));
@@ -43,9 +43,9 @@ class MatkulController extends Controller
     public function create()
     {
         $data_kurikulum = DB::table('kurikulum')->get();
-        $data_smt_thnakd = DB::table('smt_thnakd')->get();
+        // $data_smt_thnakd = DB::table('smt_thnakd')->get();
         //dd('$data_kurikulum');
-        return view('admin.content.form.matkul_form', compact('data_kurikulum', 'data_smt_thnakd'));
+        return view('admin.content.form.matkul_form', compact('data_kurikulum'));
     }
 
     /**
@@ -66,7 +66,7 @@ class MatkulController extends Controller
             'jam_praktek' => 'required',
             'semester' => 'required',
             'kurikulum' => 'required',
-            'smt_thnakd' => 'required',
+            // 'smt_thnakd' => 'required',
 
         ]);
 
@@ -85,7 +85,7 @@ class MatkulController extends Controller
             'jam_praktek' => $request->jam_praktek,
             'semester' => $request->semester,
             'kurikulum_id' => $request->kurikulum,
-            'smt_thnakd_id' => $request->smt_thnakd,
+            // 'smt_thnakd_id' => $request->smt_thnakd,
         ];
         Matkul::create($data);
         return redirect()->route('matkul');
@@ -99,9 +99,9 @@ class MatkulController extends Controller
 {
     $data_matkul = Matkul::findOrFail($id);
     $data_kurikulum = DB::table('kurikulum')->get();
-    $data_smt_thnakd = DB::table('smt_thnakd')->get();
+    // $data_smt_thnakd = DB::table('smt_thnakd')->get();
     //dd($data_smt_thnakd);
-    return view('admin.content.Matkul', compact('data_matkul', 'data_kurikulum', 'data_smt_thnakd'));
+    return view('admin.content.Matkul', compact('data_matkul', 'data_kurikulum'));
 }
 
 
@@ -111,13 +111,13 @@ class MatkulController extends Controller
     public function edit(string $id)
     {
         $data_kurikulum = DB::table('kurikulum')->get();
-        $data_smt_thnakd = DB::table('smt_thnakd')->get();
+        // $data_smt_thnakd = DB::table('smt_thnakd')->get();
         //dd('$data_kurikulum');
         //dd($data_smt_thnakd);
         $data_matkul = Matkul::where('id_matkul', $id)->first();
 
         //dd($data_matkul);
-        return view('admin.content.form.matkul_edit', compact('data_matkul', 'data_kurikulum', 'data_smt_thnakd'));
+        return view('admin.content.form.matkul_edit', compact('data_matkul', 'data_kurikulum'));
     }
 
     /**
@@ -138,7 +138,7 @@ class MatkulController extends Controller
             'jam_praktek' => 'required',
             'semester' => 'required',
             'kurikulum' => 'required',
-            'smt_thnakd' => 'required',
+            // 'smt_thnakd' => 'required',
 
         ]);
 
@@ -157,7 +157,7 @@ class MatkulController extends Controller
             'jam_praktek' => $request->jam_praktek,
             'semester' => $request->semester,
             'kurikulum_id' => $request->kurikulum,
-            'smt_thnakd_id' => $request->smt_thnakd,
+            // 'smt_thnakd_id' => $request->smt_thnakd,
         ];
         Matkul::where('id_matkul', $id)->update($data);
         return redirect()->route('matkul');

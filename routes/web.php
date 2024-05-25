@@ -1,27 +1,35 @@
 <?php
 
 
+use App\Http\Controllers\Kurikulum;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PimpinanProdi;
+use App\Http\Controllers\RpsController;
+use App\Http\Controllers\UasController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DosenController;
-use App\Http\Controllers\DosenPengampuMatkul;
-use App\Http\Controllers\JenisKbkController;
-use App\Http\Controllers\ProdiController;
-use App\Http\Controllers\JurusanController;
-use App\Http\Controllers\Kurikulum;
-use App\Http\Controllers\LandingPageController;
-use App\Http\Controllers\MatkulController;
-use App\Http\Controllers\MatkulKBKController;
-use App\Http\Controllers\ThnAkademikController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Pengurus_kbkController;
 use App\Http\Controllers\PimpinanJurusan;
-use App\Http\Controllers\PimpinanProdi;
+use App\Http\Controllers\ProdiController;
+use App\Http\Controllers\MatkulController;
+use App\Http\Controllers\JurusanController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Rep_RPSController;
-use App\Http\Controllers\Rep_Soal_UASController;
 use App\Http\Controllers\Ver_RPSController;
-use App\Http\Controllers\Ver_Soal_UASController;
+use App\Http\Controllers\JenisKbkController;
+use App\Http\Controllers\DosenPengampuMatkul;
+use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\MatkulKBKController;
 use Illuminate\Routing\Route as RoutingRoute;
+use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\ThnAkademikController;
+use App\Http\Controllers\Pengurus_kbkController;
+use App\Http\Controllers\Rep_Soal_UASController;
+use App\Http\Controllers\Ver_Soal_UASController;
+use App\Http\Controllers\Berita_Ver_UASController;
+use App\Http\Controllers\PenugasanReviewController;
+use App\Http\Controllers\ReviewProposalTAController;
+use App\Http\Controllers\HasilFinalProposalTAController;
+use App\Http\Controllers\KajurController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,18 +44,26 @@ use Illuminate\Routing\Route as RoutingRoute;
 
 Route::get('/', [LandingPageController::class, 'index']);
 
+// Detail Berita
+Route::get('/berita/{id_berita}', [LandingPageController::class, 'detail']);
+
 
 Route::get('/dashboard', function () {
     return view('admin.content.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+/* ---Admin Start--- */
 // Admin
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin/logout', [AdminController::class, 'destroy'])->name('admin.logout');
+    Route::get('/repositori_proposal_ta', [AdminController::class, 'RepProposalTA'])->name('rep_proposal_ta');
     Route::get('/example', [AdminController::class, 'example'])->name('example');
 });
 
-
+// Mahasiswa
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->middleware(['auth', 'verified'])->name('mahasiswa');
+});
 
 // Jurusan
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -71,6 +87,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dosen', [DosenController::class, 'index'])->name('dosen');
     Route::post('/dosen', [DosenController::class, 'store']);
     Route::get('/dosen/show/{id}', [DosenController::class, 'show'])->middleware(['auth', 'verified'])->name('dosen.show');
+});
+
+// Kurikulum
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/kurikulum', [Kurikulum::class, 'index'])->middleware(['auth', 'verified'])->name('kurikulum');
+});
+
+// Pimpinan Jurusan
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/pimpinamjurusan', [PimpinanJurusan::class, 'index'])->middleware(['auth', 'verified'])->name('pimpinanjurusan');
+});
+
+// Pimpinan Prodi
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/pimpinamprodi', [PimpinanProdi::class, 'index'])->middleware(['auth', 'verified'])->name('pimpinanprodi');
 });
 
 // Pengurus_KBK
@@ -122,6 +153,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/matkul-kbk/export/excel', [MatkulKBKController::class, 'export_excel'])->name('matkul_kbk.export');
     Route::post('/matkul-kbk/import', [MatkulKBKController::class, 'import'])->name('matkul_kbk.import');
 });
+/* Admin End */
 
 // Profil
 Route::middleware('auth')->group(function () {
@@ -132,27 +164,10 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-// Dosen Pengampu Matkul
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/DosenPengampuMatkul', [DosenPengampuMatkul::class, 'index'])->middleware(['auth', 'verified'])->name('DosenPengampuMatkul');
-    Route::get('/DosenPengampuMatkul/export/excel', [DosenPengampuMatkul::class, 'export_excel'])->name('DosenPengampuMatkul.export');
-});
 
-// Kurikulum
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/kurikulum', [Kurikulum::class, 'index'])->middleware(['auth', 'verified'])->name('kurikulum');
-});
 
-// Pimpinan Jurusan
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/pimpinamjurusan', [PimpinanJurusan::class, 'index'])->middleware(['auth', 'verified'])->name('pimpinanjurusan');
-});
 
-// Pimpinan Prodi
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/pimpinamprodi', [PimpinanProdi::class, 'index'])->middleware(['auth', 'verified'])->name('pimpinanprodi');
-});
-
+/* ---Kepala Prodi Start--- */
 // Repositori RPS
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/repositori_rps', [Rep_RPSController::class, 'index'])->middleware(['auth', 'verified'])->name('rep_rps');
@@ -163,6 +178,87 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // Repositori Soal_UAS
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/repositori_soal_uas', [Rep_Soal_UASController::class, 'index'])->middleware(['auth', 'verified'])->name('rep_soal_uas');
+    Route::post('/repositori_soal_uas/store', [Rep_Soal_UASController::class, 'store'])->middleware(['auth', 'verified'])->name('rep_soal_uas.store');
+});
+
+// HasilReviewProposalTA
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/hasil_review_proposal_ta', [HasilFinalProposalTAController::class, 'index'])->middleware(['auth', 'verified'])->name('hasil_review_proposal_ta');
+    Route::get('/hasil_review_proposal_ta/edit/{id}', [HasilFinalProposalTAController::class, 'edit'])->middleware(['auth', 'verified'])->name('hasil_review_proposal_ta.edit');
+    Route::put('/hasil_review_proposal_ta/update/{id}', [HasilFinalProposalTAController::class, 'update'])->middleware(['auth', 'verified'])->name('hasil_review_proposal_ta.update');
+    Route::get('/hasil_review_proposal_ta/export/excel', [HasilFinalProposalTAController::class, 'export_excel'])->name('hasil_review_proposal_ta.export');
+});
+
+// Berita Acara Verifikasi Soal_UAS
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/Berita_Acara_verifikasi_soal_uas', [Berita_Ver_UASController::class, 'index'])->middleware(['auth', 'verified'])->name('berita_ver_uas');
+});
+/* ---Kepala Prodi end */
+
+/* Dosen Pengampu Start*/
+// RPS
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/upload_rps', [RpsController::class, 'index'])->middleware(['auth', 'verified'])->name('rps');
+    Route::post('/upload_rps/store', [RpsController::class, 'store'])->middleware(['auth', 'verified'])->name('rps.store');
+    Route::get('/upload_rps/create', [RpsController::class, 'create'])->middleware(['auth', 'verified'])->name('rps.create');
+    Route::get('/upload_rps/edit/{id}', [RpsController::class, 'edit'])->middleware(['auth', 'verified'])->name('rps.edit');
+    Route::put('/upload_rps/update/{id}', [RpsController::class, 'update'])->middleware(['auth', 'verified'])->name('rps.update');
+    Route::get('/upload_rps/show/{id}', [RpsController::class, 'show'])->middleware(['auth', 'verified'])->name('rps.show');
+    Route::delete('/upload_rps/delete/{id}', [RpsController::class, 'delete'])->middleware(['auth', 'verified'])->name('rps.delete');
+});
+
+// UAS
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/upload_soal_uas', [UasController::class, 'index'])->middleware(['auth', 'verified'])->name('soal_uas');
+    Route::post('/upload_soal_uas/store', [UasController::class, 'store'])->middleware(['auth', 'verified'])->name('soal_uas.store');
+    Route::get('/upload_soal_uas/create', [UasController::class, 'create'])->middleware(['auth', 'verified'])->name('soal_uas.create');
+    Route::get('/upload_soal_uas/edit/{id}', [UasController::class, 'edit'])->middleware(['auth', 'verified'])->name('soal_uas.edit');
+    Route::put('/upload_soal_uas/update/{id}', [UasController::class, 'update'])->middleware(['auth', 'verified'])->name('soal_uas.update');
+    Route::get('/upload_soal_uas/show/{id}', [UasController::class, 'show'])->middleware(['auth', 'verified'])->name('soal_uas.show');
+    Route::delete('/upload_soal_uas/delete/{id}', [UasController::class, 'delete'])->middleware(['auth', 'verified'])->name('soal_uas.delete');
+});
+
+// Dosen Pengampu Matkul
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/DosenPengampuMatkul', [DosenPengampuMatkul::class, 'index'])->middleware(['auth', 'verified'])->name('DosenPengampuMatkul');
+    Route::get('/DosenPengampuMatkul/export/excel', [DosenPengampuMatkul::class, 'export_excel'])->name('DosenPengampuMatkul.export');
+});
+/* ---Dosen Pengampu End--- */
+
+
+
+/* ---Dosen KBK Start--- */
+
+// ReviewProposalTA
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/review_proposal_ta', [ReviewProposalTAController::class, 'index'])->middleware(['auth', 'verified'])->name('review_proposal_ta');
+    Route::post('/review_proposal_ta/store', [ReviewProposalTAController::class, 'store'])->middleware(['auth', 'verified'])->name('review_proposal_ta.store');
+    Route::get('/review_proposal_ta/create', [ReviewProposalTAController::class, 'create'])->middleware(['auth', 'verified'])->name('review_proposal_ta.create');
+    Route::get('/review_proposal_ta/edit/{id}', [ReviewProposalTAController::class, 'edit'])->middleware(['auth', 'verified'])->name('review_proposal_ta.edit');
+    Route::put('/review_proposal_ta/update/{id}', [ReviewProposalTAController::class, 'update'])->middleware(['auth', 'verified'])->name('review_proposal_ta.update');
+    Route::delete('/review_proposal_ta/delete/{id}', [ReviewProposalTAController::class, 'delete'])->middleware(['auth', 'verified'])->name('review_proposal_ta.delete');
+});
+
+/* ---Dosen KBK End--- */
+
+
+
+/* ---Penurus KBK Start--- */
+
+// Penugasan Reviewer Proposal TA
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/PenugasanReview', [PenugasanReviewController::class, 'index'])->middleware(['auth', 'verified'])->name('PenugasanReview');
+    Route::post('/PenugasanReview/store', [PenugasanReviewController::class, 'store'])->middleware(['auth', 'verified'])->name('PenugasanReview.store');
+    Route::get('/PenugasanReview/create', [PenugasanReviewController::class, 'create'])->middleware(['auth', 'verified'])->name('PenugasanReview.create');
+    Route::get('/PenugasanReview/edit/{id}', [PenugasanReviewController::class, 'edit'])->middleware(['auth', 'verified'])->name('PenugasanReview.edit');
+    Route::put('/PenugasanReview/update/{id}', [PenugasanReviewController::class, 'update'])->middleware(['auth', 'verified'])->name('PenugasanReview.update');
+    Route::delete('/PenugasanReview/delete/{id}', [PenugasanReviewController::class, 'delete'])->middleware(['auth', 'verified'])->name('PenugasanReview.delete');
+});
+
+// Hasil Review Proposal TA
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/HasilReview', [PenugasanReviewController::class, 'hasil'])->middleware(['auth', 'verified'])->name('HasilReview');
+
 });
 
 // Verifikasi RPS
@@ -179,4 +275,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // Verifikasi Soal_UAS
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/verifikasi_soal_uas', [Ver_Soal_UASController::class, 'index'])->middleware(['auth', 'verified'])->name('ver_soal_uas');
+    Route::post('/verifikasi_soal_uas/store', [Ver_Soal_UASController::class, 'store'])->middleware(['auth', 'verified'])->name('ver_soal_uas.store');
+    Route::get('/verifikasi_soal_uas/create', [Ver_Soal_UASController::class, 'create'])->middleware(['auth', 'verified'])->name('ver_soal_uas.create');
+    Route::get('/verifikasi_soal_uas/edit/{id}', [Ver_Soal_UASController::class, 'edit'])->middleware(['auth', 'verified'])->name('ver_soal_uas.edit');
+    Route::put('/verifikasi_soal_uas/update/{id}', [Ver_Soal_UASController::class, 'update'])->middleware(['auth', 'verified'])->name('ver_soal_uas.update');
+    Route::get('/verifikasi_soal_uas/show/{id}', [Ver_Soal_UASController::class, 'show'])->middleware(['auth', 'verified'])->name('ver_soal_uas.show');
+    Route::delete('/verifikasi_soal_uas/delete/{id}', [Ver_Soal_UASController::class, 'delete'])->middleware(['auth', 'verified'])->name('ver_soal_uas.delete');
 });
+/* ---Penurus KBK End--- */
+
+
+
+/* ---Kepala Jurusan Start--- */
+// Kepala Jurusan
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/repositori_proposal_ta_jurusan', [KajurController::class, 'RepProposalTAJurusan'])->middleware(['auth', 'verified'])->name('rep_proposal_ta_jurusan');
+
+});
+/* ---Kepala Jurusan End--- */

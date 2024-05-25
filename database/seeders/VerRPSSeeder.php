@@ -22,15 +22,36 @@ class VerRPSSeeder extends Seeder
         ];
 
         foreach ($VerRPSData as $data) {
+            $prefix = 'VRPS';
+            $nextNumber = $this->getNextNumber($prefix);
+
             DB::table('ver_rps')->insert([
-                'id_ver_rps' => $data[0],
+                'id_ver_rps' => $prefix . $nextNumber,
                 'rep_rps_id' => $data[1],
                 'dosen_id' => $data[2],
-                'file' => $data[3],
+                'file_verifikasi'=> $data[3],
                 'status_ver_rps' => $data[4],
                 'catatan' => $data[5],
                 'tanggal_diverifikasi' => $data[6]
             ]);
         }
+    }
+
+    private function getNextNumber($prefix)
+    {
+        // Ambil ID terakhir dengan prefix yang sama
+        $lastEntry = DB::table('ver_rps')
+            ->where('id_ver_rps', 'like', $prefix . '%')
+            ->orderBy('id_ver_rps', 'desc')
+            ->first();
+
+        // Jika tidak ada entri sebelumnya, kembalikan angka pertama
+        if (!$lastEntry) {
+            return 1;
+        }
+
+        // Ambil angka terakhir dari ID terakhir dan tambahkan 1
+        $lastNumber = intval(substr($lastEntry->id_ver_rps, strlen($prefix)));
+        return $lastNumber + 1;
     }
 }

@@ -5,6 +5,24 @@
             <div class="card-body">
                 <!-- Page Heading -->
                 <h5 class="card-title fw-semibold mb-4">Data Mata Kuliah</h5>
+                @if (Session::has('success'))
+                    <div id="delay" class="alert alert-success" role="alert">
+                        {{ Session::get('success') }}
+                    </div>
+                @endif
+                @if (Session::has('error'))
+                    <div id="delay" class="alert alert-danger" role="alert">
+                        {{ Session::get('error') }}
+                    </div>
+                @endif
+                <script>
+                    setTimeout(function() {
+                        var element = document.getElementById('delay');
+                        if (element) {
+                            element.parentNode.removeChild(element);
+                        }
+                    }, 5000); // 5000 milliseconds = 5 detik
+                </script>
                 <div class="container-fluid">
                     <!-- Data Mata Kuliah -->
                     <div class="card shadow mb-4">
@@ -60,7 +78,7 @@
                                             <th>Nama Matkul</th>
                                             <th>Semester</th>
                                             <th>Nama Kurikulum</th>
-                                            <th>Tahun Akademik</th>
+                                            {{-- <th>Tahun Akademik</th> --}}
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -71,7 +89,7 @@
                                             <th>Nama Matkul</th>
                                             <th>Semester</th>
                                             <th>Nama Kurikulum</th>
-                                            <th>Tahun Akademik</th>
+                                            {{-- <th>Tahun Akademik</th> --}}
                                             <th>Action</th>
                                         </tr>
                                     </tfoot>
@@ -83,7 +101,7 @@
                                                 <th>{{ $data->nama_matkul }}</th>
                                                 <th>{{ $data->semester }}</th>
                                                 <th>{{ $data->nama_kurikulum }}</th>
-                                                <th>{{ $data->smt_thnakd }}</th>
+                                                {{-- <th>{{ $data->smt_thnakd }}</th> --}}
                                                 <th>
                                                     <a href="{{ route('matkul.edit', ['id' => $data->id_matkul]) }}"
                                                         class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>

@@ -42,8 +42,7 @@ class DatabaseSeeder extends Seeder
         $this->call([VerRPSSeeder::class,]);
         $this->call([VerUASSeeder::class,]);
         $this->call([ProposalTASeeder::class,]);
-        $this->call([PenugasanReviewerProposalTASeeder::class,]);
-        $this->call([HasilReviewProposalTASeeder::class,]);
+        $this->call([ReviewProposalTASeeder::class,]);
         $this->call([MatkulKBKSeeder::class,]);
         $this->call([StatusFinalSeeder::class,]);
     }
