@@ -152,11 +152,27 @@
                     <span class="hide-menu">Kepala Jurusan</span>
                 </li>
                 <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('rep_rps_jurusan') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Repositori RPS</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('rep_soal_uas_jurusan') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-aperture"></i>
+                        </span>
+                        <span class="hide-menu">Repositori Soal UAS</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('rep_proposal_ta_jurusan') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-aperture"></i>
                         </span>
-                        <span class="hide-menu">Repositori Proposal TA Jurusan</span>
+                        <span class="hide-menu">Repositori Proposal TA</span>
                     </a>
                 </li>
                 <li class="nav-small-cap">
@@ -244,7 +260,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('rps') }}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('upload_rps') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-aperture"></i>
                         </span>
@@ -252,7 +268,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('soal_uas') }}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('upload_soal_uas') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-aperture"></i>
                         </span>

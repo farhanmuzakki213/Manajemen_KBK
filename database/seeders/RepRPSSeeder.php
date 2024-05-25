@@ -19,8 +19,10 @@ class RepRPSSeeder extends Seeder
         ];
 
         foreach ($RepRPSData as $data) {
+            $prefix = 'RRPS';
+            $nextNumber = $this->getNextNumber($prefix);
             DB::table('rep_rps')->insert([
-                'id_rep_rps' => $data[0],
+                'id_rep_rps' => $prefix . $nextNumber,
                 'smt_thnakd_id' => $data[1],
                 'dosen_id' => $data[2],
                 'matkul_id' => $data[3],
@@ -29,5 +31,23 @@ class RepRPSSeeder extends Seeder
                 'updated_at' => $data[6]
             ]);
         }
+    }
+
+    private function getNextNumber($prefix)
+    {
+        // Ambil ID terakhir dengan prefix yang sama
+        $lastEntry = DB::table('rep_rps')
+            ->where('id_rep_rps', 'like', $prefix . '%')
+            ->orderBy('id_rep_rps', 'desc')
+            ->first();
+
+        // Jika tidak ada entri sebelumnya, kembalikan angka pertama
+        if (!$lastEntry) {
+            return 1;
+        }
+
+        // Ambil angka terakhir dari ID terakhir dan tambahkan 1
+        $lastNumber = intval(substr($lastEntry->id_rep_rps, strlen($prefix)));
+        return $lastNumber + 1;
     }
 }

@@ -29,7 +29,7 @@
                         <div class="card-header py-3">
                             <div class="card-header py-2">
                                 <div class="d-grid gap-2 d-md-block">
-                                    <a href="{{ route('soal_uas.create') }}" class="btn btn-primary me-md-3"><i
+                                    <a href="{{ route('upload_soal_uas.create') }}" class="btn btn-primary me-md-3"><i
                                             class="bi bi-file-earmark-plus"></i> New</a>
                                 </div>
                             </div>
@@ -79,7 +79,7 @@
                                                 </th> --}}
                                                 <th>
                                                     
-                                                        <a href="{{ route('soal_uas.edit', ['id' => $data->id_rep_uas]) }}"
+                                                        <a href="{{ route('upload_soal_uas.edit', ['id' => $data->id_rep_uas]) }}"
                                                             class="btn btn-primary mb-2"><i class="bi bi-pencil-square"></i></a>
                                                         <a data-bs-toggle="modal"
                                                             data-bs-target="#staticBackdrop{{ $data->id_rep_uas }}"
@@ -112,7 +112,7 @@
                                                         <div class="modal-footer justify-content-between">
 
                                                             <form
-                                                                action="{{ route('soal_uas.delete', ['id' => $data->id_rep_uas]) }}"
+                                                                action="{{ route('upload_soal_uas.delete', ['id' => $data->id_rep_uas]) }}"
                                                                 method="POST">
                                                                 @csrf
                                                                 @method('DELETE')

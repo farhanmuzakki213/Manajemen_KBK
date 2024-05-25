@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('ver_uas', function (Blueprint $table) {
             $table->uuid('id_ver_uas')->primary();
-            $table->bigInteger('rep_uas_id');
+            $table->uuid('rep_uas_id');
             $table->bigInteger('dosen_id');
             $table->string('file_verifikasi')->nullable();;
             $table->enum('status_ver_uas', ['0', '1'])->default('0')->comment('0: Tidak Diverifikasi, 1: Diverifikasi');

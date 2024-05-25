@@ -11,30 +11,11 @@ class VerUASSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    // public function run(): void
-    // {
-    //     $VerUASData = [
-    //         [1, 1, 357, '', '0', '', '2023-12-25'],
-    //         [2, 2, 220, '', '0', '', '2024-02-12'],
-    //     ];
-
-    //     foreach ($VerUASData as $data) {
-    //         DB::table('ver_uas')->insert([
-    //             'id_ver_uas' => $data[0],
-    //             'rep_uas_id' => $data[1],
-    //             'dosen_id' => $data[2],
-    //             'file' => $data[3],
-    //             'status_ver_uas' => $data[4],
-    //             'catatan' => $data[5],
-    //             'tanggal_diverifikasi' => $data[6]
-    //         ]);
-    //     }
-    // }
     public function run(): void
     {
         $VerUASData = [
-            [1, 1, 357, '', '0', '', '2023-12-25'],
-            [2, 2, 220, '', '0', '', '2024-02-12'],
+            [1, 'RUAS1', 357, '', '0', '', '2023-12-25'],
+            [2, 'RUAS2', 220, '', '0', '', '2024-02-12'],
         ];
 
         foreach ($VerUASData as $data) {

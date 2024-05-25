@@ -4,22 +4,22 @@
         <div class="card">
             <div class="card-body">
                 <!-- Page Heading -->
-                <h5 class="card-title fw-semibold mb-4">Tambah Data uas </h5>
+                <h5 class="card-title fw-semibold mb-4">Tambah Data RPS </h5>
                 <div class="container-fluid">
                     <!-- Form Tambah Data -->
                     <div class="card shadow mb-4">
                         <div class="card-body">
                             <div class="row justify-content-end">
                                 <div class="col-2-kembali">
-                                    <p><a href="{{ route('soal_uas') }}" class="btn btn-success"> Kembali</a></p>
+                                    <p><a href="{{ route('upload_rps') }}" class="btn btn-success"> Kembali</a></p>
                                 </div>
                             </div>
-                            <form method="post" action="{{ route('soal_uas.store') }}"  enctype="multipart/form-data">
+                            <form method="post" action="{{ route('upload_rps.store') }}"  enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="id_rep_uas" class="form-label">ID uas</label>
-                                    <input type="number" class="form-control" id="id_rep_uas" name="id_rep_uas">
-                                    @error('id_rep_uas')
+                                    <label for="id_rep_rps" class="form-label">ID RPS</label>
+                                    <input type="text" class="form-control" id="id_rep_rps" name="id_rep_rps" value="{{ 'VRPS' . $nextNumber }}"readonly>
+                                    @error('id_rep_rps')
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>
@@ -62,7 +62,7 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="upload_file" class="form-label">Upload File</label>
+                                    <label for="upload_file" class="form-label">Upload File RPS</label>
                                     <input type="file" class="form-control" id="upload_file" name="upload_file">
                                     @error('upload_file')
                                         <small>{{ $message }}</small>

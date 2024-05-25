@@ -4,7 +4,7 @@
         <div class="card">
             <div class="card-body">
                 <!-- Page Heading -->
-                <h5 class="card-title fw-semibold mb-4">Data Repositori uas</h5>
+                <h5 class="card-title fw-semibold mb-4">Data RPS</h5>
                 @if (Session::has('success'))
                     <div id="delay" class="alert alert-success" role="alert">
                         {{ Session::get('success') }}
@@ -24,11 +24,15 @@
                     }, 5000); // 5000 milliseconds = 5 detik
                 </script>
                 <div class="container-fluid">
-                    <!-- Datauas -->
+                    <!-- DataRPS -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Aksi</h6>
-                        </div>
+                            <div class="card-header py-2">
+                                <div class="d-grid gap-2 d-md-block">
+                                    <a href="{{ route('upload_rps.create') }}" class="btn btn-primary me-md-3"><i
+                                            class="bi bi-file-earmark-plus"></i> New</a>
+                                </div>
+                            </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -38,7 +42,8 @@
                                             <th>Mata Kuliah</th>
                                             <th>Semester</th>
                                             <th>Dosen</th>
-                                            {{-- <th>Status</th> --}}
+                                            <th>Tahun Akademik</th>
+                                            <th>File</th>
                                             <th>Aksi</th>
 
                                         </tr>
@@ -50,32 +55,77 @@
                                             <th>Mata Kuliah</th>
                                             <th>Semester</th>
                                             <th>Dosen</th>
-                                            {{-- <th>Status</th> --}}
+                                            <th>Tahun Akademik</th>
+                                            <th>File</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        @foreach ($data_rep_soal_uas as $data)
+                                        @foreach ($data_rps as $data)
                                             <tr class="table-Light">
-                                                <th>{{ $data->rep_uas_id }}</th>
+                                                <th>{{ $data->id_rep_rps }}</th>
                                                 <th>{{ $data->nama_matkul }}</th>
                                                 <th>{{ $data->semester }}</th>
                                                 <th>{{ $data->nama_dosen }}</th>
+                                                <th>{{ $data->smt_thnakd }}</th>
+                                                <th><a href="{{ asset('storage/uploads/rps_files/' . $data->file) }}" target="_blank">{{ $data->file }}</a>
+                                                </th>
                                                 {{-- <th>
-                                                    @if ($data->status_ver_uas == 0)
+                                                    @if ($data->status_ver_rps == 0)
                                                         Tidak Diverifikasi
                                                     @else
                                                         Diverifikasi
                                                     @endif
                                                 </th> --}}
                                                 <th>
-                                                    <a data-bs-toggle="modal"
-                                                        data-bs-target="#detail{{ $data->id_rep_uas }}"
+                                                    
+                                                        <a href="{{ route('upload_rps.edit', ['id' => $data->id_rep_rps]) }}"
+                                                            class="btn btn-primary mb-2"><i class="bi bi-pencil-square"></i></a>
+                                                        <a data-bs-toggle="modal"
+                                                            data-bs-target="#staticBackdrop{{ $data->id_rep_rps }}"
+                                                            class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                                                        {{-- <a data-bs-toggle="modal" data-bs-target="#detail{{ $data->id_rep_rps }}" class="btn btn-secondary"><i class="bi bi-three-dots-vertical"></i></a> --}}
+        
+                                                    {{-- <a data-bs-toggle="modal"
+                                                        data-bs-target="#detail{{ $data->id_rep_rps }}"
                                                         class="btn btn-secondary"><i
-                                                            class="bi bi-three-dots-vertical"></i></a>
+                                                            class="bi bi-three-dots-vertical"></i></a> --}}
                                                 </th>
                                             </tr>
-                                            <div class="modal fade" id="detail{{ $data->id_rep_uas }}" aria-hidden="true"
+                                              {{-- Modal Konfirmasi hapus data --}}
+                                              <div class="modal fade" id="staticBackdrop{{ $data->id_rep_rps }}"
+                                                data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                                aria-labelledby="staticBackdropLabel" aria-hidden="true">>
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title fs-5" id="staticBackdropLabel">Konfirmasi
+                                                                Hapus Data</h4>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>Apakah kamu yakin ingin menghapus data Ini
+                                                                <b>{{ $data->id_rep_rps }}</b>
+                                                            </p>
+                                                        </div>
+                                                        <div class="modal-footer justify-content-between">
+
+                                                            <form
+                                                                action="{{ route('upload_rps.delete', ['id' => $data->id_rep_rps]) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="button" class="btn btn-default"
+                                                                    data-bs-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-primary">Ya,
+                                                                    Hapus</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {{-- <div class="modal fade" id="detail{{ $data->id_rep_rps }}" aria-hidden="true"
                                                 aria-labelledby="exampleModalToggleLabel" tabindex="-1">
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
@@ -85,7 +135,7 @@
                                                                 aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            isi detail uas beserta file
+                                                            isi detail RPS beserta file
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button class="btn btn-primary"
@@ -94,8 +144,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="modal fade" id="exampleModalToggle2" aria-hidden="true"
+                                            </div> --}}
+                                            {{-- <div class="modal fade" id="exampleModalToggle2" aria-hidden="true"
                                                 aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
@@ -103,7 +153,7 @@
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                                 aria-label="Close"></button>
                                                         </div>
-                                                        <form method="POST" action="uas.store" class="was-validated">
+                                                        <form method="POST" action="rps.store" class="was-validated">
                                                             <div class="modal-body">
                                                                 <div class="mb-3">
                                                                     <label for="catatan"
@@ -120,7 +170,7 @@
                                                         </form>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                         @endforeach
                                     </tbody>
                                 </table>

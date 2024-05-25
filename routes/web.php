@@ -4,8 +4,8 @@
 use App\Http\Controllers\Kurikulum;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PimpinanProdi;
-use App\Http\Controllers\RpsController;
-use App\Http\Controllers\UasController;
+use App\Http\Controllers\Upload_RpsController;
+use App\Http\Controllers\Upload_UasController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\PimpinanJurusan;
@@ -198,24 +198,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
 /* Dosen Pengampu Start*/
 // RPS
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/upload_rps', [RpsController::class, 'index'])->middleware(['auth', 'verified'])->name('rps');
-    Route::post('/upload_rps/store', [RpsController::class, 'store'])->middleware(['auth', 'verified'])->name('rps.store');
-    Route::get('/upload_rps/create', [RpsController::class, 'create'])->middleware(['auth', 'verified'])->name('rps.create');
-    Route::get('/upload_rps/edit/{id}', [RpsController::class, 'edit'])->middleware(['auth', 'verified'])->name('rps.edit');
-    Route::put('/upload_rps/update/{id}', [RpsController::class, 'update'])->middleware(['auth', 'verified'])->name('rps.update');
-    Route::get('/upload_rps/show/{id}', [RpsController::class, 'show'])->middleware(['auth', 'verified'])->name('rps.show');
-    Route::delete('/upload_rps/delete/{id}', [RpsController::class, 'delete'])->middleware(['auth', 'verified'])->name('rps.delete');
+    Route::get('/upload_rps', [Upload_RpsController::class, 'index'])->middleware(['auth', 'verified'])->name('upload_rps');
+    Route::post('/upload_rps/store', [Upload_RpsController::class, 'store'])->middleware(['auth', 'verified'])->name('upload_rps.store');
+    Route::get('/upload_rps/create', [Upload_RpsController::class, 'create'])->middleware(['auth', 'verified'])->name('upload_rps.create');
+    Route::get('/upload_rps/edit/{id}', [Upload_RpsController::class, 'edit'])->middleware(['auth', 'verified'])->name('upload_rps.edit');
+    Route::put('/upload_rps/update/{id}', [Upload_RpsController::class, 'update'])->middleware(['auth', 'verified'])->name('upload_rps.update');
+    Route::get('/upload_rps/show/{id}', [Upload_RpsController::class, 'show'])->middleware(['auth', 'verified'])->name('upload_rps.show');
+    Route::delete('/upload_rps/delete/{id}', [Upload_RpsController::class, 'delete'])->middleware(['auth', 'verified'])->name('upload_rps.delete');
 });
 
 // UAS
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/upload_soal_uas', [UasController::class, 'index'])->middleware(['auth', 'verified'])->name('soal_uas');
-    Route::post('/upload_soal_uas/store', [UasController::class, 'store'])->middleware(['auth', 'verified'])->name('soal_uas.store');
-    Route::get('/upload_soal_uas/create', [UasController::class, 'create'])->middleware(['auth', 'verified'])->name('soal_uas.create');
-    Route::get('/upload_soal_uas/edit/{id}', [UasController::class, 'edit'])->middleware(['auth', 'verified'])->name('soal_uas.edit');
-    Route::put('/upload_soal_uas/update/{id}', [UasController::class, 'update'])->middleware(['auth', 'verified'])->name('soal_uas.update');
-    Route::get('/upload_soal_uas/show/{id}', [UasController::class, 'show'])->middleware(['auth', 'verified'])->name('soal_uas.show');
-    Route::delete('/upload_soal_uas/delete/{id}', [UasController::class, 'delete'])->middleware(['auth', 'verified'])->name('soal_uas.delete');
+    Route::get('/upload_soal_uas', [Upload_UasController::class, 'index'])->middleware(['auth', 'verified'])->name('upload_soal_uas');
+    Route::post('/upload_soal_uas/store', [Upload_UasController::class, 'store'])->middleware(['auth', 'verified'])->name('upload_soal_uas.store');
+    Route::get('/upload_soal_uas/create', [Upload_UasController::class, 'create'])->middleware(['auth', 'verified'])->name('upload_soal_uas.create');
+    Route::get('/upload_soal_uas/edit/{id}', [Upload_UasController::class, 'edit'])->middleware(['auth', 'verified'])->name('upload_soal_uas.edit');
+    Route::put('/upload_soal_uas/update/{id}', [Upload_UasController::class, 'update'])->middleware(['auth', 'verified'])->name('upload_soal_uas.update');
+    Route::get('/upload_soal_uas/show/{id}', [Upload_UasController::class, 'show'])->middleware(['auth', 'verified'])->name('supload_oal_uas.show');
+    Route::delete('/upload_soal_uas/delete/{id}', [Upload_UasController::class, 'delete'])->middleware(['auth', 'verified'])->name('upload_soal_uas.delete');
 });
 
 // Dosen Pengampu Matkul
@@ -224,7 +224,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/DosenPengampuMatkul/export/excel', [DosenPengampuMatkul::class, 'export_excel'])->name('DosenPengampuMatkul.export');
 });
 /* ---Dosen Pengampu End--- */
-
 
 
 /* ---Dosen KBK Start--- */
@@ -289,6 +288,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 /* ---Kepala Jurusan Start--- */
 // Kepala Jurusan
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/repositori_rps_jurusan', [KajurController::class, 'RepRPSJurusan'])->middleware(['auth', 'verified'])->name('rep_rps_jurusan');
+    Route::get('/repositori_soal_uas_jurusan', [KajurController::class, 'RepSoalUASJurusan'])->middleware(['auth', 'verified'])->name('rep_soal_uas_jurusan');
     Route::get('/repositori_proposal_ta_jurusan', [KajurController::class, 'RepProposalTAJurusan'])->middleware(['auth', 'verified'])->name('rep_proposal_ta_jurusan');
 
 });

@@ -27,12 +27,37 @@ class KajurController extends Controller
             ->get();
 
         debug($data_rep_proposal_jurusan);
-        return view('admin.content.info_proposal_ta_jurusan', compact('data_rep_proposal_jurusan'));
+        return view('admin.content.rep_proposal_ta_jurusan', compact('data_rep_proposal_jurusan'));
     }
 
-    public function index()
+    public function RepRPSJurusan()
     {
-        //
+        $data_rep_rps = DB::table('rep_rps')
+            ->join('smt_thnakd', 'rep_rps.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
+            // ->join('ver_rps', 'rep_rps.ver_rps_id', '=', 'ver_rps.id_ver_rps')
+            ->join('matkul', 'rep_rps.matkul_id', '=', 'matkul.id_matkul')
+            ->join('dosen', 'rep_rps.dosen_id', '=', 'dosen.id_dosen')
+            ->select('rep_rps.*', 'dosen.*','matkul.*','smt_thnakd.*')
+            ->where('smt_thnakd.status_smt_thnakd', '=', '1')
+            ->orderByDesc('id_rep_rps')
+            ->get();
+            //dd($data_rep_rps);
+        return view('admin.content.rep_RPS_jurusan', compact('data_rep_rps'));
+    }
+
+    public function RepSoalUASJurusan()
+    {
+        $data_rep_soal_uas = DB::table('ver_uas')
+        ->join('dosen', 'ver_uas.dosen_id', '=', 'dosen.id_dosen')
+        ->join('rep_uas', 'ver_uas.rep_uas_id', '=', 'rep_uas.id_rep_uas')
+        ->join('matkul', 'rep_uas.matkul_id', '=', 'matkul.id_matkul')
+        ->join('smt_thnakd', 'rep_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
+        ->select('ver_uas.*', 'ver_uas.*', 'rep_uas.*', 'dosen.*', 'matkul.*', 'smt_thnakd.*')
+        ->where('smt_thnakd.status_smt_thnakd', '=', '1')
+        ->orderByDesc('id_ver_uas')
+        ->get();
+        debug($data_rep_soal_uas);
+        return view('admin.content.rep_Soal_UAS_jurusan', compact('data_rep_soal_uas'));
     }
 
     /**
