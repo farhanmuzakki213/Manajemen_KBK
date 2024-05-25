@@ -290,6 +290,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // Kepala Jurusan
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/repositori_proposal_ta_jurusan', [KajurController::class, 'RepProposalTAJurusan'])->middleware(['auth', 'verified'])->name('rep_proposal_ta_jurusan');
-
+    Route::get('/grafik_rps', [KajurController::class, 'grafik_rps'])->middleware(['auth', 'verified'])->name('grafik_rps');
+    Route::get('/grafik_uas', [KajurController::class, 'grafik_uas'])->middleware(['auth', 'verified'])->name('grafik_uas');
+    Route::get('/grafik_proposal', [KajurController::class, 'grafik_proposal'])->middleware(['auth', 'verified'])->name('grafik_proposal');
 });
 /* ---Kepala Jurusan End--- */
