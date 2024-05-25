@@ -44,6 +44,5 @@ class DatabaseSeeder extends Seeder
         $this->call([ProposalTASeeder::class,]);
         $this->call([ReviewProposalTASeeder::class,]);
         $this->call([MatkulKBKSeeder::class,]);
-        $this->call([StatusFinalSeeder::class,]);
     }
 }

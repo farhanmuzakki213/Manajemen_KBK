@@ -57,7 +57,7 @@
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        @foreach ($data_rep_proposal_jurusan as $data)
+                                        @foreach ($data_rep_proposal as $data)
                                             <tr class="table-Light">
                                                 <th>{{ $data->id_penugasan }}</th>
                                                 <th>{{ $data->nama }}</th>
