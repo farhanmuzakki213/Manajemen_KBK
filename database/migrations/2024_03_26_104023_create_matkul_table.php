@@ -24,15 +24,11 @@ return new class extends Migration
             $table->string('jam_praktek');
             $table->string('semester');
             $table->bigInteger('kurikulum_id');
-            // $table->bigInteger('smt_thnakd_id');
         });
 
         Schema::table('matkul', function (Blueprint $table) {
             $table->foreign('kurikulum_id')->references('id_kurikulum')->on('kurikulum')
                     ->onUpdate('cascade')->onDelete('cascade');
-                    
-            // $table->foreign('smt_thnakd_id')->references('id_smt_thnakd')->on('smt_thnakd')
-            // ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
