@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nama_kurikulum');
             $table->string('tahun');
             $table->bigInteger('prodi_id');
-            $table->enum('status_kurikulum', ['0', '1'])->default(1)->comment('0: Tidak Aktif, 1: Aktif');
+            $table->enum('status_kurikulum', ['0', '1'])->default(1);
         });
 
         Schema::table('kurikulum', function (Blueprint $table) {
