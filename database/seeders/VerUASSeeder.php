@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Ver_UAS;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -14,19 +15,18 @@ class VerUASSeeder extends Seeder
     public function run(): void
     {
         $VerUASData = [
-            [1, 'RUAS1', 292, '', 1, '', '2023-12-25'],
-            [2, 'RUAS2', 292, '', 1, '', '2024-02-12'],
-            [3, 'RUAS3', 292, '', 1, '', '2024-02-12'],
-            [4, 'RUAS4', 292, '', 1, '', '2024-02-12'],
-            [5, 'RUAS5', 292, '', 1, '', '2024-02-12']
+            [1, 1, 292, '', 1, '', '2023-12-25'],
+            [2, 2, 292, '', 1, '', '2024-02-12'],
+            [3, 3, 292, '', 1, '', '2024-02-12'],
+            [4, 4, 292, '', 1, '', '2024-02-12'],
+            [5, 5, 292, '', 1, '', '2024-02-12']
         ];
 
         foreach ($VerUASData as $data) {
-            $prefix = 'VUAS';
-            $nextNumber = $this->getNextNumber($prefix);
+            $nextNumber = $this->getCariNomor();
 
             DB::table('ver_uas')->insert([
-                'id_ver_uas' => $prefix . $nextNumber,
+                'id_ver_uas' => $nextNumber,
                 'rep_uas_id' => $data[1],
                 'dosen_id' => $data[2],
                 'file_verifikasi'=> $data[3],
@@ -37,21 +37,18 @@ class VerUASSeeder extends Seeder
         }
     }
 
-    private function getNextNumber($prefix)
-    {
-        // Ambil ID terakhir dengan prefix yang sama
-        $lastEntry = DB::table('ver_uas')
-            ->where('id_ver_uas', 'like', $prefix . '%')
-            ->orderBy('id_ver_uas', 'desc')
-            ->first();
-
-        // Jika tidak ada entri sebelumnya, kembalikan angka pertama
-        if (!$lastEntry) {
-            return 1;
+    function getCariNomor() {
+        // Mendapatkan semua ID dari tabel rep_rps
+        $id_ver_uas = Ver_UAS::pluck('id_ver_uas')->toArray();
+    
+        // Loop untuk memeriksa nomor dari 1 sampai takhingga
+        for ($i = 1; ; $i++) {
+            // Jika $i tidak ditemukan di dalam array $id_rep_rps, kembalikan nilai $i
+            if (!in_array($i, $id_ver_uas)) {
+                return $i;
+                break;
+            }
         }
-
-        // Ambil angka terakhir dari ID terakhir dan tambahkan 1
-        $lastNumber = intval(substr($lastEntry->id_ver_uas, strlen($prefix)));
-        return $lastNumber + 1;
+        return $i;
     }
 }

@@ -31,7 +31,7 @@ class Upload_RpsController extends Controller
      */
     public function create()
     {
-        $nextNumber = $this->getNextNumber('RRPS');
+        $nextNumber = $this->getCariNomor();
         $data_thnakd = DB::table('smt_thnakd')->get();
         $data_dosen = DB::table('dosen')->get();
         $data_matkul = DB::table('matkul')->get();
@@ -40,22 +40,19 @@ class Upload_RpsController extends Controller
         return view('admin.content.form.upload_rps_form', compact('data_thnakd', 'data_dosen', 'data_matkul', 'nextNumber'));
     }
 
-    private function getNextNumber($prefix)
-    {
-        // Ambil ID terakhir dengan prefix yang sama
-        $lastEntry = DB::table('rep_rps')
-            ->where('id_rep_rps', 'like', $prefix . '%')
-            ->orderBy('id_rep_rps', 'desc')
-            ->first();
-
-        // Jika tidak ada entri sebelumnya, kembalikan angka pertama
-        if (!$lastEntry) {
-            return 1;
+    function getCariNomor() {
+        // Mendapatkan semua ID dari tabel rep_rps
+        $id_rep_rps = Rep_RPS::pluck('id_rep_rps')->toArray();
+    
+        // Loop untuk memeriksa nomor dari 1 sampai takhingga
+        for ($i = 1; ; $i++) {
+            // Jika $i tidak ditemukan di dalam array $id_rep_rps, kembalikan nilai $i
+            if (!in_array($i, $id_rep_rps)) {
+                return $i;
+                break;
+            }
         }
-
-        // Ambil angka terakhir dari ID terakhir dan tambahkan 1
-        $lastNumber = intval(substr($lastEntry->id_rep_rps, strlen($prefix)));
-        return $lastNumber + 1;
+        return $i;
     }
 
     /**

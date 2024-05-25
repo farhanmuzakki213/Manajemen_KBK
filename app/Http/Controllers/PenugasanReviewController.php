@@ -35,7 +35,7 @@ class PenugasanReviewController extends Controller
      */
     public function create()
     {
-        $nextNumber = $this->getNextNumber('PR');
+        $nextNumber = $this->getNextNumber();
         $data_mahasiswa = DB::table('proposal_ta')
             ->join('mahasiswa', 'proposal_ta.mahasiswa_id', '=', 'mahasiswa.id_mahasiswa')
             ->select('proposal_ta.*', 'mahasiswa.nama', 'mahasiswa.nim')
@@ -188,21 +188,18 @@ class PenugasanReviewController extends Controller
         return view('admin.content.Hasil_Review', compact('data_review_proposal_ta'));
     }
 
-    private function getNextNumber($prefix)
-    {
-        // Ambil ID terakhir dengan prefix yang sama
-        $lastEntry = DB::table('review_proposal_ta')
-            ->where('id_penugasan', 'like', $prefix . '%')
-            ->orderBy('id_penugasan', 'desc')
-            ->first();
-
-        // Jika tidak ada entri sebelumnya, kembalikan angka pertama
-        if (!$lastEntry) {
-            return 1;
+    function getCariNomor() {
+        // Mendapatkan semua ID dari tabel rep_rps
+        $id_penugasan = ReviewProposalTAModel::pluck('id_penugasan')->toArray();
+    
+        // Loop untuk memeriksa nomor dari 1 sampai takhingga
+        for ($i = 1; ; $i++) {
+            // Jika $i tidak ditemukan di dalam array $id_rep_rps, kembalikan nilai $i
+            if (!in_array($i, $id_penugasan)) {
+                return $i;
+                break;
+            }
         }
-
-        // Ambil angka terakhir dari ID terakhir dan tambahkan 1
-        $lastNumber = intval(substr($lastEntry->id_penugasan, strlen($prefix)));
-        return $lastNumber + 1;
+        return $i;
     }
 }

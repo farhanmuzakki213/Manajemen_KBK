@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Ver_RPS;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -15,19 +16,18 @@ class VerRPSSeeder extends Seeder
     {
         $VerRPSData = [
 
-            [1, 'RRPS1', 357, '', '1', '', '2022-07-10'],
-            [2, 'RRPS2', 220, '', '0', '', '2022-07-10'],
-            [3, 'RRPS6', 220, '', '1', '', '2023-07-10'],
-            [4, 'RRPS9', 357, '', '1', '', '2024-02-20'],
+            [1, 1, 357, '', '1', '', '2022-07-10'],
+            [2, 2, 220, '', '0', '', '2022-07-10'],
+            [3, 6, 220, '', '1', '', '2023-07-10'],
+            [4, 9, 357, '', '1', '', '2024-02-20'],
 
         ];
 
         foreach ($VerRPSData as $data) {
-            $prefix = 'VRPS';
-            $nextNumber = $this->getNextNumber($prefix);
+            $nextNumber = $this->getCariNomor();
 
             DB::table('ver_rps')->insert([
-                'id_ver_rps' => $prefix . $nextNumber,
+                'id_ver_rps' => $nextNumber,
                 'rep_rps_id' => $data[1],
                 'dosen_id' => $data[2],
                 'file_verifikasi'=> $data[3],
@@ -38,21 +38,18 @@ class VerRPSSeeder extends Seeder
         }
     }
 
-    private function getNextNumber($prefix)
-    {
-        // Ambil ID terakhir dengan prefix yang sama
-        $lastEntry = DB::table('ver_rps')
-            ->where('id_ver_rps', 'like', $prefix . '%')
-            ->orderBy('id_ver_rps', 'desc')
-            ->first();
-
-        // Jika tidak ada entri sebelumnya, kembalikan angka pertama
-        if (!$lastEntry) {
-            return 1;
+    function getCariNomor() {
+        // Mendapatkan semua ID dari tabel rep_rps
+        $id_ver_rps = Ver_RPS::pluck('id_ver_rps')->toArray();
+    
+        // Loop untuk memeriksa nomor dari 1 sampai takhingga
+        for ($i = 1; ; $i++) {
+            // Jika $i tidak ditemukan di dalam array $id_rep_rps, kembalikan nilai $i
+            if (!in_array($i, $id_ver_rps)) {
+                return $i;
+                break;
+            }
         }
-
-        // Ambil angka terakhir dari ID terakhir dan tambahkan 1
-        $lastNumber = intval(substr($lastEntry->id_ver_rps, strlen($prefix)));
-        return $lastNumber + 1;
+        return $i;
     }
 }

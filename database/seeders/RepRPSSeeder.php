@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Rep_RPS;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -27,10 +28,9 @@ class RepRPSSeeder extends Seeder
         ];
 
         foreach ($RepRPSData as $data) {
-            $prefix = 'RRPS';
-            $nextNumber = $this->getNextNumber($prefix);
+            $nextNumber = $this->getCariNomor();
             DB::table('rep_rps')->insert([
-                'id_rep_rps' => $prefix . $nextNumber,
+                'id_rep_rps' =>  $nextNumber ,
                 'smt_thnakd_id' => $data[1],
                 'dosen_id' => $data[2],
                 'matkul_id' => $data[3],
@@ -41,21 +41,19 @@ class RepRPSSeeder extends Seeder
         }
     }
 
-    private function getNextNumber($prefix)
-    {
-        // Ambil ID terakhir dengan prefix yang sama
-        $lastEntry = DB::table('rep_rps')
-            ->where('id_rep_rps', 'like', $prefix . '%')
-            ->orderBy('id_rep_rps', 'desc')
-            ->first();
-
-        // Jika tidak ada entri sebelumnya, kembalikan angka pertama
-        if (!$lastEntry) {
-            return 1;
+    function getCariNomor() {
+        // Mendapatkan semua ID dari tabel rep_rps
+        $id_rep_rps = Rep_RPS::pluck('id_rep_rps')->toArray();
+    
+        // Loop untuk memeriksa nomor dari 1 sampai takhingga
+        for ($i = 1; ; $i++) {
+            // Jika $i tidak ditemukan di dalam array $id_rep_rps, kembalikan nilai $i
+            if (!in_array($i, $id_rep_rps)) {
+                return $i;
+                break;
+            }
         }
-
-        // Ambil angka terakhir dari ID terakhir dan tambahkan 1
-        $lastNumber = intval(substr($lastEntry->id_rep_rps, strlen($prefix)));
-        return $lastNumber + 1;
+        return $i;
     }
+    
 }

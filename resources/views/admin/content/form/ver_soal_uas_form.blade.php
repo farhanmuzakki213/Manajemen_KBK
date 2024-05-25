@@ -18,7 +18,7 @@
                                 @csrf
                                 <div class="mb-3">
                                     {{-- <label for="id_ver_uas" class="form-label">ID Verifikasi uas</label> --}}
-                                    <input type="hidden" class="form-control" id="id_ver_uas" name="id_ver_uas" value="{{ 'VUAS' . $nextNumber }}" readonly>
+                                    <input type="hidden" class="form-control" id="id_ver_uas" name="id_ver_uas" value="{{$nextNumber }}" readonly>
                                     @error('id_ver_uas')
                                         <small>{{ $message }}</small>
                                     @enderror

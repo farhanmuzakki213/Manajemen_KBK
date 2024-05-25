@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ReviewProposalTAModel;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -23,10 +24,9 @@ class ReviewProposalTASeeder extends Seeder
         ];
 
         foreach ($PenugasanData as $data) {
-            $prefix = 'PR';
-            $nextNumber = $this->getNextNumber($prefix);
+            $nextNumber = $this->getCariNomor();
             DB::table('review_proposal_ta')->insert([
-                'id_penugasan' => $prefix . $nextNumber,
+                'id_penugasan' => $nextNumber,
                 'proposal_ta_id' => $data[1],
                 'reviewer_satu' => $data[2],
                 'reviewer_dua' => $data[3],
@@ -37,21 +37,18 @@ class ReviewProposalTASeeder extends Seeder
             ]);
         }
     }
-    private function getNextNumber($prefix)
-    {
-        // Ambil ID terakhir dengan prefix yang sama
-        $lastEntry = DB::table('review_proposal_ta')
-            ->where('id_penugasan', 'like', $prefix . '%')
-            ->orderBy('id_penugasan', 'desc')
-            ->first();
-
-        // Jika tidak ada entri sebelumnya, kembalikan angka pertama
-        if (!$lastEntry) {
-            return 1;
+    function getCariNomor() {
+        // Mendapatkan semua ID dari tabel rep_rps
+        $id_penugasan = ReviewProposalTAModel::pluck('id_penugasan')->toArray();
+    
+        // Loop untuk memeriksa nomor dari 1 sampai takhingga
+        for ($i = 1; ; $i++) {
+            // Jika $i tidak ditemukan di dalam array $id_rep_rps, kembalikan nilai $i
+            if (!in_array($i, $id_penugasan)) {
+                return $i;
+                break;
+            }
         }
-
-        // Ambil angka terakhir dari ID terakhir dan tambahkan 1
-        $lastNumber = intval(substr($lastEntry->id_penugasan, strlen($prefix)));
-        return $lastNumber + 1;
+        return $i;
     }
 }

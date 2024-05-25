@@ -35,7 +35,7 @@ class Upload_UasController extends Controller
      */
     public function create()
     {
-        $nextNumber = $this->getNextNumber('RUAS');
+        $nextNumber = $this->getCariNomor();
         $data_thnakd = DB::table('smt_thnakd')->get();
         $data_dosen = DB::table('dosen')->get();
         $data_matkul = DB::table('matkul')->get();
@@ -44,22 +44,19 @@ class Upload_UasController extends Controller
         return view('admin.content.form.upload_uas_form', compact('data_thnakd', 'data_dosen', 'data_matkul', 'nextNumber'));
     }
     
-    private function getNextNumber($prefix)
-    {
-        // Ambil ID terakhir dengan prefix yang sama
-        $lastEntry = DB::table('rep_uas')
-            ->where('id_rep_uas', 'like', $prefix . '%')
-            ->orderBy('id_rep_uas', 'desc')
-            ->first();
+    function getCariNomor() {
+        // Mendapatkan semua ID dari tabel rep_rps
+        $id_rep_uas = Rep_UAS::pluck('id_rep_uas')->toArray();
     
-        // Jika tidak ada entri sebelumnya, kembalikan angka pertama
-        if (!$lastEntry) {
-            return $prefix . '1';
+        // Loop untuk memeriksa nomor dari 1 sampai takhingga
+        for ($i = 1; ; $i++) {
+            // Jika $i tidak ditemukan di dalam array $id_rep_rps, kembalikan nilai $i
+            if (!in_array($i, $id_rep_uas)) {
+                return $i;
+                break;
+            }
         }
-    
-        // Ambil angka terakhir dari ID terakhir dan tambahkan 1
-        $lastNumber = intval(substr($lastEntry->id_rep_uas, strlen($prefix)));
-        return $prefix . ($lastNumber + 1);
+        return $i;
     }
 
     /**

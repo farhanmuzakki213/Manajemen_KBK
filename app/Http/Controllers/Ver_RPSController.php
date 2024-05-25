@@ -35,7 +35,7 @@ class Ver_RPSController extends Controller
      */
     public function create()
     {
-        $nextNumber = $this->getNextNumber('VRPS');
+        $nextNumber = $this->getCariNomor();
         $data_dosen = DB::table('dosen')->get();
         $data_rep_rps = DB::table('rep_rps')
             ->join('matkul', 'rep_rps.matkul_id', '=', 'matkul.id_matkul')
@@ -46,22 +46,19 @@ class Ver_RPSController extends Controller
         return view('admin.content.form.ver_rps_form', compact('data_dosen', 'data_rep_rps', 'nextNumber'));
     }
 
-    private function getNextNumber($prefix)
-    {
-        // Ambil ID terakhir dengan prefix yang sama
-        $lastEntry = DB::table('ver_rps')
-            ->where('id_ver_rps', 'like', $prefix . '%')
-            ->orderBy('id_ver_rps', 'desc')
-            ->first();
-
-        // Jika tidak ada entri sebelumnya, kembalikan angka pertama
-        if (!$lastEntry) {
-            return 1;
+    function getCariNomor() {
+        // Mendapatkan semua ID dari tabel rep_rps
+        $id_ver_rps = Ver_RPS::pluck('id_ver_rps')->toArray();
+    
+        // Loop untuk memeriksa nomor dari 1 sampai takhingga
+        for ($i = 1; ; $i++) {
+            // Jika $i tidak ditemukan di dalam array $id_rep_rps, kembalikan nilai $i
+            if (!in_array($i, $id_ver_rps)) {
+                return $i;
+                break;
+            }
         }
-
-        // Ambil angka terakhir dari ID terakhir dan tambahkan 1
-        $lastNumber = intval(substr($lastEntry->id_ver_rps, strlen($prefix)));
-        return $lastNumber + 1;
+        return $i;
     }
 
 

@@ -27,7 +27,7 @@
                                 <div class="mb-3">
                                     {{-- <label for="id_penugasan" class="form-label">ID Verifikasi RPS</label> --}}
                                     <input type="hidden" class="form-control" id="id_penugasan" name="id_penugasan"
-                                        value="{{ 'PR' . $nextNumber }}" readonly>
+                                        value="{{$nextNumber }}" readonly>
                                     @error('id_penugasan')
                                         <small>{{ $message }}</small>
                                     @enderror
