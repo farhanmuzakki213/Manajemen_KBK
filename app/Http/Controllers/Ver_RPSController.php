@@ -19,22 +19,26 @@ class Ver_RPSController extends Controller
     public function index()
     {
         $data_ver_rps = DB::table('ver_rps')
-            ->join('dosen', 'ver_rps.dosen_id', '=', 'dosen.id_dosen')
+            ->join('dosen as verifikasi', 'ver_rps.dosen_id', '=', 'verifikasi.id_dosen')
             ->join('rep_rps', 'ver_rps.rep_rps_id', '=', 'rep_rps.id_rep_rps')
-            ->select('ver_rps.*', 'rep_rps.*', 'dosen.nama_dosen as nama_verifikasi')
-            ->orderByDesc('rep_rps_id')
+            ->join('smt_thnakd', 'rep_rps.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
+            ->join('matkul', 'rep_rps.matkul_id', '=', 'matkul.id_matkul')
+            ->join('dosen as upload', 'rep_rps.dosen_id', '=', 'upload.id_dosen')
+            ->select('ver_rps.*', 'rep_rps.*', 'verifikasi.nama_dosen as nama_verifikasi', 'upload.nama_dosen as nama_upload', 'matkul.*', 'smt_thnakd.*')
+            ->where('smt_thnakd.status_smt_thnakd', '=', '1')
+            ->orderByDesc('id_ver_rps')
             ->get();
 
         $data_rep_rps = DB::table('rep_rps')
             ->join('smt_thnakd', 'rep_rps.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
             ->join('matkul', 'rep_rps.matkul_id', '=', 'matkul.id_matkul')
             ->join('dosen', 'rep_rps.dosen_id', '=', 'dosen.id_dosen')
-            ->select('rep_rps.*', 'dosen.nama_dosen as nama_upload', 'matkul.*', 'smt_thnakd.*')
+            ->select('rep_rps.*', 'dosen.*', 'matkul.*', 'smt_thnakd.*')
             ->where('smt_thnakd.status_smt_thnakd', '=', '1')
             ->orderByDesc('id_rep_rps')
             ->get();
         debug($data_ver_rps);
-        return view('admin.content.Ver_RPS', compact('data_ver_rps','data_rep_rps'));
+        return view('admin.content.Ver_RPS', compact('data_ver_rps', 'data_rep_rps'));
     }
 
     /**
@@ -42,6 +46,14 @@ class Ver_RPSController extends Controller
      */
     public function create(string $id)
     {
+        // Cek apakah rep_rps_id sudah ada di tabel ver_rps
+        $verifikasi = Ver_Rps::where('rep_rps_id', $id)->first();
+
+        if ($verifikasi) {
+            // Jika sudah ada, kembalikan ke halaman verifikasi_rps dengan pesan error
+            return redirect()->route('ver_rps')->with('error', 'Data sudah diambil.');
+        }
+
         $nextNumber = $this->getCariNomor();
         $data_dosen = DB::table('dosen')->get();
         $data_rep_rps = DB::table('rep_rps')
