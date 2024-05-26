@@ -19,7 +19,7 @@ class Upload_RpsController extends Controller
             ->join('matkul', 'rep_rps.matkul_id', '=', 'matkul.id_matkul')
             ->join('dosen', 'rep_rps.dosen_id', '=', 'dosen.id_dosen')
             ->select('rep_rps.*', 'dosen.*','matkul.*','smt_thnakd.*')
-            // ->where('smt_thnakd.status_smt_thnakd', '=', '1')
+            //->where('smt_thnakd.status_smt_thnakd', '=', '1')
             ->orderByDesc('id_rep_rps')
             ->get();
             //dd($data_rps);
@@ -32,7 +32,10 @@ class Upload_RpsController extends Controller
     public function create()
     {
         $nextNumber = $this->getCariNomor();
-        $data_thnakd = DB::table('smt_thnakd')->get();
+        $data_thnakd = DB::table('smt_thnakd')
+        ->where('smt_thnakd.status_smt_thnakd', '=', '1')
+        ->select('smt_thnakd.*')
+        ->get();
         $data_dosen = DB::table('dosen')->get();
         $data_matkul = DB::table('matkul')->get();
         // $data_ver_rps = DB::table('ver_rps')->get();
@@ -62,7 +65,7 @@ class Upload_RpsController extends Controller
 {
     $validator = Validator::make($request->all(), [
         'id_rep_rps' => 'required',
-        'smt_thnakd' => 'required',
+        'id_smt_thnakd' => 'required',
         'nama_dosen' => 'required',
         'nama_matkul' => 'required',
         'upload_file' => 'required|mimes:pdf',
@@ -75,12 +78,12 @@ class Upload_RpsController extends Controller
     if ($request->hasFile('upload_file')) {
         $file = $request->file('upload_file');
         $filename = $file->getClientOriginalName();
-        $path = 'public/uploads/rps_files/';
+        $path = 'public/uploads/rps/repositori_files/';
         $file->storeAs($path, $filename);
 
         $data = [
             'id_rep_rps' => $request->id_rep_rps,
-            'smt_thnakd_id' => $request->smt_thnakd,
+            'smt_thnakd_id' => $request->id_smt_thnakd,
             'dosen_id' => $request->nama_dosen,
             'matkul_id' => $request->nama_matkul,
             'file' => $filename,
@@ -112,7 +115,10 @@ class Upload_RpsController extends Controller
      */
     public function edit(string $id)
     {
-        $data_thnakd = DB::table('smt_thnakd')->get();
+        $data_thnakd = DB::table('smt_thnakd')
+        ->where('smt_thnakd.status_smt_thnakd', '=', '1')
+        ->select('smt_thnakd.*')
+        ->get();
         $data_dosen = DB::table('dosen')->get();
         $data_matkul = DB::table('matkul')->get();
 
@@ -128,7 +134,7 @@ class Upload_RpsController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id_rep_rps' => 'required',
-            'smt_thnakd' => 'required',
+            'id_smt_thnakd' => 'required',
             'nama_dosen' => 'required',
             'nama_matkul' => 'required',
             'upload_file' => 'sometimes|required|mimes:pdf', // sometimes agar validasi hanya berlaku saat file diunggah
@@ -137,32 +143,35 @@ class Upload_RpsController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
         }
-        $id_rep_rps = Rep_RPS::where('id_rep_rps', $id);
         $data = [
             'id_rep_rps' => $request->id_rep_rps,
-            'smt_thnakd_id' => $request->smt_thnakd,
+            'smt_thnakd_id' => $request->id_smt_thnakd,
             'dosen_id' => $request->nama_dosen,
             'matkul_id' => $request->nama_matkul,
         ];
 
+        $oldData = Rep_RPS::where('id_rep_rps', $id)->first();;
+        debug($oldData->file);
+        // Memeriksa apakah ada file lama
+        if ($oldData->file !== null && $request->hasFile('upload_file')) {
+            // Hapus file lama dari storage
+            Storage::delete('public/uploads/rps/repositori_files/' . $oldData->file);
+        }
+        $filename = null;
         // Jika file baru diunggah, hapus file lama dan simpan file baru
         if ($request->hasFile('upload_file')) {
             
             $file = $request->file('upload_file');
             $filename = $file->getClientOriginalName(); // Mendapatkan nama asli file
 
-            $path = 'public/uploads/rps_files/';
+            $path = 'public/uploads/rps/repositori_files/';
             $file->storeAs($path, $filename); // Simpan file dengan nama aslinya
-            /* // Hapus file lama jika ada
-            if ($oldFilePath) {
-                Storage::delete($oldFilePath);
-            } */
             
             $data['file'] = $filename;
         }
         
-        /* dd($request->all()); */
-        $id_rep_rps->update($data);
+        //dd($request->all());
+        Rep_RPS::where('id_rep_rps', $id)->update($data);
         return redirect()->route('upload_rps')->with('success', 'Data berhasil diperbarui.');
     }
 
@@ -174,8 +183,8 @@ class Upload_RpsController extends Controller
         $data_rep_rps = Rep_RPS::where('id_rep_rps', $id)->first();
 
         // Menghapus file terkait jika ada
-        if ($data_rep_rps->file) {
-            Storage::delete($data_rep_rps->file);
+        if ($data_rep_rps && $data_rep_rps->file) {
+            Storage::delete('public/uploads/rps/repositori_files/' . $data_rep_rps->file);
         }
 
         // Menghapus data dari basis data

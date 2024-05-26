@@ -19,6 +19,8 @@ class Rep_RPS extends Model
     ];
 
     protected $table = 'rep_rps';
+    public $incrementing = false;
+    protected $primaryKey = 'id_ver_rps';
     public $timestamps = true;
 
     public static function validate($data)

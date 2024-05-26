@@ -68,7 +68,7 @@
                                                 <th>{{ $data->semester }}</th>
                                                 <th>{{ $data->nama_dosen }}</th>
                                                 <th>{{ $data->smt_thnakd }}</th>
-                                                <th><a href="{{ asset('storage/uploads/rps_files/' . $data->file) }}" target="_blank">{{ $data->file }}</a>
+                                                <th><a href="{{ asset('storage/uploads/rps/repositori_files/' . $data->file) }}" target="_blank">{{ $data->file }}</a>
                                                 </th>
                                                 {{-- <th>
                                                     @if ($data->status_ver_rps == 0)

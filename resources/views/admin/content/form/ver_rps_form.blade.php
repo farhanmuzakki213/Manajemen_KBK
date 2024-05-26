@@ -14,11 +14,12 @@
                                     <p><a href="{{ route('ver_rps') }}" class="btn btn-success"> Kembali</a></p>
                                 </div>
                             </div>
-                            <form method="post" action="{{ route('ver_rps.store') }}"  enctype="multipart/form-data">
+                            <form method="post" action="{{ route('ver_rps.store') }}" enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="id_ver_rps" class="form-label">ID Verifikasi RPS</label>
-                                    <input type="text" class="form-control" id="id_ver_rps" name="id_ver_rps" value="{{ $nextNumber }}" readonly>
+                                    {{-- <label for="id_ver_rps" class="form-label">ID Verifikasi RPS</label> --}}
+                                    <input type="hidden" class="form-control" id="id_ver_rps" name="id_ver_rps"
+                                        value="{{ $nextNumber }}" readonly>
                                     @error('id_ver_rps')
                                         <small>{{ $message }}</small>
                                     @enderror
@@ -38,17 +39,35 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="nama_matkul" class="form-label">Nama Mata Kuliah</label>
+                                    @foreach ($data_rep_rps as $data)
+                                        <input type="hidden" class="form-control" id="id_rep_rps" name="id_rep_rps"
+                                            value="{{ $data->id_rep_rps }}" readonly>
+                                        <input type="text" class="form-control" id="nama_matkul" name="nama_matkul"
+                                            value="{{ $data->kode_matkul }} | {{ $data->nama_matkul }}" readonly>
+                                        {{-- <select class="form-select" aria-label="Default select example" name="smt_thnakd" id="smt_thnakd" required>
+                                        <option selected disabled>Pilih Semester Tahun Akademik</option>
+                                        
+                                            <option value="{{ $smt_thnakd->id_smt_thnakd }}">{{ $smt_thnakd->smt_thnakd }}</option>
+                                        </select> --}}
+                                    @endforeach
+                                    @error('nama_matkul')
+                                        <small>{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                {{-- <div class="mb-3">
+                                    <label for="nama_matkul" class="form-label">Nama Mata Kuliah</label>
                                     <select class="form-select" aria-label="Default select example" name="nama_matkul"
                                         id="nama_matkul" required>
                                         <option selected disabled>Pilih Nama Mata Kuliah</option>
                                         @foreach ($data_rep_rps as $rep_rps)
-                                            <option value="{{ $rep_rps->id_matkul && $rep_rps->id_rep_rps}}">{{ $rep_rps->kode_matkul }} | {{ $rep_rps->nama_matkul }}</option>
+                                            <option value="{{ $rep_rps->id_matkul && $rep_rps->id_rep_rps }}">
+                                                {{ $rep_rps->kode_matkul }} | {{ $rep_rps->nama_matkul }}</option>
                                         @endforeach
                                     </select>
                                     @error('nama_matkul')
                                         <small>{{ $message }}</small>
                                     @enderror
-                                </div>
+                                </div> --}}
                                 <div class="mb-3">
                                     <label for="upload_file" class="form-label">Upload File Verifikasi</label>
                                     <input type="file" class="form-control" id="upload_file" name="upload_file">
@@ -82,7 +101,8 @@
                                 {{-- <label for="date" class=" col-form-label">Tanggal Verifikasi</label> --}}
                                 <div class="col-5 mb-3">
                                     <div class="input-group date">
-                                        <input type="hidden" class="form-control" id="date" name="date" value="{{ \Carbon\Carbon::now()->toDateString() }}"/>
+                                        <input type="hidden" class="form-control" id="date" name="date"
+                                            value="{{ \Carbon\Carbon::now()->toDateString() }}" />
                                     </div>
                                     @error('date')
                                         <small>{{ $message }}</small>

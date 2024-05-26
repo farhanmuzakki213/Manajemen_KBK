@@ -14,20 +14,23 @@
                                     <p><a href="{{ route('upload_soal_uas') }}" class="btn btn-success"> Kembali</a></p>
                                 </div>
                             </div>
-                            <form method="post" action="{{ route('upload_soal_uas.store') }}"  enctype="multipart/form-data">
+                            <form method="post" action="{{ route('upload_soal_uas.store') }}"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
                                     <label for="id_rep_uas" class="form-label">ID Repositori UAS</label>
-                                    <input type="text" class="form-control" id="id_rep_uas" name="id_rep_uas" value="{{ $nextNumber }}" readonly>
+                                    <input type="text" class="form-control" id="id_rep_uas" name="id_rep_uas"
+                                        value="{{ $nextNumber }}" readonly>
                                     @error('id_rep_uas')
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>
-                                
-                                
+
+
                                 <div class="mb-3">
                                     <label for="nama_matkul" class="form-label">Mata Kuliah</label>
-                                    <select class="form-select" aria-label="Default select example" name="nama_matkul" id="nama_matkul" required>
+                                    <select class="form-select" aria-label="Default select example" name="nama_matkul"
+                                        id="nama_matkul" required>
                                         <option selected disabled>Pilih Mata Kuliah</option>
                                         @foreach ($data_matkul as $matkul)
                                             <option value="{{ $matkul->id_matkul }}">{{ $matkul->nama_matkul }}</option>
@@ -39,7 +42,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="nama_dosen" class="form-label">Pilih Dosen</label>
-                                    <select class="form-select" aria-label="Default select example" name="nama_dosen" id="nama_dosen" required>
+                                    <select class="form-select" aria-label="Default select example" name="nama_dosen"
+                                        id="nama_dosen" required>
                                         <option selected disabled>Pilih Nama Dosen</option>
                                         @foreach ($data_dosen as $dosen)
                                             <option value="{{ $dosen->id_dosen }}">{{ $dosen->nama_dosen }}</option>
@@ -48,17 +52,20 @@
                                     @error('nama_dosen')
                                         <small>{{ $message }}</small>
                                     @enderror
-                               
-                            
                                 </div>
                                 <div class="mb-3">
                                     <label for="smt_thnakd" class="form-label">Semester Tahun Akademik</label>
-                                    <select class="form-select" aria-label="Default select example" name="smt_thnakd" id="smt_thnakd" required>
+                                    @foreach ($data_thnakd as $smt_thnakd)
+                                        <input type="hidden" class="form-control" id="id_smt_thnakd" name="id_smt_thnakd"
+                                            value="{{ $smt_thnakd->id_smt_thnakd }}" readonly>
+                                        <input type="text" class="form-control" id="smt_thnakd" name="smt_thnakd"
+                                            value="{{ $smt_thnakd->smt_thnakd }}" readonly>
+                                        {{-- <select class="form-select" aria-label="Default select example" name="smt_thnakd" id="smt_thnakd" required>
                                         <option selected disabled>Pilih Semester Tahun Akademik</option>
-                                        @foreach ($data_thnakd as $smt_thnakd)
+                                        
                                             <option value="{{ $smt_thnakd->id_smt_thnakd }}">{{ $smt_thnakd->smt_thnakd }}</option>
-                                        @endforeach
-                                    </select>
+                                        </select> --}}
+                                    @endforeach
                                     @error('smt_thnakd')
                                         <small>{{ $message }}</small>
                                     @enderror
@@ -70,7 +77,7 @@
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>
-                              
+
                                 {{-- <div class="mb-3">
                                     <label for="status" class="form-label">Status</label><br>
                                     <div class="form-check form-check-inline">

@@ -36,7 +36,10 @@ class Upload_UasController extends Controller
     public function create()
     {
         $nextNumber = $this->getCariNomor();
-        $data_thnakd = DB::table('smt_thnakd')->get();
+        $data_thnakd = DB::table('smt_thnakd')
+        ->where('smt_thnakd.status_smt_thnakd', '=', '1')
+        ->select('smt_thnakd.*')
+        ->get();
         $data_dosen = DB::table('dosen')->get();
         $data_matkul = DB::table('matkul')->get();
         // $data_ver_uas = DB::table('ver_uas')->get();
@@ -66,7 +69,7 @@ class Upload_UasController extends Controller
 {
     $validator = Validator::make($request->all(), [
         'id_rep_uas' => 'required',
-        'smt_thnakd' => 'required',
+        'id_smt_thnakd' => 'required',
         'nama_dosen' => 'required',
         'nama_matkul' => 'required',
         'upload_file' => 'required|mimes:pdf',
@@ -84,7 +87,7 @@ class Upload_UasController extends Controller
 
         $data = [
             'id_rep_uas' => $request->id_rep_uas,
-            'smt_thnakd_id' => $request->smt_thnakd,
+            'smt_thnakd_id' => $request->id_smt_thnakd,
             'dosen_id' => $request->nama_dosen,
             'matkul_id' => $request->nama_matkul,
             'file' => $filename,
@@ -116,7 +119,10 @@ class Upload_UasController extends Controller
      */
     public function edit(string $id)
     {
-        $data_thnakd = DB::table('smt_thnakd')->get();
+        $data_thnakd = DB::table('smt_thnakd')
+        ->where('smt_thnakd.status_smt_thnakd', '=', '1')
+        ->select('smt_thnakd.*')
+        ->get();
         $data_dosen = DB::table('dosen')->get();
         $data_matkul = DB::table('matkul')->get();
 
@@ -132,7 +138,7 @@ class Upload_UasController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id_rep_uas' => 'required',
-            'smt_thnakd' => 'required',
+            'id_smt_thnakd' => 'required',
             'nama_dosen' => 'required',
             'nama_matkul' => 'required',
             'upload_file' => 'sometimes|required|mimes:pdf', // sometimes agar validasi hanya berlaku saat file diunggah
@@ -144,10 +150,20 @@ class Upload_UasController extends Controller
         $id_rep_uas = Rep_UAS::where('id_rep_uas', $id);
         $data = [
             'id_rep_uas' => $request->id_rep_uas,
-            'smt_thnakd_id' => $request->smt_thnakd,
+            'smt_thnakd_id' => $request->id_smt_thnakd,
             'dosen_id' => $request->nama_dosen,
             'matkul_id' => $request->nama_matkul,
         ];
+
+
+        $oldData = Rep_UAS::where('id_rep_uas', $id)->first();;
+        debug($oldData->file);
+        // Memeriksa apakah ada file lama
+        if ($oldData->file !== null && $request->hasFile('upload_file')) {
+            // Hapus file lama dari storage
+            Storage::delete('public/uploads/soal_uas_files/' . $oldData->file);
+        }
+        $filename = null;
 
         // Jika file baru diunggah, hapus file lama dan simpan file baru
         if ($request->hasFile('upload_file')) {
@@ -157,10 +173,7 @@ class Upload_UasController extends Controller
 
             $path = 'public/uploads/soal_uas_files/';
             $file->storeAs($path, $filename); // Simpan file dengan nama aslinya
-            /* // Hapus file lama jika ada
-            if ($oldFilePath) {
-                Storage::delete($oldFilePath);
-            } */
+            
             
             $data['file'] = $filename;
         }
@@ -178,8 +191,8 @@ class Upload_UasController extends Controller
         $data_rep_uas = Rep_UAS::where('id_rep_uas', $id)->first();
 
         // Menghapus file terkait jika ada
-        if ($data_rep_uas->file) {
-            Storage::delete($data_rep_uas->file);
+        if ($data_rep_uas && $data_rep_uas->file) {
+            Storage::delete('public/uploads/soal_uas_files/' . $data_rep_uas->file);
         }
 
         // Menghapus data dari basis data

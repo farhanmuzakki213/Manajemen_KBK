@@ -42,6 +42,23 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="nama_matkul" class="form-label">Nama Mata Kuliah</label>
+                                    @foreach ($data_rep_rps as $data)
+                                        <input type="hidden" class="form-control" id="id_rep_rps" name="id_rep_rps"
+                                            value="{{ $data->id_rep_rps }}" readonly>
+                                        <input type="text" class="form-control" id="nama_matkul" name="nama_matkul"
+                                            value="{{ $data->kode_matkul }} | {{ $data->nama_matkul }}" readonly>
+                                        {{-- <select class="form-select" aria-label="Default select example" name="smt_thnakd" id="smt_thnakd" required>
+                                        <option selected disabled>Pilih Semester Tahun Akademik</option>
+                                        
+                                            <option value="{{ $smt_thnakd->id_smt_thnakd }}">{{ $smt_thnakd->smt_thnakd }}</option>
+                                        </select> --}}
+                                    @endforeach
+                                    @error('nama_matkul')
+                                        <small>{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                {{-- <div class="mb-3">
+                                    <label for="nama_matkul" class="form-label">Nama Mata Kuliah</label>
                                     <select class="form-select" aria-label="Default select example" name="nama_matkul"
                                         id="nama_matkul" required>
                                         <option selected disabled>Pilih Nama Mata Kuliah</option>
@@ -55,7 +72,7 @@
                                     @error('nama_matkul')
                                         <small>{{ $message }}</small>
                                     @enderror
-                                </div>
+                                </div> --}}
                                 <div class="mb-3">                                    
                                     <label for="upload_file" class="form-label">Upload File Verifikasi</label>
                                     <input type="file" class="form-control" id="upload_file" name="upload_file">

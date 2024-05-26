@@ -54,16 +54,19 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="smt_thnakd" class="form-label">Semester Tahun Akademik</label>
-                                    <select class="form-select" name="smt_thnakd" id="smt_thnakd" required>
+                                    @foreach ($data_thnakd as $smt_thnakd)
+                                    <input type="hidden" class="form-control" id="id_smt_thnakd" name="id_smt_thnakd"
+                                            value="{{ $smt_thnakd->id_smt_thnakd }}" readonly>
+                                        <input type="text" class="form-control" id="smt_thnakd" name="smt_thnakd"
+                                            value="{{ $smt_thnakd->smt_thnakd }}" readonly>
+                                        {{-- <select class="form-select" aria-label="Default select example" name="smt_thnakd" id="smt_thnakd" required>
                                         <option selected disabled>Pilih Semester Tahun Akademik</option>
-                                        @foreach ($data_thnakd as $smt_thnakd)
-                                            <option value="{{ $smt_thnakd->id_smt_thnakd }}" {{ $smt_thnakd->id_smt_thnakd == $data_rps->smt_thnakd_id ? 'selected' : '' }}>
-                                                {{ $smt_thnakd->smt_thnakd }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                        
+                                            <option value="{{ $smt_thnakd->id_smt_thnakd }}">{{ $smt_thnakd->smt_thnakd }}</option>
+                                        </select> --}}
+                                    @endforeach
                                     @error('smt_thnakd')
-                                        <small class="text-danger">{{ $message }}</small>
+                                        <small>{{ $message }}</small>
                                     @enderror
                                 </div>
                                 <div class="mb-3">                                    

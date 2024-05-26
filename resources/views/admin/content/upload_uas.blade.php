@@ -68,7 +68,7 @@
                                                 <th>{{ $data->semester }}</th>
                                                 <th>{{ $data->nama_dosen }}</th>
                                                 <th>{{ $data->smt_thnakd }}</th>
-                                                <th><a href="{{ asset('storage/uploads/uas_files/' . $data->file) }}" target="_blank">{{ $data->file }}</a>
+                                                <th><a href="{{ asset('storage/uploads/soal_uas_files/' . $data->file) }}" target="_blank">{{ $data->file }}</a>
                                                 </th>
                                                 {{-- <th>
                                                     @if ($data->status_ver_uas == 0)

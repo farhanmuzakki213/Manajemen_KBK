@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Rep_RPS;
 use App\Models\Ver_RPS;
 use App\Models\Ver_RPSModel;
 use Illuminate\Http\Request;
@@ -20,38 +21,46 @@ class Ver_RPSController extends Controller
         $data_ver_rps = DB::table('ver_rps')
             ->join('dosen', 'ver_rps.dosen_id', '=', 'dosen.id_dosen')
             ->join('rep_rps', 'ver_rps.rep_rps_id', '=', 'rep_rps.id_rep_rps')
-            ->join('matkul', 'rep_rps.matkul_id', '=', 'matkul.id_matkul')
+            ->select('ver_rps.*', 'rep_rps.*', 'dosen.nama_dosen as nama_verifikasi')
+            ->orderByDesc('rep_rps_id')
+            ->get();
+
+        $data_rep_rps = DB::table('rep_rps')
             ->join('smt_thnakd', 'rep_rps.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
-            ->select('ver_rps.*', 'ver_rps.*', 'rep_rps.*', 'dosen.*', 'matkul.*', 'smt_thnakd.*')
+            ->join('matkul', 'rep_rps.matkul_id', '=', 'matkul.id_matkul')
+            ->join('dosen', 'rep_rps.dosen_id', '=', 'dosen.id_dosen')
+            ->select('rep_rps.*', 'dosen.nama_dosen as nama_upload', 'matkul.*', 'smt_thnakd.*')
             ->where('smt_thnakd.status_smt_thnakd', '=', '1')
-            ->orderByDesc('id_ver_rps')
+            ->orderByDesc('id_rep_rps')
             ->get();
         debug($data_ver_rps);
-        return view('admin.content.Ver_RPS', compact('data_ver_rps'));
+        return view('admin.content.Ver_RPS', compact('data_ver_rps','data_rep_rps'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(string $id)
     {
         $nextNumber = $this->getCariNomor();
         $data_dosen = DB::table('dosen')->get();
         $data_rep_rps = DB::table('rep_rps')
             ->join('matkul', 'rep_rps.matkul_id', '=', 'matkul.id_matkul')
             ->select('rep_rps.*',  'matkul.*')
+            ->where('id_rep_rps', $id)
             ->orderByDesc('id_rep_rps')
             ->get();
         debug(compact('data_dosen', 'data_rep_rps', 'nextNumber'));
         return view('admin.content.form.ver_rps_form', compact('data_dosen', 'data_rep_rps', 'nextNumber'));
     }
 
-    function getCariNomor() {
+    function getCariNomor()
+    {
         // Mendapatkan semua ID dari tabel rep_rps
         $id_ver_rps = Ver_RPS::pluck('id_ver_rps')->toArray();
-    
+
         // Loop untuk memeriksa nomor dari 1 sampai takhingga
-        for ($i = 1; ; $i++) {
+        for ($i = 1;; $i++) {
             // Jika $i tidak ditemukan di dalam array $id_rep_rps, kembalikan nilai $i
             if (!in_array($i, $id_ver_rps)) {
                 return $i;
@@ -69,7 +78,7 @@ class Ver_RPSController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id_ver_rps' => 'required',
-            'nama_matkul' => 'required',
+            'id_rep_rps' => 'required',
             'nama_dosen' => 'required',
             'upload_file' => 'nullable|mimes:pdf', // File tidak wajib diunggah
             'status' => 'nullable',
@@ -92,7 +101,7 @@ class Ver_RPSController extends Controller
             $file = $request->file('upload_file');
             $filename = $file->getClientOriginalName(); // Mendapatkan nama asli file
 
-            $path = 'public/uploads/ver_rps_files/';
+            $path = 'public/uploads/rps/ver_files/';
             $file->storeAs($path, $filename); // Simpan file dengan nama aslinya
         }
 
@@ -102,7 +111,7 @@ class Ver_RPSController extends Controller
 
         $data = [
             'id_ver_rps' => $request->id_ver_rps,
-            'rep_rps_id' => $request->nama_matkul,
+            'rep_rps_id' => $request->id_rep_rps,
             'dosen_id' => $request->nama_dosen,
             'tanggal_diverifikasi' => $request->date,
         ];
@@ -149,6 +158,7 @@ class Ver_RPSController extends Controller
         $data_rep_rps = DB::table('rep_rps')
             ->join('matkul', 'rep_rps.matkul_id', '=', 'matkul.id_matkul')
             ->select('rep_rps.*',  'matkul.*')
+            ->where('id_rep_rps', $id)
             ->orderByDesc('id_rep_rps')
             ->get();
         //dd(compact('data_dosen', 'data_matkul', 'data_ver_rps'));
@@ -186,7 +196,7 @@ class Ver_RPSController extends Controller
         // Memeriksa apakah ada file lama
         if ($oldData->file_verifikasi !== null && $request->hasFile('upload_file')) {
             // Hapus file lama dari storage
-            Storage::delete('public/uploads/ver_rps_files/' . $oldData->file_verifikasi);
+            Storage::delete('public/uploads/rps/ver_files/' . $oldData->file_verifikasi);
         }
 
         // Memastikan file telah diunggah sebelum menyimpannya
@@ -195,7 +205,7 @@ class Ver_RPSController extends Controller
             $file = $request->file('upload_file');
             $filename = $file->getClientOriginalName(); // Mendapatkan nama asli file
 
-            $path = 'public/uploads/ver_rps_files/';
+            $path = 'public/uploads/rps/ver_files/';
             $file->storeAs($path, $filename); // Simpan file dengan nama aslinya
         }
 
@@ -240,7 +250,7 @@ class Ver_RPSController extends Controller
 
         // Menghapus file terkait jika ada
         if ($data_ver_rps && $data_ver_rps->file_verifikasi) {
-            Storage::delete('public/uploads/ver_rps_files/' . $data_ver_rps->file_verifikasi);
+            Storage::delete('public/uploads/rps/ver_files/' . $data_ver_rps->file_verifikasi);
         }
 
         // Menghapus data dari basis data jika ada
