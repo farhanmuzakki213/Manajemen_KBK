@@ -35,7 +35,7 @@ class PenugasanReviewController extends Controller
      */
     public function create()
     {
-        $nextNumber = $this->getNextNumber();
+        $nextNumber = $this->getCariNomor();
         $data_mahasiswa = DB::table('proposal_ta')
             ->join('mahasiswa', 'proposal_ta.mahasiswa_id', '=', 'mahasiswa.id_mahasiswa')
             ->select('proposal_ta.*', 'mahasiswa.nama', 'mahasiswa.nim')

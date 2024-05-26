@@ -35,7 +35,7 @@ class Ver_Soal_UASController extends Controller
      */
     public function create()
     {
-        $nextNumber = $this->getNextNumber();
+        $nextNumber = $this->getCariNomor();
         $data_dosen = DB::table('dosen')->get();
         $data_rep_uas = DB::table('rep_uas')
             ->join('matkul', 'rep_uas.matkul_id', '=', 'matkul.id_matkul')
