@@ -82,7 +82,7 @@ class Upload_UasController extends Controller
     if ($request->hasFile('upload_file')) {
         $file = $request->file('upload_file');
         $filename = $file->getClientOriginalName();
-        $path = 'public/uploads/soal_uas_files/';
+        $path = 'public/uploads/uas/repositori_files/';
         $file->storeAs($path, $filename);
 
         $data = [
@@ -161,7 +161,7 @@ class Upload_UasController extends Controller
         // Memeriksa apakah ada file lama
         if ($oldData->file !== null && $request->hasFile('upload_file')) {
             // Hapus file lama dari storage
-            Storage::delete('public/uploads/soal_uas_files/' . $oldData->file);
+            Storage::delete('public/uploads/uas/repositori_files/' . $oldData->file);
         }
         $filename = null;
 
@@ -171,7 +171,7 @@ class Upload_UasController extends Controller
             $file = $request->file('upload_file');
             $filename = $file->getClientOriginalName(); // Mendapatkan nama asli file
 
-            $path = 'public/uploads/soal_uas_files/';
+            $path = 'public/uploads/uas/repositori_files/';
             $file->storeAs($path, $filename); // Simpan file dengan nama aslinya
             
             
@@ -192,7 +192,7 @@ class Upload_UasController extends Controller
 
         // Menghapus file terkait jika ada
         if ($data_rep_uas && $data_rep_uas->file) {
-            Storage::delete('public/uploads/soal_uas_files/' . $data_rep_uas->file);
+            Storage::delete('public/uploads/uas/repositori_files/' . $data_rep_uas->file);
         }
 
         // Menghapus data dari basis data

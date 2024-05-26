@@ -71,12 +71,12 @@
                                         @endphp
                                         @foreach ($data_rep_rps as $data_rep)
                                             @php
-                                                $verifikasi = App\Models\Ver_Rps::where(
+                                                $cek_data_rep = App\Models\Ver_Rps::where(
                                                     'rep_rps_id',
                                                     $data_rep->id_rep_rps,
                                                 )->exists();
                                             @endphp
-                                            @if (!$verifikasi)
+                                            @if (!$cek_data_rep)
                                                 <tr class="table-Light">
                                                     <th>{{ $no++ }}</th>
                                                     {{-- <th>{{ $data_rep->id_rep_rps }}</th> --}}
@@ -156,15 +156,10 @@
                                             <th>{{ $data_ver->semester }}</th>
                                             <th>{{ $data_ver->smt_thnakd }}</th>
                                             <th>{{ $data_ver->nama_verifikasi }}</th>
+
                                             <th>
-                                                @php
-                                                    $file_verifikasi = App\Models\Ver_Rps::where(
-                                                        'rep_rps_id',
-                                                        $data_rep->id_rep_rps,
-                                                    )->value('file_verifikasi');
-                                                @endphp
-                                                @if ($file_verifikasi)
-                                                    <a href="{{ asset('storage/uploads/rps/ver_files/' . $data_rep->file) }}"
+                                                @if ($data_ver->file_verifikasi)
+                                                    <a href="{{ asset('storage/uploads/rps/ver_files/' . $data_ver->file_verifikasi) }}"
                                                         class="btn btn-primary mb-2 d-flex align-items-center"
                                                         target="_blank"><i class="bi bi-file-earmark-arrow-down"></i>
                                                         Unduh</a>
@@ -172,6 +167,22 @@
                                                     File Tidak Ada
                                                 @endif
                                             </th>
+                                            {{-- <th>
+                                                @php
+                                                    $cek_data_file = App\Models\Ver_Rps::where(
+                                                        'rep_rps_id',
+                                                        $data_rep->id_rep_rps,
+                                                    )->value('file_verifikasi');
+                                                @endphp
+                                                @if ($cek_data_file)
+                                                    <a href="{{ asset('storage/uploads/rps/ver_files/' . $data_rep->file) }}"
+                                                        class="btn btn-primary mb-2 d-flex align-items-center"
+                                                        target="_blank"><i class="bi bi-file-earmark-arrow-down"></i>
+                                                        Unduh</a>
+                                                @else
+                                                    File Tidak Ada
+                                                @endif
+                                            </th> --}}
 
                                             <th>
                                                 @if ($data_ver->status_ver_rps == 0)

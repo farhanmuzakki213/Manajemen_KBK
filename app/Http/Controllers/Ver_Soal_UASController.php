@@ -18,40 +18,60 @@ class Ver_Soal_UASController extends Controller
     public function index()
     {
         $data_ver_soal_uas = DB::table('ver_uas')
-            ->join('dosen', 'ver_uas.dosen_id', '=', 'dosen.id_dosen')
-            ->join('rep_uas', 'ver_uas.rep_uas_id', '=', 'rep_uas.id_rep_uas')
-            ->join('matkul', 'rep_uas.matkul_id', '=', 'matkul.id_matkul')
-            ->join('smt_thnakd', 'rep_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
-            ->select('ver_uas.*', 'ver_uas.*', 'rep_uas.*', 'dosen.*', 'matkul.*', 'smt_thnakd.*')
-            ->where('smt_thnakd.status_smt_thnakd', '=', '1')
-            ->orderByDesc('id_ver_uas')
-            ->get();
-        debug($data_ver_soal_uas);
-        return view('admin.content.Ver_Soal_Uas', compact('data_ver_soal_uas'));
+        ->join('dosen as verifikasi', 'ver_uas.dosen_id', '=', 'verifikasi.id_dosen')
+        ->join('rep_uas', 'ver_uas.rep_uas_id', '=', 'rep_uas.id_rep_uas')
+        ->join('smt_thnakd', 'rep_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
+        ->join('matkul', 'rep_uas.matkul_id', '=', 'matkul.id_matkul')
+        ->join('dosen as upload', 'rep_uas.dosen_id', '=', 'upload.id_dosen')
+        ->select('ver_uas.*', 'rep_uas.*', 'verifikasi.nama_dosen as nama_verifikasi', 'upload.nama_dosen as nama_upload', 'matkul.*', 'smt_thnakd.*')
+        ->where('smt_thnakd.status_smt_thnakd', '=', '1')
+        ->orderByDesc('id_ver_uas')
+        ->get();
+
+        $data_rep_soal_uas = DB::table('rep_uas')
+        ->join('smt_thnakd', 'rep_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
+        ->join('matkul', 'rep_uas.matkul_id', '=', 'matkul.id_matkul')
+        ->join('dosen', 'rep_uas.dosen_id', '=', 'dosen.id_dosen')
+        ->select('rep_uas.*', 'dosen.*', 'matkul.*', 'smt_thnakd.*')
+        ->where('smt_thnakd.status_smt_thnakd', '=', '1')
+        ->orderByDesc('id_rep_uas')
+        ->get();
+        debug($data_rep_soal_uas);
+        return view('admin.content.Ver_Soal_UAS', compact('data_ver_soal_uas', 'data_rep_soal_uas'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(string $id)
     {
+        // Cek apakah rep_rps_id sudah ada di tabel ver_rps
+        $cek_data = Ver_UAS::where('rep_uas_id', $id)->first();
+
+        if ($cek_data) {
+            // Jika sudah ada, kembalikan ke halaman verifikasi_rps dengan pesan error
+            return redirect()->route('ver_soal_uas')->with('error', 'Data sudah diambil.');
+        }
+
         $nextNumber = $this->getCariNomor();
         $data_dosen = DB::table('dosen')->get();
-        $data_rep_uas = DB::table('rep_uas')
+        $data_rep_soal_uas = DB::table('rep_uas')
             ->join('matkul', 'rep_uas.matkul_id', '=', 'matkul.id_matkul')
             ->select('rep_uas.*',  'matkul.*')
+            ->where('id_rep_uas', $id)
             ->orderByDesc('id_rep_uas')
             ->get();
-        debug(compact('data_dosen', 'data_rep_uas', 'nextNumber'));
-        return view('admin.content.form.ver_soal_uas_form', compact('data_dosen', 'data_rep_uas', 'nextNumber'));
+        debug(compact('data_dosen', 'data_rep_soal_uas', 'nextNumber'));
+        return view('admin.content.form.ver_soal_uas_form', compact('data_dosen', 'data_rep_soal_uas', 'nextNumber'));
     }
 
-    function getCariNomor() {
+    function getCariNomor()
+    {
         // Mendapatkan semua ID dari tabel rep_rps
         $id_ver_uas = Ver_UAS::pluck('id_ver_uas')->toArray();
-    
+
         // Loop untuk memeriksa nomor dari 1 sampai takhingga
-        for ($i = 1; ; $i++) {
+        for ($i = 1;; $i++) {
             // Jika $i tidak ditemukan di dalam array $id_rep_rps, kembalikan nilai $i
             if (!in_array($i, $id_ver_uas)) {
                 return $i;
@@ -69,16 +89,16 @@ class Ver_Soal_UASController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id_ver_uas' => 'required',
-            'nama_matkul' => 'required',
+            'id_rep_uas' => 'required',
             'nama_dosen' => 'required',
             'upload_file' => 'nullable|mimes:pdf', // File tidak wajib diunggah
-            'status_ver_soal_uas' => 'nullable',
-            'catatan' => 'nullable',
+            'status' => 'nullable',
+            'saran' => 'nullable',
             'date' => 'required|date',
         ]);
 
         // Aturan validasi untuk catatan menjadi opsional
-        $validator->sometimes('catatan', 'nullable', function ($input) {
+        $validator->sometimes('saran', 'nullable', function ($input) {
             return !$input->hasFile('upload_file'); // Catatan hanya opsional jika file tidak diunggah
         });
 
@@ -92,17 +112,18 @@ class Ver_Soal_UASController extends Controller
             $file = $request->file('upload_file');
             $filename = $file->getClientOriginalName(); // Mendapatkan nama asli file
 
-            $path = 'public/uploads/ver_soal_uas_files/';
+            $path = 'public/uploads/uas/ver_files/';
             $file->storeAs($path, $filename); // Simpan file dengan nama aslinya
         }
 
         // Menyimpan catatan hanya jika diisi
-        $catatan = $request->filled('catatan') ? $request->catatan : null;
-        $status_ver_uas = $request->filled('status_ver_uas') ? $request->status_ver_uas : null;
+        
+        $status = $request->filled('status') ? $request->status : null;
+        $saran = $request->filled('saran') ? $request->saran : null;
 
         $data = [
             'id_ver_uas' => $request->id_ver_uas,
-            'rep_uas_id' => $request->nama_matkul,
+            'rep_uas_id' => $request->id_rep_uas,
             'dosen_id' => $request->nama_dosen,
             'tanggal_diverifikasi' => $request->date,
         ];
@@ -111,13 +132,13 @@ class Ver_Soal_UASController extends Controller
         if ($filename !== '') {
             $data['file_verifikasi'] = $filename;
         }
-        if ($status_ver_uas !== null) {
-            $data['status_ver_uas'] = $status_ver_uas;
+        if ($status !== null) {
+            $data['status_ver_uas'] = $status;
         }
 
         // Hanya menambahkan field 'catatan' jika diisi
-        if ($catatan !== null) {
-            $data['catatan'] = $catatan;
+        if ($saran !== null) {
+            $data['saran'] = $saran;
         }
 
         Ver_UAS::create($data);
@@ -135,7 +156,7 @@ class Ver_Soal_UASController extends Controller
         $data_dosen = DB::table('dosen')->get();
         $data_matkul = DB::table('matkul')->get();
 
-        return view('admin.content.form.ver_soal_uas', compact('data_dosen', 'data_matkul'));
+        return view('admin.content.form.ver_uas', compact('data_dosen', 'data_matkul'));
     }
 
     /**
@@ -145,34 +166,32 @@ class Ver_Soal_UASController extends Controller
     {
         $data_dosen = DB::table('dosen')->get();
 
-        $data_ver_soal_uas = Ver_uas::where('id_ver_uas', $id)->first();
-        $data_rep_uas = DB::table('rep_uas')
+        $data_ver_soal_uas = Ver_UAS::where('id_ver_uas', $id)->first();
+        $data_rep_soal_uas = DB::table('rep_uas')
             ->join('matkul', 'rep_uas.matkul_id', '=', 'matkul.id_matkul')
-            ->select('rep_uas.*',  'matkul.*')
+            ->select('rep_uas.*', 'matkul.*')
+            ->where('id_rep_uas', $id)  // Perbaiki query untuk mengambil data rep_uas yang sesuai
             ->orderByDesc('id_rep_uas')
             ->get();
-        //dd(compact('data_dosen', 'data_matkul', 'data_ver_uas'));
-        debug(compact('data_dosen', 'data_rep_uas', 'data_ver_soal_uas'));
-        return view('admin.content.form.ver_soal_uas_edit', compact('data_dosen', 'data_rep_uas', 'data_ver_soal_uas'));
+
+            debug(compact('data_dosen', 'data_rep_soal_uas', 'data_ver_soal_uas'));
+        return view('admin.content.form.ver_soal_uas_edit', compact('data_dosen', 'data_rep_soal_uas', 'data_ver_soal_uas'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $validator = Validator::make($request->all(), [
             'id_ver_uas' => 'required',
-            'nama_matkul' => 'required',
+            'id_rep_uas' => 'required',
             'nama_dosen' => 'required',
             'upload_file' => 'nullable|mimes:pdf', // File tidak wajib diunggah
             'status' => 'nullable',
-            'catatan' => 'nullable',
+            'saran' => 'nullable',
             'date' => 'required|date',
         ]);
 
-        // Aturan validasi untuk catatan menjadi opsional
-        $validator->sometimes('catatan', 'nullable', function ($input) {
+         // Aturan validasi untuk catatan menjadi opsional
+         $validator->sometimes('saran', 'nullable', function ($input) {
             return !$input->hasFile('upload_file'); // Catatan hanya opsional jika file tidak diunggah
         });
 
@@ -184,9 +203,9 @@ class Ver_Soal_UASController extends Controller
         $oldData = Ver_UAS::find($id);
 
         // Memeriksa apakah ada file lama
-        if ($oldData->file !== null && $request->hasFile('upload_file')) {
+        if ($oldData->file_verifikasi !== null && $request->hasFile('upload_file')) {
             // Hapus file lama dari storage
-            Storage::delete('public/uploads/ver_soal_uas_files/' . $oldData->file);
+            Storage::delete('public/uploads/uas/ver_files/' . $oldData->file_verifikasi);
         }
 
         // Memastikan file telah diunggah sebelum menyimpannya
@@ -195,17 +214,18 @@ class Ver_Soal_UASController extends Controller
             $file = $request->file('upload_file');
             $filename = $file->getClientOriginalName(); // Mendapatkan nama asli file
 
-            $path = 'public/uploads/ver_soal_uas_files/';
+            $path = 'public/uploads/uas/ver_files/';
             $file->storeAs($path, $filename); // Simpan file dengan nama aslinya
         }
 
         // Menyimpan catatan hanya jika diisi
-        $catatan = $request->filled('catatan') ? $request->catatan : null;
         $status = $request->filled('status') ? $request->status : null;
+        $saran = $request->filled('saran') ? $request->saran : null;
+        
 
         $data = [
             'id_ver_uas' => $request->id_ver_uas,
-            'rep_uas_id' => $request->nama_matkul,
+            'rep_uas_id' => $request->id_rep_uas,
             'dosen_id' => $request->nama_dosen,
             'tanggal_diverifikasi' => $request->date,
         ];
@@ -215,14 +235,14 @@ class Ver_Soal_UASController extends Controller
             $data['file_verifikasi'] = $filename;
         }
 
-        // Hanya menambahkan field 'status_ver_soal_uas' jika diisi
+        // Hanya menambahkan field 'status_ver_rps' jika diisi
         if ($status !== null) {
             $data['status_ver_uas'] = $status;
         }
 
         // Hanya menambahkan field 'catatan' jika diisi
-        if ($catatan !== null) {
-            $data['catatan'] = $catatan;
+        if ($saran !== null) {
+            $data['saran'] = $saran;
         }
 
 
@@ -230,7 +250,6 @@ class Ver_Soal_UASController extends Controller
         Ver_UAS::where('id_ver_uas', $id)->update($data);
         return redirect()->route('ver_soal_uas')->with('success', 'Data berhasil diperbarui.');
     }
-
     /**
      * Remove the specified resource from storage.
      */
@@ -239,8 +258,8 @@ class Ver_Soal_UASController extends Controller
         $data_ver_soal_uas = Ver_UAS::where('id_ver_uas', $id)->first();
 
         // Menghapus file terkait jika ada
-        if ($data_ver_soal_uas && $data_ver_soal_uas->file) {
-            Storage::delete('public/uploads/ver__soal_uas_files/' . $data_ver_soal_uas->file);
+        if ($data_ver_soal_uas && $data_ver_soal_uas->file_verifikasi) {
+            Storage::delete('public/uploads/uas/ver_files/' . $data_ver_soal_uas->file_verifikasi);
         }
 
         // Menghapus data dari basis data jika ada

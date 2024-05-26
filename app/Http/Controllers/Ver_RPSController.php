@@ -47,9 +47,9 @@ class Ver_RPSController extends Controller
     public function create(string $id)
     {
         // Cek apakah rep_rps_id sudah ada di tabel ver_rps
-        $verifikasi = Ver_Rps::where('rep_rps_id', $id)->first();
+        $cek_data = Ver_Rps::where('rep_rps_id', $id)->first();
 
-        if ($verifikasi) {
+        if ($cek_data) {
             // Jika sudah ada, kembalikan ke halaman verifikasi_rps dengan pesan error
             return redirect()->route('ver_rps')->with('error', 'Data sudah diambil.');
         }
@@ -165,93 +165,77 @@ class Ver_RPSController extends Controller
     public function edit(string $id)
     {
         $data_dosen = DB::table('dosen')->get();
-
+    
         $data_ver_rps = Ver_RPS::where('id_ver_rps', $id)->first();
         $data_rep_rps = DB::table('rep_rps')
             ->join('matkul', 'rep_rps.matkul_id', '=', 'matkul.id_matkul')
-            ->select('rep_rps.*',  'matkul.*')
-            ->where('id_rep_rps', $id)
-            ->orderByDesc('id_rep_rps')
-            ->get();
-        //dd(compact('data_dosen', 'data_matkul', 'data_ver_rps'));
-        debug(compact('data_dosen', 'data_rep_rps', 'data_ver_rps'));
+            ->select('rep_rps.*', 'matkul.*')
+            ->where('rep_rps.id_rep_rps', $data_ver_rps->rep_rps_id)  // Perbaiki query untuk mengambil data rep_rps yang sesuai
+            ->first();  // Karena ini seharusnya satu record
+    
         return view('admin.content.form.ver_rps_edit', compact('data_dosen', 'data_rep_rps', 'data_ver_rps'));
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(Request $request, string $id)
     {
         $validator = Validator::make($request->all(), [
             'id_ver_rps' => 'required',
-            'nama_matkul' => 'required',
+            'id_rep_rps' => 'required',
             'nama_dosen' => 'required',
             'upload_file' => 'nullable|mimes:pdf', // File tidak wajib diunggah
             'status' => 'nullable',
             'catatan' => 'nullable',
             'date' => 'required|date',
         ]);
-
-        // Aturan validasi untuk catatan menjadi opsional
-        $validator->sometimes('catatan', 'nullable', function ($input) {
-            return !$input->hasFile('upload_file'); // Catatan hanya opsional jika file tidak diunggah
-        });
-
+    
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
         }
-
+    
         // Mendapatkan data lama
         $oldData = Ver_RPS::find($id);
-
-        // Memeriksa apakah ada file lama
-        if ($oldData->file_verifikasi !== null && $request->hasFile('upload_file')) {
+    
+        // Memeriksa apakah ada file lama dan file baru diunggah
+        if ($oldData->file_verifikasi && $request->hasFile('upload_file')) {
             // Hapus file lama dari storage
             Storage::delete('public/uploads/rps/ver_files/' . $oldData->file_verifikasi);
         }
-
-        // Memastikan file telah diunggah sebelum menyimpannya
+    
+        // Menyimpan file baru jika diunggah
         $filename = null;
         if ($request->hasFile('upload_file')) {
             $file = $request->file('upload_file');
-            $filename = $file->getClientOriginalName(); // Mendapatkan nama asli file
-
+            $filename = time() . '_' . $file->getClientOriginalName(); // Menambahkan timestamp untuk menghindari duplikasi nama
             $path = 'public/uploads/rps/ver_files/';
-            $file->storeAs($path, $filename); // Simpan file dengan nama aslinya
+            $file->storeAs($path, $filename);
         }
-
-        // Menyimpan catatan hanya jika diisi
-        $catatan = $request->filled('catatan') ? $request->catatan : null;
-        $status = $request->filled('status') ? $request->status : null;
-
+    
+        // Menyiapkan data untuk diupdate
         $data = [
-            'id_ver_rps' => $request->id_ver_rps,
-            'rep_rps_id' => $request->nama_matkul,
+            'rep_rps_id' => $request->id_rep_rps,
             'dosen_id' => $request->nama_dosen,
             'tanggal_diverifikasi' => $request->date,
         ];
-
-        // Hanya menambahkan field 'file' jika file diunggah
+    
+        // Hanya menambahkan field 'file_verifikasi' jika file baru diunggah
         if ($filename !== null) {
             $data['file_verifikasi'] = $filename;
         }
-
-        // Hanya menambahkan field 'status_ver_rps' jika diisi
-        if ($status !== null) {
-            $data['status_ver_rps'] = $status;
+    
+        // Menambahkan field 'status_ver_rps' dan 'catatan' jika diisi
+        if ($request->filled('status')) {
+            $data['status_ver_rps'] = $request->status;
         }
-
-        // Hanya menambahkan field 'catatan' jika diisi
-        if ($catatan !== null) {
-            $data['catatan'] = $catatan;
+    
+        if ($request->filled('catatan')) {
+            $data['catatan'] = $request->catatan;
         }
-
-
-        //dd($request->all());
+    
+        // Update data
         Ver_RPS::where('id_ver_rps', $id)->update($data);
         return redirect()->route('ver_rps')->with('success', 'Data berhasil diperbarui.');
     }
+    
 
     /**
      * Remove the specified resource from storage.

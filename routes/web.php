@@ -275,7 +275,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/verifikasi_soal_uas', [Ver_Soal_UASController::class, 'index'])->middleware(['auth', 'verified'])->name('ver_soal_uas');
     Route::post('/verifikasi_soal_uas/store', [Ver_Soal_UASController::class, 'store'])->middleware(['auth', 'verified'])->name('ver_soal_uas.store');
-    Route::get('/verifikasi_soal_uas/create', [Ver_Soal_UASController::class, 'create'])->middleware(['auth', 'verified'])->name('ver_soal_uas.create');
+    Route::get('/verifikasi_soal_uas/create/{id}', [Ver_Soal_UASController::class, 'create'])->middleware(['auth', 'verified'])->name('ver_soal_uas.create');
     Route::get('/verifikasi_soal_uas/edit/{id}', [Ver_Soal_UASController::class, 'edit'])->middleware(['auth', 'verified'])->name('ver_soal_uas.edit');
     Route::put('/verifikasi_soal_uas/update/{id}', [Ver_Soal_UASController::class, 'update'])->middleware(['auth', 'verified'])->name('ver_soal_uas.update');
     Route::get('/verifikasi_soal_uas/show/{id}', [Ver_Soal_UASController::class, 'show'])->middleware(['auth', 'verified'])->name('ver_soal_uas.show');

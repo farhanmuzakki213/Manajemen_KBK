@@ -3,10 +3,8 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-body">
-                <!-- Page Heading -->
-                <h5 class="card-title fw-semibold mb-4">Edit Data Verifikasi UAS</h5>
+                <h5 class="card-title fw-semibold mb-4">Edit Data Verifikasi UAS </h5>
                 <div class="container-fluid">
-                    <!-- Form Edit Data -->
                     <div class="card shadow mb-4">
                         <div class="card-body">
                             <div class="row justify-content-end">
@@ -18,20 +16,17 @@
                                 @csrf
                                 @method('PUT')
                                 <div class="mb-3">
-                                    {{-- <label for="id_ver_uas" class="form-label">ID Verifikasi uas</label> --}}
-                                    <input type="text" class="form-control" id="id_ver_uas" name="id_ver_uas" value="{{$data_ver_soal_uas->id_ver_uas}}" readonly>
+                                    <input type="text" class="form-control" id="id_ver_uas" name="id_ver_uas" value="{{ $data_ver_soal_uas->id_ver_uas }}" readonly>
                                     @error('id_ver_uas')
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="nama_dosen" class="form-label">Nama Dosen</label>
-                                    <select class="form-select" aria-label="Default select example" name="nama_dosen"
-                                        id="nama_dosen" required>
+                                    <select class="form-select" name="nama_dosen" id="nama_dosen" required>
                                         <option selected disabled>Pilih Nama Dosen</option>
                                         @foreach ($data_dosen as $dosen)
-                                            <option value="{{ $dosen->id_dosen }}"
-                                                {{ $dosen->id_dosen == $data_ver_soal_uas->dosen_id ? 'selected' : '' }}>
+                                            <option value="{{ $dosen->id_dosen }}" {{ $dosen->id_dosen == $data_ver_soal_uas->dosen_id ? 'selected' : '' }}>
                                                 {{ $dosen->nama_dosen }}
                                             </option>
                                         @endforeach
@@ -42,28 +37,21 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="nama_matkul" class="form-label">Nama Mata Kuliah</label>
-                                    <select class="form-select" aria-label="Default select example" name="nama_matkul"
-                                        id="nama_matkul" required>
-                                        <option selected disabled>Pilih Nama Mata Kuliah</option>
-                                        @foreach ($data_rep_uas as $rep_uas)                                            
-                                            <option value="{{ $rep_uas->id_rep_uas }}"
-                                                {{ $rep_uas->id_matkul && $rep_uas->id_rep_uas ? 'selected' : '' }}>
-                                                {{ $rep_uas->kode_matkul }} | {{ $rep_uas->nama_matkul }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    @foreach ($data_rep_soal_uas as $data)
+                                        <input type="hidden" class="form-control" id="id_rep_uas" name="id_rep_uas" value="{{ $data->id_rep_uas }}" readonly>
+                                        <input type="text" class="form-control" id="nama_matkul" name="nama_matkul" value="{{ $data->kode_matkul }} | {{ $data->nama_matkul }}" readonly>
+                                    @endforeach
                                     @error('nama_matkul')
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>
-                                <div class="mb-3">                                    
+                                <div class="mb-3">
                                     <label for="upload_file" class="form-label">Upload File Verifikasi</label>
                                     <input type="file" class="form-control" id="upload_file" name="upload_file">
                                     @error('upload_file')
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>
-                                
                                 <div class="mb-3">
                                     <label for="status" class="form-label">Status</label><br>
                                     <div class="form-check form-check-inline">
@@ -72,18 +60,21 @@
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="status" id="tidak_aktif" value="0" {{ $data_ver_soal_uas->status_ver_uas == 0 ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="tidak_aktif">Tidak Diverifiksi</label>
+                                        <label class="form-check-label" for="tidak_aktif">Tidak Diverifikasi</label>
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="catatan" class="form-label">Catatan</label>
-                                    <textarea class="form-control" id="catatan" name="catatan" rows="3">{{ $data_ver_soal_uas->catatan }}</textarea>
-                                    @error('catatan')
-                                        <small>{{ $message }}</small>
-                                    @enderror
+                                    <label for="saran" class="form-label">Saran</label><br>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="saran" id="layak_dipakai" value="1" {{ $data_ver_soal_uas->saran == 1 ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="layak_dipakai">Layak Dipakai</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="saran" id="tidak_layak_dipakai" value="0" {{ $data_ver_soal_uas->saran == 0 ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="tidak_layak_dipakai">Tidak Layak Dipakai</label>
+                                    </div>
                                 </div>
                                 <div class="col-5 mb-3">
-                                    {{-- <label for="date" class=" col-form-label">Tanggal Verifikasi</label> --}}
                                     <div class="input-group date">
                                         <input type="hidden" class="form-control" id="date" name="date" value="{{ \Carbon\Carbon::now()->toDateString() }}"/>
                                     </div>
@@ -93,6 +84,7 @@
                                 </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
+                            <br>
                         </div>
                     </div>
                 </div>
