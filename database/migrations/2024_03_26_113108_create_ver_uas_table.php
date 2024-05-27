@@ -17,7 +17,8 @@ return new class extends Migration
             $table->bigInteger('dosen_id');
             $table->string('file_verifikasi')->nullable();;
             $table->enum('status_ver_uas', ['0', '1'])->default('0')->comment('0: Tidak Diverifikasi, 1: Diverifikasi');
-            $table->enum('saran', ['0', '1'])->default('0')->comment('0: Tidak Layak Pakai, 1: layak Dipakai');
+            $table->enum('saran', ['0', '1', '2'])->default('0')->comment('0: Tidak Layak Pakai, 1: Revisi, 2: layak Dipakai');
+            $table->text('catatan')->nullable();
             $table->date('tanggal_diverifikasi');
         });
 

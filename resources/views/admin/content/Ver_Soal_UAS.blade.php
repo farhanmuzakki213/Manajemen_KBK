@@ -196,10 +196,13 @@
                                             <th>
                                                 @if ($data_ver->saran == 0)
                                                     Tidak Layak Pakai
+                                                @elseif ($data_ver->saran == 1)
+                                                    Butuh revisi
                                                 @else
                                                     Layak Pakai
                                                 @endif
                                             </th>
+                                            
                                             <th style="width: 10%;">
                                                 <div class="row">
                                                     <a href="{{ route('ver_soal_uas.edit', ['id' => $data_ver->id_ver_uas]) }}"
@@ -335,21 +338,26 @@
                                                                             id="status"value="@if ($data_ver->status_ver_uas == 0) Tidak Diverifikasi @else Diverifikasi @endif"
                                                                             readonly>
                                                                     </div>
-                                                                     <div class="col">
-                                                                        <label for="saran" class="form-label">Saran
-                                                                            Verifikasi</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="saran"value="@if ($data_ver->saran == 0) Tidak Layak Dipakai @else Layak Dipakai @endif"
+                                                                    <div class="col">
+                                                                        <label for="saran" class="form-label">Saran Verifikasi</label>
+                                                                        <input type="text" class="form-control" id="saran"
+                                                                            value="@if ($data_ver->saran == 0) Tidak Layak Dipakai
+                                                                                   @elseif ($data_ver->saran == 1) Butuh Revisi
+                                                                                   @elseif ($data_ver->saran == 2) Layak Dipakai
+                                                                                   @endif"
                                                                             readonly>
                                                                     </div>
+                                                                    
+                                                                    
                                                                    
                                                                 </div>
                                                             </div>
+                                                            <div class="mb-3">
+                                                                <label for="catatan" class="form-label">Catatan</label>
+                                                                <textarea class="form-control" id="catatan" name="catatan" rows="3" readonly>{{ $data_ver->catatan }}</textarea>
+                                                            </div>
                                                             
                                                                    
-                                                                    
-                                                                
-
 
                                                         </form>
                                                     </div>

@@ -39,7 +39,7 @@
                                             <th>Nama Mahasiswa</th>
                                             <th>Nama Reviewer 1</th>
                                             <th>Nama Reviewer 2</th>
-                                            {{-- <th>Status Proposal</th> --}}
+                                            <th>Status Proposal</th>
                                             <th>Status Final</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -50,7 +50,7 @@
                                             <th>Nama Mahasiswa</th>
                                             <th>Nama Reviewer 1</th>
                                             <th>Nama Reviewer 2</th>
-                                            {{-- <th>Status Proposal</th> --}}
+                                            <th>Status Proposal</th>
                                             <th>Status Final</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -62,7 +62,7 @@
                                                 <th>{{ $data->nama }}</th>
                                                 <th>{{ $data->reviewer_satu_nama }}</th>
                                                 <th>{{ $data->reviewer_dua_nama }}</th>
-                                                {{-- <th>
+                                                <th>
                                                     @if ($data->status_review_proposal == 0)
                                                         Di Ajukan
                                                     @elseif ($data->status_review_proposal == 1)
@@ -72,7 +72,7 @@
                                                     @else
                                                         Di Terima
                                                     @endif
-                                                </th> --}}
+                                                </th>
                                                 <th>
                                                     @if ($data->status_final_proposal == 0)
                                                         Belum Final

@@ -87,66 +87,79 @@ class Ver_Soal_UASController extends Controller
      */
     public function store(Request $request)
     {
+        // Validasi input
         $validator = Validator::make($request->all(), [
             'id_ver_uas' => 'required',
             'id_rep_uas' => 'required',
             'nama_dosen' => 'required',
-            'upload_file' => 'nullable|mimes:pdf', // File tidak wajib diunggah
-            'status' => 'nullable',
-            'saran' => 'nullable',
+            'upload_file' => 'nullable|mimes:pdf',
+            'status' => 'nullable|in:0,1', // Status hanya bisa 0 atau 1
+            'saran' => 'nullable|in:0,1,2', // Saran hanya bisa 0, 1, atau 2
+            'catatan' => 'nullable|string',
             'date' => 'required|date',
         ]);
-
-        // Aturan validasi untuk catatan menjadi opsional
-        $validator->sometimes('saran', 'nullable', function ($input) {
-            return !$input->hasFile('upload_file'); // Catatan hanya opsional jika file tidak diunggah
-        });
-
+    
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
         }
-
-        // Memastikan file telah diunggah sebelum menyimpannya
+    
+        // Mengatur nilai default jika status tidak diisi
+        $status = $request->input('status', '0'); // Default to '0' (Tidak Diverifikasi)
+        $saran = $request->input('saran', '0'); // Default to '0' (Tidak Layak Dipakai)
+        $catatan = $request->input('catatan', 'Soal tidak layak dipakai');
+    
+        // Memperbarui catatan berdasarkan saran yang dipilih jika status diverifikasi (1)
+        if ($status == '1') {
+            if (!$request->filled('saran')) {
+                return redirect()->back()->withInput()->withErrors(['saran' => 'Saran harus diisi jika diverifikasi']);
+            }
+    
+            // Ubah catatan berdasarkan saran yang dipilih
+            switch ($saran) {
+                case '2':
+                    $catatan = 'Soal layak dipakai';
+                    break;
+                case '1':
+                    // Tidak ada perubahan, catatan harus diisi oleh pengguna
+                    break;
+                case '0':
+                default:
+                    $catatan = 'Soal tidak layak dipakai';
+                    break;
+            }
+        }
+    
+        // Mengatur nama file jika ada file yang diunggah
         $filename = '';
         if ($request->hasFile('upload_file')) {
             $file = $request->file('upload_file');
-            $filename = $file->getClientOriginalName(); // Mendapatkan nama asli file
-
+            $filename = $file->getClientOriginalName();
             $path = 'public/uploads/uas/ver_files/';
-            $file->storeAs($path, $filename); // Simpan file dengan nama aslinya
+            $file->storeAs($path, $filename);
         }
-
-        // Menyimpan catatan hanya jika diisi
-        
-        $status = $request->filled('status') ? $request->status : null;
-        $saran = $request->filled('saran') ? $request->saran : null;
-
+    
+        // Menyiapkan data untuk disimpan
         $data = [
             'id_ver_uas' => $request->id_ver_uas,
             'rep_uas_id' => $request->id_rep_uas,
             'dosen_id' => $request->nama_dosen,
             'tanggal_diverifikasi' => $request->date,
+            'status_ver_uas' => $status, // Pastikan ini adalah string yang sesuai dengan ENUM
+            'saran' => $saran,
+            'catatan' => $catatan,
+            'tanggal_diverifikasi' => $request->date,
         ];
-
-        // Hanya menambahkan field 'file' jika file diunggah
+    
         if ($filename !== '') {
             $data['file_verifikasi'] = $filename;
         }
-        if ($status !== null) {
-            $data['status_ver_uas'] = $status;
-        }
-
-        // Hanya menambahkan field 'catatan' jika diisi
-        if ($saran !== null) {
-            $data['saran'] = $saran;
-        }
-
+    
+        // Menyimpan data ke database
         Ver_UAS::create($data);
+    
         return redirect()->route('ver_soal_uas')->with('success', 'Data berhasil disimpan.');
-
-
-        //dd($request->all());
     }
+    
 
     /**
      * Display the specified resource.
@@ -221,6 +234,7 @@ class Ver_Soal_UASController extends Controller
         // Menyimpan catatan hanya jika diisi
         $status = $request->filled('status') ? $request->status : null;
         $saran = $request->filled('saran') ? $request->saran : null;
+        $catatan = $request->filled('catatan') ? $request->catatan : null;
         
 
         $data = [
@@ -243,6 +257,9 @@ class Ver_Soal_UASController extends Controller
         // Hanya menambahkan field 'catatan' jika diisi
         if ($saran !== null) {
             $data['saran'] = $saran;
+        }
+        if ($catatan !== null) {
+            $data['catatan'] = $catatan;
         }
 
 

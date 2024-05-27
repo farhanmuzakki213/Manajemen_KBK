@@ -327,9 +327,10 @@
                                                                             readonly>
                                                                     </div>
                                                                     <div class="col">
-                                                                        {{-- <label for="File"
-                                                                                class="form-label">File
-                                                                                Verifikasi</label> --}}
+                                                                        <label for="catatan" class="form-label">Catatan</label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="catatan"value="{{$data_ver->catatan}}"
+                                                                            readonly>
                                                                     </div>
                                                                 </div>
                                                             </div>

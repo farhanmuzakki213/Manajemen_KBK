@@ -15,11 +15,11 @@ class VerUASSeeder extends Seeder
     public function run(): void
     {
         $VerUASData = [
-            [1, 1, 292, '', '1', '1', '2023-12-25'],
-            [2, 2, 292, '', '1', '0', '2024-02-12'],
-            [3, 3, 292, '', '1', '1', '2024-02-12'],
-            [4, 4, 292, '', '1', '1', '2024-02-12'],
-            [5, 5, 292, '', '1', '0', '2024-02-12']
+            [1, 1, 292, '', '1', '1', '', '2023-12-25'],
+            [2, 2, 292, '', '1', '0', '', '2024-02-12'],
+            [3, 3, 292, '', '1', '1', '', '2024-02-12'],
+            [4, 4, 292, '', '1', '1', '', '2024-02-12'],
+            [5, 5, 292, '', '1', '0', '', '2024-02-12']
         ];
 
         foreach ($VerUASData as $data) {
@@ -32,7 +32,8 @@ class VerUASSeeder extends Seeder
                 'file_verifikasi'=> $data[3],
                 'status_ver_uas' => $data[4],
                 'saran' => $data[5],
-                'tanggal_diverifikasi' => $data[6]
+                'catatan' => $data[6],
+                'tanggal_diverifikasi' => $data[7]
             ]);
         }
     }

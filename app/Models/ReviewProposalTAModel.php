@@ -12,6 +12,6 @@ class ReviewProposalTAModel extends Model
     protected $table = 'review_proposal_ta';
     public $timestamps = false;
 
-    protected $primaryKey = 'id_ver_rps';
+    protected $primaryKey = 'id_penugasan';
     public $incrementing = false;
 }

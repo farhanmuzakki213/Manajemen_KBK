@@ -17,17 +17,14 @@
                             <form method="post" action="{{ route('ver_soal_uas.store') }}" enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
-                                    {{-- <label for="id_ver_soal_uas" class="form-label">ID Verifikasi RPS</label> --}}
-                                    <input type="hidden" class="form-control" id="id_ver_uas" name="id_ver_uas"
-                                        value="{{ $nextNumber }}" readonly>
+                                    <input type="hidden" class="form-control" id="id_ver_uas" name="id_ver_uas" value="{{ $nextNumber }}" readonly>
                                     @error('id_ver_uas')
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="nama_dosen" class="form-label">Nama Dosen</label>
-                                    <select class="form-select" aria-label="Default select example" name="nama_dosen"
-                                        id="nama_dosen" required>
+                                    <select class="form-select" aria-label="Default select example" name="nama_dosen" id="nama_dosen" required>
                                         <option selected disabled>Pilih Nama Dosen</option>
                                         @foreach ($data_dosen as $dosen)
                                             <option value="{{ $dosen->id_dosen }}">{{ $dosen->nama_dosen }}</option>
@@ -40,10 +37,8 @@
                                 <div class="mb-3">
                                     <label for="nama_matkul" class="form-label">Nama Mata Kuliah</label>
                                     @foreach ($data_rep_soal_uas as $data)
-                                        <input type="hidden" class="form-control" id="id_rep_uas" name="id_rep_uas"
-                                            value="{{ $data->id_rep_uas }}" readonly>
-                                        <input type="text" class="form-control" id="nama_matkul" name="nama_matkul"
-                                            value="{{ $data->kode_matkul }} | {{ $data->nama_matkul }}" readonly>
+                                        <input type="hidden" class="form-control" id="id_rep_uas" name="id_rep_uas" value="{{ $data->id_rep_uas }}" readonly>
+                                        <input type="text" class="form-control" id="nama_matkul" name="nama_matkul" value="{{ $data->kode_matkul }} | {{ $data->nama_matkul }}" readonly>
                                     @endforeach
                                     @error('nama_matkul')
                                         <small>{{ $message }}</small>
@@ -59,13 +54,11 @@
                                 <div class="mb-3">
                                     <label for="status" class="form-label">Status</label><br>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status" id="status_diverifikasi"
-                                            value="1">
+                                        <input class="form-check-input" type="radio" name="status" id="status_diverifikasi" value="1">
                                         <label class="form-check-label" for="status_diverifikasi">Diverifikasi</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status" id="status_tidak_diverifikasi"
-                                            value="0">
+                                        <input class="form-check-input" type="radio" name="status" id="status_tidak_diverifikasi" value="0">
                                         <label class="form-check-label" for="status_tidak_diverifikasi">Tidak Diverifikasi</label>
                                     </div>
                                     @error('status')
@@ -75,25 +68,31 @@
                                 <div class="mb-3" id="saran_section" style="display: none;">
                                     <label for="saran" class="form-label">Saran</label><br>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="saran" id="saran_layak"
-                                            value="1">
+                                        <input class="form-check-input" type="radio" name="saran" id="saran_layak" value="2">
                                         <label class="form-check-label" for="saran_layak">Layak Dipakai</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="saran" id="saran_tidak_layak"
-                                            value="0">
+                                        <input class="form-check-input" type="radio" name="saran" id="saran_butuh_revisi" value="1">
+                                        <label class="form-check-label" for="saran_butuh_revisi">Butuh Revisi</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="saran" id="saran_tidak_layak" value="0">
                                         <label class="form-check-label" for="saran_tidak_layak">Tidak Layak Dipakai</label>
                                     </div>
                                     @error('saran')
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>
-                                
-                                {{-- <label for="date" class=" col-form-label">Tanggal Verifikasi</label> --}}
+                                <div class="mb-3" id="catatan_section" style="display: none;">
+                                    <label for="catatan" class="form-label">Catatan</label>
+                                    <textarea class="form-control" id="catatan" name="catatan" rows="3"></textarea>
+                                    @error('catatan')
+                                        <small>{{ $message }}</small>
+                                    @enderror
+                                </div>
                                 <div class="col-5 mb-3">
                                     <div class="input-group date">
-                                        <input type="hidden" class="form-control" id="date" name="date"
-                                            value="{{ \Carbon\Carbon::now()->toDateString() }}" />
+                                        <input type="hidden" class="form-control" id="date" name="date" value="{{ \Carbon\Carbon::now()->toDateString() }}" />
                                     </div>
                                     @error('date')
                                         <small>{{ $message }}</small>
@@ -109,22 +108,58 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const statusDiverifikasi = document.getElementById('status_diverifikasi');
-            const statusTidakDiverifikasi = document.getElementById('status_tidak_diverifikasi');
-            const saranSection = document.getElementById('saran_section');
+document.addEventListener('DOMContentLoaded', function() {
+    const statusDiverifikasi = document.getElementById('status_diverifikasi');
+    const statusTidakDiverifikasi = document.getElementById('status_tidak_diverifikasi');
+    const saranLayak = document.getElementById('saran_layak');
+    const saranButuhRevisi = document.getElementById('saran_butuh_revisi');
+    const saranTidakLayak = document.getElementById('saran_tidak_layak');
+    const saranSection = document.getElementById('saran_section');
+    const catatanSection = document.getElementById('catatan_section');
+    const catatanElement = document.getElementById('catatan');
 
-            statusDiverifikasi.addEventListener('change', function () {
-                if (this.checked) {
-                    saranSection.style.display = 'block';
-                }
-            });
+    function updateSections() {
+        if (statusDiverifikasi.checked) {
+            saranSection.style.display = 'block';
+            // Reset saran radio buttons and catatan field
+            saranLayak.checked = false;
+            saranButuhRevisi.checked = false;
+            saranTidakLayak.checked = false;
+            catatanElement.value = '';
+            catatanSection.style.display = 'none';
+        } else if (statusTidakDiverifikasi.checked) {
+            saranSection.style.display = 'none';
+            catatanSection.style.display = 'none';
+            catatanElement.value = 'Soal tidak layak dipakai';
+        } else {
+            saranSection.style.display = 'none';
+            catatanSection.style.display = 'none';
+            catatanElement.value = 'Soal tidak layak dipakai';
+        }
+    }
 
-            statusTidakDiverifikasi.addEventListener('change', function () {
-                if (this.checked) {
-                    saranSection.style.display = 'none';
-                }
-            });
-        });
+    function updateCatatan() {
+        if (saranLayak.checked) {
+            catatanSection.style.display = 'none';
+            catatanElement.value = 'Soal layak dipakai';
+        } else if (saranButuhRevisi.checked) {
+            catatanSection.style.display = 'block';
+            catatanElement.value = '';
+        } else if (saranTidakLayak.checked) {
+            catatanSection.style.display = 'none';
+            catatanElement.value = 'Soal tidak layak dipakai';
+        }
+    }
+
+    statusDiverifikasi.addEventListener('change', updateSections);
+    statusTidakDiverifikasi.addEventListener('change', updateSections);
+    saranLayak.addEventListener('change', updateCatatan);
+    saranButuhRevisi.addEventListener('change', updateCatatan);
+    saranTidakLayak.addEventListener('change', updateCatatan);
+
+    // Initialize sections based on default or pre-filled values
+    updateSections();
+});
+
     </script>
 @endsection

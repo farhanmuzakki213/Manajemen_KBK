@@ -15,6 +15,7 @@ class Ver_UAS extends Model
         'file_verifikasi',
         'status_ver_uas',
         'saran',
+        'catatan',
         'tanggal_diverifikasi',
     ];
 
