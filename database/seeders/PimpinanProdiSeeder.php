@@ -14,16 +14,17 @@ class PimpinanProdiSeeder extends Seeder
     public function run(): void
     {
         $PPData = [
-            [3, 3, 17, '2022-2026', '1']
+            [1, 3, 20, 160, '2022-2026', '1']
         ];
 
         foreach ($PPData as $data) {
             DB::table('pimpinan_prodi')->insert([
-                'jabatan_pimpinan_id' => $data[0],
-                'prodi_id' => $data[1],
-                'dosen_id' => $data[2],
-                'periode' => $data[3],
-                'status' => $data[4]
+                'id_pimpinan_prodi' => $data[0],
+                'jabatan_pimpinan_id' => $data[1],
+                'prodi_id' => $data[2],
+                'dosen_id' => $data[3],
+                'periode' => $data[4],
+                'status_pimpinan_prodi' => $data[5]
             ]);
         }
     }

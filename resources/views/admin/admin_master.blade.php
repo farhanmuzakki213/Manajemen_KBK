@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ asset('backend/assets/css/styles.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('backend/assets/css/admin.css') }}" />
     <!-- Custom styles for this DataTable -->
-    <link href="{{ asset('backend/assets/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('backend/assets/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
@@ -37,7 +37,6 @@
     <script src="{{ asset('backend/assets/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
     <script src="{{ asset('backend/assets/libs/simplebar/dist/simplebar.js') }}"></script>
     <script src="{{ asset('backend/assets/js/dashboard.js') }}"></script>
-
 
     <!-- Page level plugins -->
     <script src="{{ asset('backend/assets/datatables/jquery.dataTables.min.js') }}"></script>

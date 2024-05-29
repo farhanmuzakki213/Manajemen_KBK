@@ -14,15 +14,15 @@ class JabatanKBKSeeder extends Seeder
     public function run(): void
     {
         $JabData = [
-            ['Ketua KBK', ''],
-            ['Sekretaris KBK', ''],
-            ['Anggota KBK', ''],
+            [1, 'Ketua KBK', ''],
+            [2, 'Sekretaris KBK', '']
         ];
 
         foreach ($JabData as $data) {
             DB::table('jabatan_kbk')->insert([
-                'jabatan' => $data[0],
-                'deskripsi' => $data[1]
+                'id_jabatan_kbk' => $data[0],
+                'jabatan' => $data[1],
+                'deskripsi' => $data[2]
             ]);
         }
     }

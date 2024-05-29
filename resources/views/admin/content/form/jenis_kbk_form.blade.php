@@ -17,6 +17,13 @@
                             <form method="post" action="{{ route('jenis_kbk.store') }}">
                                 @csrf
                                 <div class="mb-3">
+                                    <label for="id_jenis_kbk" class="form-label">ID Jenis KBK</label>
+                                    <input type="number" class="form-control" id="id_jenis_kbk" name="id_jenis_kbk">
+                                    @error('id_jenis_kbk')
+                                        <small>{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
                                     <label for="jenis_kbk" class="form-label">Jenis KBK</label>                                    
                                     <input type="text" class="form-control" id="jenis_kbk" name="jenis_kbk">
                                     @error('jenis_kbk')

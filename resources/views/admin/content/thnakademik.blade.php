@@ -5,6 +5,24 @@
             <div class="card-body">
                 <!-- Page Heading -->
                 <h5 class="card-title fw-semibold mb-4">Data Tahun Akademik</h5>
+                @if (Session::has('success'))
+                    <div id="delay" class="alert alert-success" role="alert">
+                        {{ Session::get('success') }}
+                    </div>
+                @endif
+                @if (Session::has('error'))
+                    <div id="delay" class="alert alert-danger" role="alert">
+                        {{ Session::get('error') }}
+                    </div>
+                @endif
+                <script>
+                    setTimeout(function() {
+                        var element = document.getElementById('delay');
+                        if (element) {
+                            element.parentNode.removeChild(element);
+                        }
+                    }, 5000); // 5000 milliseconds = 5 detik
+                </script>
                 <div class="container-fluid">
                     <!-- Data Tahun Akademik -->
                     <div class="card shadow mb-4">
@@ -17,6 +35,7 @@
                                     <thead>
                                         <tr class="table-info">
                                             <th>#</th>
+                                            <th>Kode Tahun Ajaran</th>
                                             <th>Tahun Ajaran</th>
                                             <th>Status</th>
                                         </tr>
@@ -24,6 +43,7 @@
                                     <tfoot>
                                         <tr class="table-info">
                                             <th>#</th>
+                                            <th>Kode Tahun Ajaran</th>
                                             <th>Tahun Ajaran</th>
                                             <th>Status</th>
                                         </tr>
@@ -32,8 +52,15 @@
                                         @foreach ($data_thnakd as $data)
                                         <tr class="table-Light">
                                             <th>{{$data->id_smt_thnakd}}</th>
+                                            <th>{{$data->kode_smt_thnakd}}</th>
                                             <th>{{$data->smt_thnakd}}</th>
-                                            <th>{{$data->status}}</th>
+                                            <th>
+                                                @if ($data->status_smt_thnakd == 0)
+                                                    Tidak Aktif
+                                                @else
+                                                    Aktif
+                                                @endif
+                                            </th>
                                         </tr>
                                         @endforeach
                                     </tbody>

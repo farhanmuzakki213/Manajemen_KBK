@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pimpinan_jurusan', function (Blueprint $table) {
-            $table->id('id_pimpinan_jurusan');
-            $table->bigInteger('jabatan_pimpinan_id')->unsigned();
-            $table->bigInteger('jurusan_id')->unsigned();
-            $table->bigInteger('dosen_id')->unsigned();
+            $table->bigInteger('id_pimpinan_jurusan')->primary();
+            $table->bigInteger('jabatan_pimpinan_id');
+            $table->bigInteger('jurusan_id');
+            $table->bigInteger('dosen_id');
             $table->string('periode');
-            $table->enum('status', ['0', '1'])->default(1);
+            $table->enum('status_pimpinan_jurusan', ['0', '1'])->default(1);
         });
 
         Schema::table('pimpinan_jurusan', function (Blueprint $table) {

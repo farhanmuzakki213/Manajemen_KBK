@@ -5,6 +5,24 @@
             <div class="card-body">
                 <!-- Page Heading -->
                 <h5 class="card-title fw-semibold mb-4">Dashboard</h5>
+                @if (Session::has('success'))
+                    <div id="delay" class="alert alert-success" role="alert">
+                        {{ Session::get('success') }}
+                    </div>
+                @endif
+                @if (Session::has('error'))
+                    <div id="delay" class="alert alert-danger" role="alert">
+                        {{ Session::get('error') }}
+                    </div>
+                @endif
+                <script>
+                    setTimeout(function() {
+                        var element = document.getElementById('delay');
+                        if (element) {
+                            element.parentNode.removeChild(element);
+                        }
+                    }, 5000); // 5000 milliseconds = 5 detik
+                </script>
                 <div class="container-fluid">
                     <div class="container-fluid">
                         <div class="row">
@@ -432,4 +450,107 @@
             </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script type="text/javascript">
+var chart = {
+    series: [
+      { name: "Earnings this month:", data: [355, 390, 300, 350, 390, 180, 355, 390] },
+      { name: "Expense this month:", data: [280, 250, 325, 215, 250, 310, 280, 250] },
+    ],
+
+    chart: {
+      type: "bar",
+      height: 345,
+      offsetX: -15,
+      toolbar: { show: true },
+      foreColor: "#adb0bb",
+      fontFamily: 'inherit',
+      sparkline: { enabled: false },
+    },
+
+
+    colors: ["#5D87FF", "#49BEFF"],
+
+
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: "35%",
+        borderRadius: [6],
+        borderRadiusApplication: 'end',
+        borderRadiusWhenStacked: 'all'
+      },
+    },
+    markers: { size: 0 },
+
+    dataLabels: {
+      enabled: false,
+    },
+
+
+    legend: {
+      show: false,
+    },
+
+
+    grid: {
+      borderColor: "rgba(0,0,0,0.1)",
+      strokeDashArray: 3,
+      xaxis: {
+        lines: {
+          show: false,
+        },
+      },
+    },
+
+    xaxis: {
+      type: "category",
+      categories: ["16/08", "17/08", "18/08", "19/08", "20/08", "21/08", "22/08", "23/08"],
+      labels: {
+        style: { cssClass: "grey--text lighten-2--text fill-color" },
+      },
+    },
+
+
+    yaxis: {
+      show: true,
+      min: 0,
+      max: 400,
+      tickAmount: 4,
+      labels: {
+        style: {
+          cssClass: "grey--text lighten-2--text fill-color",
+        },
+      },
+    },
+    stroke: {
+      show: true,
+      width: 3,
+      lineCap: "butt",
+      colors: ["transparent"],
+    },
+
+
+    tooltip: { theme: "light" },
+
+    responsive: [
+      {
+        breakpoint: 600,
+        options: {
+          plotOptions: {
+            bar: {
+              borderRadius: 3,
+            }
+          },
+        }
+      }
+    ]
+
+
+  };
+
+  var chart = new ApexCharts(document.querySelector("#chart"), chart);
+  chart.render();
+</script>    
 @endsection

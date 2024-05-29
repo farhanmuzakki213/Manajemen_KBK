@@ -12,16 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ver_uas', function (Blueprint $table) {
-            $table->id('id_ver_uas');
-            $table->bigInteger('dosen_id')->unsigned();
-            $table->string('file');
-            $table->enum('status', ['diverifikasi', 'tidak diverifikasi']);
+            $table->bigInteger('id_ver_uas')->primary();
+            $table->bigInteger('rep_uas_id');
+            $table->bigInteger('dosen_id');
+            $table->string('file_verifikasi')->nullable();;
+            $table->enum('status_ver_uas', ['0', '1'])->default('0')->comment('0: Tidak Diverifikasi, 1: Diverifikasi');
+            $table->enum('saran', ['0', '1', '2'])->default('0')->comment('0: Tidak Layak Pakai, 1: Revisi, 2: layak Dipakai');
             $table->text('catatan')->nullable();
             $table->date('tanggal_diverifikasi');
         });
 
         Schema::table('ver_uas', function (Blueprint $table) {
             $table->foreign('dosen_id')->references('id_dosen')->on('dosen')
+                    ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('rep_uas_id')->references('id_rep_uas')->on('rep_uas')
                     ->onUpdate('cascade')->onDelete('cascade');
         });
     }

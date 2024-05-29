@@ -5,6 +5,24 @@
             <div class="card-body">
                 <!-- Page Heading -->
                 <h5 class="card-title fw-semibold mb-4">Data Pimpinan Prodi</h5>
+                @if (Session::has('success'))
+                    <div id="delay" class="alert alert-success" role="alert">
+                        {{ Session::get('success') }}
+                    </div>
+                @endif
+                @if (Session::has('error'))
+                    <div id="delay" class="alert alert-danger" role="alert">
+                        {{ Session::get('error') }}
+                    </div>
+                @endif
+                <script>
+                    setTimeout(function() {
+                        var element = document.getElementById('delay');
+                        if (element) {
+                            element.parentNode.removeChild(element);
+                        }
+                    }, 5000); // 5000 milliseconds = 5 detik
+                </script>
                 <div class="container-fluid">
                     <!-- Data Pimpinan Prodi -->
                     <div class="card shadow mb-4">
@@ -42,7 +60,13 @@
                                             <th>{{$data->jabatan_pimpinan}}</th>
                                             <th>{{$data->prodi}}</th>
                                             <th>{{$data->periode}}</th>
-                                            <th>{{$data->status}}</th>
+                                            <th>
+                                                @if ($data->status_pimpinan_prodi == 0)
+                                                    Tidak Aktif
+                                                @else
+                                                    Aktif
+                                                @endif
+                                            </th>
                                         </tr>
                                         @endforeach
                                     </tbody>

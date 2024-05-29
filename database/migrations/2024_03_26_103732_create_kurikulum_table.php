@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('kurikulum', function (Blueprint $table) {
-            $table->id('id_kurikulum');
+            $table->bigInteger('id_kurikulum')->primary();
             $table->string('kode_kurikulum');
             $table->string('nama_kurikulum');
             $table->string('tahun');
-            $table->bigInteger('prodi_id')->unsigned();
-            $table->enum('status', ['0', '1'])->default(1);
+            $table->bigInteger('prodi_id');
+            $table->enum('status_kurikulum', ['0', '1'])->default(1);
         });
 
         Schema::table('kurikulum', function (Blueprint $table) {

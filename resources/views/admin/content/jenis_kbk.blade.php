@@ -5,6 +5,24 @@
             <div class="card-body">
                 <!-- Page Heading -->
                 <h5 class="card-title fw-semibold mb-4">Data KBK</h5>
+                @if (Session::has('success'))
+                    <div id="delay" class="alert alert-success" role="alert">
+                        {{ Session::get('success') }}
+                    </div>
+                @endif
+                @if (Session::has('error'))
+                    <div id="delay" class="alert alert-danger" role="alert">
+                        {{ Session::get('error') }}
+                    </div>
+                @endif
+                <script>
+                    setTimeout(function() {
+                        var element = document.getElementById('delay');
+                        if (element) {
+                            element.parentNode.removeChild(element);
+                        }
+                    }, 5000); // 5000 milliseconds = 5 detik
+                </script>
                 <div class="container-fluid">
                     <!-- Data KBK -->
                     <div class="card shadow mb-4">
@@ -79,9 +97,9 @@
                                                     <a data-bs-toggle="modal"
                                                         data-bs-target="#staticBackdrop{{ $data->id_jenis_kbk }}"
                                                         class="btn btn-danger"><i class="bi bi-trash"></i></a>
-                                                    <a data-bs-toggle="modal"
-                                                        data-bs-target="#detail{{-- {{ $data->id_jenis_kbk }} --}}"
-                                                        class="btn btn-secondary"><i class="bi bi-three-dots-vertical"></i></a>
+                                                    {{-- <a data-bs-toggle="modal"
+                                                        data-bs-target="#detail
+                                                        class="btn btn-secondary"><i class="bi bi-three-dots-vertical"></i></a> --}}
                                                 </th>
                                             </tr>
                                             {{-- Modal Konfirmasi hapus data --}}

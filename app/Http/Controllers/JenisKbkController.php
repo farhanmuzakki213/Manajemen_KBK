@@ -47,6 +47,7 @@ class JenisKbkController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'id_jenis_kbk' => 'required',
             'jenis_kbk' => 'required',
 
         ]);
@@ -54,6 +55,7 @@ class JenisKbkController extends Controller
         if ($validator->fails()) return redirect()->back()->withInput()->withErrors($validator);
 
         $data = [
+            'id_jenis_kbk' => $request->id_jenis_kbk,
             'jenis_kbk' => $request->jenis_kbk,
             'deskripsi' => $request->deskripsi,
         ];
@@ -86,6 +88,7 @@ class JenisKbkController extends Controller
     public function update(Request $request, string $id)
     {
         $validator = Validator::make($request->all(), [
+            'id_jenis_kbk' => 'required',
             'jenis_kbk' => 'required',
 
         ]);
@@ -93,6 +96,7 @@ class JenisKbkController extends Controller
         if ($validator->fails()) return redirect()->back()->withInput()->withErrors($validator);
 
         $data = [
+            'id_jenis_kbk' => $request->id_jenis_kbk,
             'jenis_kbk' => $request->jenis_kbk,
             'deskripsi' => $request->deskripsi,
         ];

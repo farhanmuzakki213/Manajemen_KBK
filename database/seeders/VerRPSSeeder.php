@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Ver_RPS;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -14,18 +15,41 @@ class VerRPSSeeder extends Seeder
     public function run(): void
     {
         $VerRPSData = [
-            [36, '', 'diverifikasi', '', '2023-12-25'],
-            [21, '', 'diverifikasi', '', '2024-02-12'],
+
+            [1, 1, 357, '', '1', '', '2022-07-10'],
+            [2, 2, 220, '', '0', '', '2022-07-10'],
+            [3, 6, 220, '', '1', '', '2023-07-10'],
+            [4, 9, 357, '', '1', '', '2024-02-20'],
+
         ];
 
         foreach ($VerRPSData as $data) {
+            $nextNumber = $this->getCariNomor();
+
             DB::table('ver_rps')->insert([
-                'dosen_id' => $data[0],
-                'file' => $data[1],
-                'status' => $data[2],
-                'catatan' => $data[3],
-                'tanggal_diverifikasi' => $data[4]
+                'id_ver_rps' => $nextNumber,
+                'rep_rps_id' => $data[1],
+                'dosen_id' => $data[2],
+                'file_verifikasi'=> $data[3],
+                'status_ver_rps' => $data[4],
+                'catatan' => $data[5],
+                'tanggal_diverifikasi' => $data[6]
             ]);
         }
+    }
+
+    function getCariNomor() {
+        // Mendapatkan semua ID dari tabel rep_rps
+        $id_ver_rps = Ver_RPS::pluck('id_ver_rps')->toArray();
+    
+        // Loop untuk memeriksa nomor dari 1 sampai takhingga
+        for ($i = 1; ; $i++) {
+            // Jika $i tidak ditemukan di dalam array $id_rep_rps, kembalikan nilai $i
+            if (!in_array($i, $id_ver_rps)) {
+                return $i;
+                break;
+            }
+        }
+        return $i;
     }
 }

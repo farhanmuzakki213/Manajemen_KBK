@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Rep_RPS;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -14,19 +15,45 @@ class RepRPSSeeder extends Seeder
     public function run(): void
     {
         $RepRPSData = [
-            [3, 1, 3, '', '2024-01-30', '2024-01-30'],
-            [3, 2, 1, '', '2024-02-28', '2024-02-28']
+
+            [1, 1, 40, 13, '', '2022-06-07', '2022-06-08'],
+            [2, 1, 50, 14, '', '2022-06-12', '2022-06-13'],
+            [3, 1, 46, 13, '', '2022-06-07', '2022-06-08'],
+            [4, 1, 52, 14, '', '2022-06-12', '2022-06-13'],
+            [5, 2, 40, 13, '', '2023-06-07', '2023-06-08'],
+            [6, 2, 50, 14, '', '2023-06-12', '2023-06-13'],
+            [7, 2, 46, 13, '', '2023-06-07', '2023-06-08'],
+            [8, 2, 52, 14, '', '2023-06-12', '2023-06-13'],
+            [9, 3, 40, 13, '', '2024-01-30', '2024-01-30'],
         ];
 
         foreach ($RepRPSData as $data) {
+            $nextNumber = $this->getCariNomor();
             DB::table('rep_rps')->insert([
-                'smt_thnakd_id' => $data[0],
-                'ver_rps_id' => $data[1],
-                'matkul_id' => $data[2],
-                'file' => $data[3],
-                'created_at' => $data[4],
-                'updated_at' => $data[5]
+                'id_rep_rps' =>  $nextNumber ,
+                'smt_thnakd_id' => $data[1],
+                'dosen_id' => $data[2],
+                'matkul_id' => $data[3],
+                'file' => $data[4],
+                'created_at' => $data[5],
+                'updated_at' => $data[6]
             ]);
         }
     }
+
+    function getCariNomor() {
+        // Mendapatkan semua ID dari tabel rep_rps
+        $id_rep_rps = Rep_RPS::pluck('id_rep_rps')->toArray();
+    
+        // Loop untuk memeriksa nomor dari 1 sampai takhingga
+        for ($i = 1; ; $i++) {
+            // Jika $i tidak ditemukan di dalam array $id_rep_rps, kembalikan nilai $i
+            if (!in_array($i, $id_rep_rps)) {
+                return $i;
+                break;
+            }
+        }
+        return $i;
+    }
+    
 }

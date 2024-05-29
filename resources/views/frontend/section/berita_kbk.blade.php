@@ -70,26 +70,23 @@
 </style>
 
 <section class="page-section bg-light" id="berita">
-    <div class="container py-1">
+    <div class="container py-5">
         <h1 class="text-center mb-5">Berita</h1>
-        <div class="row row-cols-1 row-cols-md-3 g-4">  
-            @foreach ($data_berita as $index => $data)
-                <div class="col">
-                    <div class="card" id="card{{ $index }}">
-                        <img src="{{ $data->foto_sampul }}" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h4 class="card-title">{{ $data->judul }}</h4>
-                            <p class="card-text" style="height: 100px; overflow: hidden;"
-                                id="isi_berita{{ $index }}">{{ $data->isi_berita }}</p>
-                            <div class="text-center">
-                                <a href="#" class="btn btn-primary read-more"
-                                    data-target="{{ $index }}">Read More</a>
-                            </div>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @foreach ($data_berita as $data)
+            <div class="col">
+                <div class="card">
+                    <img src="{{$data->foto_sampul}}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h4 class="card-title">{{$data->judul}}</h4>
+                        <p class="card-text" style="height: 100px; overflow: hidden;">{{$data->isi_berita}}</p>
+                        <div class="text-center">
+                            <a href="/berita/{{ $data->id_berita }}" class="btn btn-primary">Read More</a>
                         </div>
                     </div>
                 </div>
+            </div>
             @endforeach
-
         </div>
     </div>
 </section>

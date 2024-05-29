@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('rep_uas', function (Blueprint $table) {
-            $table->id('id_rep_uas');
-            $table->bigInteger('smt_thnakd_id')->unsigned();
-            $table->bigInteger('ver_uas_id')->unsigned();
-            $table->bigInteger('matkul_id')->unsigned();
+            $table->bigInteger('id_rep_uas')->primary();
+            $table->bigInteger('smt_thnakd_id');
+            $table->bigInteger('dosen_id');
+            $table->bigInteger('matkul_id');
             $table->string('file');
             $table->timestamps();
         });
@@ -23,7 +23,7 @@ return new class extends Migration
         Schema::table('rep_uas', function (Blueprint $table) {
             $table->foreign('smt_thnakd_id')->references('id_smt_thnakd')->on('smt_thnakd')
                     ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('ver_uas_id')->references('id_ver_uas')->on('ver_uas')
+            $table->foreign('dosen_id')->references('id_dosen')->on('dosen')
                     ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('matkul_id')->references('id_matkul')->on('matkul')
                     ->onUpdate('cascade')->onDelete('cascade');

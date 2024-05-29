@@ -14,17 +14,18 @@ class PimpinanJurusanSeeder extends Seeder
     public function run(): void
     {
         $PJData = [
-            [1, 7, 22, '2022-2026', '1'],
-            [2, 7, 14, '2022-2026', '1']
+            [1, 1, 7, 223, '2022-2026', '1'],
+            [2, 2, 7, 122, '2022-2026', '1']
         ];
 
         foreach ($PJData as $data) {
             DB::table('pimpinan_jurusan')->insert([
-                'jabatan_pimpinan_id' => $data[0],
-                'jurusan_id' => $data[1],
-                'dosen_id' => $data[2],
-                'periode' => $data[3],
-                'status' => $data[4]
+                'id_pimpinan_jurusan' => $data[0],
+                'jabatan_pimpinan_id' => $data[1],
+                'jurusan_id' => $data[2],
+                'dosen_id' => $data[3],
+                'periode' => $data[4],
+                'status_pimpinan_jurusan' => $data[5]
             ]);
         }
     }

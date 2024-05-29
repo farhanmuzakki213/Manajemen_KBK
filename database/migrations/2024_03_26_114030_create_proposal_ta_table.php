@@ -12,16 +12,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('proposal_ta', function (Blueprint $table) {
-            $table->id('id_proposal_ta');
+            $table->bigInteger('id_proposal_ta')->primary();
+            $table->bigInteger('mahasiswa_id');
             $table->string('judul');
-            $table->bigInteger('mahasiswa_id')->unsigned();
-            $table->string('file');
-            $table->text('deskripsi')->nullable();
-            $table->timestamps();
+            $table->string('status_proposal_ta');
+            $table->string('file_proposal');
+            $table->bigInteger('pembimbing_satu');
+            $table->bigInteger('pembimbing_dua');
         });
 
         Schema::table('proposal_ta', function (Blueprint $table) {
             $table->foreign('mahasiswa_id')->references('id_mahasiswa')->on('mahasiswa')
+                    ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('pembimbing_satu')->references('id_dosen')->on('dosen')
+                    ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('pembimbing_dua')->references('id_dosen')->on('dosen')
                     ->onUpdate('cascade')->onDelete('cascade');
         });
     }
