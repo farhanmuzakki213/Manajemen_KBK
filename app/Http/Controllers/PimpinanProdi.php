@@ -16,7 +16,7 @@ class PimpinanProdi extends Controller
             ->join('prodi', 'pimpinan_prodi.prodi_id', '=', 'prodi.id_prodi')
             ->join('dosen', 'pimpinan_prodi.dosen_id', '=', 'dosen.id_dosen')
             ->join('jabatan_pimpinan', 'pimpinan_prodi.jabatan_pimpinan_id', '=', 'jabatan_pimpinan.id_jabatan_pimpinan')
-            ->select('pimpinan_prodi.*', 'prodi.prodi', 'dosen.nama_dosen', 'jabatan_pimpinan.jabatan_pimpinan')
+            ->select('pimpinan_prodi.id_pimpinan_prodi', 'pimpinan_prodi.periode', 'pimpinan_prodi.status_pimpinan_prodi', 'prodi.prodi', 'dosen.nama_dosen', 'jabatan_pimpinan.jabatan_pimpinan')
             ->orderByDesc('id_pimpinan_prodi')
             ->get();
         return view('admin.content.pimpinanprodi', compact('data_pimpinan_prodi'));

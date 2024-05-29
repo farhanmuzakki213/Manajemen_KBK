@@ -52,13 +52,13 @@
                                             <th>{{ $data->tanggal_penugasan }}</th>
                                             <th>{{ $data->tanggal_review }}</th>
                                             <th>
-                                                @if ($data->status_proposal_ta == 0)
+                                                @if ($data->status_review_proposal == 0)
                                                     Diajukan
-                                                @elseif ($data->status_proposal_ta == 1)
+                                                @elseif ($data->status_review_proposal == 1)
                                                     Ditolak
-                                                @elseif ($data->status_proposal_ta == 2)
+                                                @elseif ($data->status_review_proposal == 2)
                                                     Direvisi
-                                                @elseif ($data->status_proposal_ta == 3)
+                                                @elseif ($data->status_review_proposal == 3)
                                                     Diterima
                                                 @endif
                                             </th>

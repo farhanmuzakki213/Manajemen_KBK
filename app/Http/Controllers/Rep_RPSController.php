@@ -20,7 +20,7 @@ class Rep_RPSController extends Controller
             ->join('dosen as dosen_upload', 'rep_rps.dosen_id', '=', 'dosen_upload.id_dosen')
             ->join('prodi', 'dosen_upload.prodi_id', '=', 'prodi.id_prodi')
             ->join('dosen as dosen_verifikasi', 'ver_rps.dosen_id', '=', 'dosen_verifikasi.id_dosen')
-            ->select('ver_rps.*', 'rep_rps.*', 'dosen_upload.nama_dosen as nama_dosen_upload', 'prodi.*', 'dosen_verifikasi.nama_dosen as nama_dosen_verifikasi', 'matkul.*','smt_thnakd.*')
+            ->select('dosen_upload.nama_dosen as nama_dosen_upload','dosen_verifikasi.nama_dosen as nama_dosen_verifikasi', 'rep_rps.id_rep_rps', 'matkul.nama_matkul', 'matkul.semester', 'prodi.prodi', 'ver_rps.status_ver_rps', 'rep_rps.created_at', 'ver_rps.tanggal_diverifikasi')
             ->where('smt_thnakd.status_smt_thnakd', '=', '1')
             ->orderByDesc('id_ver_rps')
             ->get();

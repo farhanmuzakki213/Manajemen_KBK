@@ -20,7 +20,7 @@ class Upload_UasController extends Controller
             // ->join('ver_uas', 'rep_uas.ver_uas_id', '=', 'ver_uas.id_ver_uas')
             ->join('matkul', 'rep_uas.matkul_id', '=', 'matkul.id_matkul')
             ->join('dosen', 'rep_uas.dosen_id', '=', 'dosen.id_dosen')
-            ->select('rep_uas.*', 'dosen.*','matkul.*','smt_thnakd.*')
+            ->select('rep_uas.id_rep_uas', 'rep_uas.file', 'dosen.nama_dosen','matkul.nama_matkul','matkul.semester', 'smt_thnakd.smt_thnakd')
             // ->where('smt_thnakd.status_smt_thnakd', '=', '1')
             ->orderByDesc('id_rep_uas')
             ->get();

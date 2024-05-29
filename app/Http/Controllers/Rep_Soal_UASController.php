@@ -20,7 +20,7 @@ class Rep_Soal_UASController extends Controller
         ->join('dosen as dosen_upload', 'rep_uas.dosen_id', '=', 'dosen_upload.id_dosen')
         ->join('prodi', 'dosen_upload.prodi_id', '=', 'prodi.id_prodi')
         ->join('dosen as dosen_verifikasi', 'ver_uas.dosen_id', '=', 'dosen_verifikasi.id_dosen')
-        ->select('ver_uas.*', 'rep_uas.*', 'dosen_upload.nama_dosen as nama_dosen_upload', 'prodi.*', 'dosen_verifikasi.nama_dosen as nama_dosen_verifikasi', 'matkul.*','smt_thnakd.*')
+        ->select('dosen_upload.nama_dosen as nama_dosen_upload','dosen_verifikasi.nama_dosen as nama_dosen_verifikasi', 'rep_uas.id_rep_uas', 'matkul.nama_matkul', 'matkul.semester', 'prodi.prodi', 'ver_uas.status_ver_uas', 'rep_uas.created_at', 'ver_uas.tanggal_diverifikasi')
         ->where('smt_thnakd.status_smt_thnakd', '=', '1')
         ->orderByDesc('id_ver_uas')
         ->get();

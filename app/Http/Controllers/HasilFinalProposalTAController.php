@@ -22,7 +22,7 @@ class HAsilFinalProposalTAController extends Controller
             ->join('dosen as pembimbing_satu', 'proposal_ta.pembimbing_satu', '=', 'pembimbing_satu.id_dosen')
             ->join('dosen as pembimbing_dua', 'proposal_ta.pembimbing_dua', '=', 'pembimbing_dua.id_dosen')
             ->join('mahasiswa', 'proposal_ta.mahasiswa_id', '=', 'mahasiswa.id_mahasiswa')
-            ->select('review_proposal_ta.*', 'proposal_ta.*', 'mahasiswa.*', 'reviewer_satu.nama_dosen as reviewer_satu_nama', 'reviewer_dua.nama_dosen as reviewer_dua_nama', 'pembimbing_satu.nama_dosen as pembimbing_satu_nama', 'pembimbing_dua.nama_dosen as pembimbing_dua_nama')
+            ->select('review_proposal_ta.id_penugasan','mahasiswa.nama', 'mahasiswa.nim', 'reviewer_satu.nama_dosen as reviewer_satu_nama', 'reviewer_dua.nama_dosen as reviewer_dua_nama', 'review_proposal_ta.status_review_proposal', 'review_proposal_ta.status_final_proposal', 'pembimbing_satu.nama_dosen as pembimbing_satu_nama', 'pembimbing_dua.nama_dosen as pembimbing_dua_nama', 'proposal_ta.judul')
             ->orderByDesc('review_proposal_ta.id_penugasan')
             ->get();
 

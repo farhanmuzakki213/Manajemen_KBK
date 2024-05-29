@@ -21,7 +21,7 @@ class Pengurus_kbkController extends Controller
             ->join('jenis_kbk', 'pengurus_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
             ->join('jabatan_kbk', 'pengurus_kbk.jabatan_kbk_id', '=', 'jabatan_kbk.id_jabatan_kbk')
             ->join('dosen', 'pengurus_kbk.dosen_id', '=', 'dosen.id_dosen')
-            ->select('pengurus_kbk.*', 'jenis_kbk.jenis_kbk', 'jabatan_kbk.*', 'dosen.nama_dosen')
+            ->select('pengurus_kbk.id_pengurus', 'pengurus_kbk.status_pengurus_kbk', 'jenis_kbk.jenis_kbk', 'jabatan_kbk.jabatan', 'dosen.nama_dosen')
             ->orderByDesc('id_pengurus')
             ->get();
         return view('admin.content.pengurus_kbk', compact('data_pengurus_kbk'));

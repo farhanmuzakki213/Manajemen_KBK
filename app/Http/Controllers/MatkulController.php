@@ -21,7 +21,7 @@ class MatkulController extends Controller
         $data_matkul = DB::table('matkul')
             ->join('kurikulum', 'matkul.kurikulum_id', '=', 'kurikulum.id_kurikulum')
             // ->join('smt_thnakd', 'matkul.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
-            ->select('matkul.*', 'kurikulum.*')
+            ->select('matkul.*', 'kurikulum.nama_kurikulum')
             ->orderByDesc('id_matkul')
             ->get();
         return view('admin.content.Matkul', compact('data_matkul'));

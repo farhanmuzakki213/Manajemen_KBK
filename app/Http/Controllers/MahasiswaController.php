@@ -15,7 +15,7 @@ class MahasiswaController extends Controller
         $data_mahasiswa = DB::table('mahasiswa')
             ->join('jurusan', 'mahasiswa.jurusan_id', '=', 'jurusan.id_jurusan')
             ->join('prodi', 'mahasiswa.prodi_id', '=', 'prodi.id_prodi')
-            ->select('mahasiswa.*', 'jurusan.*', 'prodi.*')
+            ->select('mahasiswa.id_mahasiswa', 'mahasiswa.nim', 'mahasiswa.nama', 'mahasiswa.status_mahasiswa', 'jurusan.jurusan', 'prodi.prodi', 'mahasiswa.gender')
             ->orderByDesc('id_mahasiswa')
             ->get();
         return view('admin.content.Mahasiswa', compact('data_mahasiswa'));
