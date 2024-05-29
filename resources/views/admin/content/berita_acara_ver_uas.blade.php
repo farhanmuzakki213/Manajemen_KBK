@@ -57,7 +57,6 @@
                                                 <th>File Verifikasi</th>
                                                 <th>Status</th>
                                                 <th>Tanggal Verifikasi</th>
-                                             
                                             </tr>
                                         </tfoot>
                                         <tbody>

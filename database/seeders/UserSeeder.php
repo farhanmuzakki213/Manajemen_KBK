@@ -21,8 +21,8 @@ class UserSeeder extends Seeder
         foreach ($UserData as $data) {
             DB::table('users')->insert([
                 'name' => $data[0],
-                'email' => $data[1],
-                'password' => $data[2],
+                'email' => $data[2],
+                'password' => $data[3],
             ]);
         }
     }
