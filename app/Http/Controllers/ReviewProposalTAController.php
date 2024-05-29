@@ -21,7 +21,7 @@ class ReviewProposalTAController extends Controller
             ->join('dosen as dosen_satu', 'review_proposal_ta.reviewer_satu', '=', 'dosen_satu.id_dosen')
             ->join('dosen as dosen_dua', 'review_proposal_ta.reviewer_dua', '=', 'dosen_dua.id_dosen')
             ->join('mahasiswa', 'proposal_ta.mahasiswa_id', '=', 'mahasiswa.id_mahasiswa')
-            ->select('review_proposal_ta.*', 'proposal_ta.*', 'mahasiswa.*', 'dosen_satu.nama_dosen as reviewer_satu_nama', 'dosen_dua.nama_dosen as reviewer_dua_nama')
+            ->select('review_proposal_ta.id_penugasan', 'review_proposal_ta.tanggal_penugasan', 'review_proposal_ta.tanggal_review', 'review_proposal_ta.status_review_proposal', 'proposal_ta.judul', 'mahasiswa.nama', 'dosen_satu.nama_dosen as reviewer_satu_nama', 'dosen_dua.nama_dosen as reviewer_dua_nama')
             ->orderByDesc('review_proposal_ta.id_penugasan')
             ->get();
 

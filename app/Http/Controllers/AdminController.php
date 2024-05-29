@@ -35,11 +35,11 @@ class AdminController extends Controller
             ->join('mahasiswa', 'proposal_ta.mahasiswa_id', '=', 'mahasiswa.id_mahasiswa')
             ->join('jurusan', 'mahasiswa.jurusan_id', '=', 'jurusan.id_jurusan')
             ->join('prodi', 'mahasiswa.prodi_id', '=', 'prodi.id_prodi')
-            ->select('review_proposal_ta.*', 'proposal_ta.*', 'jurusan.*', 'prodi.*', 'mahasiswa.*', 'reviewer_satu.nama_dosen as reviewer_satu_nama', 'reviewer_dua.nama_dosen as reviewer_dua_nama', 'pembimbing_satu.nama_dosen as pembimbing_satu_nama', 'pembimbing_dua.nama_dosen as pembimbing_dua_nama')
+            ->select('review_proposal_ta.id_penugasan', 'review_proposal_ta.tanggal_review', 'review_proposal_ta.status_review_proposal', 'proposal_ta.judul', 'review_proposal_ta.tanggal_penugasan', 'review_proposal_ta.status_final_proposal', 'jurusan.jurusan', 'prodi.prodi', 'mahasiswa.nama', 'mahasiswa.nim', 'reviewer_satu.nama_dosen as reviewer_satu_nama', 'reviewer_dua.nama_dosen as reviewer_dua_nama', 'pembimbing_satu.nama_dosen as pembimbing_satu_nama', 'pembimbing_dua.nama_dosen as pembimbing_dua_nama')
             ->orderByDesc('review_proposal_ta.id_penugasan')
             ->get();
 
-        debug($data_rep_proposal);
         return view('admin.content.rep_proposal_ta', compact('data_rep_proposal'));
     }
+
 }

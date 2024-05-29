@@ -18,7 +18,7 @@ class Upload_RpsController extends Controller
             // ->join('ver_rps', 'rep_rps.ver_rps_id', '=', 'ver_rps.id_ver_rps')
             ->join('matkul', 'rep_rps.matkul_id', '=', 'matkul.id_matkul')
             ->join('dosen', 'rep_rps.dosen_id', '=', 'dosen.id_dosen')
-            ->select('rep_rps.*', 'dosen.*','matkul.*','smt_thnakd.*')
+            ->select('rep_rps.id_rep_rps', 'rep_rps.file', 'dosen.nama_dosen','matkul.nama_matkul','matkul.semester', 'smt_thnakd.smt_thnakd')
             //->where('smt_thnakd.status_smt_thnakd', '=', '1')
             ->orderByDesc('id_rep_rps')
             ->get();

@@ -23,6 +23,7 @@ use Illuminate\Routing\Route as RoutingRoute;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\ThnAkademikController;
 use App\Http\Controllers\Pengurus_kbkController;
+use App\Http\Controllers\DosenKBKController;
 use App\Http\Controllers\Rep_Soal_UASController;
 use App\Http\Controllers\Ver_Soal_UASController;
 use App\Http\Controllers\Berita_Ver_UASController;
@@ -114,6 +115,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/pengurus_kbk/delete/{id}', [Pengurus_kbkController::class, 'delete'])->middleware(['auth', 'verified'])->name('pengurus_kbk.delete');
     Route::get('/pengurus_kbk/export/excel', [Pengurus_kbkController::class, 'export_excel'])->name('pengurus_kbk.export');
     Route::post('/pengurus_kbk/import', [Pengurus_kbkController::class, 'import'])->name('pengurus_kbk.import');
+});
+
+//Dosen KBK
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dosen_kbk', [DosenKBKController::class, 'index'])->middleware(['auth', 'verified'])->name('dosen_kbk');
+    Route::post('/dosen_kbk/store', [DosenKBKController::class, 'store'])->middleware(['auth', 'verified'])->name('dosen_kbk.store');
+    Route::get('/dosen_kbk/create', [DosenKBKController::class, 'create'])->middleware(['auth', 'verified'])->name('dosen_kbk.create');
+    Route::get('/dosen_kbk/edit/{id}', [DosenKBKController::class, 'edit'])->middleware(['auth', 'verified'])->name('dosen_kbk.edit');
+    Route::put('/dosen_kbk/update/{id}', [DosenKBKController::class, 'update'])->middleware(['auth', 'verified'])->name('dosen_kbk.update');
+    Route::delete('/dosen_kbk/delete/{id}', [DosenKBKController::class, 'delete'])->middleware(['auth', 'verified'])->name('dosen_kbk.delete');
+    Route::get('/dosen_kbk/export/excel', [DosenKBKController::class, 'export_excel'])->name('dosen_kbk.export');
+    Route::post('/dosen_kbk/import', [DosenKBKController::class, 'import'])->name('dosen_kbk.import');
 });
 
 // Jenis KBK

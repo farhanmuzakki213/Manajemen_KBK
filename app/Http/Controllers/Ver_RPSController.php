@@ -24,7 +24,7 @@ class Ver_RPSController extends Controller
             ->join('smt_thnakd', 'rep_rps.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
             ->join('matkul', 'rep_rps.matkul_id', '=', 'matkul.id_matkul')
             ->join('dosen as upload', 'rep_rps.dosen_id', '=', 'upload.id_dosen')
-            ->select('ver_rps.*', 'rep_rps.*', 'verifikasi.nama_dosen as nama_verifikasi', 'upload.nama_dosen as nama_upload', 'matkul.*', 'smt_thnakd.*')
+            ->select('ver_rps.*', 'rep_rps.*', 'verifikasi.nama_dosen as nama_verifikasi', 'upload.nama_dosen as nama_upload', 'matkul.nama_matkul', 'matkul.kode_matkul', 'matkul.semester', 'smt_thnakd.smt_thnakd')
             ->where('smt_thnakd.status_smt_thnakd', '=', '1')
             ->orderByDesc('id_ver_rps')
             ->get();
@@ -33,7 +33,7 @@ class Ver_RPSController extends Controller
             ->join('smt_thnakd', 'rep_rps.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
             ->join('matkul', 'rep_rps.matkul_id', '=', 'matkul.id_matkul')
             ->join('dosen', 'rep_rps.dosen_id', '=', 'dosen.id_dosen')
-            ->select('rep_rps.*', 'dosen.*', 'matkul.*', 'smt_thnakd.*')
+            ->select('rep_uas.*', 'dosen.nama_dosen', 'matkul.nama_matkul', 'matkul.kode_matkul', 'matkul.semester', 'smt_thnakd.smt_thnakd')
             ->where('smt_thnakd.status_smt_thnakd', '=', '1')
             ->orderByDesc('id_rep_rps')
             ->get();

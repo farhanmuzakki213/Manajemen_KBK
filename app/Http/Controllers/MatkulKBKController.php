@@ -22,7 +22,7 @@ class MatkulKBKController extends Controller
             ->join('kurikulum', 'matkul_kbk.kurikulum_id', '=', 'kurikulum.id_kurikulum')
             ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
             ->join('matkul', 'matkul_kbk.matkul_id', '=', 'matkul.id_matkul')
-            ->select('matkul_kbk.*', 'kurikulum.*','jenis_kbk.*','matkul.*')
+            ->select('matkul_kbk.id_matkul_kbk', 'matkul.*', 'jenis_kbk.jenis_kbk', 'kurikulum.nama_kurikulum')
             ->orderByDesc('id_matkul_kbk')
             ->get();
             //dd($data_matkul_kbk);

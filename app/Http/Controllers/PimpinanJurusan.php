@@ -16,7 +16,7 @@ class PimpinanJurusan extends Controller
             ->join('jurusan', 'pimpinan_jurusan.jurusan_id', '=', 'jurusan.id_jurusan')
             ->join('dosen', 'pimpinan_jurusan.dosen_id', '=', 'dosen.id_dosen')
             ->join('jabatan_pimpinan', 'pimpinan_jurusan.jabatan_pimpinan_id', '=', 'jabatan_pimpinan.id_jabatan_pimpinan')
-            ->select('pimpinan_jurusan.*', 'jurusan.jurusan', 'dosen.nama_dosen', 'jabatan_pimpinan.jabatan_pimpinan')
+            ->select('pimpinan_jurusan.id_pimpinan_jurusan', 'pimpinan_jurusan.periode', 'pimpinan_jurusan.status_pimpinan_jurusan', 'jurusan.jurusan', 'dosen.nama_dosen', 'jabatan_pimpinan.jabatan_pimpinan')
             ->orderByDesc('id_pimpinan_jurusan')
             ->get();
         return view('admin.content.pimpinanjurusan', compact('data_pimpinan_jurusan'));
