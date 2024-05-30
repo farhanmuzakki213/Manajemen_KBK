@@ -25,7 +25,30 @@
                 </script>
                 <div class="container-fluid">
                     <div class="container-fluid">
-                        <div class="row">
+                        @hasanyrole('super-admin|admin|pimpinan-jurusan|pimpinan-prodi|dosen-pengampu|pengurus-kbk|dosen-kbk')
+                            @hasrole('super-admin')
+                                <h5>Dashboard super admin</h5>
+                            @endhasrole
+                            @hasrole('admin')
+                                <h5>Dashboard admin</h5>
+                            @endhasrole
+                            @hasrole('pimpinan-jurusan')
+                                <h5>Dashboard pimpinan jurusan</h5>
+                            @endhasrole
+                            @hasrole('pimpinan-prodi')
+                                <h5>Dashboard pimpinan prodi</h5>
+                            @endhasrole
+                            @hasrole('dosen-pengampu')
+                                <h5>Dashboard dosen pengampu</h5>
+                            @endhasrole
+                            @hasrole('pengurus-kbk')
+                                <h5>Dashboard pengurus kbk</h5>
+                            @endhasrole
+                            @hasrole('dosen-kbk')
+                                <h5>Dashboard dosen kbk</h5>
+                            @endhasrole
+                        @endhasanyrole
+                        {{-- <div class="row">
                             <div class="col-lg-8 d-flex align-items-strech">
                                 <div class="card w-100">
                                     <div class="card-body">
@@ -444,7 +467,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -452,105 +475,118 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script type="text/javascript">
-var chart = {
-    series: [
-      { name: "Earnings this month:", data: [355, 390, 300, 350, 390, 180, 355, 390] },
-      { name: "Expense this month:", data: [280, 250, 325, 215, 250, 310, 280, 250] },
-    ],
+    <script type="text/javascript">
+        var chart = {
+            series: [{
+                    name: "Earnings this month:",
+                    data: [355, 390, 300, 350, 390, 180, 355, 390]
+                },
+                {
+                    name: "Expense this month:",
+                    data: [280, 250, 325, 215, 250, 310, 280, 250]
+                },
+            ],
 
-    chart: {
-      type: "bar",
-      height: 345,
-      offsetX: -15,
-      toolbar: { show: true },
-      foreColor: "#adb0bb",
-      fontFamily: 'inherit',
-      sparkline: { enabled: false },
-    },
-
-
-    colors: ["#5D87FF", "#49BEFF"],
-
-
-    plotOptions: {
-      bar: {
-        horizontal: false,
-        columnWidth: "35%",
-        borderRadius: [6],
-        borderRadiusApplication: 'end',
-        borderRadiusWhenStacked: 'all'
-      },
-    },
-    markers: { size: 0 },
-
-    dataLabels: {
-      enabled: false,
-    },
+            chart: {
+                type: "bar",
+                height: 345,
+                offsetX: -15,
+                toolbar: {
+                    show: true
+                },
+                foreColor: "#adb0bb",
+                fontFamily: 'inherit',
+                sparkline: {
+                    enabled: false
+                },
+            },
 
 
-    legend: {
-      show: false,
-    },
+            colors: ["#5D87FF", "#49BEFF"],
 
 
-    grid: {
-      borderColor: "rgba(0,0,0,0.1)",
-      strokeDashArray: 3,
-      xaxis: {
-        lines: {
-          show: false,
-        },
-      },
-    },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: "35%",
+                    borderRadius: [6],
+                    borderRadiusApplication: 'end',
+                    borderRadiusWhenStacked: 'all'
+                },
+            },
+            markers: {
+                size: 0
+            },
 
-    xaxis: {
-      type: "category",
-      categories: ["16/08", "17/08", "18/08", "19/08", "20/08", "21/08", "22/08", "23/08"],
-      labels: {
-        style: { cssClass: "grey--text lighten-2--text fill-color" },
-      },
-    },
-
-
-    yaxis: {
-      show: true,
-      min: 0,
-      max: 400,
-      tickAmount: 4,
-      labels: {
-        style: {
-          cssClass: "grey--text lighten-2--text fill-color",
-        },
-      },
-    },
-    stroke: {
-      show: true,
-      width: 3,
-      lineCap: "butt",
-      colors: ["transparent"],
-    },
+            dataLabels: {
+                enabled: false,
+            },
 
 
-    tooltip: { theme: "light" },
-
-    responsive: [
-      {
-        breakpoint: 600,
-        options: {
-          plotOptions: {
-            bar: {
-              borderRadius: 3,
-            }
-          },
-        }
-      }
-    ]
+            legend: {
+                show: false,
+            },
 
 
-  };
+            grid: {
+                borderColor: "rgba(0,0,0,0.1)",
+                strokeDashArray: 3,
+                xaxis: {
+                    lines: {
+                        show: false,
+                    },
+                },
+            },
 
-  var chart = new ApexCharts(document.querySelector("#chart"), chart);
-  chart.render();
-</script>    
+            xaxis: {
+                type: "category",
+                categories: ["16/08", "17/08", "18/08", "19/08", "20/08", "21/08", "22/08", "23/08"],
+                labels: {
+                    style: {
+                        cssClass: "grey--text lighten-2--text fill-color"
+                    },
+                },
+            },
+
+
+            yaxis: {
+                show: true,
+                min: 0,
+                max: 400,
+                tickAmount: 4,
+                labels: {
+                    style: {
+                        cssClass: "grey--text lighten-2--text fill-color",
+                    },
+                },
+            },
+            stroke: {
+                show: true,
+                width: 3,
+                lineCap: "butt",
+                colors: ["transparent"],
+            },
+
+
+            tooltip: {
+                theme: "light"
+            },
+
+            responsive: [{
+                breakpoint: 600,
+                options: {
+                    plotOptions: {
+                        bar: {
+                            borderRadius: 3,
+                        }
+                    },
+                }
+            }]
+
+
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart"), chart);
+        chart.render();
+    </script>
 @endsection

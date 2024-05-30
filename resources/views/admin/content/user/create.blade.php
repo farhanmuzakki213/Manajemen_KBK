@@ -39,7 +39,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="roles[]" class="form-label">Roles</label>
-                                    <select name="roles[]" class="form-control">
+                                    <select name="roles[]" class="form-control" multiple>
                                         <option value="">Pilih Role</option>
                                         @foreach ($roles as $role)
                                             <option value="{{$role}}">{{$role}}</option>

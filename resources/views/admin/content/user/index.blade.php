@@ -41,6 +41,7 @@
                                                 <th>#</th>
                                                 <th>Nama</th>
                                                 <th>Email</th>
+                                                <th>Roles</th>
                                                 <th>Aksi</th>
 
                                             </tr>
@@ -51,37 +52,40 @@
                                                 <th>#</th>
                                                 <th>Nama</th>
                                                 <th>Email</th>
+                                                <th>Roles</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </tfoot>
                                         <tbody>
-                                            @foreach ($users as $data)
+                                            @foreach ($users as $user)
                                                 <tr class="table-Light">
-                                                    <th>{{ $data->id }}</th>
-                                                    <th>{{ $data->name }}</th>
-                                                    <th>{{ $data->email }}</th>
+                                                    <th>{{ $user->id }}</th>
+                                                    <th>{{ $user->name }}</th>
+                                                    <th>{{ $user->email }}</th>
+                                                    <th>
+                                                        @if (!empty($user->getRoleNames()))
+                                                            @foreach ($user->getRoleNames() as $rolename)
+                                                                <label class="badge bg-primary mx-1">{{$rolename}}</label>
+                                                            @endforeach
+                                                        @endif
+                                                    </th>
                                                     <th style="width: 27%;">
                                                         <div class="row">
-                                                            <div class="col-lg-12">
-                                                                <a href="{{ url('users/'.$data->id.'/give-permissions')}}"
-                                                                    class="btn btn-primary mb-2 d-flex align-items-center"><i
-                                                                        class="bi bi-pencil-square"></i>Tambah / Edit Permission</a>
-                                                            </div>
                                                             <div class="col-lg-5">
-                                                                <a href="{{ url('users/'.$data->id.'/edit')}}"
+                                                                <a href="{{ url('users/'.$user->id.'/edit')}}"
                                                                     class="btn btn-primary mb-2 d-flex align-items-center"><i
                                                                         class="bi bi-pencil-square"></i>Edit</a>
                                                             </div>
                                                             <div class="col-lg-6">
                                                                 <a data-bs-toggle="modal"
-                                                                data-bs-target="#staticBackdrop{{ $data->id }}"
+                                                                data-bs-target="#staticBackdrop{{ $user->id }}"
                                                                 class="btn btn-danger mb-2 d-flex align-items-center"><i class="bi bi-trash"></i>Delete</a>
                                                             </div>
                                                         </div>
                                                     </th>
                                                 </tr>
                                                 {{-- Modal Konfirmasi hapus data --}}
-                                                <div class="modal fade" id="staticBackdrop{{ $data->id }}"
+                                                <div class="modal fade" id="staticBackdrop{{ $user->id }}"
                                                     data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                                                     aria-labelledby="staticBackdropLabel" aria-hidden="true">>
                                                     <div class="modal-dialog modal-dialog-centered">
@@ -95,13 +99,13 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <p>Apakah kamu yakin ingin menghapus data Ini
-                                                                    <b>{{ $data->name }}</b>
+                                                                    <b>{{ $user->name }}</b>
                                                                 </p>
                                                             </div>
                                                             <div class="modal-footer justify-content-between">
 
                                                                 <form
-                                                                    action="{{ url('users/'.$data->id.'/delete') }}"
+                                                                    action="{{ url('users/'.$user->id.'/delete') }}"
                                                                     method="POST">
                                                                     @csrf
                                                                     @method('DELETE')
