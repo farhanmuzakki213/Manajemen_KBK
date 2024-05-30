@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\RolePermission;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 
@@ -13,7 +14,7 @@ class PermissionController extends Controller
     public function index()
     {
         $permissions = Permission::get();
-        return view('role-permission.permission.index', [
+        return view('admin.content.permission.index', [
             'permissions' => $permissions
         ]);
     }
@@ -23,7 +24,7 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        return view('role-permission.permission.create');
+        return view('admin.content.permission.create');
     }
 
     /**
@@ -59,7 +60,7 @@ class PermissionController extends Controller
      */
     public function edit(Permission $permission)
     {
-        return view('role-permission.permission.edit',[
+        return view('admin.content.permission.edit',[
             'permission' => $permission
         ]);
     }

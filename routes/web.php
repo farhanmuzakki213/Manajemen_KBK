@@ -44,19 +44,16 @@ use App\Http\Controllers\KajurController;
 */
 
 
-Route::get('/dashboard-super-admin', function () {
-    return view('role-permission.content.dashboard1');
-});
 
-Route::resource('permissions',App\Http\Controllers\PermissionController::class);
-Route::delete('permissions/{permissionId}/delete', [App\Http\Controllers\PermissionController::class, 'destroy']);
+Route::resource('permissions',App\Http\Controllers\RolePermission\PermissionController::class);
+Route::delete('permissions/{permissionId}/delete', [App\Http\Controllers\RolePermission\PermissionController::class, 'destroy']);
 
-Route::resource('roles',App\Http\Controllers\RoleController::class);
-Route::delete('roles/{roleId}/delete', [App\Http\Controllers\RoleController::class, 'destroy']);
-Route::get('roles/{roleId}/give-permissions', [App\Http\Controllers\RoleController::class, 'addPermissionsToRole']);
-Route::put('roles/{roleId}/give-permissions', [App\Http\Controllers\RoleController::class, 'givePermissionsToRole']);
+Route::resource('roles',App\Http\Controllers\RolePermission\RoleController::class);
+Route::delete('roles/{roleId}/delete', [App\Http\Controllers\RolePermission\RoleController::class, 'destroy']);
+Route::get('roles/{roleId}/give-permissions', [App\Http\Controllers\RolePermission\RoleController::class, 'addPermissionsToRole']);
+Route::put('roles/{roleId}/give-permissions', [App\Http\Controllers\RolePermission\RoleController::class, 'givePermissionsToRole']);
 
-Route::resource('users',App\Http\Controllers\UserController::class);
+Route::resource('users',App\Http\Controllers\RolePermission\UserController::class);
 
 
 Route::get('/', [LandingPageController::class, 'index']);

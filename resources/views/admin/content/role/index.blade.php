@@ -1,10 +1,10 @@
-@extends('role-permission.master-role-permission')
-@section('content')
+@extends('admin.admin_master')
+@section('admin')
     <div class="container-fluid">
         <div class="card">
             <div class="card-body">
                 <!-- Page Heading -->
-                <h5 class="card-title fw-semibold mb-4">Permission</h5>
+                <h5 class="card-title fw-semibold mb-4">Roles</h5>
                 @if (Session::has('success'))
                     <div id="delay" class="alert alert-success" role="alert">
                         {{ Session::get('success') }}
@@ -24,12 +24,12 @@
                     }, 5000); // 5000 milliseconds = 5 detik
                 </script>
                 <div class="container-fluid">
-                    <!-- Permission -->
+                    <!-- Roles -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <div class="card-header py-2">
                                 <div class="d-grid gap-2 d-md-block">
-                                    <a href="{{ url('permissions/create') }}" class="btn btn-primary me-md-3"><i
+                                    <a href="{{ url('roles/create') }}" class="btn btn-primary me-md-3"><i
                                             class="bi bi-file-earmark-plus"></i> New</a>
                                 </div>
                             </div>
@@ -53,14 +53,19 @@
                                             </tr>
                                         </tfoot>
                                         <tbody>
-                                            @foreach ($permissions as $data)
+                                            @foreach ($roles as $data)
                                                 <tr class="table-Light">
                                                     <th>{{ $data->id }}</th>
                                                     <th>{{ $data->name }}</th>
                                                     <th style="width: 27%;">
                                                         <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <a href="{{ url('roles/'.$data->id.'/give-permissions')}}"
+                                                                    class="btn btn-primary mb-2 d-flex align-items-center"><i
+                                                                        class="bi bi-pencil-square"></i>Tambah / Edit Permission</a>
+                                                            </div>
                                                             <div class="col-lg-5">
-                                                                <a href="{{ url('permissions/'.$data->id.'/edit')}}"
+                                                                <a href="{{ url('roles/'.$data->id.'/edit')}}"
                                                                     class="btn btn-primary mb-2 d-flex align-items-center"><i
                                                                         class="bi bi-pencil-square"></i>Edit</a>
                                                             </div>
@@ -93,7 +98,7 @@
                                                             <div class="modal-footer justify-content-between">
 
                                                                 <form
-                                                                    action="{{ url('permissions/'.$data->id.'/delete') }}"
+                                                                    action="{{ url('roles/'.$data->id.'/delete') }}"
                                                                     method="POST">
                                                                     @csrf
                                                                     @method('DELETE')

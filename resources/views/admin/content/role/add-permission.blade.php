@@ -1,5 +1,5 @@
-@extends('role-permission.master-role-permission')
-@section('content')
+@extends('admin.admin_master')
+@section('admin')
     <div class="container-fluid">
         <div class="card">
             <div class="card-body">

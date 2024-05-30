@@ -1,5 +1,5 @@
-@extends('role-permission.master-role-permission')
-@section('content')
+@extends('admin.admin_master')
+@section('admin')
     <div class="container-fluid">
         <div class="card">
             <div class="card-body">
@@ -40,6 +40,7 @@
                                             <tr class="table-info">
                                                 <th>#</th>
                                                 <th>Nama</th>
+                                                <th>Email</th>
                                                 <th>Aksi</th>
 
                                             </tr>
@@ -49,23 +50,25 @@
                                             <tr class="table-info">
                                                 <th>#</th>
                                                 <th>Nama</th>
+                                                <th>Email</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </tfoot>
                                         <tbody>
-                                            @foreach ($roles as $data)
+                                            @foreach ($users as $data)
                                                 <tr class="table-Light">
                                                     <th>{{ $data->id }}</th>
                                                     <th>{{ $data->name }}</th>
+                                                    <th>{{ $data->email }}</th>
                                                     <th style="width: 27%;">
                                                         <div class="row">
                                                             <div class="col-lg-12">
-                                                                <a href="{{ url('roles/'.$data->id.'/give-permissions')}}"
+                                                                <a href="{{ url('users/'.$data->id.'/give-permissions')}}"
                                                                     class="btn btn-primary mb-2 d-flex align-items-center"><i
                                                                         class="bi bi-pencil-square"></i>Tambah / Edit Permission</a>
                                                             </div>
                                                             <div class="col-lg-5">
-                                                                <a href="{{ url('roles/'.$data->id.'/edit')}}"
+                                                                <a href="{{ url('users/'.$data->id.'/edit')}}"
                                                                     class="btn btn-primary mb-2 d-flex align-items-center"><i
                                                                         class="bi bi-pencil-square"></i>Edit</a>
                                                             </div>
@@ -98,7 +101,7 @@
                                                             <div class="modal-footer justify-content-between">
 
                                                                 <form
-                                                                    action="{{ url('roles/'.$data->id.'/delete') }}"
+                                                                    action="{{ url('users/'.$data->id.'/delete') }}"
                                                                     method="POST">
                                                                     @csrf
                                                                     @method('DELETE')
