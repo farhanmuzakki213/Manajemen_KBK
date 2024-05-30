@@ -94,7 +94,7 @@ class Ver_Soal_UASController extends Controller
             'nama_dosen' => 'required',
             'upload_file' => 'nullable|mimes:pdf',
             'status' => 'nullable|in:0,1', // Status hanya bisa 0 atau 1
-            'saran' => 'nullable|in:0,1,2', // Saran hanya bisa 0, 1, atau 2
+            'saran' => 'nullable|in:0,1,2,3', // Saran hanya bisa 0, 1, atau 2
             'catatan' => 'nullable|string',
             'date' => 'required|date',
         ]);
@@ -105,26 +105,29 @@ class Ver_Soal_UASController extends Controller
     
         // Mengatur nilai default jika status tidak diisi
         $status = $request->input('status', '0'); // Default to '0' (Tidak Diverifikasi)
-        $saran = $request->input('saran', '0'); // Default to '0' (Tidak Layak Dipakai)
-        $catatan = $request->input('catatan', 'Soal tidak layak dipakai');
+        $saran = '0'; // Default to '0' (Tidak Layak Dipakai)
+        $catatan = 'Soal UAS Belum Diverifikasi';
     
         // Memperbarui catatan berdasarkan saran yang dipilih jika status diverifikasi (1)
         if ($status == '1') {
             if (!$request->filled('saran')) {
-                return redirect()->back()->withInput()->withErrors(['saran' => 'Saran harus diisi jika diverifikasi']);
+                return redirect()->back()->withInput()->withErrors(['saran' => 'Silakan pilih saran jika status diverifikasi dipilih.']);
             }
     
             // Ubah catatan berdasarkan saran yang dipilih
             switch ($saran) {
-                case '2':
+                case '3':
                     $catatan = 'Soal layak dipakai';
                     break;
-                case '1':
+                case '2':
                     // Tidak ada perubahan, catatan harus diisi oleh pengguna
+                    break;
+                case '1':
+                    $catatan = 'Soal tidak layak dipakai';
                     break;
                 case '0':
                 default:
-                    $catatan = 'Soal tidak layak dipakai';
+                    $catatan = 'Soal Belum Diverifikasi';
                     break;
             }
         }
@@ -143,7 +146,6 @@ class Ver_Soal_UASController extends Controller
             'id_ver_uas' => $request->id_ver_uas,
             'rep_uas_id' => $request->id_rep_uas,
             'dosen_id' => $request->nama_dosen,
-            'tanggal_diverifikasi' => $request->date,
             'status_ver_uas' => $status, // Pastikan ini adalah string yang sesuai dengan ENUM
             'saran' => $saran,
             'catatan' => $catatan,
@@ -212,6 +214,7 @@ class Ver_Soal_UASController extends Controller
             return redirect()->back()->withInput()->withErrors($validator);
         }
 
+        
         // Mendapatkan data lama
         $oldData = Ver_UAS::find($id);
 

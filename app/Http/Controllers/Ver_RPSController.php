@@ -33,7 +33,7 @@ class Ver_RPSController extends Controller
             ->join('smt_thnakd', 'rep_rps.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
             ->join('matkul', 'rep_rps.matkul_id', '=', 'matkul.id_matkul')
             ->join('dosen', 'rep_rps.dosen_id', '=', 'dosen.id_dosen')
-            ->select('rep_uas.*', 'dosen.nama_dosen', 'matkul.nama_matkul', 'matkul.kode_matkul', 'matkul.semester', 'smt_thnakd.smt_thnakd')
+            ->select('rep_rps.*', 'dosen.nama_dosen', 'matkul.nama_matkul', 'matkul.kode_matkul', 'matkul.semester', 'smt_thnakd.smt_thnakd')
             ->where('smt_thnakd.status_smt_thnakd', '=', '1')
             ->orderByDesc('id_rep_rps')
             ->get();

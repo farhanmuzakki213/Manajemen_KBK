@@ -195,8 +195,10 @@
                                             </th>
                                             <th>
                                                 @if ($data_ver->saran == 0)
-                                                    Tidak Layak Pakai
+                                                    Belum Diverifikasi
                                                 @elseif ($data_ver->saran == 1)
+                                                    Tidak Layak Pakai
+                                                @elseif ($data_ver->saran == 2)
                                                     Butuh revisi
                                                 @else
                                                     Layak Pakai
@@ -341,9 +343,10 @@
                                                                     <div class="col">
                                                                         <label for="saran" class="form-label">Saran Verifikasi</label>
                                                                         <input type="text" class="form-control" id="saran"
-                                                                            value="@if ($data_ver->saran == 0) Tidak Layak Dipakai
-                                                                                   @elseif ($data_ver->saran == 1) Butuh Revisi
-                                                                                   @elseif ($data_ver->saran == 2) Layak Dipakai
+                                                                            value="@if ($data_ver->saran == 0) Belum Diverifikasi
+                                                                                   @elseif ($data_ver->saran == 1) Tidak Layak Dipakai
+                                                                                   @elseif ($data_ver->saran == 2) Butuh Revisi
+                                                                                   @elseif ($data_ver->saran == 3) Layak Dipakai
                                                                                    @endif"
                                                                             readonly>
                                                                     </div>
