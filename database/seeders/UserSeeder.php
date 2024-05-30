@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $UserData = [
+        /* $UserData = [
             ['admin', 'admin@gmail.com', Hash::make('admin123')]
         ];
 
@@ -24,6 +24,6 @@ class UserSeeder extends Seeder
                 'email' => $data[1],
                 'password' => $data[2],
             ]);
-        }
+        } */
     }
 }
