@@ -2,6 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dosen;
+use App\Models\DosenKBK;
+use App\Models\DosenPengampuMatkul;
+use App\Models\Pengurus_kbk;
+use App\Models\PimpinanJurusan;
+use App\Models\PimpinanProdi;
+use App\Models\User;
 use App\Models\Ver_RPS;
 use App\Models\Ver_RPSModel;
 use Illuminate\Http\Request;
@@ -9,8 +16,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
 
-class Ver_RPSController extends Controller
+class ExampleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -35,15 +43,84 @@ class Ver_RPSController extends Controller
      */
     public function create()
     {
-        $data_dosen = DB::table('dosen')->get();
-        $data_rep_rps = DB::table('rep_rps')
-            ->join('matkul', 'rep_rps.matkul_id', '=', 'matkul.id_matkul')
-            ->select('rep_rps.*',  'matkul.*')
-            ->where('matkul.id_matkul', '=', 'rep_rps.matkul_id')
-            ->orderByDesc('id_ver_rps')
-            ->get();
-        debug(compact('data_dosen', 'data_rep_rps'));
-        return view('admin.content.form.ver_rps_form', compact('data_dosen', 'data_rep_rps'));
+        $roles = Role::pluck('name','name')->toArray();
+        $dosens = Dosen::all();
+        $kajurDosenIds = PimpinanJurusan::pluck('dosen_id');
+        $kaprodiDosenIds = PimpinanProdi::pluck('dosen_id');
+        $dosenKbkDosenIds = DosenKBK::pluck('dosen_id');
+        $pengurusKbkDosenIds = Pengurus_kbk::pluck('dosen_id');
+        $dosenPengampuDosenIds = DosenPengampuMatkul::pluck('dosen_id');
+
+        $kajurdosenIdsArray = [];
+        $kaprodidosenIdsArray = [];
+        $dosenkbkdosenIdsArray = [];
+        $penguruskbkdosenIdsArray = [];
+        $dosenpengampudosenIdsArray = [];
+        foreach ($kajurDosenIds as $kajur) {
+            $kajurdosenIdsArray[] = $kajur;
+        }
+        foreach ($kaprodiDosenIds as $kaprodi) {
+            $kaprodidosenIdsArray[] = $kaprodi;
+        }
+        foreach ($dosenKbkDosenIds as $dosenkbk) {
+            $dosenkbkdosenIdsArray[] = $dosenkbk;
+        }
+        foreach ($pengurusKbkDosenIds as $penguruskbk) {
+            $penguruskbkdosenIdsArray[] = $penguruskbk;
+        }
+        foreach ($dosenPengampuDosenIds as $dosenpengampu) {
+            $dosenpengampudosenIdsArray[] = $dosenpengampu;
+        }
+
+
+        foreach ($dosens as $dosen) {
+            // Cek role berdasarkan dosen_id
+            if (in_array($dosen->id_dosen, $kajurDosenIds->toArray())) {
+                $user = User::create([
+                    'name' => $dosen->nama_dosen,
+                    'email' => $dosen->email,
+                    'password' => $dosen->password,
+                ]);
+                $user->assignRole($roles['pimpinan-jurusan']);
+            }
+
+            if (in_array($dosen->id_dosen, $kaprodiDosenIds->toArray())) {
+                $user = User::create([
+                    'name' => $dosen->nama_dosen,
+                    'email' => $dosen->email,
+                    'password' => $dosen->password,
+                ]);
+                $user->assignRole($roles['pimpinan-prodi']);
+            }
+
+            if (in_array($dosen->id_dosen, $dosenKbkDosenIds->toArray())) {
+                $user = User::create([
+                    'name' => $dosen->nama_dosen,
+                    'email' => $dosen->email,
+                    'password' => $dosen->password,
+                ]);
+                $user->assignRole($roles['dosen-kbk']);
+            }
+
+            if (in_array($dosen->id_dosen, $pengurusKbkDosenIds->toArray())) {
+                $user = User::create([
+                    'name' => $dosen->nama_dosen,
+                    'email' => $dosen->email,
+                    'password' => $dosen->password,
+                ]);
+                $user->assignRole($roles['pengurus-kbk']);
+            }
+
+            if (in_array($dosen->id_dosen, $dosenPengampuDosenIds->toArray())) {
+                $user = User::create([
+                    'name' => $dosen->nama_dosen,
+                    'email' => $dosen->email,
+                    'password' => $dosen->password,
+                ]);
+                $user->assignRole($roles['dosen-pengampu']);
+            }
+            
+        }
     }
 
     /**

@@ -31,6 +31,7 @@ use App\Http\Controllers\PenugasanReviewController;
 use App\Http\Controllers\ReviewProposalTAController;
 use App\Http\Controllers\HasilFinalProposalTAController;
 use App\Http\Controllers\KajurController;
+use App\Http\Controllers\ExampleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,6 +69,7 @@ Route::get('/dashboard', function () {
     return view('admin.content.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+/* Route::get('/contoh', [ExampleController::class, 'create']); */
 
 /* ---Admin Start--- */
 Route::group(['middleware' => ['role:admin']], function () {
