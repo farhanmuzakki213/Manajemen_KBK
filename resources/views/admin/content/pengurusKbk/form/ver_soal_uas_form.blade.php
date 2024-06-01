@@ -17,6 +17,13 @@
                             <form method="post" action="{{ route('ver_soal_uas.store') }}" enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
+                                    @if ($errors->has('saran'))
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ $errors->first('saran') }}
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="mb-3">
                                     <input type="hidden" class="form-control" id="id_ver_uas" name="id_ver_uas" value="{{ $nextNumber }}" readonly>
                                     @error('id_ver_uas')
                                         <small>{{ $message }}</small>
@@ -68,16 +75,20 @@
                                 <div class="mb-3" id="saran_section" style="display: none;">
                                     <label for="saran" class="form-label">Saran</label><br>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="saran" id="saran_layak" value="2">
+                                        <input class="form-check-input" type="radio" name="saran" id="saran_layak" value="3">
                                         <label class="form-check-label" for="saran_layak">Layak Dipakai</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="saran" id="saran_butuh_revisi" value="1">
+                                        <input class="form-check-input" type="radio" name="saran" id="saran_butuh_revisi" value="2">
                                         <label class="form-check-label" for="saran_butuh_revisi">Butuh Revisi</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="saran" id="saran_tidak_layak" value="0">
+                                        <input class="form-check-input" type="radio" name="saran" id="saran_tidak_layak" value="1">
                                         <label class="form-check-label" for="saran_tidak_layak">Tidak Layak Dipakai</label>
+                                    </div>
+                                    <div class="form-check form-check-inline" hidden>
+                                        <input class="form-check-input" type="radio" name="saran" id="saran_belum_diverifikasi" value="0">
+                                        <label class="form-check-label" for="saran_belum_diverifikasi">Belum Diverifikasi</label>
                                     </div>
                                     @error('saran')
                                         <small>{{ $message }}</small>
@@ -111,6 +122,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const statusDiverifikasi = document.getElementById('status_diverifikasi');
     const statusTidakDiverifikasi = document.getElementById('status_tidak_diverifikasi');
+    const saranBelumDiverifikasi = document.getElementById('saran_belum_diverifikasi');
     const saranLayak = document.getElementById('saran_layak');
     const saranButuhRevisi = document.getElementById('saran_butuh_revisi');
     const saranTidakLayak = document.getElementById('saran_tidak_layak');
@@ -118,44 +130,62 @@ document.addEventListener('DOMContentLoaded', function() {
     const catatanSection = document.getElementById('catatan_section');
     const catatanElement = document.getElementById('catatan');
 
-    function updateSections() {
-        if (statusDiverifikasi.checked) {
-            saranSection.style.display = 'block';
-            // Reset saran radio buttons and catatan field
-            saranLayak.checked = false;
-            saranButuhRevisi.checked = false;
-            saranTidakLayak.checked = false;
-            catatanElement.value = '';
-            catatanSection.style.display = 'none';
-        } else if (statusTidakDiverifikasi.checked) {
-            saranSection.style.display = 'none';
-            catatanSection.style.display = 'none';
-            catatanElement.value = 'Soal tidak layak dipakai';
-        } else {
-            saranSection.style.display = 'none';
-            catatanSection.style.display = 'none';
-            catatanElement.value = 'Soal tidak layak dipakai';
-        }
-    }
 
-    function updateCatatan() {
-        if (saranLayak.checked) {
-            catatanSection.style.display = 'none';
-            catatanElement.value = 'Soal layak dipakai';
-        } else if (saranButuhRevisi.checked) {
-            catatanSection.style.display = 'block';
-            catatanElement.value = '';
-        } else if (saranTidakLayak.checked) {
-            catatanSection.style.display = 'none';
-            catatanElement.value = 'Soal tidak layak dipakai';
+    function updateSections() {
+    if (statusDiverifikasi.checked) {
+        saranSection.style.display = 'block';
+        // Reset saran radio buttons and catatan field
+        saranBelumDiverifikasi.checked = false;
+        saranLayak.checked = false;
+        saranButuhRevisi.checked = false;
+        saranTidakLayak.checked = false;
+        catatanElement.value = '';
+        catatanSection.style.display = 'none';
+    } else if (statusTidakDiverifikasi.checked) {
+        saranSection.style.display = 'none';
+        catatanSection.style.display = 'none';
+        catatanElement.value = 'Soal Belum Diverifikasi';
+    } else {
+        saranSection.style.display = 'none';
+        catatanSection.style.display = 'none';
+        catatanElement.value = 'Soal Belum Diverifikasi';
+        // Jika tidak ada status yang dipilih, atur saran ke "Belum Diverifikasi"
+        saranBelumDiverifikasi.checked = true;
+    }
+}
+
+function updateCatatan() {
+    if (saranBelumDiverifikasi.checked) {
+        catatanSection.style.display = 'none';
+        catatanElement.value = 'Soal Belum Diverifikasi';
+    } else if (saranLayak.checked) {
+        catatanSection.style.display = 'none';
+        catatanElement.value = 'Soal Layak Pakai';
+    } else if (saranButuhRevisi.checked) {
+        catatanSection.style.display = 'block';
+        catatanElement.value = '';
+    } else if (saranTidakLayak.checked) {
+        catatanSection.style.display = 'none';
+        catatanElement.value = 'Soal tidak layak dipakai';
+    }
+}
+
+    function validateForm(event) {
+        if (statusDiverifikasi.checked) {
+            if (!saranLayak.checked && !saranButuhRevisi.checked && !saranTidakLayak.checked) {
+                alert('Silakan pilih saran jika status diverifikasi dipilih.');
+                event.preventDefault();
+            }
         }
     }
 
     statusDiverifikasi.addEventListener('change', updateSections);
     statusTidakDiverifikasi.addEventListener('change', updateSections);
+    saranBelumDiverifikasi.addEventListener('change', updateCatatan);
     saranLayak.addEventListener('change', updateCatatan);
     saranButuhRevisi.addEventListener('change', updateCatatan);
     saranTidakLayak.addEventListener('change', updateCatatan);
+    form.addEventListener('submit', validateForm);
 
     // Initialize sections based on default or pre-filled values
     updateSections();
