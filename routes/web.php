@@ -1,37 +1,44 @@
 <?php
 
-
-use App\Http\Controllers\Kurikulum;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PimpinanProdi;
-use App\Http\Controllers\Upload_RpsController;
-use App\Http\Controllers\Upload_UasController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\DosenController;
-use App\Http\Controllers\PimpinanJurusan;
-use App\Http\Controllers\ProdiController;
-use App\Http\Controllers\MatkulController;
-use App\Http\Controllers\JurusanController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Rep_RPSController;
-use App\Http\Controllers\Ver_RPSController;
-use App\Http\Controllers\JenisKbkController;
-use App\Http\Controllers\DosenPengampuMatkul;
-use App\Http\Controllers\MahasiswaController;
-use App\Http\Controllers\MatkulKBKController;
-use Illuminate\Routing\Route as RoutingRoute;
-use App\Http\Controllers\LandingPageController;
-use App\Http\Controllers\ThnAkademikController;
-use App\Http\Controllers\Pengurus_kbkController;
-use App\Http\Controllers\DosenKBKController;
-use App\Http\Controllers\Rep_Soal_UASController;
-use App\Http\Controllers\Ver_Soal_UASController;
-use App\Http\Controllers\Berita_Ver_UASController;
-use App\Http\Controllers\PenugasanReviewController;
-use App\Http\Controllers\ReviewProposalTAController;
-use App\Http\Controllers\HasilFinalProposalTAController;
-use App\Http\Controllers\KajurController;
+/* Admin */
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\MahasiswaController;
+use App\Http\Controllers\Admin\JurusanController;
+use App\Http\Controllers\Admin\ProdiController;
+use App\Http\Controllers\Admin\ThnAkademikController;
+use App\Http\Controllers\Admin\DosenController;
+use App\Http\Controllers\Admin\Kurikulum;
+use App\Http\Controllers\Admin\DosenPengampuMatkul;
+use App\Http\Controllers\Admin\PimpinanProdi;
+use App\Http\Controllers\Admin\PimpinanJurusan;
+use App\Http\Controllers\Admin\MatkulController;
+use App\Http\Controllers\Admin\Pengurus_kbkController;
+use App\Http\Controllers\Admin\DosenKBKController;
+use App\Http\Controllers\Admin\JenisKbkController;
+use App\Http\Controllers\Admin\MatkulKBKController;
+/* Dosen Pengampu */
+use App\Http\Controllers\DosenPengampu\Upload_RpsController;
+use App\Http\Controllers\DosenPengampu\Upload_UasController;
+/* Pimpinan Jurusan */
+use App\Http\Controllers\PimpinanJurusan\KajurController;
+/* Pimpinan Prodi */
+use App\Http\Controllers\PimpinanProdi\Rep_Soal_UASController;
+use App\Http\Controllers\PimpinanProdi\Rep_RPSController;
+use App\Http\Controllers\PimpinanProdi\Berita_Ver_UASController;
+use App\Http\Controllers\PimpinanProdi\HasilFinalProposalTAController;
+/* Pengurus KBK */
+use App\Http\Controllers\PengurusKbk\PenugasanReviewController;
+use App\Http\Controllers\PengurusKbk\Ver_RPSController;
+use App\Http\Controllers\PengurusKbk\Ver_Soal_UASController;
+/* Dosen KBK */
+use App\Http\Controllers\DosenKbk\ReviewProposalTAController;
+/* Landing Page */
+use App\Http\Controllers\LandingPage\LandingPageController;
+/* End */
 use App\Http\Controllers\ExampleController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use Illuminate\Routing\Route as RoutingRoute;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,16 +54,16 @@ use App\Http\Controllers\ExampleController;
 
 
 Route::group(['middleware' => ['role:super-admin']], function () {
-    Route::resource('permissions', App\Http\Controllers\RolePermission\PermissionController::class);
-    Route::delete('permissions/{permissionId}/delete', [App\Http\Controllers\RolePermission\PermissionController::class, 'destroy']);
+    Route::resource('permissions', App\Http\Controllers\SuperAdmin\PermissionController::class);
+    Route::delete('permissions/{permissionId}/delete', [App\Http\Controllers\SuperAdmin\PermissionController::class, 'destroy']);
 
-    Route::resource('roles', App\Http\Controllers\RolePermission\RoleController::class);
-    Route::delete('roles/{roleId}/delete', [App\Http\Controllers\RolePermission\RoleController::class, 'destroy']);
-    Route::get('roles/{roleId}/give-permissions', [App\Http\Controllers\RolePermission\RoleController::class, 'addPermissionsToRole']);
-    Route::put('roles/{roleId}/give-permissions', [App\Http\Controllers\RolePermission\RoleController::class, 'givePermissionsToRole']);
+    Route::resource('roles', App\Http\Controllers\SuperAdmin\RoleController::class);
+    Route::delete('roles/{roleId}/delete', [App\Http\Controllers\SuperAdmin\RoleController::class, 'destroy']);
+    Route::get('roles/{roleId}/give-permissions', [App\Http\Controllers\SuperAdmin\RoleController::class, 'addPermissionsToRole']);
+    Route::put('roles/{roleId}/give-permissions', [App\Http\Controllers\SuperAdmin\RoleController::class, 'givePermissionsToRole']);
 
-    Route::resource('users', App\Http\Controllers\RolePermission\UserController::class);
-    Route::delete('users/{userId}/delete', [App\Http\Controllers\RolePermission\UserController::class, 'destroy']);
+    Route::resource('users', App\Http\Controllers\SuperAdmin\UserController::class);
+    Route::delete('users/{userId}/delete', [App\Http\Controllers\SuperAdmin\UserController::class, 'destroy']);
 });
 
 Route::get('/', [LandingPageController::class, 'index']);
@@ -112,6 +119,12 @@ Route::group(['middleware' => ['role:admin']], function () {
     // Kurikulum
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/kurikulum', [Kurikulum::class, 'index'])->middleware(['auth', 'verified'])->name('kurikulum');
+    });
+
+    // Dosen Pengampu Matkul
+    Route::middleware(['auth', 'verified'])->group(function () {
+        Route::get('/DosenPengampuMatkul', [DosenPengampuMatkul::class, 'index'])->middleware(['auth', 'verified'])->name('DosenPengampuMatkul');
+        Route::get('/DosenPengampuMatkul/export/excel', [DosenPengampuMatkul::class, 'export_excel'])->name('DosenPengampuMatkul.export');
     });
 
     // Pimpinan Jurusan
@@ -253,12 +266,6 @@ Route::group(['middleware' => ['role:dosen-pengampu']], function () {
         Route::put('/upload_soal_uas/update/{id}', [Upload_UasController::class, 'update'])->middleware(['auth', 'verified'])->name('upload_soal_uas.update');
         Route::get('/upload_soal_uas/show/{id}', [Upload_UasController::class, 'show'])->middleware(['auth', 'verified'])->name('supload_oal_uas.show');
         Route::delete('/upload_soal_uas/delete/{id}', [Upload_UasController::class, 'delete'])->middleware(['auth', 'verified'])->name('upload_soal_uas.delete');
-    });
-
-    // Dosen Pengampu Matkul
-    Route::middleware(['auth', 'verified'])->group(function () {
-        Route::get('/DosenPengampuMatkul', [DosenPengampuMatkul::class, 'index'])->middleware(['auth', 'verified'])->name('DosenPengampuMatkul');
-        Route::get('/DosenPengampuMatkul/export/excel', [DosenPengampuMatkul::class, 'export_excel'])->name('DosenPengampuMatkul.export');
     });
 });
 
