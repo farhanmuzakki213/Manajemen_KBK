@@ -45,41 +45,6 @@ class RolesAndUsersSeeder extends Seeder
         ]);
         $superAdminUser->assignRole($superAdminRole);
 
-        $pimpinanJurusanUser = User::create([
-            'name' => 'Pimpinan Jurusan User',
-            'email' => 'pimpinanjurusan@gmail.com',
-            'password' => Hash::make('12345678'),
-        ]);
-        $pimpinanJurusanUser->assignRole($pimpinanJurusanRole);
-
-        $pimpinanProdiUser = User::create([
-            'name' => 'Pimpinan Prodi User',
-            'email' => 'pimpinanprodin@gmail.com',
-            'password' => Hash::make('12345678'),
-        ]);
-        $pimpinanProdiUser->assignRole($pimpinanProdiRole);
-
-        $dosenPengampuUser = User::create([
-            'name' => 'Dosen Pengampu User',
-            'email' => 'dosenpengampu@gmail.com',
-            'password' => Hash::make('12345678'),
-        ]);
-        $dosenPengampuUser->assignRole($dosenPengampuRole);
-
-        $pengurusKbkUser = User::create([
-            'name' => 'Pengurus KBK User',
-            'email' => 'penguruskbk@gmail.com',
-            'password' => Hash::make('12345678'),
-        ]);
-        $pengurusKbkUser->assignRole($pengurusKBKRole);
-
-        $dosenKbkUser = User::create([
-            'name' => 'Dosen KBK User',
-            'email' => 'dosenkbk@gmail.com',
-            'password' => Hash::make('12345678'),
-        ]);
-        $dosenKbkUser->assignRole($dosenKBKRole);
-
         $dosens = Dosen::all();
         $kajurDosenIds = PimpinanJurusan::pluck('dosen_id');
         $kaprodiDosenIds = PimpinanProdi::pluck('dosen_id');
@@ -110,52 +75,58 @@ class RolesAndUsersSeeder extends Seeder
 
 
         foreach ($dosens as $dosen) {
-            // Cek role berdasarkan dosen_id
-            if (in_array($dosen->id_dosen, $kajurDosenIds->toArray())) {
+            // Cek apakah pengguna sudah ada berdasarkan email
+            $existingUser = User::where('email', $dosen->email)->first();
+        
+            // Jika pengguna sudah ada, tambahkan peran sesuai dengan tabelnya
+            if ($existingUser) {
+                if (in_array($dosen->id_dosen, $kajurDosenIds->toArray())) {
+                    $existingUser->assignRole($pimpinanJurusanRole);
+                }
+        
+                if (in_array($dosen->id_dosen, $kaprodiDosenIds->toArray())) {
+                    $existingUser->assignRole($pimpinanProdiRole);
+                }
+        
+                if (in_array($dosen->id_dosen, $dosenKbkDosenIds->toArray())) {
+                    $existingUser->assignRole($dosenKBKRole);
+                }
+        
+                if (in_array($dosen->id_dosen, $pengurusKbkDosenIds->toArray())) {
+                    $existingUser->assignRole($pengurusKBKRole);
+                }
+        
+                if (in_array($dosen->id_dosen, $dosenPengampuDosenIds->toArray())) {
+                    $existingUser->assignRole($dosenPengampuRole);
+                }
+            } else {
+                // Jika pengguna belum ada, buat pengguna baru dan tambahkan peran
                 $user = User::create([
                     'name' => $dosen->nama_dosen,
                     'email' => $dosen->email,
                     'password' => $dosen->password,
                 ]);
-                $user->assignRole($pimpinanJurusanRole);
+        
+                if (in_array($dosen->id_dosen, $kajurDosenIds->toArray())) {
+                    $user->assignRole($pimpinanJurusanRole);
+                }
+        
+                if (in_array($dosen->id_dosen, $kaprodiDosenIds->toArray())) {
+                    $user->assignRole($pimpinanProdiRole);
+                }
+        
+                if (in_array($dosen->id_dosen, $dosenKbkDosenIds->toArray())) {
+                    $user->assignRole($dosenKBKRole);
+                }
+        
+                if (in_array($dosen->id_dosen, $pengurusKbkDosenIds->toArray())) {
+                    $user->assignRole($pengurusKBKRole);
+                }
+        
+                if (in_array($dosen->id_dosen, $dosenPengampuDosenIds->toArray())) {
+                    $user->assignRole($dosenPengampuRole);
+                }
             }
-
-            if (in_array($dosen->id_dosen, $kaprodiDosenIds->toArray())) {
-                $user = User::create([
-                    'name' => $dosen->nama_dosen,
-                    'email' => $dosen->email,
-                    'password' => $dosen->password,
-                ]);
-                $user->assignRole($pimpinanProdiRole);
-            }
-
-            if (in_array($dosen->id_dosen, $dosenKbkDosenIds->toArray())) {
-                $user = User::create([
-                    'name' => $dosen->nama_dosen,
-                    'email' => $dosen->email,
-                    'password' => $dosen->password,
-                ]);
-                $user->assignRole($dosenKBKRole);
-            }
-
-            if (in_array($dosen->id_dosen, $pengurusKbkDosenIds->toArray())) {
-                $user = User::create([
-                    'name' => $dosen->nama_dosen,
-                    'email' => $dosen->email,
-                    'password' => $dosen->password,
-                ]);
-                $user->assignRole($pengurusKBKRole);
-            }
-
-            if (in_array($dosen->id_dosen, $dosenPengampuDosenIds->toArray())) {
-                $user = User::create([
-                    'name' => $dosen->nama_dosen,
-                    'email' => $dosen->email,
-                    'password' => $dosen->password,
-                ]);
-                $user->assignRole($dosenPengampuRole);
-            }
-            
         }
     }
 }
