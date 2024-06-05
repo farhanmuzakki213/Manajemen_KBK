@@ -14,4 +14,18 @@ class ProposalTAModel extends Model
 
     protected $primaryKey = 'id_propsal_ta';
     public $incrementing = false;
+
+    public function mahasiswa(){
+        return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id','id_mahasiswa');
+    }
+
+    public function pembimbing_satu()
+    {
+        return $this->belongsTo(Dosen::class, 'pembimbing_satu', 'id_dosen');
+    }
+
+    public function pembimbing_dua()
+    {
+        return $this->belongsTo(Dosen::class, 'pembimbing_dua', 'id_dosen');
+    }
 }

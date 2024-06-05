@@ -11,4 +11,5 @@ class JenisKbk extends Model
     protected $fillable = ['id_jenis_kbk','jenis_kbk', 'deskripsi'];
     protected $table = 'jenis_kbk';
     public $timestamps = false;
+    protected $primaryKey = 'id_jenis_kbk';
 }

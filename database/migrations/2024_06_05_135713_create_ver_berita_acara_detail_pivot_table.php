@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('berita_acara_detail_pivot', function (Blueprint $table) {
+        Schema::create('ver_berita_acara_detail_pivot', function (Blueprint $table) {
             $table->bigInteger('berita_acara_id');
             $table->bigInteger('ver_rps_uas_id');
             $table->bigInteger('prodi_id');
         });
 
-        Schema::table('berita_acara_detail_pivot', function (Blueprint $table) {
+        Schema::table('ver_berita_acara_detail_pivot', function (Blueprint $table) {
             $table->foreign('berita_acara_id')->references('id_berita_acara')->on('ver_berita_acara')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('prodi_id')->references('id_prodi')->on('prodi')
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('berita_acara_detail_pivot');
+        Schema::dropIfExists('ver_berita_acara_detail_pivot');
     }
 };
