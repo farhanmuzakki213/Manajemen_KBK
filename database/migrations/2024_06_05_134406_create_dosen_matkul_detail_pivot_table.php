@@ -11,21 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rep_uas', function (Blueprint $table) {
-            $table->bigInteger('id_rep_uas')->primary();
-            $table->bigInteger('smt_thnakd_id');
-            $table->bigInteger('dosen_id');
+        Schema::create('dosen_matkul_detail_pivot', function (Blueprint $table) {
+            $table->bigInteger('dosen_matkul_id');
             $table->bigInteger('matkul_id');
-            $table->string('file');
-            $table->timestamps();
+            $table->bigInteger('kelas_id');
         });
 
-        Schema::table('rep_uas', function (Blueprint $table) {
-            $table->foreign('smt_thnakd_id')->references('id_smt_thnakd')->on('smt_thnakd')
-                    ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('dosen_id')->references('id_dosen')->on('dosen')
+        Schema::table('dosen_matkul_detail_pivot', function (Blueprint $table) {
+            $table->foreign('dosen_matkul_id')->references('id_dosen_matkul')->on('dosen_matkul')
                     ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('matkul_id')->references('id_matkul')->on('matkul')
+                    ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('kelas_id')->references('id_kelas')->on('kelas')
                     ->onUpdate('cascade')->onDelete('cascade');
         });
     }
@@ -35,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rep_uas');
+        Schema::dropIfExists('dosen_matkul_detail_pivot');
     }
 };

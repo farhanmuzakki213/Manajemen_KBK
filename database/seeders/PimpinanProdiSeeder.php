@@ -14,7 +14,9 @@ class PimpinanProdiSeeder extends Seeder
     public function run(): void
     {
         $PPData = [
-            [1, 3, 20, 160, '2022-2026', '1']
+            [1, 3, 20, 160, '2022-2026', '1'],
+            [2, 3, 18, 351, '2022-2026', '1'],
+            [3, 3, 19, 312, '2022-2026', '1'],
         ];
 
         foreach ($PPData as $data) {
