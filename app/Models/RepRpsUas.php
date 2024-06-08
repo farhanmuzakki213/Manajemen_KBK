@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class RepRpsUas extends Model
 {
     use HasFactory;
-    protected $fillable = ['id_rep_rps_uas', 'smt_thnakd_id', 'dosen_id', 'matkul_id', 'type', 'file'];
+    protected $fillable = ['id_rep_rps_uas', 'smt_thnakd_id', 'dosen_id', 'matkul_kbk_id', 'type', 'file'];
 
 
     protected $table = 'rep_rps_uas';
@@ -16,15 +16,15 @@ class RepRpsUas extends Model
     protected $primaryKey = 'id_ver_rps_uas';
     public $timestamps = true;
 
-    public function dosen(){
+    public function r_dosen(){
         return $this->belongsTo(Dosen::class, 'dosen_id','id_dosen');
     }
 
-    public function matkul(){
-        return $this->belongsTo(Matkul::class, 'matkul_id','id_matkul');
+    public function r_matkulKbk(){
+        return $this->belongsTo(MatkulKBK::class, 'matkul_kbk_id','id_matkul_kbk');
     }
 
-    public function smt_thnakd(){
+    public function r_smt_thnakd(){
         return $this->belongsTo(ThnAkademik::class, 'smt_thnakd_id','id_smt_thnakd');
     }
     

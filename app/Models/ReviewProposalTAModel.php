@@ -29,7 +29,7 @@ class ReviewProposalTAModel extends Model
         return $this->belongsTo(Dosen::class, 'reviewer_dua', 'id_dosen');
     }
 
-    public function reviewDetails()
+    public function p_reviewDetail()
     {
         return $this->hasMany(ReviewProposalTaDetailPivot::class, 'penugasan_id', 'id_penugasan');
     }

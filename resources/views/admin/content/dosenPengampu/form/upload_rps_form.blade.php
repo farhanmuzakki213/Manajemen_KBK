@@ -4,19 +4,29 @@
         <div class="card">
             <div class="card-body">
                 <!-- Page Heading -->
-                <h5 class="card-title fw-semibold mb-4">Tambah Data RPS </h5>
+                <h5 class="card-title fw-semibold mb-4">Upload File RPS </h5>
                 <div class="container-fluid">
                     <!-- Form Tambah Data -->
                     <div class="card shadow mb-4">
                         <div class="card-body">
                             <div class="row justify-content-end">
                                 <div class="col-2-kembali">
-                                    <p><a href="{{ route('upload_rps') }}" class="btn btn-success"> Kembali</a></p>
+                                    <p><a href="{{ route('dosen_matkul') }}" class="btn btn-success"> Kembali</a></p>
                                 </div>
                             </div>
                             <form method="post" action="{{ route('upload_rps.store') }}" enctype="multipart/form-data">
                                 @csrf
-                                <div class="mb-3">
+                                <input type="hidden" class="form-control" id="id_rep_rps" name="id_rep_rps"
+                                    value="{{ $nextNumber }}"readonly>
+                                <input type="hidden" class="form-control" id="id_matkul" name="id_matkul"
+                                    value="{{ $id_matkul_kbk }}"readonly>
+                                <input type="hidden" class="form-control" id="id_dosen" name="id_dosen"
+                                    value="{{ $id_dosen_matkul }}"readonly>
+                                <input type="hidden" class="form-control" id="id_smt_thnakd" name="id_smt_thnakd"
+                                    value="{{ $id_smt_thnakd }}"readonly>
+                                <input type="hidden" class="form-control" id="type" name="type"
+                                    value="0"readonly>
+                                {{-- <div class="mb-3">
                                     <label for="id_rep_rps" class="form-label">ID RPS</label>
                                     <input type="text" class="form-control" id="id_rep_rps" name="id_rep_rps"
                                         value="{{ $nextNumber }}"readonly>
@@ -49,8 +59,6 @@
                                     @error('nama_dosen')
                                         <small>{{ $message }}</small>
                                     @enderror
-
-
                                 </div>
                                 <div class="mb-3">
                                     <label for="smt_thnakd" class="form-label">Semester Tahun Akademik</label>
@@ -59,16 +67,11 @@
                                             value="{{ $smt_thnakd->id_smt_thnakd }}" readonly>
                                         <input type="text" class="form-control" id="smt_thnakd" name="smt_thnakd"
                                             value="{{ $smt_thnakd->smt_thnakd }}" readonly>
-                                        {{-- <select class="form-select" aria-label="Default select example" name="smt_thnakd" id="smt_thnakd" required>
-                                        <option selected disabled>Pilih Semester Tahun Akademik</option>
-                                        
-                                            <option value="{{ $smt_thnakd->id_smt_thnakd }}">{{ $smt_thnakd->smt_thnakd }}</option>
-                                        </select> --}}
                                     @endforeach
                                     @error('smt_thnakd')
                                         <small>{{ $message }}</small>
                                     @enderror
-                                </div>
+                                </div> --}}
                                 <div class="mb-3">
                                     <label for="upload_file" class="form-label">Upload File RPS</label>
                                     <input type="file" class="form-control" id="upload_file" name="upload_file">

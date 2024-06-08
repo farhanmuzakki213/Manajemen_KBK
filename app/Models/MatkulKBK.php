@@ -13,15 +13,20 @@ class MatkulKBK extends Model
     public $timestamps = false;
     protected $primaryKey = 'id_matkul_kbk';
 
-    public function kurikulum(){
+    public function r_kurikulum(){
         return $this->belongsTo(Kurikulum::class, 'kurikulum_id','id_kurikulum');
     }
 
-    public function jenis_kbk(){
+    public function r_jenis_kbk(){
         return $this->belongsTo(JenisKbk::class, 'jenis_kbk_id','id_jenis_kbk');
     }
 
-    public function matkul(){
+    public function r_matkul(){
         return $this->belongsTo(Matkul::class, 'matkul_id','id_matkul');
+    }
+
+    public function p_dosenPengampuMatkul()
+    {
+        return $this->belongsToMany(DosenPengampuMatkul::class, 'dosen_matkul_detail_pivot', 'matkul_kbk_id', 'dosen_matkul_id');
     }
 }

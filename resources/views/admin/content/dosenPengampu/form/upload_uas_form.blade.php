@@ -11,13 +11,21 @@
                         <div class="card-body">
                             <div class="row justify-content-end">
                                 <div class="col-2-kembali">
-                                    <p><a href="{{ route('upload_soal_uas') }}" class="btn btn-success"> Kembali</a></p>
+                                    <p><a href="{{ route('dosen_matkul') }}" class="btn btn-success"> Kembali</a></p>
                                 </div>
                             </div>
                             <form method="post" action="{{ route('upload_soal_uas.store') }}"
                                 enctype="multipart/form-data">
                                 @csrf
-                                <div class="mb-3">
+                                <input type="hidden" class="form-control" id="id_rep_uas" name="id_rep_uas"
+                                        value="{{ $nextNumber }}" readonly>
+                                <input type="hidden" class="form-control" id="id_matkul" name="id_matkul"
+                                    value="{{ $id_matkul }}"readonly>
+                                <input type="hidden" class="form-control" id="id_dosen" name="id_dosen"
+                                    value="{{ $id_dosen_matkul }}"readonly>
+                                <input type="hidden" class="form-control" id="id_smt_thnakd" name="id_smt_thnakd"
+                                    value="{{ $id_smt_thnakd }}"readonly>
+                                {{-- <div class="mb-3">
                                     <label for="id_rep_uas" class="form-label">ID Repositori UAS</label>
                                     <input type="text" class="form-control" id="id_rep_uas" name="id_rep_uas"
                                         value="{{ $nextNumber }}" readonly>
@@ -60,16 +68,11 @@
                                             value="{{ $smt_thnakd->id_smt_thnakd }}" readonly>
                                         <input type="text" class="form-control" id="smt_thnakd" name="smt_thnakd"
                                             value="{{ $smt_thnakd->smt_thnakd }}" readonly>
-                                        {{-- <select class="form-select" aria-label="Default select example" name="smt_thnakd" id="smt_thnakd" required>
-                                        <option selected disabled>Pilih Semester Tahun Akademik</option>
-                                        
-                                            <option value="{{ $smt_thnakd->id_smt_thnakd }}">{{ $smt_thnakd->smt_thnakd }}</option>
-                                        </select> --}}
                                     @endforeach
                                     @error('smt_thnakd')
                                         <small>{{ $message }}</small>
                                     @enderror
-                                </div>
+                                </div> --}}
                                 <div class="mb-3">
                                     <label for="upload_file" class="form-label">Upload File UAS</label>
                                     <input type="file" class="form-control" id="upload_file" name="upload_file">
