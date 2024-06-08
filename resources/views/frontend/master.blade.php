@@ -1,15 +1,15 @@
 @extends('frontend.landing_page')
 @section('landing_page')
+    <!-- Clients-->
+    @include('frontend.section.prodi')
     <!-- Services-->
-    @include('frontend.section.services')
+    @include('frontend.section.struktur_kbk')
     <!-- Portfolio Grid-->
-    @include('frontend.section.portfolio')
-    <!-- About-->
-    @include('frontend.section.about')
+    @include('frontend.section.berita_kbk')
+    {{-- <!-- About-->
+    @include('frontend.section.about') --}}
     <!-- Team-->
     @include('frontend.section.team')
-    <!-- Clients-->
-    @include('frontend.section.client')
-    <!-- Contact-->
-    @include('frontend.section.contact')
+    {{-- <!-- Contact-->
+    @include('frontend.section.contact') --}}
 @endsection
