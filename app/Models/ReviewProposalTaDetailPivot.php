@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ReviewProposalTaDetailPivot extends Model
 {
     use HasFactory;
-    public function reviewProposal()
+    public function p_reviewProposal()
     {
         return $this->belongsTo(ReviewProposalTAModel::class, 'penugasan_id', 'id_penugasan');
     }

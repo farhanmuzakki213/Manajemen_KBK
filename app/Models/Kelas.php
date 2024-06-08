@@ -11,12 +11,12 @@ class Kelas extends Model
     protected $table = 'kelas';
     protected $primaryKey = 'id_kelas';
 
-    public function dosenPengampuMatkuls()
+    public function p_dosenPengampuMatkul()
     {
         return $this->belongsToMany(DosenPengampuMatkul::class, 'dosen_matkul_detail_pivot', 'kelas_id', 'dosen_matkul_id');
     }
     
-    public function prodi(){
+    public function r_prodi(){
         return $this->belongsTo(Prodi::class, 'prodi_id','id_prodi');
     }
 }

@@ -14,28 +14,28 @@ class DosenMatkulDetailSeeder extends Seeder
     public function run(): void
     {
         $dosenMatkulDataDetail = [
-            [1, '14', 2],
-            [1, '15', 2],
-            [2, '16', 2],
-            [2, '17', 2],
-            [3, '18', 2],
-            [3, '19', 2],
-            [3, '20', 2],
-            [4, '21', 2],
-            [4, '22', 2],
-            [5, '23', 2],
-            [5, '24', 2],
-            [6, '25', 2],
-            [6, '26', 2],
-            [7, '27', 2],
-            [7, '28', 2],
-            [8, '29', 2],
+            [1, 1, 2],
+            [1, 2, 2],
+            [2, 3, 2],
+            [2, 4, 2],
+            [3, 5, 2],
+            [3, 6, 2],
+            [3, 7, 2],
+            [4, 8, 2],
+            [4, 9, 2],
+            [5, 10, 2],
+            [5, 11, 2],
+            [6, 12, 2],
+            [6, 13, 2],
+            [7, 14, 2],
+            [7, 15, 2],
+            [8, 16, 2],
         ];
 
         foreach ($dosenMatkulDataDetail as $data) {
             DB::table('dosen_matkul_detail_pivot')->insert([
                 'dosen_matkul_id' => $data[0],
-                'matkul_id' => $data[1],
+                'matkul_kbk_id' => $data[1],
                 'kelas_id' => $data[2],
             ]);
         }

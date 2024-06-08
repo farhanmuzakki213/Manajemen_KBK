@@ -24,12 +24,16 @@ class VerRpsUas extends Model
     protected $primaryKey = 'id_ver_rps_uas';
     public $incrementing = false;
 
-    public function dosen(){
+    public function r_dosen(){
         return $this->belongsTo(Dosen::class, 'dosen_id','id_dosen');
     }
 
-    public function rep_rps(){
+    public function r_rep_rps_uas(){
         return $this->belongsTo(RepRpsUas::class, 'rep_rps_uas_id','id_rep_rps_uas');
     }
-
+    
+    public function p_VerBeritaAcara()
+    {
+        return $this->belongsToMany(VerBeritaAcara::class, 'ver_berita_acara_detail_pivot', 'rep_rps_uas_id', 'berita_acara_id');
+    }
 }

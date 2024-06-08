@@ -13,15 +13,15 @@ class PimpinanJurusan extends Model
     public $timestamps = false;
     protected $primaryKey = 'id_pimpinan)_jurusan';
 
-    public function dosen(){
+    public function r_dosen(){
         return $this->belongsTo(Dosen::class, 'dosen_id','id_dosen');
     }
 
-    public function jurusan(){
+    public function r_jurusan(){
         return $this->belongsTo(Jurusan::class, 'jurusan_id','id_jurusan');
     }
 
-    public function jabatan_pimpinan(){
+    public function r_jabatan_pimpinan(){
         return $this->belongsTo(JabatanPimpinan::class, 'jabatan_pimpinan_id','id_jabatan_pimpinan');
     }
 }

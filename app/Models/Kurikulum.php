@@ -14,7 +14,7 @@ class Kurikulum extends Model
     protected $table = 'kurikulum';
     protected $primaryKey = 'id_kurikulum';
 
-    public function prodi(){
+    public function r_prodi(){
         return $this->belongsTo(Prodi::class, 'prodi_id','id_prodi');
     }
 }

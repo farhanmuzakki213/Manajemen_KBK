@@ -332,19 +332,11 @@
                         <span class="hide-menu">Dosen Pengampu</span>
                     </li>                    
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ route('upload_rps') }}" aria-expanded="false">
+                        <a class="sidebar-link" href="{{ route('dosen_matkul') }}" aria-expanded="false">
                             <span>
                                 <i class="ti ti-aperture"></i>
                             </span>
-                            <span class="hide-menu">Upload RPS </span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ route('upload_soal_uas') }}" aria-expanded="false">
-                            <span>
-                                <i class="ti ti-aperture"></i>
-                            </span>
-                            <span class="hide-menu">Upload Soal UAS </span>
+                            <span class="hide-menu">Mata Kuliah</span>
                         </a>
                     </li>
                     @endhasrole

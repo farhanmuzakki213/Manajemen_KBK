@@ -13,15 +13,15 @@ class Pengurus_kbk extends Model
     public $timestamps = false;
     protected $primaryKey = 'id_pengurus';
 
-    public function dosen(){
+    public function r_dosen(){
         return $this->belongsTo(Dosen::class, 'dosen_id','id_dosen');
     }
 
-    public function jenis_kbk(){
+    public function r_jenis_kbk(){
         return $this->belongsTo(JenisKbk::class, 'jenis_kbk_id','id_jenis_kbk');
     }
 
-    public function jabatan_kbk(){
+    public function r_jabatan_kbk(){
         return $this->belongsTo(JabatanKbk::class, 'jabatan_kbk_id','id_jabatan_kbk');
     }    
 }

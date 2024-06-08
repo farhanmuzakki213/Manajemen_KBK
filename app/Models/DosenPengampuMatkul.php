@@ -12,21 +12,21 @@ class DosenPengampuMatkul extends Model
     protected $table = 'dosen_matkul';
     protected $primaryKey = 'id_dosen_matkul';
 
-    public function matkuls()
+    public function p_matkulKbk()
     {
-        return $this->belongsToMany(Matkul::class, 'dosen_matkul_detail_pivot', 'dosen_matkul_id', 'matkul_id');
+        return $this->belongsToMany(MatkulKBK::class, 'dosen_matkul_detail_pivot', 'dosen_matkul_id', 'matkul_kbk_id');
     }
 
-    public function kelass()
+    public function p_kelas()
     {
         return $this->belongsToMany(Kelas::class, 'dosen_matkul_detail_pivot', 'dosen_matkul_id', 'kelas_id');
     }
 
-    public function dosen(){
+    public function r_dosen(){
         return $this->belongsTo(Dosen::class, 'dosen_id','id_dosen');
     }
 
-    public function smt_thnakd(){
+    public function r_smt_thnakd(){
         return $this->belongsTo(ThnAkademik::class, 'smt_thnakd_id','id_smt_thnakd');
     }
 }

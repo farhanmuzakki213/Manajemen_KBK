@@ -13,12 +13,7 @@ class Matkul extends Model
     public $timestamps = false;
     protected $primaryKey = 'id_matkul';
 
-    public function dosenPengampuMatkuls()
-    {
-        return $this->belongsToMany(DosenPengampuMatkul::class, 'dosen_matkul_detail_pivot', 'matkul_id', 'dosen_matkul_id');
-    }
-
-    public function kurikulum(){
+    public function r_kurikulum(){
         return $this->belongsTo(Kurikulum::class, 'kurikulum_id','id_kurikulum');
     }
 }
