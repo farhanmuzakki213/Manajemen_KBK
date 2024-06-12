@@ -61,10 +61,10 @@
                                         @foreach ($data_review_proposal_ta as $data)
                                             <tr class="table-Light">
                                                 <th>{{ $data->id_penugasan }}</th>
-                                                <th>{{ $data->nama }}</th>
-                                                <th>{{ $data->prodi}}</th>
-                                                <th>{{ $data->reviewer_satu_nama}}</th>
-                                                <th>{{ $data->reviewer_dua_nama}}</th>
+                                                <th>{{ optional($data->proposal_ta)->r_mahasiswa->nama }}</th>
+                                                <th>{{ optional($data->proposal_ta)->r_mahasiswa->r_prodi->prodi }}</th>
+                                                <th>{{ optional($data->reviewer_satu_dosen)->r_dosen->nama_dosen }}</th>
+                                                <th>{{ optional($data->reviewer_dua_dosen)->r_dosen->nama_dosen }}</th>
                                                 <th>
                                                     @if ($data->status_review_proposal == 0)
                                                         Di Ajukan
@@ -135,17 +135,17 @@
                                                                 <label for="nama_dosen" class="form-label">Reviewer
                                                                     1:</label>
                                                                 <input type="text" class="form-control" id="nama_dosen"
-                                                                    value="{{ $data->reviewer_satu_nama}}" readonly>
+                                                                    value="{{ optional($data->reviewer_satu_dosen)->r_dosen->nama_dosen }}" readonly>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="nama_dosen" class="form-label">Reviewer
                                                                     2:</label>
                                                                 <input type="text" class="form-control" id="nama_dosen"
-                                                                    value="{{ $data->reviewer_dua_nama }}" readonly>
+                                                                    value="{{ optional($data->reviewer_dua_dosen)->r_dosen->nama_dosen }}" readonly>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="Judul" class="form-label">Judul</label>
-                                                                <textarea class="form-control" id="Judul" name="Judul" rows="3" readonly>{{ $data->judul }}</textarea>
+                                                                <textarea class="form-control" id="Judul" name="Judul" rows="3" readonly>{{ optional($data->proposal_ta)->judul }}</textarea>
                                                             </div>
                                                             <!-- tambahkan input untuk atribut lainnya jika diperlukan -->
                                                         </div>

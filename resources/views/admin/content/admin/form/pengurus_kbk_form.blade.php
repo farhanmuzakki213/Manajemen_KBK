@@ -55,7 +55,7 @@
                                         id="jabatan" required>
                                         <option selected disabled>Pilih Jabatan</option>
                                         @foreach ($data_jabatan_kbk as $jabatan_kbk)
-                                            <option value="{{ $jabatan_kbk->id_jabatan_kbk }}">{{ $jabatan_kbk->deskripsi }}</option>
+                                            <option value="{{ $jabatan_kbk->id_jabatan_kbk }}">{{ $jabatan_kbk->jabatan }}</option>
                                         @endforeach
                                     </select>
                                     @error('jabatan')

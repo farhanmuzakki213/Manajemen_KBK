@@ -2,25 +2,25 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\ExportDosenPengampuMatkul;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\DosenPengampuMatkul;
+use App\Models\Matkul;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
-class PimpinanJurusan extends Controller
+class DosenPengampuMatkulController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data_pimpinan_jurusan = DB::table('pimpinan_jurusan')
-            ->join('jurusan', 'pimpinan_jurusan.jurusan_id', '=', 'jurusan.id_jurusan')
-            ->join('dosen', 'pimpinan_jurusan.dosen_id', '=', 'dosen.id_dosen')
-            ->join('jabatan_pimpinan', 'pimpinan_jurusan.jabatan_pimpinan_id', '=', 'jabatan_pimpinan.id_jabatan_pimpinan')
-            ->select('pimpinan_jurusan.id_pimpinan_jurusan', 'pimpinan_jurusan.periode', 'pimpinan_jurusan.status_pimpinan_jurusan', 'jurusan.jurusan', 'dosen.nama_dosen', 'jabatan_pimpinan.jabatan_pimpinan')
-            ->orderByDesc('id_pimpinan_jurusan')
+        $data_dosen_pengampu = DosenPengampuMatkul::with(['p_matkulKbk.r_matkul', 'p_kelas', 'r_dosen', 'r_smt_thnakd']) 
+            ->orderByDesc('id_dosen_matkul')
             ->get();
-        return view('admin.content.admin.pimpinanjurusan', compact('data_pimpinan_jurusan'));
+        return view('admin.content.admin.DosenPengampuMatkul', compact('data_dosen_pengampu'));
     }
 
     /**
@@ -29,6 +29,10 @@ class PimpinanJurusan extends Controller
     public function create()
     {
         //
+    }
+
+    public function export_excel(){
+        return Excel::download(new ExportDosenPengampuMatkul, "Matkul_Ampu.xlsx");
     }
 
     /**

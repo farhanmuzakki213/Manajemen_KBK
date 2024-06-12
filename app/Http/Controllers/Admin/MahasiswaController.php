@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Mahasiswa;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -13,10 +14,7 @@ class MahasiswaController extends Controller
      */
     public function index()
     {
-        $data_mahasiswa = DB::table('mahasiswa')
-            ->join('jurusan', 'mahasiswa.jurusan_id', '=', 'jurusan.id_jurusan')
-            ->join('prodi', 'mahasiswa.prodi_id', '=', 'prodi.id_prodi')
-            ->select('mahasiswa.id_mahasiswa', 'mahasiswa.nim', 'mahasiswa.nama', 'mahasiswa.status_mahasiswa', 'jurusan.jurusan', 'prodi.prodi', 'mahasiswa.gender')
+        $data_mahasiswa = Mahasiswa::with('r_prodi', 'r_jurusan')
             ->orderByDesc('id_mahasiswa')
             ->get();
         return view('admin.content.admin.mahasiswa', compact('data_mahasiswa'));

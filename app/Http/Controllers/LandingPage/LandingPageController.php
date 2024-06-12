@@ -4,6 +4,7 @@ namespace App\Http\Controllers\LandingPage;
 
 use App\Http\Controllers\Controller;
 use App\Models\Berita;
+use App\Models\Pengurus_kbk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,11 +15,7 @@ class LandingPageController extends Controller
      */
     public function index()
     {
-        $data_pengurus_kbk = DB::table('pengurus_kbk')
-            ->join('jenis_kbk', 'pengurus_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
-            ->join('jabatan_kbk', 'pengurus_kbk.jabatan_kbk_id', '=', 'jabatan_kbk.id_jabatan_kbk')
-            ->join('dosen', 'pengurus_kbk.dosen_id', '=', 'dosen.id_dosen')
-            ->select('jenis_kbk.jenis_kbk', 'jabatan_kbk.jabatan', 'dosen.nama_dosen')
+        $data_pengurus_kbk = Pengurus_kbk:: with('r_dosen', 'r_jenis_kbk', 'r_jabatan_kbk')
             ->orderByDesc('id_pengurus')
             ->get();
 

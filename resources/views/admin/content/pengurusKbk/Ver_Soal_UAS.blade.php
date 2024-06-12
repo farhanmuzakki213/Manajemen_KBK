@@ -71,8 +71,8 @@
                                         @endphp
                                         @foreach ($data_rep_soal_uas as $data_rep)
                                             @php
-                                                $cek_data_rep = App\Models\Ver_UAS::where(
-                                                    'rep_uas_id',
+                                                $cek_data_rep = App\Models\VerRpsUas::where(
+                                                    'rep_rps_uas_id',
                                                     $data_rep->id_rep_uas,
                                                 )->exists();
                                             @endphp
@@ -80,13 +80,13 @@
                                                 <tr class="table-Light">
                                                     <th>{{ $no++ }}</th>
                                                     {{-- <th>{{ $data_rep->id_rep_uas }}</th> --}}
-                                                    <th>{{ $data_rep->kode_matkul }}</th>
-                                                    <th>{{ $data_rep->nama_dosen }}</th>
-                                                    <th>{{ $data_rep->semester }}</th>
-                                                    <th>{{ $data_rep->smt_thnakd }}</th>
+                                                    <th>{{ optional($data_rep->r_matkulKbk)->r_matkul->kode_matkul }}</th>
+                                                    <th>{{ optional($data_rep->r_dosen)->nama_dosen }}</th>
+                                                    <th>{{ optional($data_rep->r_matkulKbk)->r_matkul->semester }}</th>
+                                                    <th>{{ optional($data_rep->r_smt_thnakd)->smt_thnakd }}</th>
                                                     <th style="width: 10%;">
                                                         <div class="row">
-                                                            <a href="{{ route('ver_soal_uas.create', ['id' => $data_rep->id_rep_uas]) }}"
+                                                            <a href="{{ route('ver_soal_uas.create', ['id' => $data_rep->id_rep_rps_uas]) }}"
                                                                 class="btn btn-primary mb-2 d-flex align-items-center"><i
                                                                     class="bi bi-pencil-square"></i> Ambil</a>
                                                                     <a href="{{ asset('storage/uploads/uas/repositori_files/' . $data_rep->file) }}"
@@ -153,11 +153,11 @@
                                         <tr class="table-Light">
                                             <th>{{ $no++ }}</th>
                                             {{-- <th>{{ $data_rep->id_rep_uas }}</th> --}}
-                                            <th>{{ $data_ver->kode_matkul }}</th>
-                                            <th>{{ $data_ver->nama_upload }}</th>
-                                            <th>{{ $data_ver->semester }}</th>
-                                            <th>{{ $data_ver->smt_thnakd }}</th>
-                                            <th>{{ $data_ver->nama_verifikasi }}</th>
+                                            <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->kode_matkul }}</th>
+                                            <th>{{ optional($data_ver->r_rep_rps_uas)->r_dosen->nama_dosen }}</th>
+                                            <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->semester }}</th>
+                                            <th>{{ optional($data_ver->r_rep_rps_uas)->r_smt_thnakd->smt_thnakd }}</th>
+                                            <th>{{ optional($data_ver->r_dosen)->nama_dosen }}</th>
                                             {{-- <th>
                                                 @php
                                                     $cek_data_file = App\Models\Ver_UAS::where(
@@ -207,7 +207,7 @@
                                             
                                             <th style="width: 10%;">
                                                 <div class="row">
-                                                    <a href="{{ route('ver_soal_uas.edit', ['id' => $data_ver->id_ver_uas]) }}"
+                                                    <a href="{{ route('ver_soal_uas.edit', ['id' => $data_ver->id_ver_rps_uas]) }}"
                                                         class="btn btn-primary mb-2 d-flex align-items-center"><i
                                                             class="bi bi-pencil-square"></i>Review</a>
                                                     <a href="{{ asset('storage/uploads/uas/repositori_files/' . $data_ver->file) }}"
@@ -226,7 +226,7 @@
                                             </th>
                                         </tr>
                                         {{-- Modal Konfirmasi hapus data --}}
-                                        <div class="modal fade" id="staticBackdrop{{ $data_ver->id_ver_uas }}"
+                                        <div class="modal fade" id="staticBackdrop{{ $data_ver->id_ver_rps_uas }}"
                                             data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                                             aria-labelledby="staticBackdropLabel" aria-hidden="true">>
                                             <div class="modal-dialog modal-dialog-centered">
@@ -240,14 +240,14 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <p>Apakah kamu yakin ingin menghapus data Ini
-                                                            <b>{{ $data_ver->kode_matkul }} |
-                                                                {{ $data_ver->nama_matkul }}</b>
+                                                            <b>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->kode_matkul }} |
+                                                                {{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->nama_matkul }}</b>
                                                         </p>
                                                     </div>
                                                     <div class="modal-footer justify-content-between">
 
                                                         <form
-                                                            action="{{ route('ver_soal_uas.delete', ['id' => $data_ver->id_ver_uas]) }}"
+                                                            action="{{ route('ver_soal_uas.delete', ['id' => $data_ver->id_ver_rps_uas]) }}"
                                                             method="POST">
                                                             @csrf
                                                             @method('DELETE')
@@ -261,7 +261,7 @@
                                             </div>
                                         </div>
                                         {{-- Modal Detail Tabel Verifikasi --}}
-                                        <div class="modal fade" id="detail{{ $data_ver->id_ver_uas }}" tabindex="-1"
+                                        <div class="modal fade" id="detail{{ $data_ver->id_ver_rps_uas }}" tabindex="-1"
                                             aria-labelledby="detailLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
@@ -279,7 +279,7 @@
                                                                     Matkul</label>
                                                                 <input type="text" class="form-control"
                                                                     id="nama_matkul"
-                                                                    value="{{ $data_ver->kode_matkul }} | {{ $data_ver->nama_matkul }}"
+                                                                    value="{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->kode_matkul }} | {{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->nama_matkul }}"
                                                                     readonly>
                                                             </div>
                                                             <div class="mb-3">
@@ -288,12 +288,12 @@
                                                                         <label class="form-label">Tahun
                                                                             Akademik</label>
                                                                         <input type="text" class="form-control"
-                                                                            value="{{ $data_ver->smt_thnakd }}" readonly>
+                                                                            value="{{ optional($data_ver->r_rep_rps_uas)->r_smt_thnakd->smt_thnakd }}" readonly>
                                                                     </div>
                                                                     <div class="col">
                                                                         <label class="form-label">Semester</label>
                                                                         <input type="text" class="form-control"
-                                                                            value="{{ $data_ver->semester }}" readonly>
+                                                                            value="{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->semester }}" readonly>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -303,13 +303,13 @@
                                                                         <label class="form-label">Dosen
                                                                             Upload</label>
                                                                         <input type="text" class="form-control"
-                                                                            value="{{ $data_ver->nama_upload }}" readonly>
+                                                                            value="{{ optional($data_ver->r_rep_rps_uas)->r_dosen->nama_dosen }}" readonly>
                                                                     </div>
                                                                     <div class="col">
                                                                         <label class="form-label">Dosen
                                                                             Verifikasi</label>
                                                                         <input type="text" class="form-control"
-                                                                            value="{{ $data_ver->nama_verifikasi }}"
+                                                                            value="{{ optional($data_ver->r_dosen)->nama_dosen }}"
                                                                             readonly>
                                                                     </div>
                                                                 </div>
@@ -320,7 +320,7 @@
                                                                         <label class="form-label">Tanggal
                                                                             Upload</label>
                                                                         <input type="text" class="form-control"
-                                                                            value="{{ $data_ver->updated_at }}" readonly>
+                                                                            value="{{ optional($data_ver->r_rep_rps_uas)->updated_at }}" readonly>
                                                                     </div>
                                                                     <div class="col">
                                                                         <label class="form-label">Tanggal
@@ -337,7 +337,7 @@
                                                                         <label for="status" class="form-label">Status
                                                                             Verifikasi</label>
                                                                         <input type="text" class="form-control"
-                                                                            id="status"value="@if ($data_ver->status_ver_uas == 0) Tidak Diverifikasi @else Diverifikasi @endif"
+                                                                            id="status"value="@if ($data_ver->status_verifikasi == 0) Tidak Diverifikasi @else Diverifikasi @endif"
                                                                             readonly>
                                                                     </div>
                                                                     <div class="col">
@@ -357,7 +357,7 @@
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="catatan" class="form-label">Catatan</label>
-                                                                <textarea class="form-control" id="catatan" name="catatan" rows="3" readonly>{{ $data_ver->catatan }}</textarea>
+                                                                <textarea class="form-control" id="catatan" name="catatan" rows="3" readonly>{{ $data_ver->saran }}</textarea>
                                                             </div>
                                                             
                                                                    

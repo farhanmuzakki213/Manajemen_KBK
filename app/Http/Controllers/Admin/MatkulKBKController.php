@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Kurikulum;
+use App\Models\Matkul;
 use App\Models\MatkulKBK;
 use Illuminate\Http\Request;
 use App\Exports\ExportMatkul;
 use App\Http\Controllers\Controller;
 use App\Imports\ImportMatkul;
+use App\Models\JenisKbk;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
@@ -19,11 +22,7 @@ class MatkulKBKController extends Controller
      */
     public function index()
     {
-        $data_matkul_kbk = DB::table('matkul_kbk')
-            ->join('kurikulum', 'matkul_kbk.kurikulum_id', '=', 'kurikulum.id_kurikulum')
-            ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
-            ->join('matkul', 'matkul_kbk.matkul_id', '=', 'matkul.id_matkul')
-            ->select('matkul_kbk.id_matkul_kbk', 'matkul.*', 'jenis_kbk.jenis_kbk', 'kurikulum.nama_kurikulum')
+        $data_matkul_kbk = MatkulKBK::with('r_kurikulum', 'r_jenis_kbk', 'r_matkul', 'p_dosenPengampuMatkul')
             ->orderByDesc('id_matkul_kbk')
             ->get();
             //dd($data_matkul_kbk);
@@ -36,9 +35,9 @@ class MatkulKBKController extends Controller
      */
     public function create()
     {
-        $data_kurikulum = DB::table('kurikulum')->get();
-        $data_matkul = DB::table('matkul')->get();
-        $data_jenis_kbk = DB::table('jenis_kbk')->get();
+        $data_kurikulum = Kurikulum::all();
+        $data_matkul = Matkul::all();
+        $data_jenis_kbk = JenisKbk::all();
 
         //dd(compact('data_kurikulum', 'data_matkul', 'data_jenis_kbk'));
 
@@ -77,7 +76,7 @@ class MatkulKBKController extends Controller
     public function show(string $id)
 {
     $data_matkul = MatkulKBK::findOrFail($id);
-    $data_kurikulum = DB::table('kurikulum')->get();
+    $data_kurikulum = Kurikulum::all();
 
     return view('admin.content.admin.Matkul', compact('data_matkul', 'data_kurikulum'));
 }
@@ -89,11 +88,11 @@ class MatkulKBKController extends Controller
     public function edit(string $id){
 
     
-    $data_kurikulum = DB::table('kurikulum')->get();
-    $data_matkul = DB::table('matkul')->get();
-    $data_jenis_kbk = DB::table('jenis_kbk')->get();
-    
-    $data_matkul_kbk = MatkulKBK::where('id_matkul_kbk', $id)->first();
+        $data_kurikulum = Kurikulum::all();
+        $data_matkul = Matkul::all();
+        $data_jenis_kbk = JenisKbk::all();
+
+        $data_matkul_kbk = MatkulKBK::where('id_matkul_kbk', $id)->first();
         //dd(compact('data_kurikulum', 'data_matkul', 'data_jenis_kbk'));
 
         return view('admin.content.admin.form.matkul_kbk_edit', compact('data_kurikulum', 'data_matkul', 'data_jenis_kbk', 'data_matkul_kbk'));

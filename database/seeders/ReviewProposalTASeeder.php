@@ -15,19 +15,19 @@ class ReviewProposalTASeeder extends Seeder
     public function run(): void
     {
         $PenugasanData = [
+            [487, 3, 10, 2, '1', '2024-01-17']
         ];
 
         foreach ($PenugasanData as $data) {
             $nextNumber = $this->getCariNomor();
             DB::table('review_proposal_ta')->insert([
                 'id_penugasan' => $nextNumber,
-                'proposal_ta_id' => $data[1],
-                'reviewer_satu' => $data[2],
-                'reviewer_dua' => $data[3],
-                'status_review_proposal' => $data[4],
-                'catatan' => $data[5],
-                'tanggal_penugasan' => $data[6],
-                'tanggal_review' => $data[7]
+                'proposal_ta_id' => $data[0],
+                'reviewer_satu' => $data[1],
+                'reviewer_dua' => $data[2],
+                'pimpinan_prodi_id' => $data[3],
+                'status_final_proposal' => $data[4],
+                'tanggal_penugasan' => $data[5]
             ]);
         }
     }

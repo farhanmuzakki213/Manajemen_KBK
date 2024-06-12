@@ -46,10 +46,10 @@
                                         @foreach ($data_proposal as $data)
                                         <tr class="table-Light">
                                             <th>{{ $loop->iteration }}</th>
-                                            <th>{{ $data->nama }}</th>
-                                            <th>{{ $data->nim }}</th>
-                                            <th>{{ $data->judul }}</th>
-                                            <th>{{ $data->tanggal_penugasan }}</th>
+                                            <th>{{ optional($data->p_reviewProposal)->proposal_ta->r_mahasiswa->nama }}</th>
+                                            <th>{{ optional($data->p_reviewProposal)->proposal_ta->r_mahasiswa->nim }}</th>
+                                            <th>{{ optional($data->p_reviewProposal)->proposal_ta->judul }}</th>
+                                            <th>{{ optional($data->p_reviewProposal)->tanggal_penugasan }}</th>
                                             <th>{{ $data->tanggal_review }}</th>
                                             <th>
                                                 @if ($data->status_review_proposal == 0)
@@ -78,10 +78,12 @@
         var review = <?php echo json_encode($review); ?>;
         var statuses = <?php echo json_encode($statuses); ?>;
         var bulan = <?php echo json_encode($bulan); ?>;
+        var colors = ['#008FFB', '#FF4560', '#FEB019', '#00E396']; // Tambahkan warna sesuai dengan jumlah status
 
-        var series = statuses.map((status) => ({
+        var series = statuses.map((status, index) => ({
             name: status,
-            data: review.map(monthlyData => monthlyData[status] ?? 0)
+            data: review.map(monthlyData => monthlyData[status] ?? 0),
+            color: colors[index] // 
         }));
 
         var options = {

@@ -92,9 +92,9 @@
                                         @foreach ($data_pengurus_kbk as $data)
                                             <tr class="table-Light">
                                                 <th>{{ $data->id_pengurus }}</th>
-                                                <th>{{ $data->nama_dosen }}</th>
-                                                <th>{{ $data->jenis_kbk }}</th>
-                                                <th>{{ $data->jabatan }}</th>
+                                                <th>{{ $data->r_dosen->nama_dosen }}</th>
+                                                <th>{{ $data->r_jenis_kbk->jenis_kbk }}</th>
+                                                <th>{{ $data->r_jabatan_kbk->jabatan }}</th>
                                                 <th>
                                                     @if ($data->status_pengurus_kbk == 0)
                                                         Tidak Aktif
@@ -127,7 +127,7 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <p>Apakah kamu yakin ingin menghapus data user
-                                                                <b>{{ $data->nama_dosen }}</b>
+                                                                <b>{{ $data->r_dosen->nama_dosen }}</b>
                                                             </p>
                                                         </div>
                                                         <div class="modal-footer justify-content-between">

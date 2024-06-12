@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ThnAkademik;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -13,9 +14,7 @@ class ThnAkademikController extends Controller
      */
     public function index()
     {
-        $data_thnakd = DB::table('smt_thnakd')
-            ->orderByDesc('id_smt_thnakd')
-            ->get();
+        $data_thnakd = ThnAkademik::orderByDesc('id_smt_thnakd')->get();
         return view('admin.content.admin.thnakademik', compact('data_thnakd'));
     }
 

@@ -59,7 +59,7 @@
                                             <th>{{$data->kode_kurikulum}}</th>
                                             <th>{{$data->nama_kurikulum}}</th>
                                             <th>{{$data->tahun}}</th>
-                                            <th>{{$data->prodi}}</th>
+                                            <th>{{$data->r_prodi->prodi}}</th>
                                             <th>
                                                 @if ($data->status_kurikulum == 0)
                                                     Tidak Aktif

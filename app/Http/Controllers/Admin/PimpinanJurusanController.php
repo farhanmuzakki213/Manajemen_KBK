@@ -3,24 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\PimpinanJurusan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class PimpinanProdi extends Controller
+class PimpinanJurusanController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data_pimpinan_prodi = DB::table('pimpinan_prodi')
-            ->join('prodi', 'pimpinan_prodi.prodi_id', '=', 'prodi.id_prodi')
-            ->join('dosen', 'pimpinan_prodi.dosen_id', '=', 'dosen.id_dosen')
-            ->join('jabatan_pimpinan', 'pimpinan_prodi.jabatan_pimpinan_id', '=', 'jabatan_pimpinan.id_jabatan_pimpinan')
-            ->select('pimpinan_prodi.id_pimpinan_prodi', 'pimpinan_prodi.periode', 'pimpinan_prodi.status_pimpinan_prodi', 'prodi.prodi', 'dosen.nama_dosen', 'jabatan_pimpinan.jabatan_pimpinan')
-            ->orderByDesc('id_pimpinan_prodi')
+        $data_pimpinan_jurusan = PimpinanJurusan::with('r_dosen', 'r_jurusan', 'r_jabatan_pimpinan')
+            ->orderByDesc('id_pimpinan_jurusan')
             ->get();
-        return view('admin.content.admin.pimpinanprodi', compact('data_pimpinan_prodi'));
+        return view('admin.content.admin.pimpinanjurusan', compact('data_pimpinan_jurusan'));
     }
 
     /**

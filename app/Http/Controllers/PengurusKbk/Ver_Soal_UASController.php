@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\PengurusKbk;
 
-use App\Http\Controllers\Controller;
+use App\Models\Dosen;
 use App\Models\Ver_UAS;
+use App\Models\RepRpsUas;
+use App\Models\VerRpsUas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -18,24 +21,18 @@ class Ver_Soal_UASController extends Controller
      */
     public function index()
     {
-        $data_ver_soal_uas = DB::table('ver_uas')
-        ->join('dosen as verifikasi', 'ver_uas.dosen_id', '=', 'verifikasi.id_dosen')
-        ->join('rep_uas', 'ver_uas.rep_uas_id', '=', 'rep_uas.id_rep_uas')
-        ->join('smt_thnakd', 'rep_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
-        ->join('matkul', 'rep_uas.matkul_id', '=', 'matkul.id_matkul')
-        ->join('dosen as upload', 'rep_uas.dosen_id', '=', 'upload.id_dosen')
-        ->select('ver_uas.*', 'rep_uas.*', 'verifikasi.nama_dosen as nama_verifikasi', 'upload.nama_dosen as nama_upload', 'matkul.nama_matkul', 'matkul.kode_matkul', 'matkul.semester', 'smt_thnakd.smt_thnakd')
-        ->where('smt_thnakd.status_smt_thnakd', '=', '1')
-        ->orderByDesc('id_ver_uas')
+        $data_ver_soal_uas = VerRpsUas:: with('r_dosen', 'r_rep_rps_uas.r_smt_thnakd')
+        ->whereHas('r_rep_rps_uas.r_smt_thnakd', function ($query) {
+            $query->where('status_smt_thnakd', '=', '1'); 
+        })
+        ->orderByDesc('id_ver_rps_uas')
         ->get();
 
-        $data_rep_soal_uas = DB::table('rep_uas')
-        ->join('smt_thnakd', 'rep_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
-        ->join('matkul', 'rep_uas.matkul_id', '=', 'matkul.id_matkul')
-        ->join('dosen', 'rep_uas.dosen_id', '=', 'dosen.id_dosen')
-        ->select('rep_uas.*', 'dosen.nama_dosen', 'matkul.nama_matkul', 'matkul.kode_matkul', 'matkul.semester', 'smt_thnakd.smt_thnakd')
-        ->where('smt_thnakd.status_smt_thnakd', '=', '1')
-        ->orderByDesc('id_rep_uas')
+        $data_rep_soal_uas = RepRpsUas:: with('r_dosen', 'r_matkulKbk', 'r_smt_thnakd')
+        ->whereHas('r_smt_thnakd', function ($query) {
+            $query->where('status_smt_thnakd', '=', '1'); 
+        })
+        ->orderByDesc('id_rep_rps_uas')
         ->get();
         debug($data_rep_soal_uas);
         return view('admin.content.pengurusKbk.Ver_Soal_UAS', compact('data_ver_soal_uas', 'data_rep_soal_uas'));
@@ -47,7 +44,7 @@ class Ver_Soal_UASController extends Controller
     public function create(string $id)
     {
         // Cek apakah rep_rps_id sudah ada di tabel ver_rps
-        $cek_data = Ver_UAS::where('rep_uas_id', $id)->first();
+        $cek_data = VerRpsUas::where('rep_rps_uas_id', $id)->first();
 
         if ($cek_data) {
             // Jika sudah ada, kembalikan ke halaman verifikasi_rps dengan pesan error
@@ -56,11 +53,9 @@ class Ver_Soal_UASController extends Controller
 
         $nextNumber = $this->getCariNomor();
         $data_dosen = DB::table('dosen')->get();
-        $data_rep_soal_uas = DB::table('rep_uas')
-            ->join('matkul', 'rep_uas.matkul_id', '=', 'matkul.id_matkul')
-            ->select('rep_uas.*',  'matkul.*')
-            ->where('id_rep_uas', $id)
-            ->orderByDesc('id_rep_uas')
+        $data_dosen = Dosen::all();
+        $data_rep_soal_uas = RepRpsUas::where('type', '=', '0')
+            ->orderByDesc('id_rep_rps_uas')
             ->get();
         debug(compact('data_dosen', 'data_rep_soal_uas', 'nextNumber'));
         return view('admin.content.pengurusKbk.form.ver_soal_uas_form', compact('data_dosen', 'data_rep_soal_uas', 'nextNumber'));
@@ -69,7 +64,7 @@ class Ver_Soal_UASController extends Controller
     function getCariNomor()
     {
         // Mendapatkan semua ID dari tabel rep_rps
-        $id_ver_uas = Ver_UAS::pluck('id_ver_uas')->toArray();
+        $id_ver_uas = VerRpsUas::pluck('id_ver_rps_uas')->toArray();
 
         // Loop untuk memeriksa nomor dari 1 sampai takhingga
         for ($i = 1;; $i++) {
@@ -158,7 +153,7 @@ class Ver_Soal_UASController extends Controller
         }
     
         // Menyimpan data ke database
-        Ver_UAS::create($data);
+        VerRpsUas::create($data);
     
         return redirect()->route('ver_soal_uas')->with('success', 'Data berhasil disimpan.');
     }
@@ -177,13 +172,11 @@ class Ver_Soal_UASController extends Controller
      */
     public function edit(string $id)
     {
-        $data_dosen = DB::table('dosen')->get();
-
-        $data_ver_soal_uas = Ver_UAS::where('id_ver_uas', $id)->first();
-        $data_rep_soal_uas = DB::table('rep_uas')
-            ->join('matkul', 'rep_uas.matkul_id', '=', 'matkul.id_matkul')
-            ->select('rep_uas.*', 'matkul.*')
-            ->where('id_rep_uas', $id)  // Perbaiki query untuk mengambil data rep_uas yang sesuai
+        $data_dosen = Dosen::all();
+    
+        $data_ver_soal_uas = VerRpsUas::where('id_ver_rps_uas', $id)->first();
+        $data_rep_soal_uas = RepRpsUas::with('r_dosen', 'r_matkulKbk', 'r_smt_thnakd')
+            ->where('rep_rps_uas.id_rep_uas', $data_ver_soal_uas->rep_rps_uas_id)  // Perbaiki query untuk mengambil data rep_rps yang sesuai  // Karena ini seharusnya satu record
             ->orderByDesc('id_rep_uas')
             ->get();
 
@@ -214,7 +207,7 @@ class Ver_Soal_UASController extends Controller
 
         
         // Mendapatkan data lama
-        $oldData = Ver_UAS::find($id);
+        $oldData = VerRpsUas::find($id);
 
         // Memeriksa apakah ada file lama
         if ($oldData->file_verifikasi !== null && $request->hasFile('upload_file')) {
@@ -265,7 +258,7 @@ class Ver_Soal_UASController extends Controller
 
 
         //dd($request->all());
-        Ver_UAS::where('id_ver_uas', $id)->update($data);
+        VerRpsUas::where('id_ver_uas', $id)->update($data);
         return redirect()->route('ver_soal_uas')->with('success', 'Data berhasil diperbarui.');
     }
     /**
@@ -273,7 +266,7 @@ class Ver_Soal_UASController extends Controller
      */
     public function delete(string $id)
     {
-        $data_ver_soal_uas = Ver_UAS::where('id_ver_uas', $id)->first();
+        $data_ver_soal_uas = VerRpsUas::where('id_ver_uas', $id)->first();
 
         // Menghapus file terkait jika ada
         if ($data_ver_soal_uas && $data_ver_soal_uas->file_verifikasi) {

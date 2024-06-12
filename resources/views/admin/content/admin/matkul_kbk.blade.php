@@ -95,10 +95,10 @@
                                         @foreach ($data_matkul_kbk as $data)
                                             <tr class="table-Light">
                                                 <th>{{ $data->id_matkul_kbk }}</th>
-                                                <th>{{ $data->kode_matkul }}</th>
-                                                <th>{{ $data->jenis_kbk }}</th>
-                                                <th>{{ $data->semester }}</th>
-                                                <th>{{ $data->nama_kurikulum }}</th>
+                                                <th>{{ $data->r_matkul->kode_matkul }}</th>
+                                                <th>{{ $data->r_jenis_kbk->jenis_kbk }}</th>
+                                                <th>{{ $data->r_matkul->semester }}</th>
+                                                <th>{{ $data->r_kurikulum->nama_kurikulum }}</th>
                                                 <th>
                                                     <a href="{{ route('matkul_kbk.edit', ['id' => $data->id_matkul_kbk]) }}"
                                                         class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
@@ -143,7 +143,7 @@
                                             </div>
 
                                             {{-- Modal Detail Tabel --}}
-                                            <div class="modal fade" id="detail{{ $data->id_matkul }}" tabindex="-1" aria-labelledby="detailLabel" aria-hidden="true">
+                                            <div class="modal fade" id="detail{{ $data->id_matkul_kbk }}" tabindex="-1" aria-labelledby="detailLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -154,57 +154,57 @@
                                                             <form>
                                                                 <div class="mb-3">
                                                                     <label for="kode_matkul" class="col-form-label">Kode Matkul</label>
-                                                                    <input type="text" class="form-control" id="kode_matkul" value="{{ $data->kode_matkul }}" readonly>
+                                                                    <input type="text" class="form-control" id="kode_matkul" value="{{ $data->r_matkul->kode_matkul }}" readonly>
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label for="message-text"
                                                                         class="col-form-label">Nama Matkul</label>
-                                                                    <input class="form-control" id="message-text" value="{{ $data->nama_matkul }}" readonly></input>
+                                                                    <input class="form-control" id="message-text" value="{{ $data->r_matkul->nama_matkul }}" readonly></input>
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label for="message-text"
                                                                         class="col-form-label">TP</label>
-                                                                    <input class="form-control" id="message-text"value="{{ $data->TP }}" readonly></input>
+                                                                    <input class="form-control" id="message-text"value="{{ $data->r_matkul->TP }}" readonly></input>
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label for="message-text"
                                                                         class="col-form-label">sks</label>
-                                                                    <input class="form-control" id="message-text" value="{{ $data->sks }}" readonly></input>
+                                                                    <input class="form-control" id="message-text" value="{{ $data->r_matkul->sks }}" readonly></input>
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label for="message-text"
                                                                         class="col-form-label">Jam</label>
-                                                                    <input class="form-control" id="message-text" value="{{ $data->jam }}" readonly></input>
+                                                                    <input class="form-control" id="message-text" value="{{ $data->r_matkul->jam }}" readonly></input>
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label for="message-text"
                                                                         class="col-form-label">sks teori</label>
-                                                                    <input class="form-control" id="message-text" value="{{ $data->sks_teori }}" readonly></input>
+                                                                    <input class="form-control" id="message-text" value="{{ $data->r_matkul->sks_teori }}" readonly></input>
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label for="message-text"
                                                                         class="col-form-label">sks praktek</label>
-                                                                    <input class="form-control" id="message-text" value="{{ $data->sks_praktek }}" readonly></input>
+                                                                    <input class="form-control" id="message-text" value="{{ $data->r_matkul->sks_praktek }}" readonly></input>
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label for="message-text"
                                                                         class="col-form-label">Jam teori</label>
-                                                                    <input class="form-control" id="message-text" value="{{ $data->jam_teori }}" readonly></input>
+                                                                    <input class="form-control" id="message-text" value="{{ $data->r_matkul->jam_teori }}" readonly></input>
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label for="message-text"
                                                                         class="col-form-label">Jam praktek</label>
-                                                                    <input class="form-control" id="message-text" value="{{ $data->jam_praktek }}" readonly></input>
+                                                                    <input class="form-control" id="message-text" value="{{ $data->r_matkul->jam_praktek }}" readonly></input>
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label for="message-text"
                                                                         class="col-form-label">Semester</label>
-                                                                    <input class="form-control" id="message-text" value="{{ $data->semester }}" readonly></input>
+                                                                    <input class="form-control" id="message-text" value="{{ $data->r_matkul->semester }}" readonly></input>
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label for="message-text"
                                                                         class="col-form-label">Kurikulum</label>
-                                                                    <input class="form-control" id="message-text" value="{{ $data->nama_kurikulum }}" readonly></input>
+                                                                    <input class="form-control" id="message-text" value="{{ $data->r_kurikulum->nama_kurikulum }}" readonly></input>
                                                                 </div>
                                                             </form>
                                                         </div>

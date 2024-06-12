@@ -2,28 +2,22 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Exports\ExportDosenPengampuMatkul;
+use App\Models\Kurikulum;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Facades\Excel;
 
-class DosenPengampuMatkul extends Controller
+class KurikulumController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data_dosen_pengampu = DB::table('dosen_matkul')
-            ->join('dosen', 'dosen_matkul.dosen_id', '=', 'dosen.id_dosen')
-            ->join('matkul', 'dosen_matkul.matkul_id', '=', 'matkul.id_matkul')
-            ->join('kelas', 'dosen_matkul.kelas_id', '=', 'kelas.id_kelas')
-            ->join('smt_thnakd', 'dosen_matkul.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
-            ->select('dosen_matkul.id_dosen_matkul', 'dosen.nama_dosen', 'matkul.nama_matkul', 'kelas.nama_kelas', 'smt_thnakd.smt_thnakd')
-            ->orderByDesc('id_dosen_matkul')
+        $data_kurikulum = Kurikulum::with('r_prodi')
+            ->orderByDesc('id_kurikulum')
             ->get();
-        return view('admin.content.admin.DosenPengampuMatkul', compact('data_dosen_pengampu'));
+        return view('admin.content.admin.Kurikulum', compact('data_kurikulum'));
     }
 
     /**
@@ -32,10 +26,6 @@ class DosenPengampuMatkul extends Controller
     public function create()
     {
         //
-    }
-
-    public function export_excel(){
-        return Excel::download(new ExportDosenPengampuMatkul, "Matkul_Ampu.xlsx");
     }
 
     /**

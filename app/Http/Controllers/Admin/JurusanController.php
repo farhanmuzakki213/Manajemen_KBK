@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Jurusan;
 use Illuminate\Support\Facades\DB;
 
 class JurusanController extends Controller
@@ -13,9 +14,7 @@ class JurusanController extends Controller
      */
     public function index()
     {
-        $data_jurusan = DB::table('jurusan')
-            ->orderByDesc('id_jurusan')
-            ->get();
+        $data_jurusan = Jurusan::orderByDesc('id_jurusan')->get();
         return view('admin.content.admin.jurusan', compact('data_jurusan'));
     }
 

@@ -57,10 +57,18 @@
                                         @foreach ($data_dosen_pengampu as $data)
                                         <tr class="table-Light">
                                             <th>{{$data->id_dosen_matkul}}</th>
-                                            <th>{{$data->nama_dosen}}</th>
-                                            <th>{{$data->nama_matkul}}</th>
-                                            <th>{{$data->nama_kelas}}</th>
-                                            <th>{{$data->smt_thnakd}}</th>
+                                            <th>{{$data->r_dosen->nama_dosen}}</th>
+                                            <th>
+                                                @foreach($data->p_matkulKbk as $matkulKbk)
+                                                    {{ $matkulKbk->r_matkul->nama_matkul }}<br>
+                                                @endforeach
+                                            </th>
+                                            <th>
+                                                @foreach($data->p_kelas as $kelas)
+                                                    {{ $kelas->nama_kelas }}<br>
+                                                @endforeach
+                                            </th>
+                                            <th>{{$data->r_smt_thnakd->smt_thnakd}}</th>
                                         </tr>
                                         @endforeach
                                     </tbody>

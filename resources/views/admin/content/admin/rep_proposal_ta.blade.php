@@ -60,10 +60,10 @@
                                         @foreach ($data_rep_proposal as $data)
                                             <tr class="table-Light">
                                                 <th>{{ $data->id_penugasan }}</th>
-                                                <th>{{ $data->nama }}</th>
-                                                <th>{{ $data->nim }}</th>
-                                                <th>{{ $data->prodi }}</th>
-                                                <th>{{ $data->jurusan }}</th>
+                                                <th>{{ optional($data->proposal_ta)->r_mahasiswa->nama }}</th>
+                                                <th>{{ optional($data->proposal_ta)->r_mahasiswa->nim }}</th>
+                                                <th>{{ optional($data->proposal_ta)->r_mahasiswa->r_prodi->prodi }}</th>
+                                                <th>{{ optional($data->proposal_ta)->r_mahasiswa->r_jurusan->jurusan }}</th>
                                                 <th>
                                                     @if ($data->status_review_proposal == 0)
                                                         Di Ajukan
@@ -104,17 +104,17 @@
                                                         <div class="modal-body">
                                                             <div class="mb-3">
                                                                 <label for="nama_mahasiswa" class="form-label">Nama Mahasiswa</label>
-                                                                <input type="text" class="form-control" id="nama_mahasiswa" value="{{ $data->nama }}"
+                                                                <input type="text" class="form-control" id="nama_mahasiswa" value="{{ optional($data->proposal_ta)->r_mahasiswa->nama }}"
                                                                     readonly>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="nim" class="form-label">NIM</label>
-                                                                <input type="text" class="form-control" id="nim" value="{{ $data->nim }}" readonly>
+                                                                <input type="text" class="form-control" id="nim" value="{{ optional($data->proposal_ta)->r_mahasiswa->nim }}" readonly>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="Judul" class="form-label">Judul</label>
                                                                 <textarea class="form-control" id="Judul" name="Judul" rows="3"
-                                                                    readonly>{{ $data->judul }}</textarea>
+                                                                    readonly>{{ optional($data->proposal_ta)->judul }}</textarea>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="status" class="form-label">Status Proposal</label>
@@ -124,17 +124,17 @@
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="prodi" class="form-label">Program Studi</label>
-                                                                <input type="text" class="form-control" id="prodi" value="{{ $data->prodi }}" readonly>
+                                                                <input type="text" class="form-control" id="prodi" value="{{ optional($data->proposal_ta)->r_mahasiswa->r_prodi->prodi }}" readonly>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label class="form-label">Pembimbing</label>
                                                                 <div class="row">
                                                                     <div class="col">
-                                                                        <input type="text" class="form-control" value="{{ $data->pembimbing_satu_nama }}"
+                                                                        <input type="text" class="form-control" value="{{ optional($data->proposal_ta)->r_pembimbing_satu->nama_dosen }}"
                                                                             readonly>
                                                                     </div>
                                                                     <div class="col">
-                                                                        <input type="text" class="form-control" value="{{ $data->pembimbing_dua_nama }}"
+                                                                        <input type="text" class="form-control" value="{{ optional($data->proposal_ta)->r_pembimbing_dua->nama_dosen }}"
                                                                             readonly>
                                                                     </div>
                                                                 </div>
@@ -143,11 +143,11 @@
                                                                 <label class="form-label">Reviewer</label>
                                                                 <div class="row">
                                                                     <div class="col">
-                                                                        <input type="text" class="form-control" value="{{ $data->reviewer_satu_nama }}"
+                                                                        <input type="text" class="form-control" value="{{ optional($data->reviewer_satu_dosen)->r_dosen->nama_dosen }}"
                                                                             readonly>
                                                                     </div>
                                                                     <div class="col">
-                                                                        <input type="text" class="form-control" value="{{ $data->reviewer_dua_nama }}"
+                                                                        <input type="text" class="form-control" value="{{ optional($data->reviewer_dua_dosen)->r_dosen->nama_dosen }}"
                                                                             readonly>
                                                                     </div>
                                                                 </div>
@@ -156,11 +156,6 @@
                                                                 <label for="tanggal_penugasan" class="form-label">Tanggal Penugasan</label>
                                                                 <input type="date" class="form-control" id="tanggal_penugasan"
                                                                     value="{{ $data->tanggal_penugasan }}" readonly>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label for="tanggal_review" class="form-label">Tanggal Review</label>
-                                                                <input type="date" class="form-control" id="tanggal_review" value="{{ $data->tanggal_review }}"
-                                                                    readonly>
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">

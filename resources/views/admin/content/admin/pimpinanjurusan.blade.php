@@ -56,9 +56,9 @@
                                         @foreach ($data_pimpinan_jurusan as $data)
                                         <tr class="table-Light">
                                             <th>{{$data->id_pimpinan_jurusan}}</th>
-                                            <th>{{$data->nama_dosen}}</th>
-                                            <th>{{$data->jabatan_pimpinan}}</th>
-                                            <th>{{$data->jurusan}}</th>
+                                            <th>{{$data->r_dosen->nama_dosen}}</th>
+                                            <th>{{$data->r_jabatan_pimpinan->jabatan_pimpinan}}</th>
+                                            <th>{{$data->r_jurusan->jurusan}}</th>
                                             <th>{{$data->periode}}</th>
                                             <th>
                                                 @if ($data->status_pimpinan_jurusan == 0)

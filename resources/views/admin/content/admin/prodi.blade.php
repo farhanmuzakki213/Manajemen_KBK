@@ -56,7 +56,7 @@
                                             <th>{{$data->id_prodi}}</th>
                                             <th>{{$data->kode_prodi}}</th>
                                             <th>{{$data->prodi}}</th>
-                                            <th>{{$data->jurusan}}</th>
+                                            <th>{{$data->r_jurusan->jurusan}}</th>
                                             <th>{{$data->jenjang}}</th>
                                         </tr>
                                         @endforeach

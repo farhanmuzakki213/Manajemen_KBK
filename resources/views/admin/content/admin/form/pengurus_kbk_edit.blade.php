@@ -64,7 +64,7 @@
                                         @foreach ($data_jabatan_kbk as $jabatan_kbk)
                                             <option value="{{ $jabatan_kbk->id_jabatan_kbk }}"
                                                 {{ $jabatan_kbk->id_jabatan_kbk == $data_pengurus_kbk->jabatan_kbk_id ? 'selected' : '' }}>
-                                                {{ $jabatan_kbk->deskripsi }}
+                                                {{ $jabatan_kbk->jabatan }}
                                             </option>
                                         @endforeach
                                     </select>

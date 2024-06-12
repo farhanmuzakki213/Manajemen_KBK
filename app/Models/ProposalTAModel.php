@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProposalTAModel extends Model
 {
     use HasFactory; 
-    protected $fillable = ['id_propsal_ta','mahasiswa_id', 'judul', 'status_proposal_ta', 'file_proposal', 'pembimbing_satu', 'pembimbing_dua'];
+    protected $fillable = ['id_proposal_ta','mahasiswa_id', 'judul', 'status_proposal_ta', 'file_proposal', 'pembimbing_satu', 'pembimbing_dua'];
     protected $table = 'proposal_ta';
     public $timestamps = false;
 
