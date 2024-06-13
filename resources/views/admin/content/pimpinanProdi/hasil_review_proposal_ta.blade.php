@@ -58,10 +58,10 @@
                                     <tbody>
                                         @foreach ($data_review_proposal_ta as $data)
                                             <tr class="table-Light">
-                                                <th>{{ $data->id_penugasan }}</th>
-                                                <th>{{ $data->nama }}</th>
-                                                <th>{{ $data->reviewer_satu_nama }}</th>
-                                                <th>{{ $data->reviewer_dua_nama }}</th>
+                                                <th>{{ $data->penugasan_id }}</th>
+                                                <th>{{ optional($data->p_reviewProposal)->proposal_ta->r_mahasiswa->nama }}</th>
+                                                <th>{{ optional($data->p_reviewProposal)->reviewer_satu_dosen->r_dosen->nama_dosen }}</th>
+                                                <th>{{ optional($data->p_reviewProposal)->reviewer_dua_dosen->r_dosen->nama_dosen }}</th>
                                                 <th>
                                                     @if ($data->status_review_proposal == 0)
                                                         Di Ajukan
@@ -74,7 +74,7 @@
                                                     @endif
                                                 </th>
                                                 <th>
-                                                    @if ($data->status_final_proposal == 0)
+                                                    @if (optional($data->p_reviewProposal)->status_final_proposal == 0)
                                                         Belum Final
                                                     @else
                                                         Final
@@ -84,25 +84,25 @@
                                                     <div class="row">
                                                         @if ($data->status_review_proposal == 3)
                                                             <a data-bs-toggle="modal"
-                                                                data-bs-target="#edit{{ $data->id_penugasan }}"
+                                                                data-bs-target="#edit{{ $data->penugasan_id }}"
                                                                 class="btn btn-primary mb-2 d-flex align-items-center">
                                                                 <i class="bi bi-pencil-square"></i> Ubah Status
                                                             </a>
                                                         @else
-                                                            <a href="{{ route('hasil_review_proposal_ta.edit', ['id' => $data->id_penugasan]) }}"
+                                                            <a href="{{ route('hasil_review_proposal_ta.edit', ['id' => $data->penugasan_id]) }}"
                                                                 class="btn btn-primary mb-2 d-flex align-items-center">
                                                                 <i class="bi bi-pencil-square"></i> Ubah Status
                                                             </a>
                                                         @endif
                                                         <a data-bs-toggle="modal"
-                                                            data-bs-target="#detail{{ $data->id_penugasan }}"
+                                                            data-bs-target="#detail{{ $data->penugasan_id }}"
                                                             class="btn btn-secondary d-flex align-items-center"><i
                                                                 class="bi bi-three-dots-vertical"></i>Detail</a>
                                                     </div>
                                                 </th>
                                             </tr>
                                             {{-- Modal Detail Tabel --}}
-                                            <div class="modal fade" id="detail{{ $data->id_penugasan }}" tabindex="-1"
+                                            <div class="modal fade" id="detail{{ $data->penugasan_id }}" tabindex="-1"
                                                 aria-labelledby="detailLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
@@ -117,41 +117,41 @@
                                                                 <label for="nama_mahasiswa"
                                                                     class="form-label">Nama_mahasiswa</label>
                                                                 <input type="text" class="form-control"
-                                                                    id="nama_mahasiswa" value="{{ $data->nama }}"
+                                                                    id="nama_mahasiswa" value="{{ optional($data->p_reviewProposal)->proposal_ta->r_mahasiswa->nama }}"
                                                                     readonly>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="nim" class="form-label">NIM</label>
                                                                 <input type="text" class="form-control" id="nim"
-                                                                    value="{{ $data->nim }}" readonly>
+                                                                    value="{{ optional($data->p_reviewProposal)->proposal_ta->r_mahasiswa->nim }}" readonly>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="nama_dosen" class="form-label">pembimbing
                                                                     1:</label>
                                                                 <input type="text" class="form-control" id="nama_dosen"
-                                                                    value="{{ $data->pembimbing_satu_nama }}" readonly>
+                                                                    value="{{ optional($data->p_reviewProposal)->proposal_ta->r_pembimbing_satu->nama_dosen }}" readonly>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="nama_dosen" class="form-label">pembimbing
                                                                     2:</label>
                                                                 <input type="text" class="form-control" id="nama_dosen"
-                                                                    value="{{ $data->pembimbing_dua_nama }}" readonly>
+                                                                    value="{{ optional($data->p_reviewProposal)->proposal_ta->r_pembimbing_dua->nama_dosen }}" readonly>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="nama_dosen" class="form-label">Reviewer
                                                                     1:</label>
                                                                 <input type="text" class="form-control" id="nama_dosen"
-                                                                    value="{{ $data->reviewer_satu_nama }}" readonly>
+                                                                    value="{{ optional($data->p_reviewProposal)->reviewer_satu_dosen->r_dosen->nama_dosen }}" readonly>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="nama_dosen" class="form-label">Reviewer
                                                                     2:</label>
                                                                 <input type="text" class="form-control" id="nama_dosen"
-                                                                    value="{{ $data->reviewer_dua_nama }}" readonly>
+                                                                    value="{{ optional($data->p_reviewProposal)->reviewer_dua_dosen->r_dosen->nama_dosen }}" readonly>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="Judul" class="form-label">Judul</label>
-                                                                <textarea class="form-control" id="Judul" name="Judul" rows="3" readonly>{{ $data->judul }}</textarea>
+                                                                <textarea class="form-control" id="Judul" name="Judul" rows="3" readonly>{{ optional($data->p_reviewProposal)->proposal_ta->judul }}</textarea>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="status" class="form-label">Status</label>
@@ -177,7 +177,7 @@
                                             </div>
                                             {{-- Modal Edit Status --}}
 
-                                            <div class="modal fade" id="edit{{ $data->id_penugasan }}" tabindex="-1"
+                                            <div class="modal fade" id="edit{{ $data->penugasan_id }}" tabindex="-1"
                                                 aria-labelledby="detailLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
@@ -190,26 +190,26 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <form method="post"
-                                                                action="{{ route('hasil_review_proposal_ta.update', ['id' => $data->id_penugasan]) }}">
+                                                                action="{{ route('hasil_review_proposal_ta.update', ['id' => $data->penugasan_id]) }}">
                                                                 @csrf
                                                                 @method('PUT')
                                                                 <input type="hidden" class="form-control"
                                                                     id="id_penugasan" name="id_penugasan"
-                                                                    value="{{ $data->id_penugasan }}">
+                                                                    value="{{ $data->penugasan_id }}">
                                                                 <div class="mb-3">
                                                                     <label for="status"
                                                                         class="form-label">Status</label><br>
                                                                     <div class="form-check form-check-inline">
                                                                         <input class="form-check-input" type="radio"
                                                                             name="status" id="aktif" value="0"
-                                                                            {{ $data->status_final_proposal == 0 ? 'checked' : '' }}>
+                                                                            {{ optional($data->p_reviewProposal)->status_final_proposal  == 0 ? 'checked' : '' }}>
                                                                         <label class="form-check-label" for="aktif">
                                                                             Belum Final</label>
                                                                     </div>
                                                                     <div class="form-check form-check-inline">
                                                                         <input class="form-check-input" type="radio"
                                                                             name="status" id="aktif" value="1"
-                                                                            {{ $data->status_final_proposal == 1 ? 'checked' : '' }}>
+                                                                            {{ optional($data->p_reviewProposal)->status_final_proposal == 1 ? 'checked' : '' }}>
                                                                         <label class="form-check-label" for="aktif">
                                                                             Final</label>
                                                                     </div>

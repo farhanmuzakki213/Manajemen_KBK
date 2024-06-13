@@ -6,6 +6,9 @@ use App\Exports\ExportPengurus_kbk;
 use App\Http\Controllers\Controller;
 use App\Imports\ImportPengurusKbk;
 use App\Models\Pengurus_kbk;
+use App\Models\Dosen;
+use App\Models\JabatanKbk;
+use App\Models\JenisKbk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -18,11 +21,7 @@ class Pengurus_kbkController extends Controller
      */
     public function index()
     {
-        $data_pengurus_kbk = DB::table('pengurus_kbk')
-            ->join('jenis_kbk', 'pengurus_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
-            ->join('jabatan_kbk', 'pengurus_kbk.jabatan_kbk_id', '=', 'jabatan_kbk.id_jabatan_kbk')
-            ->join('dosen', 'pengurus_kbk.dosen_id', '=', 'dosen.id_dosen')
-            ->select('pengurus_kbk.id_pengurus', 'pengurus_kbk.status_pengurus_kbk', 'jenis_kbk.jenis_kbk', 'jabatan_kbk.jabatan', 'dosen.nama_dosen')
+        $data_pengurus_kbk = Pengurus_kbk::with('r_dosen', 'r_jenis_kbk', 'r_jabatan_kbk')
             ->orderByDesc('id_pengurus')
             ->get();
         return view('admin.content.admin.pengurus_kbk', compact('data_pengurus_kbk'));
@@ -42,9 +41,9 @@ class Pengurus_kbkController extends Controller
      */
     public function create()
     {
-        $data_dosen = DB::table('dosen')->get();
-        $data_jabatan_kbk = DB::table('jabatan_kbk')->get();
-        $data_jenis_kbk = DB::table('jenis_kbk')->get();
+        $data_dosen = Dosen::all();
+        $data_jabatan_kbk = JabatanKbk::all();
+        $data_jenis_kbk = JenisKbk::all();
 
         //dd(compact('data_dosen', 'data_jabatan_kbk', 'data_jenis_kbk'));
 
@@ -84,9 +83,9 @@ class Pengurus_kbkController extends Controller
      */
     public function show(string $id)
     {
-        $data_dosen = DB::table('dosen')->get();
-        $data_jabatan_kbk = DB::table('jabatan_kbk')->get();
-        $data_jenis_kbk = DB::table('jenis_kbk')->get();
+        $data_dosen = Dosen::all();
+        $data_jabatan_kbk = JabatanKbk::all();
+        $data_jenis_kbk = JenisKbk::all();
     
         $detail_pengurus_kbk = pengurus_kbk::where('id_pengurus', $id)->first();
         
@@ -99,9 +98,9 @@ class Pengurus_kbkController extends Controller
      */
     public function edit(Request $request, string $id)
     {
-        $data_dosen = DB::table('dosen')->get();
-        $data_jabatan_kbk = DB::table('jabatan_kbk')->get();
-        $data_jenis_kbk = DB::table('jenis_kbk')->get();
+        $data_dosen = Dosen::all();
+        $data_jabatan_kbk = JabatanKbk::all();
+        $data_jenis_kbk = JenisKbk::all();
 
         //dd(compact('data_dosen', 'data_jabatan_kbk', 'data_jenis_kbk'));
 

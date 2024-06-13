@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Dosen;
+use App\Models\Jurusan;
+use App\Models\Prodi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,10 +17,7 @@ class DosenController extends Controller
      */
     public function index()
     {
-        $data_dosen = DB::table('dosen')
-            ->join('jurusan', 'dosen.jurusan_id', '=', 'jurusan.id_jurusan')
-            ->join('prodi', 'dosen.prodi_id', '=', 'prodi.id_prodi')
-            ->select('dosen.*', 'jurusan.jurusan', 'prodi.prodi')
+        $data_dosen = Dosen::with('r_jurusan', 'r_prodi')
             ->orderByDesc('id_dosen')
             ->get();
         return view('admin.content.admin.dosen', compact('data_dosen'));
@@ -56,9 +55,9 @@ class DosenController extends Controller
      */
     public function show(string $id)
     {
-        $data_dosen = Dosen::findOrFail($id);
-        $data_jurusan = DB::table('jurusan')->get();
-        $data_prodi = DB::table('prodi')->get();
+        $data_dosen = Dosen::with(['r_jurusan', 'r_prodi'])->findOrFail($id);
+        $data_jurusan = Jurusan::all();
+        $data_prodi = Prodi::all();
     
         return view('admin.content.Dosen', compact('data_dosen', 'data_jurusan', 'data_prodi'));
     }

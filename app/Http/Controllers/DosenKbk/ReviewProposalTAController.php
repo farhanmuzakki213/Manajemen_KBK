@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\DosenKbk;
 
 use App\Http\Controllers\Controller;
-use App\Models\ReviewProposalTAModel;
+use App\Models\Dosen;
+use App\Models\Mahasiswa;
+use App\Models\ProposalTAModel;
+use App\Models\ReviewProposalTaDetailPivot;
 use Barryvdh\Debugbar\Facades\Debugbar as FacadesDebugbar;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -17,13 +20,8 @@ class ReviewProposalTAController extends Controller
      */
     public function index()
     {
-        $data_review_proposal_ta = DB::table('review_proposal_ta')
-            ->join('proposal_ta', 'review_proposal_ta.proposal_ta_id', '=', 'proposal_ta.id_proposal_ta')
-            ->join('dosen as dosen_satu', 'review_proposal_ta.reviewer_satu', '=', 'dosen_satu.id_dosen')
-            ->join('dosen as dosen_dua', 'review_proposal_ta.reviewer_dua', '=', 'dosen_dua.id_dosen')
-            ->join('mahasiswa', 'proposal_ta.mahasiswa_id', '=', 'mahasiswa.id_mahasiswa')
-            ->select('review_proposal_ta.id_penugasan', 'review_proposal_ta.tanggal_penugasan', 'review_proposal_ta.tanggal_review', 'review_proposal_ta.status_review_proposal', 'proposal_ta.judul', 'mahasiswa.nama', 'dosen_satu.nama_dosen as reviewer_satu_nama', 'dosen_dua.nama_dosen as reviewer_dua_nama')
-            ->orderByDesc('review_proposal_ta.id_penugasan')
+        $data_review_proposal_ta = ReviewProposalTaDetailPivot::with('p_reviewProposal')
+            ->orderByDesc('review_proposal_ta_detail_pivot.penugasan_id')
             ->get();
 
 
@@ -52,10 +50,9 @@ class ReviewProposalTAController extends Controller
      */
     public function show(string $id)
     {
-        $data_dosen = DB::table('dosen')->get();
-        $data_mahasiswa = DB::table('mahasiswa')->get();
-        $data_proposal_ta = DB::table('proposal_ta')->get();
-
+        $data_dosen = Dosen::all();
+        $data_mahasiswa = Mahasiswa::all();
+        $data_proposal_ta = ProposalTAModel::all();
         return view('admin.content.dosenKbk.review_proposal_ta', compact('data_dosen', 'data_proposal_ta', 'data_mahasiswa'));
     }
 
@@ -64,13 +61,14 @@ class ReviewProposalTAController extends Controller
      */
     public function edit(string $id)
     {
-        $data_dosen = DB::table('dosen')->get();
-        $data_review_proposal_ta = ReviewProposalTAModel::where('id_penugasan', $id)
+        $data_dosen = Dosen::all();
+        $data_review_proposal_ta = ReviewProposalTaDetailPivot::with('p_reviewProposal.reviewer_dua_dosen.r_dosen', 'p_reviewProposal.reviewer_satu_dosen.r_dosen')->where('penugasan_id', $id)
+                                                      ->first();
             /* ->join('dosen as dosen_satu', 'review_proposal_ta.reviewer_satu', '=', 'dosen_satu.id_dosen')
             ->join('dosen as dosen_dua', 'review_proposal_ta.reviewer_dua', '=', 'dosen_dua.id_dosen')
             ->select('review_proposal_ta.*', 'dosen_satu.nama_dosen as reviewer_satu_nama', 'dosen_dua.nama_dosen as reviewer_dua_nama')
             ->orderByDesc('review_proposal_ta.id_penugasan')
-             */->first();
+            */
         debug(compact('data_dosen', 'data_review_proposal_ta'));
         return view('admin.content.dosenKbk.form.review_proposal_ta_edit', compact('data_dosen', 'data_review_proposal_ta'));
     }
@@ -91,13 +89,13 @@ class ReviewProposalTAController extends Controller
             return redirect()->back()->withInput()->withErrors($validator);
         }
         $data = [
-            'id_penugasan' => $request->id_penugasan,
+            'penugasan_id' => $request->id_penugasan,
             'status_review_proposal' => $request->status,
             'catatan' => $request->catatan,
             'tanggal_review' => $request->date,
         ];
         //dd($request->all());
-        ReviewProposalTAModel::where('id_penugasan', $id)->update($data);
+        ReviewProposalTaDetailPivot::where('penugasan_id', $id)->update($data);
         return redirect()->route('review_proposal_ta')->with('success', 'Data berhasil diperbarui.');
     }
 

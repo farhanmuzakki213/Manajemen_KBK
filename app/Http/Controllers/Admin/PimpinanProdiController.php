@@ -3,22 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\PimpinanProdi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class Kurikulum extends Controller
+class PimpinanProdiController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data_kurikulum = DB::table('kurikulum')
-            ->join('prodi', 'kurikulum.prodi_id', '=', 'prodi.id_prodi')
-            ->select('kurikulum.*', 'prodi.prodi')
-            ->orderByDesc('id_kurikulum')
+        $data_pimpinan_prodi = PimpinanProdi::with('r_dosen', 'r_prodi', 'r_jabatan_pimpinan')
+            ->orderByDesc('id_pimpinan_prodi')
             ->get();
-        return view('admin.content.admin.Kurikulum', compact('data_kurikulum'));
+        return view('admin.content.admin.pimpinanprodi', compact('data_pimpinan_prodi'));
     }
 
     /**

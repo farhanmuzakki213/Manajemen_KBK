@@ -2,29 +2,23 @@
 
 namespace App\Http\Controllers\PimpinanProdi;
 
-use App\Exports\ExportHasil_final_proposal;
-use App\Http\Controllers\Controller;
-use App\Models\ReviewProposalTAModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Models\ReviewProposalTAModel;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ExportHasil_final_proposal;
+use App\Models\ReviewProposalTaDetailPivot;
 
 class HAsilFinalProposalTAController extends Controller
 {
     
     public function index()
     {
-        $data_review_proposal_ta = DB::table('review_proposal_ta')
-            ->join('proposal_ta', 'review_proposal_ta.proposal_ta_id', '=', 'proposal_ta.id_proposal_ta')
-            ->join('dosen as reviewer_satu', 'review_proposal_ta.reviewer_satu', '=', 'reviewer_satu.id_dosen')
-            ->join('dosen as reviewer_dua', 'review_proposal_ta.reviewer_dua', '=', 'reviewer_dua.id_dosen')
-            ->join('dosen as pembimbing_satu', 'proposal_ta.pembimbing_satu', '=', 'pembimbing_satu.id_dosen')
-            ->join('dosen as pembimbing_dua', 'proposal_ta.pembimbing_dua', '=', 'pembimbing_dua.id_dosen')
-            ->join('mahasiswa', 'proposal_ta.mahasiswa_id', '=', 'mahasiswa.id_mahasiswa')
-            ->select('review_proposal_ta.id_penugasan','mahasiswa.nama', 'mahasiswa.nim', 'reviewer_satu.nama_dosen as reviewer_satu_nama', 'reviewer_dua.nama_dosen as reviewer_dua_nama', 'review_proposal_ta.status_review_proposal', 'review_proposal_ta.status_final_proposal', 'pembimbing_satu.nama_dosen as pembimbing_satu_nama', 'pembimbing_dua.nama_dosen as pembimbing_dua_nama', 'proposal_ta.judul')
-            ->orderByDesc('review_proposal_ta.id_penugasan')
+        $data_review_proposal_ta =  ReviewProposalTaDetailPivot::with('p_reviewProposal')
+            ->orderByDesc('review_proposal_ta_detail_pivot.penugasan_id')
             ->get();
 
         debug($data_review_proposal_ta);

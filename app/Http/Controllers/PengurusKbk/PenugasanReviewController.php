@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\PengurusKbk;
 
 use App\Http\Controllers\Controller;
+use App\Models\Mahasiswa;
+use App\Models\Dosen;
 use App\Models\ReviewProposalTAModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,12 +19,7 @@ class PenugasanReviewController extends Controller
      */
     public function index()
     {
-        $data_review_proposal_ta = DB::table('review_proposal_ta')
-            ->join('proposal_ta', 'review_proposal_ta.proposal_ta_id', '=', 'proposal_ta.id_proposal_ta')
-            ->join('dosen as dosen_satu', 'review_proposal_ta.reviewer_satu', '=', 'dosen_satu.id_dosen')
-            ->join('dosen as dosen_dua', 'review_proposal_ta.reviewer_dua', '=', 'dosen_dua.id_dosen')
-            ->join('mahasiswa', 'proposal_ta.mahasiswa_id', '=', 'mahasiswa.id_mahasiswa')
-            ->select('review_proposal_ta.id_penugasan', 'review_proposal_ta.tanggal_penugasan','proposal_ta.judul', 'mahasiswa.nama', 'dosen_satu.nama_dosen as reviewer_satu_nama', 'dosen_dua.nama_dosen as reviewer_dua_nama')
+        $data_review_proposal_ta = ReviewProposalTAModel:: with('proposal_ta', 'reviewer_satu_dosen', 'reviewer_dua_dosen', 'p_reviewDetail')
             ->orderByDesc('review_proposal_ta.id_penugasan')
             ->get();
 
@@ -37,12 +34,9 @@ class PenugasanReviewController extends Controller
     public function create()
     {
         $nextNumber = $this->getCariNomor();
-        $data_mahasiswa = DB::table('proposal_ta')
-            ->join('mahasiswa', 'proposal_ta.mahasiswa_id', '=', 'mahasiswa.id_mahasiswa')
-            ->select('proposal_ta.*', 'mahasiswa.nama', 'mahasiswa.nim')
-            ->get();
-        $data_dosen = DB::table('dosen')->get();
-        $data_review_proposal_ta = DB::table('review_proposal_ta')->get();
+        $data_mahasiswa = Mahasiswa::all();
+        $data_dosen = Dosen::all();
+        $data_review_proposal_ta = ReviewProposalTAModel::all();
 
         debug(compact('data_mahasiswa', 'data_dosen', 'data_review_proposal_ta', 'nextNumber'));
         return view('admin.content.pengurusKbk.form.penugasan_review_form', compact('data_mahasiswa', 'data_dosen', 'data_review_proposal_ta', 'nextNumber'));
@@ -111,12 +105,9 @@ class PenugasanReviewController extends Controller
      */
     public function edit(string $id)
     {
-        $data_dosen = DB::table('dosen')->get();
-        $data_penugasan_review = ReviewProposalTAModel::where('id_penugasan', $id)->first();
-        $data_mahasiswa = DB::table('proposal_ta')
-            ->join('mahasiswa', 'proposal_ta.mahasiswa_id', '=', 'mahasiswa.id_mahasiswa')
-            ->select('proposal_ta.*', 'mahasiswa.nama', 'mahasiswa.nim')
-            ->get();
+        $data_mahasiswa = Mahasiswa::all();
+        $data_dosen = Dosen::all();
+        $data_review_proposal_ta = ReviewProposalTAModel::all();
 
         debug(compact('data_dosen', 'data_penugasan_review', 'data_mahasiswa'));
         return view('admin.content.pengurusKbk.form.penugasan_review_edit', compact('data_dosen', 'data_penugasan_review', 'data_mahasiswa'));
@@ -174,13 +165,7 @@ class PenugasanReviewController extends Controller
 
     public function hasil()
     {
-        $data_review_proposal_ta = DB::table('review_proposal_ta')
-            ->join('proposal_ta', 'review_proposal_ta.proposal_ta_id', '=', 'proposal_ta.id_proposal_ta')
-            ->join('dosen as dosen_satu', 'review_proposal_ta.reviewer_satu', '=', 'dosen_satu.id_dosen')
-            ->join('dosen as dosen_dua', 'review_proposal_ta.reviewer_dua', '=', 'dosen_dua.id_dosen')
-            ->join('mahasiswa', 'proposal_ta.mahasiswa_id', '=', 'mahasiswa.id_mahasiswa')
-            ->join('prodi', 'mahasiswa.prodi_id', '=', 'prodi.id_prodi')
-            ->select('review_proposal_ta.*', 'proposal_ta.*', 'mahasiswa.*', 'prodi.*', 'dosen_satu.nama_dosen as reviewer_satu_nama', 'dosen_dua.nama_dosen as reviewer_dua_nama')
+        $data_review_proposal_ta = ReviewProposalTAModel:: with('proposal_ta', 'reviewer_satu_dosen', 'reviewer_dua_dosen', 'p_reviewDetail')
             ->orderByDesc('review_proposal_ta.id_penugasan')
             ->get();
 

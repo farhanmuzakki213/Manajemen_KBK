@@ -60,8 +60,8 @@
                                                 <th>{{ $data->id_mahasiswa }}</th>
                                                 <th>{{ $data->nim }}</th>
                                                 <th>{{ $data->nama }}</th>
-                                                <th>{{ $data->jurusan }}</th>
-                                                <th>{{ $data->prodi }}</th>
+                                                <th>{{ $data->r_jurusan->jurusan }}</th>
+                                                <th>{{ $data->r_prodi->prodi }}</th>
                                                 <th>{{ $data->gender }}</th>
                                                 <th>
                                                     @if ($data->status_mahasiswa == 0)

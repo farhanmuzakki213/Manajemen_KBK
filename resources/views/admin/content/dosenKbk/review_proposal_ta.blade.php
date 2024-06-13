@@ -58,9 +58,9 @@
                                     <tbody>
                                         @foreach ($data_review_proposal_ta as $data)
                                             <tr class="table-Light">
-                                                <th>{{ $data->id_penugasan }}</th>
-                                                <th>{{ $data->nama }}</th>
-                                                <th>{{ $data->tanggal_penugasan }}</th>
+                                                <th>{{ $data->penugasan_id }}</th>
+                                                <th>{{ optional($data->p_reviewProposal)->proposal_ta->r_mahasiswa->nama }}</th>
+                                                <th>{{ $data->p_reviewProposal->tanggal_penugasan }}</th>
                                                 <th>{{ $data->tanggal_review }}</th>
                                                 <th>
                                                     @if ($data->status_review_proposal == 0)
@@ -75,10 +75,10 @@
                                                 </th>
                                                 <th style="width: 10%;">
                                                     <div class="row">
-                                                        <a href="{{ route('review_proposal_ta.edit', ['id' => $data->id_penugasan]) }}"
+                                                        <a href="{{ route('review_proposal_ta.edit', ['id' => $data->penugasan_id]) }}"
                                                             class="btn btn-primary mb-2 d-flex align-items-center"><i
                                                                 class="bi bi-pencil-square"></i>Review</a>
-                                                        <a href="{{ route('review_proposal_ta', ['id' => $data->id_penugasan]) }}"
+                                                        <a href="{{ route('review_proposal_ta', ['id' => $data->penugasan_id]) }}"
                                                             class="btn btn-primary mb-2 d-flex align-items-center"><i
                                                                 class="bi bi-file-earmark-arrow-down"></i>File</a>
                                                         {{-- <a data-bs-toggle="modal"
@@ -92,7 +92,7 @@
                                                 </th>
                                             </tr>
                                             {{-- Modal Konfirmasi hapus data --}}
-                                            <div class="modal fade" id="staticBackdrop{{ $data->id_penugasan }}"
+                                            <div class="modal fade" id="staticBackdrop{{ $data->penugasan_id }}"
                                                 data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                                                 aria-labelledby="staticBackdropLabel" aria-hidden="true">>
                                                 <div class="modal-dialog modal-dialog-centered">
@@ -105,13 +105,13 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <p>Apakah kamu yakin ingin menghapus data ini?
-                                                                <b>{{ $data->nama }}</b>
+                                                                <b>{{ optional($data->p_reviewProposal)->proposal_ta->r_mahasiswa->nama }}</b>
                                                             </p>
                                                         </div>
                                                         <div class="modal-footer justify-content-between">
 
                                                             <form
-                                                                action="{{ route('review_proposal_ta.delete', ['id' => $data->id_penugasan]) }}"
+                                                                action="{{ route('review_proposal_ta.delete', ['id' => $data->penugasan_id]) }}"
                                                                 method="POST">
                                                                 @csrf
                                                                 @method('DELETE')
@@ -138,20 +138,20 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="mb-3">
-                                                                <label for="nama_dosen" class="form-label">Reviewer
-                                                                    1:</label>
+                                                                <label for="nama_dosen" class="form-label">Reviewer 1 :</label>
                                                                 <input type="text" class="form-control" id="nama_dosen"
-                                                                    value="{{ $data->reviewer_satu_nama}}" readonly>
-                                                            </div>
+                                                                       value="{{ optional($data->p_reviewProposal)->reviewer_satu_dosen->r_dosen->nama_dosen }}" readonly>
+                                                              </div>
+                                                              
                                                             <div class="mb-3">
-                                                                <label for="nama_dosen" class="form-label">Reviewer
-                                                                    2:</label>
+                                                                <label for="nama_dosen" class="form-label">Reviewer 2 :</label>
                                                                 <input type="text" class="form-control" id="nama_dosen"
-                                                                    value="{{ $data->reviewer_dua_nama }}" readonly>
-                                                            </div>
+                                                                       value="{{ optional($data->p_reviewProposal)->reviewer_dua_dosen->r_dosen->nama_dosen }}" readonly>
+                                                              </div>
+                                                              
                                                             <div class="mb-3">
                                                                 <label for="Judul" class="form-label">Judul</label>
-                                                                <textarea class="form-control" id="Judul" name="Judul" rows="3" readonly>{{ $data->judul }}</textarea>
+                                                                <textarea class="form-control" id="Judul" name="Judul" rows="3" readonly>{{ optional($data->p_reviewProposal)->proposal_ta->judul }}</textarea>
                                                             </div>
                                                             <!-- tambahkan input untuk atribut lainnya jika diperlukan -->
                                                         </div>

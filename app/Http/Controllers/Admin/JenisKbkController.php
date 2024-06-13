@@ -18,9 +18,7 @@ class JenisKbkController extends Controller
      */
     public function index()
     {
-        $data_jenis_kbk = DB::table('jenis_kbk')
-            ->orderByDesc('id_jenis_kbk')
-            ->get();
+        $data_jenis_kbk = JenisKbk::orderByDesc('id_jenis_kbk')->get();
         return view('admin.content.admin.jenis_kbk', compact('data_jenis_kbk'));
     }
 

@@ -60,22 +60,22 @@
                                             </tr>
                                         </tfoot>
                                         <tbody>
-                                            @foreach ($data_ver_soal_uas as $data)
+                                            @foreach ($data_ver_soal_uas as $data_ver)
                                                 <tr class="table-Light">
-                                                    <th>{{ $data->id_ver_uas }}</th>
-                                                    <th>{{ $data->nama_dosen }}</th>
-                                                    <th>{{ $data->kode_matkul }}</th>
-                                                    <th>{{ $data->semester }}</th>
-                                                    <th><a href="{{ asset('storage/uploads/ver_soal_uas_files/' . $data->file_verifikasi) }}" target="_blank">{{ $data->file_verifikasi }}</a>
+                                                    <th>{{ $data_ver->id_ver_rps_uas }}</th>
+                                                    <th>{{ optional($data_ver->r_rep_rps_uas)->r_dosen->nama_dosen }}</th>
+                                                    <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->kode_matkul }}</th>
+                                                    <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->semester }}</th>
+                                                    <th><a href="{{ asset('storage/uploads/ver_soal_uas_files/' . $data_ver->file_verifikasi) }}" target="_blank">{{ $data_ver->file_verifikasi }}</a>
                                                     </th>
                                                     <th>
-                                                        @if ($data->status_ver_uas == 0)
+                                                        @if ($data_ver->status_ver_uas == 0)
                                                             Tidak Diverifikasi
                                                         @else
                                                             Diverifikasi
                                                         @endif
                                                     </th>
-                                                    <th>{{ $data->tanggal_diverifikasi }}</th>
+                                                    <th>{{ $data_ver->tanggal_diverifikasi }}</th>
 
                                                     {{-- <th>
                                                         <a href="{{ route('ver_soal_uas.edit', ['id' => $data->id_ver_uas]) }}"

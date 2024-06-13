@@ -164,10 +164,10 @@
                                         @foreach ($data_rps as $data)
                                             <tr class="table-Light">
                                                 <th>{{ $data->id_rep_rps_uas }}</th>
-                                                <th>{{ $data->nama_matkul }}</th>
-                                                <th>{{ $data->semester }}</th>
-                                                <th>{{ $data->nama_dosen }}</th>
-                                                <th>{{ $data->smt_thnakd }}</th>
+                                                <th>{{ optional($data->r_matkulKbk)->r_matkul->nama_matkul }}</th>
+                                                <th>{{ optional($data->r_matkulKbk)->r_matkul->semester }}</th>
+                                                <th>{{ optional($data->r_dosen)->nama_dosen }}</th>
+                                                <th>{{ optional($data->r_smt_thnakd)->smt_thnakd }}</th>
                                                 <th><a href="{{ asset('storage/uploads/rps/repositori_files/' . $data->file) }}"
                                                         target="_blank">{{ $data->file }}</a>
                                                 </th>
@@ -262,10 +262,10 @@
                                         @foreach ($data_uas as $data)
                                             <tr class="table-Light">
                                                 <th>{{ $data->id_rep_uas }}</th>
-                                                <th>{{ $data->nama_matkul }}</th>
-                                                <th>{{ $data->semester }}</th>
-                                                <th>{{ $data->nama_dosen }}</th>
-                                                <th>{{ $data->smt_thnakd }}</th>
+                                                <th>{{ optional($data->r_matkulKbk)->r_matkul->nama_matkul }}</th>
+                                                <th>{{ optional($data->r_matkulKbk)->r_matkul->semester }}</th>
+                                                <th>{{ optional($data->r_dosen)->nama_dosen }}</th>
+                                                <th>{{ optional($data->r_smt_thnakd)->smt_thnakd }}</th>
                                                 <th><a href="{{ asset('storage/uploads/uas/repositori_files/' . $data->file) }}"
                                                         target="_blank">{{ $data->file }}</a></th>
                                                 <th style="width: 10%;">

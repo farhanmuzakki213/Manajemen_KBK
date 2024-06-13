@@ -61,14 +61,14 @@
                                     <tbody>
                                         @foreach ($data_rep_soal_uas as $data)
                                             <tr class="table-Light">
-                                                <th>{{ $data->id_rep_uas }}</th>
-                                                <th>{{ $data->nama_matkul }}</th>
-                                                <th>{{ $data->semester }}</th>
-                                                <th>{{ $data->nama_dosen_upload }}</th>
-                                                <th>{{ $data->prodi }}</th>
-                                                <th>{{ $data->nama_dosen_verifikasi }}</th>
+                                                <th>{{ $data->id_ver_rps_uas }}</th>
+                                                <th>{{ optional($data->r_rep_rps_uas)->r_matkulKbk->r_matkul->nama_matkul }}</th>
+                                                <th>{{ optional($data->r_rep_rps_uas)->r_matkulKbk->r_matkul->semester }}</th>
+                                                <th>{{ optional($data->r_rep_rps_uas)->r_dosen->nama_dosen }}</th>
+                                                <th>{{ optional($data->r_rep_rps_uas)->r_matkulKbk->r_kurikulum->r_prodi->prodi }}</th>
+                                                <th>{{ optional($data->r_dosen)->nama_dosen }}</th>
                                                 <th>
-                                                    @if ($data->status_ver_uas == 0)
+                                                    @if ($data->status_verifikasi == 0)
                                                         Tidak Diverifikasi
                                                     @else
                                                         Diverifikasi
@@ -76,12 +76,12 @@
                                                 </th>
                                                 <th>
                                                     <a data-bs-toggle="modal"
-                                                        data-bs-target="#detail{{ $data->id_rep_uas }}"
+                                                        data-bs-target="#detail{{ $data->id_rep_rps_uas }}"
                                                         class="btn btn-secondary d-flex align-items-center"><i
                                                                 class="bi bi-three-dots-vertical"></i>Detail</a>
                                                 </th>
                                             </tr>
-                                            <div class="modal fade" id="detail{{ $data->id_rep_uas }}" tabindex="-1" aria-labelledby="detailLabel"
+                                            <div class="modal fade" id="detail{{ $data->id_rep_rps_uas }}" tabindex="-1" aria-labelledby="detailLabel"
                                                 aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
@@ -93,36 +93,36 @@
                                                         <div class="modal-body">
                                                             <div class="mb-3">
                                                                 <label for="nama_matkul" class="form-label">Mata Kuliah</label>
-                                                                <input type="text" class="form-control" id="nama_matkul" value="{{ $data->nama_matkul }}"
+                                                                <input type="text" class="form-control" id="nama_matkul" value="{{ optional($data->r_rep_rps_uas)->r_matkulKbk->r_matkul->nama_matkul }}"
                                                                     readonly>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="semester" class="form-label">Semester</label>
-                                                                <input type="text" class="form-control" id="semester" value="{{ $data->semester }}" readonly>
+                                                                <input type="text" class="form-control" id="semester" value="{{ optional($data->r_rep_rps_uas)->r_matkulKbk->r_matkul->semester }}" readonly>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="dosen_upload" class="form-label">Dosen Upload</label>
-                                                                <input type="text" class="form-control" id="dosen_upload" value="{{ $data->nama_dosen_upload }}" readonly>
+                                                                <input type="text" class="form-control" id="dosen_upload" value="{{ optional($data->r_dosen)->nama_dosen }}" readonly>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="prodi" class="form-label">Program Studi</label>
-                                                                <input type="text" class="form-control" id="prodi" value="{{ $data->prodi }}" readonly>
+                                                                <input type="text" class="form-control" id="prodi" value="{{ optional($data->r_rep_rps_uas)->r_matkulKbk->r_kurikulum->r_prodi->prodi }}" readonly>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="dosen_verifikasi" class="form-label">Dosen Verifikasi</label>
-                                                                <input type="text" class="form-control" id="dosen_verifikasi" value="{{ $data->nama_dosen_verifikasi }}" readonly>
+                                                                <input type="text" class="form-control" id="dosen_verifikasi" value="{{ optional($data->r_dosen)->nama_dosen }}" readonly>
                                                             </div>
                                                           
                                                             <div class="mb-3">
                                                                 <label for="status" class="form-label">Status Proposal</label>
                                                                 <input type="text" class="form-control" id="status"
-                                                                    value="{{ $data->status_ver_uas == 0 ? 'Tidak Diverifikasi' : ($data->status_ver_uas == 1 ? 'Diverifikasi' : '') }}"
+                                                                    value="{{ $data->status_verifikasi == 0 ? 'Tidak Diverifikasi' : ($data->status_verifikasi == 1 ? 'Diverifikasi' : '') }}"
                                                                     readonly>
                                                             </div>
 
                                                             <div class="mb-3">
                                                                 <label for="created_at" class="form-label">Tanggal Di Upload</label>
-                                                                <input type="text" class="form-control" id="created_at" value="{{ \Carbon\Carbon::parse($data->created_at)->format('Y-m-d') }}" readonly>
+                                                                <input type="text" class="form-control" id="created_at" value="{{ \Carbon\Carbon::parse(optional($data->r_rep_rps_uas)->created_att)->format('Y-m-d') }}" readonly>
                                                             </div>
                                                             
                                                             <div class="mb-3">

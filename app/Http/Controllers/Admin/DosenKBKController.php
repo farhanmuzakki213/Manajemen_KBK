@@ -6,6 +6,8 @@ use App\Exports\ExportDosenKBK;
 use App\Http\Controllers\Controller;
 use App\Imports\ImportDosenKBK;
 use App\Models\DosenKBK;
+use App\Models\Dosen;
+use App\Models\JenisKbk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -18,13 +20,10 @@ class DosenKBKController extends Controller
      */
     public function index()
     {
-        $data_dosen_kbk = DB::table('dosen_kbk')
-            ->join('jenis_kbk', 'dosen_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
-            ->join('dosen', 'dosen_kbk.dosen_id', '=', 'dosen.id_dosen')
-            ->select('dosen_kbk.id_dosen_kbk', 'jenis_kbk.jenis_kbk', 'dosen.nama_dosen')
-            ->orderByDesc('id_dosen_kbk')
-            ->get();
+        $data_dosen_kbk = DosenKBK::with(['r_jenis_kbk', 'r_dosen'])->orderByDesc('id_dosen_kbk')->get();
+
         return view('admin.content.admin.dosen_kbk', compact('data_dosen_kbk'));
+
     }
 
     public function export_excel(){
@@ -41,12 +40,11 @@ class DosenKBKController extends Controller
      */
     public function create()
     {
-        $data_dosen = DB::table('dosen')->get();
-        $data_jenis_kbk = DB::table('jenis_kbk')->get();
-
-        //dd(compact('data_dosen', 'data_jabatan_kbk', 'data_jenis_kbk'));
+        $data_dosen = Dosen::all();
+        $data_jenis_kbk = JenisKbk::all();
 
         return view('admin.content.admin.form.dosen_kbk_form', compact('data_dosen', 'data_jenis_kbk'));
+
     }
 
     /**
@@ -78,8 +76,8 @@ class DosenKBKController extends Controller
      */
     public function show(string $id)
     {
-        $data_dosen = DB::table('dosen')->get();
-        $data_jenis_kbk = DB::table('jenis_kbk')->get();
+        $data_dosen = Dosen::all();
+        $data_jenis_kbk = JenisKbk::all();
     
         $detail_dosen_kbk = DosenKBK::where('id_dosen_kbk', $id)->first();
         
@@ -92,8 +90,8 @@ class DosenKBKController extends Controller
      */
     public function edit(Request $request, string $id)
     {
-        $data_dosen = DB::table('dosen')->get();
-        $data_jenis_kbk = DB::table('jenis_kbk')->get();
+        $data_dosen = Dosen::all();
+        $data_jenis_kbk = JenisKbk::all();
 
         //dd(compact('data_dosen', 'data_jabatan_kbk', 'data_jenis_kbk'));
 

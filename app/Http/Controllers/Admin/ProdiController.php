@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Prodi;
 
 class ProdiController extends Controller
 {
@@ -13,11 +14,8 @@ class ProdiController extends Controller
      */
     public function index()
     {
-        $data_prodi = DB::table('prodi')
-            ->join('jurusan', 'prodi.jurusan_id', '=', 'jurusan.id_jurusan')
-            ->select('prodi.*', 'jurusan.jurusan')
-            ->orderByDesc('id_prodi')
-            ->get();
+        $data_prodi = Prodi::with('r_jurusan')->orderByDesc('id_prodi')->get();
+
         return view('admin.content.admin.prodi', compact('data_prodi'));
     }
 

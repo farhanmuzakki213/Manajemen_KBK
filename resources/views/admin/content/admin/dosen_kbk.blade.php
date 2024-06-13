@@ -88,8 +88,8 @@
                                         @foreach ($data_dosen_kbk as $data)
                                             <tr class="table-Light">
                                                 <th>{{ $data->id_dosen_kbk }}</th>
-                                                <th>{{ $data->nama_dosen }}</th>
-                                                <th>{{ $data->jenis_kbk }}</th>
+                                                <th>{{ $data->r_dosen->nama_dosen }}</th>
+                                                <th>{{ $data->r_jenis_kbk->jenis_kbk }}</th>
                                                 <th>
                                                     <a href="{{ route('dosen_kbk.edit', ['id' => $data->id_dosen_kbk]) }}"
                                                         class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
@@ -115,7 +115,7 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <p>Apakah kamu yakin ingin menghapus data user
-                                                                <b>{{ $data->nama_dosen }}</b>
+                                                                <b>{{ $data->r_dosen->nama_dosen }}</b>
                                                             </p>
                                                         </div>
                                                         <div class="modal-footer justify-content-between">

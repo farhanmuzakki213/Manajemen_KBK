@@ -72,8 +72,8 @@
                                             <th>{{$data->nidn}}</th>
                                             <th>{{$data->nip}}</th>
                                             <th>{{$data->gender}}</th>
-                                            <th>{{$data->jurusan}}</th>
-                                            <th>{{$data->prodi}}</th>
+                                            <th>{{$data->r_jurusan->jurusan}}</th>
+                                            <th>{{$data->r_prodi->prodi}}</th>
                                             {{-- <th>{{$data->email}}</th>
                                             <th>{{$data->password}}</th>
                                             <th>{{$data->image}}</th>
@@ -126,12 +126,12 @@
                                                             <div class="mb-3">
                                                                 <label for="message-text"
                                                                     class="col-form-label">Jurusan</label>
-                                                                <input class="form-control" id="message-text" value="{{ $data->jurusan }}" readonly></input>
+                                                                <input class="form-control" id="message-text" value="{{ $data->r_jurusan->jurusan }}" readonly></input>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="message-text"
                                                                     class="col-form-label">Prodi</label>
-                                                                <input class="form-control" id="message-text" value="{{ $data->prodi }}" readonly></input>
+                                                                <input class="form-control" id="message-text" value="{{ $data->r_prodi->prodi }}" readonly></input>
                                                             </div>
                                                         </form>
                                                         <div class="mb-3">

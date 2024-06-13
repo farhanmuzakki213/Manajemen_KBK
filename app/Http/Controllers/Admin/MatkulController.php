@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Exports\ExportMatkul;
 use App\Http\Controllers\Controller;
 use App\Imports\ImportMatkul;
+use App\Models\Kurikulum;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
@@ -19,10 +20,7 @@ class MatkulController extends Controller
      */
     public function index()
     {
-        $data_matkul = DB::table('matkul')
-            ->join('kurikulum', 'matkul.kurikulum_id', '=', 'kurikulum.id_kurikulum')
-            // ->join('smt_thnakd', 'matkul.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
-            ->select('matkul.*', 'kurikulum.nama_kurikulum')
+        $data_matkul = Matkul::with('r_kurikulum')
             ->orderByDesc('id_matkul')
             ->get();
         return view('admin.content.admin.Matkul', compact('data_matkul'));
@@ -43,7 +41,7 @@ class MatkulController extends Controller
      */
     public function create()
     {
-        $data_kurikulum = DB::table('kurikulum')->get();
+        $data_kurikulum = Kurikulum::all();
         // $data_smt_thnakd = DB::table('smt_thnakd')->get();
         //dd('$data_kurikulum');
         return view('admin.content.admin.form.matkul_form', compact('data_kurikulum'));
@@ -99,7 +97,7 @@ class MatkulController extends Controller
     public function show(string $id)
 {
     $data_matkul = Matkul::findOrFail($id);
-    $data_kurikulum = DB::table('kurikulum')->get();
+    $data_kurikulum = Kurikulum::all();
     // $data_smt_thnakd = DB::table('smt_thnakd')->get();
     //dd($data_smt_thnakd);
     return view('admin.content.admin.Matkul', compact('data_matkul', 'data_kurikulum'));
@@ -111,7 +109,7 @@ class MatkulController extends Controller
      */
     public function edit(string $id)
     {
-        $data_kurikulum = DB::table('kurikulum')->get();
+        $data_kurikulum = Kurikulum::all();
         // $data_smt_thnakd = DB::table('smt_thnakd')->get();
         //dd('$data_kurikulum');
         //dd($data_smt_thnakd);

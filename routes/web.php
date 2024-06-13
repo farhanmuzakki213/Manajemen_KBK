@@ -7,15 +7,15 @@ use App\Http\Controllers\Admin\JurusanController;
 use App\Http\Controllers\Admin\ProdiController;
 use App\Http\Controllers\Admin\ThnAkademikController;
 use App\Http\Controllers\Admin\DosenController;
-use App\Http\Controllers\Admin\Kurikulum;
-use App\Http\Controllers\Admin\DosenPengampuMatkul;
-use App\Http\Controllers\Admin\PimpinanProdi;
-use App\Http\Controllers\Admin\PimpinanJurusan;
+use App\Http\Controllers\Admin\KurikulumController;
+use App\Http\Controllers\Admin\PimpinanJurusanController;
 use App\Http\Controllers\Admin\MatkulController;
 use App\Http\Controllers\Admin\Pengurus_kbkController;
 use App\Http\Controllers\Admin\DosenKBKController;
+use App\Http\Controllers\Admin\DosenPengampuMatkulController;
 use App\Http\Controllers\Admin\JenisKbkController;
 use App\Http\Controllers\Admin\MatkulKBKController;
+use App\Http\Controllers\Admin\PimpinanProdiController;
 /* Dosen Pengampu */
 use App\Http\Controllers\DosenPengampu\DosenMatkulController;
 /* Pimpinan Jurusan */
@@ -117,23 +117,23 @@ Route::group(['middleware' => ['role:admin']], function () {
 
     // Kurikulum
     Route::middleware(['auth', 'verified'])->group(function () {
-        Route::get('/kurikulum', [Kurikulum::class, 'index'])->middleware(['auth', 'verified'])->name('kurikulum');
+        Route::get('/kurikulum', [KurikulumController::class, 'index'])->middleware(['auth', 'verified'])->name('kurikulum');
     });
 
     // Dosen Pengampu Matkul
     Route::middleware(['auth', 'verified'])->group(function () {
-        Route::get('/DosenPengampuMatkul', [DosenPengampuMatkul::class, 'index'])->middleware(['auth', 'verified'])->name('DosenPengampuMatkul');
-        Route::get('/DosenPengampuMatkul/export/excel', [DosenPengampuMatkul::class, 'export_excel'])->name('DosenPengampuMatkul.export');
+        Route::get('/DosenPengampuMatkul', [DosenPengampuMatkulController::class, 'index'])->middleware(['auth', 'verified'])->name('DosenPengampuMatkul');
+        Route::get('/DosenPengampuMatkul/export/excel', [DosenPengampuMatkulController::class, 'export_excel'])->name('DosenPengampuMatkul.export');
     });
 
     // Pimpinan Jurusan
     Route::middleware(['auth', 'verified'])->group(function () {
-        Route::get('/pimpinamjurusan', [PimpinanJurusan::class, 'index'])->middleware(['auth', 'verified'])->name('pimpinanjurusan');
+        Route::get('/pimpinamjurusan', [PimpinanJurusanController::class, 'index'])->middleware(['auth', 'verified'])->name('pimpinanjurusan');
     });
 
     // Pimpinan Prodi
     Route::middleware(['auth', 'verified'])->group(function () {
-        Route::get('/pimpinamprodi', [PimpinanProdi::class, 'index'])->middleware(['auth', 'verified'])->name('pimpinanprodi');
+        Route::get('/pimpinamprodi', [PimpinanProdiController::class, 'index'])->middleware(['auth', 'verified'])->name('pimpinanprodi');
     });
 
     // Pengurus_KBK

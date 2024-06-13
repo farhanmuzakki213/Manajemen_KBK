@@ -45,21 +45,21 @@
                                         </tr>
                                     </tfoot>
                                     <tbody>                                        
-                                        @foreach ($data_ver_rps as $data)
+                                        @foreach ($data_ver_rps as $data_ver)
                                         <tr class="table-Light">
                                             <th>{{ $loop->iteration }}</th>
-                                            <th>{{$data->nama_matkul}}</th>
-                                            <th>{{$data->nama_dosen}}</th>
-                                            <th>{{$data->smt_thnakd}}</th>
-                                            <th>{{ \Carbon\Carbon::parse($data->created_at)->format('d-m-Y') }}</th>
+                                            <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->nama_matkul }}</th>
+                                            <th>{{ optional($data_ver->r_rep_rps_uas)->r_dosen->nama_dosen }}</th>
+                                            <th>{{ optional($data_ver->r_rep_rps_uas)->r_smt_thnakd->smt_thnakd }}</th>
+                                            <th>{{ \Carbon\Carbon::parse($data_ver->created_at)->format('d-m-Y') }}</th>
                                             <th>
-                                                @if ($data->status_ver_rps == 0)
+                                                @if ($data_ver->status_ver_rps == 0)
                                                     Tidak Diverifikasi
                                                 @else
                                                     Diverifikasi
                                                 @endif
                                             </th>
-                                            <th>{{$data->tanggal_diverifikasi}}</th>
+                                            <th>{{$data_ver->tanggal_diverifikasi}}</th>
                                         </tr>
                                         @endforeach
                                     </tbody>

@@ -36,25 +36,19 @@ class DosenMatkulController extends Controller
         $data_matkul = $dosen_pengampu ? $dosen_pengampu->p_matkulKbk->unique('id_matkul_kbk')->pluck('r_matkul.nama_matkul', 'id_matkul_kbk') : collect();
 
 
-        $data_uas = DB::table('rep_rps_uas')
-            ->join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
-            ->join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
-            ->join('matkul', 'matkul_kbk.matkul_id', '=', 'matkul.id_matkul')
-            ->join('dosen', 'rep_rps_uas.dosen_id', '=', 'dosen.id_dosen')
-            ->select('rep_rps_uas.id_rep_rps_uas', 'rep_rps_uas.file', 'dosen.nama_dosen', 'matkul.nama_matkul', 'matkul.semester', 'smt_thnakd.smt_thnakd')
-            ->where('smt_thnakd.status_smt_thnakd', '=', '1')
-            ->where('rep_rps_uas.type', '=', '1')
+        $data_uas = RepRpsUas::with('r_dosen', 'r_matkulKbk', 'r_smt_thnakd')
+            ->whereHas('r_smt_thnakd', function ($query) {
+                $query->where('status_smt_thnakd', '=', '1'); 
+            })
+            ->where('type', '=', '1')
             ->orderByDesc('id_rep_rps_uas')
             ->get();
 
-        $data_rps = DB::table('rep_rps_uas')
-            ->join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
-            ->join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
-            ->join('matkul', 'matkul_kbk.matkul_id', '=', 'matkul.id_matkul')
-            ->join('dosen', 'rep_rps_uas.dosen_id', '=', 'dosen.id_dosen')
-            ->select('rep_rps_uas.id_rep_rps_uas', 'rep_rps_uas.file', 'dosen.nama_dosen', 'matkul.nama_matkul', 'matkul.semester', 'smt_thnakd.smt_thnakd')
-            ->where('smt_thnakd.status_smt_thnakd', '=', '1')
-            ->where('rep_rps_uas.type', '=', '0')
+        $data_rps = RepRpsUas::with('r_dosen', 'r_matkulKbk', 'r_smt_thnakd')
+            ->whereHas('r_smt_thnakd', function ($query) {
+                $query->where('status_smt_thnakd', '=', '1'); 
+            })
+            ->where('type', '=', '0')
             ->where('dosen_id', $dosen_pengampu->dosen_id)
             ->orderByDesc('id_rep_rps_uas')
             ->get();
