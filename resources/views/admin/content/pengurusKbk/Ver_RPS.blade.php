@@ -69,35 +69,42 @@
                                         @php
                                             $no = 1;
                                         @endphp
-                                        @foreach ($data_rep_rps as $data_rep)
+                                        @foreach ($data_matkul_kbk as $data_rep)
                                             @php
                                                 $cek_data_rep = App\Models\VerRpsUas::where(
                                                     'rep_rps_uas_id',
                                                     $data_rep->id_rep_rps_uas,
                                                 )->exists();
                                             @endphp
-                                            @if (!$cek_data_rep)
-                                                <tr class="table-Light">
-                                                    <th>{{ $no++ }}</th>
-                                                    {{-- <th>{{ $data_rep->id_rep_rps }}</th> --}}
-                                                    <th>{{ optional($data_rep->r_matkulKbk)->r_matkul->kode_matkul }}</th>
-                                                    <th>{{ optional($data_rep->r_dosen_matkul)->r_dosen->nama_dosen }}</th>
-                                                    <th>{{ optional($data_rep->r_matkulKbk)->r_matkul->semester }}</th>
-                                                    <th>{{ optional($data_rep->r_smt_thnakd)->smt_thnakd }}</th>
-                                                    <th style="width: 10%;">
+                                            <tr class="table-Light">
+                                                <th>{{ $no++ }}</th>
+                                                {{-- <th>{{ $data_rep->id_rep_rps }}</th> --}}
+                                                @if (!$cek_data_rep)
+                                                    {{ optional($data_rep->r_RepRpsUas)->r_matkulKbk->r_matkul->kode_matkul  }}
+                                                @else
+                                                    {{ $data_rep->p_matkulKbk->r_matkul->kode_matkul }}
+                                                @endif
+                                                {{-- <th>{{ optional($data_rep->r_dosen)->nama_dosen }}</th>
+                                                <th>{{ optional($data_rep->r_RepRpsUas)->r_matkulKbk->r_matkul->semester }}
+                                                </th>
+                                                <th>{{ optional($data_rep->r_smt_thnakd)->smt_thnakd }}</th>
+                                                <th style="width: 10%;">
+                                                    @if (!$cek_data_rep)
                                                         <div class="row">
-                                                            <a href="{{ route('ver_rps.create', ['id' => $data_rep->id_rep_rps_uas]) }}"
+                                                            <a href="{{ route('ver_rps.create', ['id' => $data_rep->r_RepRpsUas->id_rep_rps_uas]) }}"
                                                                 class="btn btn-primary mb-2 d-flex align-items-center"><i
-                                                                    class="bi bi-pencil-square"></i> Ambil</a>
+                                                                    class="bi bi-pencil-square"></i> Review</a>
                                                             <a href="{{ asset('storage/uploads/rps/repositori_files/' . $data_rep->file) }}"
                                                                 class="btn btn-primary mb-2 d-flex align-items-center"
                                                                 target="_blank"><i
                                                                     class="bi bi-file-earmark-arrow-down"></i>
                                                                 FileRPS</a>
                                                         </div>
-                                                    </th>
-                                                </tr>
-                                            @endif
+                                                    @else
+                                                        <p>Sudah diverifikasi</p>
+                                                    @endif
+                                                </th> --}}
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -124,8 +131,8 @@
                                         <th>Semester</th>
                                         <th>Tahun Akademik</th>
                                         <th>Dosen Verifikasi</th>
-                                        <th>File Verifikasi</th>
-                                        <th>Status Verifikasi</th>
+                                        <th>Rekomendasi</th>
+                                        <th>Saran</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -138,8 +145,8 @@
                                         <th>Semester</th>
                                         <th>Tahun Akademik</th>
                                         <th>Dosen Verifikasi</th>
-                                        <th>File Verifikasi</th>
-                                        <th>Status Verifikasi</th>
+                                        <th>Rekomendasi</th>
+                                        <th>Saran</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </tfoot>
@@ -151,34 +158,31 @@
                                         <tr class="table-Light">
                                             <th>{{ $no++ }}</th>
                                             {{-- <th>{{ $data_rep->id_rep_rps }}</th> --}}
-                                            <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->kode_matkul }}</th>
-                                            <th>{{ optional($data_ver->r_rep_rps_uas)->r_dosen_matkul->r_dosen->nama_dosen }}</th>
-                                            <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->semester }}</th>
+                                            <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->kode_matkul }}
+                                            </th>
+                                            <th>{{ optional($data_ver->r_rep_rps_uas)->r_dosen_matkul->r_dosen->nama_dosen }}
+                                            </th>
+                                            <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->semester }}
+                                            </th>
                                             <th>{{ optional($data_ver->r_rep_rps_uas)->r_smt_thnakd->smt_thnakd }}</th>
                                             <th>{{ optional($data_ver->r_pengurus)->r_dosen->nama_dosen }}</th>
-
                                             <th>
-                                                @if ($data_ver->file_verifikasi)
-                                                    <a href="{{ asset('storage/uploads/rps/ver_files/' . $data_ver->file_verifikasi) }}"
-                                                        class="btn btn-primary mb-2 d-flex align-items-center"
-                                                        target="_blank"><i class="bi bi-file-earmark-arrow-down"></i>
-                                                        Unduh</a>
+                                                @if ($data_ver->rekomendasi == 0)
+                                                    Belum diverifikasi
+                                                @elseif ($data_ver->rekomendasi == 1)
+                                                    Tidak Layak Pakai
+                                                @elseif ($data_ver->rekomendasi == 2)
+                                                    Butuh Revisi
                                                 @else
-                                                    File Tidak Ada
+                                                    Layak Pakai
                                                 @endif
                                             </th>
-                                            <th>
-                                                @if ($data_ver->status_ver_rps == 0)
-                                                    Tidak Diverifikasi
-                                                @else
-                                                    Diverifikasi
-                                                @endif
-                                            </th>
+                                            <th>{{ $data_ver->saran }}</th>
                                             <th style="width: 10%;">
                                                 <div class="row">
                                                     <a href="{{ route('ver_rps.edit', ['id' => $data_ver->id_ver_rps_uas]) }}"
                                                         class="btn btn-primary mb-2 d-flex align-items-center"><i
-                                                            class="bi bi-pencil-square"></i>Review</a>
+                                                            class="bi bi-pencil-square"></i>Revisi</a>
                                                     <a href="{{ asset('storage/uploads/rps/repositori_files/' . $data_ver->file) }}"
                                                         class="btn btn-primary mb-2 d-flex align-items-center"
                                                         target="_blank"><i
@@ -209,7 +213,8 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <p>Apakah kamu yakin ingin menghapus data Ini
-                                                            <b>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->kode_matkul }} |
+                                                            <b>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->kode_matkul }}
+                                                                |
                                                                 {{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->nama_matkul }}</b>
                                                         </p>
                                                     </div>
@@ -257,12 +262,14 @@
                                                                         <label class="form-label">Tahun
                                                                             Akademik</label>
                                                                         <input type="text" class="form-control"
-                                                                            value="{{ optional($data_ver->r_rep_rps_uas)->r_smt_thnakd->smt_thnakd }}" readonly>
+                                                                            value="{{ optional($data_ver->r_rep_rps_uas)->r_smt_thnakd->smt_thnakd }}"
+                                                                            readonly>
                                                                     </div>
                                                                     <div class="col">
                                                                         <label class="form-label">Semester</label>
                                                                         <input type="text" class="form-control"
-                                                                            value="{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->semester }}" readonly>
+                                                                            value="{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->semester }}"
+                                                                            readonly>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -272,13 +279,14 @@
                                                                         <label class="form-label">Dosen
                                                                             Upload</label>
                                                                         <input type="text" class="form-control"
-                                                                            value="{{ optional($data_ver->r_rep_rps_uas)->r_dosen_matkul->r_dosen->nama_dosen }}" readonly>
+                                                                            value="{{ optional($data_ver->r_rep_rps_uas)->r_dosen_matkul->r_dosen->nama_dosen }}"
+                                                                            readonly>
                                                                     </div>
                                                                     <div class="col">
                                                                         <label class="form-label">Dosen
                                                                             Verifikasi</label>
                                                                         <input type="text" class="form-control"
-                                                                            value="{{ optional($data_ver->r_pengurus)->r_dosen->nama_dosen}}"
+                                                                            value="{{ optional($data_ver->r_pengurus)->r_dosen->nama_dosen }}"
                                                                             readonly>
                                                                     </div>
                                                                 </div>
@@ -289,7 +297,8 @@
                                                                         <label class="form-label">Tanggal
                                                                             Upload</label>
                                                                         <input type="text" class="form-control"
-                                                                            value="{{ optional($data_ver->r_rep_rps_uas)->updated_at }}" readonly>
+                                                                            value="{{ optional($data_ver->r_rep_rps_uas)->updated_at }}"
+                                                                            readonly>
                                                                     </div>
                                                                     <div class="col">
                                                                         <label class="form-label">Tanggal
@@ -303,16 +312,17 @@
                                                             <div class="mb-3">
                                                                 <div class="row">
                                                                     <div class="col">
-                                                                        <label for="status" class="form-label">Status
-                                                                            Verifikasi</label>
+                                                                        <label for="status"
+                                                                            class="form-label">Rekomendasi</label>
                                                                         <input type="text" class="form-control"
-                                                                            id="status"value="@if ($data_ver->status_verifikasi == 0) Tidak Diverifikasi @else Diverifikasi @endif"
+                                                                            id="status"value="@if ($data_ver->rekomendasi == 0) Belum diverifikasi @elseif ($data_ver->rekomendasi == 1) Tidak Layak Pakai @elseif ($data_ver->rekomendasi == 2) Butuh Revisi @else Layak Pakai @endif"
                                                                             readonly>
                                                                     </div>
                                                                     <div class="col">
-                                                                        <label for="catatan" class="form-label">Catatan</label>
+                                                                        <label for="saran"
+                                                                            class="form-label">Saran</label>
                                                                         <input type="text" class="form-control"
-                                                                            id="catatan"value="{{$data_ver->saran}}"
+                                                                            id="saran"value="{{ $data_ver->saran }}"
                                                                             readonly>
                                                                     </div>
                                                                 </div>

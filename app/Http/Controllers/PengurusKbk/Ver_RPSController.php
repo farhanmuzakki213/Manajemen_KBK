@@ -3,15 +3,12 @@
 namespace App\Http\Controllers\PengurusKbk;
 
 use App\Http\Controllers\Controller;
-use App\Models\Dosen;
+use App\Models\DosenPengampuMatkul;
 use App\Models\Pengurus_kbk;
 use App\Models\RepRpsUas;
-use App\Models\Ver_RPS;
 use App\Models\VerRpsUas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -35,27 +32,45 @@ class Ver_RPSController extends Controller
     {
         $pengurus_kbk = $this->getDosen();
         debug($pengurus_kbk);
-        $data_ver_rps = VerRpsUas::with('r_pengurus', 'r_pengurus.r_dosen','r_rep_rps_uas.r_smt_thnakd')
+        $data_ver_rps = VerRpsUas::with('r_pengurus', 'r_pengurus.r_dosen', 'r_rep_rps_uas', 'r_rep_rps_uas.r_smt_thnakd')
+            ->whereHas('r_rep_rps_uas', function ($query) {
+                $query->where('type', '=', '0');
+            })
             ->whereHas('r_rep_rps_uas.r_smt_thnakd', function ($query) {
                 $query->where('status_smt_thnakd', '=', '1');
-            })->whereHas('r_pengurus', function ($query) use ($pengurus_kbk) {
+            })
+            ->whereHas('r_pengurus', function ($query) use ($pengurus_kbk) {
                 $query
                     ->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id);
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
         debug($data_ver_rps);
-        $data_rep_rps = RepRpsUas::with('r_dosen_matkul','r_dosen_matkul.r_dosen', 'r_matkulKbk', 'r_smt_thnakd')
-            ->whereHas('r_smt_thnakd', function ($query) {
-                $query->where('status_smt_thnakd', '=', '1');
-            })
-            ->whereHas('r_matkulKbk', function ($query) use ($pengurus_kbk) {
-                $query->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id);
-            })
-            ->orderByDesc('id_rep_rps_uas')
-            ->get();
-        debug($data_rep_rps);
-        return view('admin.content.pengurusKbk.Ver_RPS', compact('data_rep_rps', 'data_ver_rps'));
+        $data_matkul_kbk = DosenPengampuMatkul::with([
+            'r_RepRpsUas', 
+            'r_RepRpsUas.r_dosen_matkul.r_dosen', 
+            'r_RepRpsUas.r_matkulKbk', 
+            'r_RepRpsUas.r_smt_thnakd', 
+            'p_matkulKbk.r_matkul', 
+            'p_kelas.r_smt_thnakd', 
+            'r_dosen', 
+            'r_smt_thnakd'
+        ])
+        ->where(function ($query) use ($pengurus_kbk) {
+            $query->whereHas('r_RepRpsUas', function ($subQuery) use ($pengurus_kbk) {
+                $subQuery->whereHas('r_matkulKbk', function ($nestedQuery) use ($pengurus_kbk) {
+                    $nestedQuery->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id);
+                })->whereHas('r_smt_thnakd', function ($nestedQuery) {
+                    $nestedQuery->where('status_smt_thnakd', '=', '1');
+                })->where('type', '=', '1');
+            })->orWhereHas('p_kelas.r_smt_thnakd', function ($subQuery) {
+                $subQuery->where('status_smt_thnakd', '=', '1');
+            });
+        })
+        ->orderByDesc('id_dosen_matkul')
+        ->get();
+        debug($data_matkul_kbk);
+        return view('admin.content.pengurusKbk.Ver_RPS', compact('data_matkul_kbk', 'data_ver_rps'));
     }
 
     /**
@@ -70,14 +85,17 @@ class Ver_RPSController extends Controller
             // Jika sudah ada, kembalikan ke halaman verifikasi_rps dengan pesan error
             return redirect()->route('ver_rps')->with('error', 'Data sudah diambil.');
         }
-
+        $pengurus_kbk = $this->getDosen();
+        debug($pengurus_kbk);
         $nextNumber = $this->getCariNomor();
-        $data_dosen = Dosen::all();
+        $data_dosen = $pengurus_kbk->id_pengurus;
+        $rep_id = $id;
         $data_rep_rps = RepRpsUas::where('type', '=', '0')
+            ->where('id_rep_rps_uas', $rep_id)
             ->orderByDesc('id_rep_rps_uas')
             ->get();
-        debug(compact('data_dosen', 'data_rep_rps', 'nextNumber'));
-        return view('admin.content.pengurusKbk.form.ver_rps_form', compact('data_dosen', 'data_rep_rps', 'nextNumber'));
+        debug(compact('data_dosen', 'data_rep_rps', 'nextNumber', 'rep_id'));
+        return view('admin.content.pengurusKbk.form.ver_rps_form', compact('data_dosen', 'data_rep_rps', 'nextNumber', 'rep_id'));
     }
 
     function getCariNomor()
@@ -105,60 +123,26 @@ class Ver_RPSController extends Controller
         $validator = Validator::make($request->all(), [
             'id_ver_rps' => 'required',
             'id_rep_rps' => 'required',
-            'nama_dosen' => 'required',
-            'upload_file' => 'nullable|mimes:pdf', // File tidak wajib diunggah
-            'status' => 'nullable',
-            'catatan' => 'nullable',
+            'id_pengurus_kbk' => 'required',
+            'rekomendasi' => 'required',
+            'saran' => 'nullable',
             'date' => 'required|date',
         ]);
-
-        // Aturan validasi untuk catatan menjadi opsional
-        $validator->sometimes('catatan', 'nullable', function ($input) {
-            return !$input->hasFile('upload_file'); // Catatan hanya opsional jika file tidak diunggah
-        });
 
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
         }
 
-        // Memastikan file telah diunggah sebelum menyimpannya
-        $filename = '';
-        if ($request->hasFile('upload_file')) {
-            $file = $request->file('upload_file');
-            $filename = $file->getClientOriginalName(); // Mendapatkan nama asli file
-
-            $path = 'public/uploads/rps/ver_files/';
-            $file->storeAs($path, $filename); // Simpan file dengan nama aslinya
-        }
-
-        // Menyimpan catatan hanya jika diisi
-        $catatan = $request->filled('catatan') ? $request->catatan : null;
-        $status = $request->filled('status') ? $request->status : null;
-
         $data = [
             'id_ver_rps_uas' => $request->id_ver_rps,
             'rep_rps_uas_id' => $request->id_rep_rps,
-            'dosen_id' => $request->nama_dosen,
+            'pengurus_id' => $request->id_pengurus_kbk,
+            'rekomendasi' => $request->rekomendasi,
+            'saran' => $request->filled('saran') ? $request->saran : 'Tidak ada',
             'tanggal_diverifikasi' => $request->date,
         ];
-
-        // Hanya menambahkan field 'file' jika file diunggah
-        if ($filename !== '') {
-            $data['file_verifikasi'] = $filename;
-        }
-        if ($status !== null) {
-            $data['status_ver_rps'] = $status;
-        }
-
-        // Hanya menambahkan field 'catatan' jika diisi
-        if ($catatan !== null) {
-            $data['catatan'] = $catatan;
-        }
-
         VerRpsUas::create($data);
         return redirect()->route('ver_rps')->with('success', 'Data berhasil disimpan.');
-
-
         //dd($request->all());
     }
 
@@ -175,73 +159,32 @@ class Ver_RPSController extends Controller
      */
     public function edit(string $id)
     {
-        $data_dosen = Dosen::all();
-
         $data_ver_rps = VerRpsUas::where('id_ver_rps_uas', $id)->first();
-        $data_rep_rps = RepRpsUas::with('r_dosen', 'r_matkulKbk', 'r_smt_thnakd')
-            ->where('rep_rps_uas.id_rep_uas', $data_ver_rps->rep_rps_uas_id)  // Perbaiki query untuk mengambil data rep_rps yang sesuai
-            ->first();  // Karena ini seharusnya satu record
 
-        return view('admin.content.pengurusKbk.form.ver_rps_edit', compact('data_dosen', 'data_rep_rps', 'data_ver_rps'));
+        return view('admin.content.pengurusKbk.form.ver_rps_edit', compact('data_ver_rps'));
     }
 
     public function update(Request $request, string $id)
     {
         $validator = Validator::make($request->all(), [
             'id_ver_rps' => 'required',
-            'id_rep_rps' => 'required',
-            'nama_dosen' => 'required',
-            'upload_file' => 'nullable|mimes:pdf', // File tidak wajib diunggah
-            'status' => 'nullable',
-            'catatan' => 'nullable',
+            'rekomendasi' => 'required',
+            'saran' => 'nullable',
             'date' => 'required|date',
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
         }
-
-        // Mendapatkan data lama
-        $oldData = VerRpsUas::find($id);
-
-        // Memeriksa apakah ada file lama dan file baru diunggah
-        if ($oldData->file_verifikasi && $request->hasFile('upload_file')) {
-            // Hapus file lama dari storage
-            Storage::delete('public/uploads/rps/ver_files/' . $oldData->file_verifikasi);
-        }
-
-        // Menyimpan file baru jika diunggah
-        $filename = null;
-        if ($request->hasFile('upload_file')) {
-            $file = $request->file('upload_file');
-            $filename = time() . '_' . $file->getClientOriginalName(); // Menambahkan timestamp untuk menghindari duplikasi nama
-            $path = 'public/uploads/rps/ver_files/';
-            $file->storeAs($path, $filename);
-        }
-
-        // Menyiapkan data untuk diupdate
         $data = [
-            'rep_rps_id' => $request->id_rep_rps,
-            'dosen_id' => $request->nama_dosen,
+            'id_ver_rps_uas' => $request->id_ver_rps,
+            'rekomendasi' => $request->rekomendasi,
+            'saran' => $request->filled('saran') ? $request->saran : 'Tidak ada',
             'tanggal_diverifikasi' => $request->date,
         ];
 
-        // Hanya menambahkan field 'file_verifikasi' jika file baru diunggah
-        if ($filename !== null) {
-            $data['file_verifikasi'] = $filename;
-        }
-
-        // Menambahkan field 'status_ver_rps' dan 'catatan' jika diisi
-        if ($request->filled('status')) {
-            $data['status_ver_rps'] = $request->status;
-        }
-
-        if ($request->filled('catatan')) {
-            $data['catatan'] = $request->catatan;
-        }
-
         // Update data
-        VerRpsUas::where('id_ver_rps', $id)->update($data);
+        VerRpsUas::where('id_ver_rps_uas', $id)->update($data);
         return redirect()->route('ver_rps')->with('success', 'Data berhasil diperbarui.');
     }
 

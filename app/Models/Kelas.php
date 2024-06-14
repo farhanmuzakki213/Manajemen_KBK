@@ -19,4 +19,8 @@ class Kelas extends Model
     public function r_prodi(){
         return $this->belongsTo(Prodi::class, 'prodi_id','id_prodi');
     }
+
+    public function r_smt_thnakd(){
+        return $this->belongsTo(ThnAkademik::class, 'smt_thnakd_id','id_smt_thnakd');
+    }
 }

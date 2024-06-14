@@ -12,7 +12,6 @@ class VerRpsUas extends Model
         'id_ver_rps_uas',
         'rep_rps_uas_id',
         'pengurus_id',
-        'status_verifikasi',
         'rekomendasi',
         'saran',
         'tanggal_diverifikasi',

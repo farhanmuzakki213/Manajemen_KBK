@@ -16,85 +16,37 @@
                             </div>
                             <form method="post" action="{{ route('ver_rps.store') }}" enctype="multipart/form-data">
                                 @csrf
+                                <input type="hidden" class="form-control" id="id_ver_rps" name="id_ver_rps"
+                                    value="{{ $nextNumber }}"readonly>
+                                <input type="hidden" class="form-control" id="id_rep_rps" name="id_rep_rps"
+                                    value="{{ $rep_id }}"readonly>
+                                <input type="hidden" class="form-control" id="id_pengurus_kbk" name="id_pengurus_kbk"
+                                    value="{{ $data_dosen }}"readonly>
                                 <div class="mb-3">
-                                    {{-- <label for="id_ver_rps" class="form-label">ID Verifikasi RPS</label> --}}
-                                    <input type="hidden" class="form-control" id="id_ver_rps" name="id_ver_rps"
-                                        value="{{ $nextNumber }}" readonly>
-                                    @error('id_ver_rps')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </div>
-                                <div class="mb-3">
-                                    <label for="nama_dosen" class="form-label">Nama Dosen</label>
-                                    <select class="form-select" aria-label="Default select example" name="nama_dosen"
-                                        id="nama_dosen" required>
-                                        <option selected disabled>Pilih Nama Dosen</option>
-                                        @foreach ($data_dosen as $dosen)
-                                            <option value="{{ $dosen->id_dosen }}">{{ $dosen->nama_dosen }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('nama_dosen')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </div>
-                                <div class="mb-3">
-                                    <label for="nama_matkul" class="form-label">Nama Mata Kuliah</label>
-                                    @foreach ($data_rep_rps as $data)
-                                        <input type="hidden" class="form-control" id="id_rep_rps" name="id_rep_rps"
-                                            value="{{ $data->id_rep_rps }}" readonly>
-                                        <input type="text" class="form-control" id="nama_matkul" name="nama_matkul"
-                                            value="{{ $data->kode_matkul }} | {{ $data->nama_matkul }}" readonly>
-                                        {{-- <select class="form-select" aria-label="Default select example" name="smt_thnakd" id="smt_thnakd" required>
-                                        <option selected disabled>Pilih Semester Tahun Akademik</option>
-                                        
-                                            <option value="{{ $smt_thnakd->id_smt_thnakd }}">{{ $smt_thnakd->smt_thnakd }}</option>
-                                        </select> --}}
-                                    @endforeach
-                                    @error('nama_matkul')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </div>
-                                {{-- <div class="mb-3">
-                                    <label for="nama_matkul" class="form-label">Nama Mata Kuliah</label>
-                                    <select class="form-select" aria-label="Default select example" name="nama_matkul"
-                                        id="nama_matkul" required>
-                                        <option selected disabled>Pilih Nama Mata Kuliah</option>
-                                        @foreach ($data_rep_rps as $rep_rps)
-                                            <option value="{{ $rep_rps->id_matkul && $rep_rps->id_rep_rps }}">
-                                                {{ $rep_rps->kode_matkul }} | {{ $rep_rps->nama_matkul }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('nama_matkul')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </div> --}}
-                                <div class="mb-3">
-                                    <label for="upload_file" class="form-label">Upload File Verifikasi</label>
-                                    <input type="file" class="form-control" id="upload_file" name="upload_file">
-                                    @error('upload_file')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </div>
-                                <div class="mb-3">
-                                    <label for="status" class="form-label">Status</label><br>
+                                    <label for="rekomendasi" class="form-label">Rekomendasi</label><br>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status" id="aktif"
-                                            value="1">
-                                        <label class="form-check-label" for="aktif">Diverifikasi</label>
+                                        <input class="form-check-input" type="radio" name="rekomendasi"
+                                            id="belum_diverifikasi" value="2">
+                                        <label class="form-check-label" for="aktif">Butuh Revisi</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status" id="tidak_aktif"
-                                            value="0">
-                                        <label class="form-check-label" for="tidak_aktif">Tidak Diverifikasi</label>
+                                        <input class="form-check-input" type="radio" name="rekomendasi"
+                                            id="tidak_layak_pakai" value="1">
+                                        <label class="form-check-label" for="tidak_aktif">Tidak layak Pakai</label>
                                     </div>
-                                    @error('status')
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="rekomendasi" id="layak_pakai"
+                                            value="3">
+                                        <label class="form-check-label" for="tidak_aktif">layak Pakai</label>
+                                    </div>
+                                    @error('rekomendasi')
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="catatan" class="form-label">Catatan</label>
-                                    <textarea class="form-control" id="catatan" name="catatan" rows="3"></textarea>
-                                    @error('catatan')
+                                    <label for="saran" class="form-label">Saran (optional)</label>
+                                    <textarea class="form-control" id="saran" name="saran" rows="3"></textarea>
+                                    @error('saran')
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>

@@ -15,7 +15,6 @@ return new class extends Migration
             $table->bigInteger('id_ver_rps_uas')->primary();
             $table->bigInteger('rep_rps_uas_id');
             $table->bigInteger('pengurus_id');
-            $table->enum('status_verifikasi', ['0', '1'])->default('0')->comment('0: Tidak Diverifikasi, 1: Diverifikasi');
             $table->enum('rekomendasi', ['0', '1', '2', '3'])->default('0')->comment('0: Belum Diveriikasi, 1: Tidak Layak Pakai, 2: Revisi, 3: layak Dipakai');
             $table->text('saran')->nullable();
             $table->date('tanggal_diverifikasi');
