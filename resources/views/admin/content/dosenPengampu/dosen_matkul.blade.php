@@ -81,18 +81,22 @@
                                         @if ($data_matkul->isNotEmpty())
                                             @foreach ($data_matkul as $id_matkul_kbk => $nama_matkul)
                                                 @php
-                                                    $cek_data_rep_rps = App\Models\RepRpsUas::where(
-                                                        'matkul_kbk_id',
-                                                        $id_matkul_kbk,
-                                                    )
-                                                        ->where('dosen_id', $dosen_pengampu->dosen_id)
+                                                    $cek_data_rep_rps = App\Models\RepRpsUas::with('r_dosen_matkul')
+                                                        ->whereHas('r_dosen_matkul', function ($query) use (
+                                                            $dosen_pengampu,
+                                                        ) {
+                                                            $query->where('dosen_id', $dosen_pengampu->dosen_id);
+                                                        })
+                                                        ->where('matkul_kbk_id', $id_matkul_kbk)
                                                         ->where('type', '=', '0')
                                                         ->exists();
-                                                    $cek_data_rep_uas = App\Models\RepRpsUas::where(
-                                                        'matkul_kbk_id',
-                                                        $id_matkul_kbk,
-                                                    )
-                                                        ->where('dosen_id', $dosen_pengampu->dosen_id)
+                                                    $cek_data_rep_uas = App\Models\RepRpsUas::with('r_dosen_matkul')
+                                                        ->whereHas('r_dosen_matkul', function ($query) use (
+                                                            $dosen_pengampu,
+                                                        ) {
+                                                            $query->where('dosen_id', $dosen_pengampu->dosen_id);
+                                                        })
+                                                        ->where('matkul_kbk_id', $id_matkul_kbk)
                                                         ->where('type', '=', '1')
                                                         ->exists();
                                                 @endphp
@@ -261,7 +265,7 @@
                                     <tbody>
                                         @foreach ($data_uas as $data)
                                             <tr class="table-Light">
-                                                <th>{{ $data->id_rep_uas }}</th>
+                                                <th>{{ $data->id_rep_rps_uas }}</th>
                                                 <th>{{ optional($data->r_matkulKbk)->r_matkul->nama_matkul }}</th>
                                                 <th>{{ optional($data->r_matkulKbk)->r_matkul->semester }}</th>
                                                 <th>{{ optional($data->r_dosen)->nama_dosen }}</th>
@@ -270,17 +274,18 @@
                                                         target="_blank">{{ $data->file }}</a></th>
                                                 <th style="width: 10%;">
                                                     <div class="row">
-                                                    <a href="{{ route('upload_soal_uas.edit', ['id' => $data->id_rep_uas]) }}"
-                                                        class="btn btn-primary mb-2 d-flex align-items-center"><i
-                                                            class="bi bi-pencil-square"></i>Revisi</a>
-                                                    <a data-bs-toggle="modal"
-                                                        data-bs-target="#staticBackdrop{{ $data->id_rep_uas }}"
-                                                        class="btn btn-danger mb-2 d-flex align-items-center"><i class="bi bi-trash"></i>Hapus</a>
-                                                        </div>
+                                                        <a href="{{ route('upload_soal_uas.edit', ['id' => $data->id_rep_rps_uas]) }}"
+                                                            class="btn btn-primary mb-2 d-flex align-items-center"><i
+                                                                class="bi bi-pencil-square"></i>Revisi</a>
+                                                        <a data-bs-toggle="modal"
+                                                            data-bs-target="#staticBackdrop{{ $data->id_rep_rps_uas }}"
+                                                            class="btn btn-danger mb-2 d-flex align-items-center"><i
+                                                                class="bi bi-trash"></i>Hapus</a>
+                                                    </div>
                                                 </th>
                                             </tr>
                                             {{-- Modal Konfirmasi hapus data --}}
-                                            <div class="modal fade" id="staticBackdrop{{ $data->id_rep_uas }}"
+                                            <div class="modal fade" id="staticBackdrop{{ $data->id_rep_rps_uas }}"
                                                 data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                                                 aria-labelledby="staticBackdropLabel" aria-hidden="true">>
                                                 <div class="modal-dialog modal-dialog-centered">
@@ -294,13 +299,13 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <p>Apakah kamu yakin ingin menghapus data Ini
-                                                                <b>{{ $data->id_rep_uas }}</b>
+                                                                <b>{{ $data->id_rep_rps_uas }}</b>
                                                             </p>
                                                         </div>
                                                         <div class="modal-footer justify-content-between">
 
                                                             <form
-                                                                action="{{ route('upload_soal_uas.delete', ['id' => $data->id_rep_uas]) }}"
+                                                                action="{{ route('upload_soal_uas.delete', ['id' => $data->id_rep_rps_uas]) }}"
                                                                 method="POST">
                                                                 @csrf
                                                                 @method('DELETE')
@@ -318,9 +323,8 @@
                                 </table>
                             </div>
                         </div>
-                    </RpsUas
+                        </RpsUas </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-@endsection
+        @endsection

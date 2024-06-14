@@ -11,7 +11,7 @@ class VerRpsUas extends Model
     protected $fillable = [
         'id_ver_rps_uas',
         'rep_rps_uas_id',
-        'dosen_id',
+        'pengurus_id',
         'status_verifikasi',
         'rekomendasi',
         'saran',
@@ -24,8 +24,8 @@ class VerRpsUas extends Model
     protected $primaryKey = 'id_ver_rps_uas';
     public $incrementing = false;
 
-    public function r_dosen(){
-        return $this->belongsTo(Dosen::class, 'dosen_id','id_dosen');
+    public function r_pengurus(){
+        return $this->belongsTo(Pengurus_kbk::class, 'pengurus_id','id_pengurus');
     }
 
     public function r_rep_rps_uas(){

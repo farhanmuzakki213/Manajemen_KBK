@@ -34,25 +34,32 @@ class DosenMatkulController extends Controller
     {
         $dosen_pengampu = $this->getDosen();
         $data_matkul = $dosen_pengampu ? $dosen_pengampu->p_matkulKbk->unique('id_matkul_kbk')->pluck('r_matkul.nama_matkul', 'id_matkul_kbk') : collect();
-
-
-        $data_uas = RepRpsUas::with('r_dosen', 'r_matkulKbk', 'r_smt_thnakd')
+        debug($data_matkul);
+        //dd($data_matkul);
+        $data_uas = RepRpsUas::with('r_dosen_matkul', 'r_matkulKbk', 'r_smt_thnakd')
             ->whereHas('r_smt_thnakd', function ($query) {
-                $query->where('status_smt_thnakd', '=', '1'); 
+                $query->where('status_smt_thnakd', '=', '1');
+            })
+            ->whereHas('r_dosen_matkul', function ($query) use ($dosen_pengampu) {
+                $query->where('dosen_id', $dosen_pengampu->dosen_id);
             })
             ->where('type', '=', '1')
             ->orderByDesc('id_rep_rps_uas')
             ->get();
+        debug($data_uas);
 
-        $data_rps = RepRpsUas::with('r_dosen', 'r_matkulKbk', 'r_smt_thnakd')
+
+        $data_rps = RepRpsUas::with('r_dosen_matkul', 'r_matkulKbk', 'r_smt_thnakd')
             ->whereHas('r_smt_thnakd', function ($query) {
-                $query->where('status_smt_thnakd', '=', '1'); 
+                $query->where('status_smt_thnakd', '=', '1');
+            })
+            ->whereHas('r_dosen_matkul', function ($query) use ($dosen_pengampu) {
+                $query->where('dosen_id', $dosen_pengampu->dosen_id);
             })
             ->where('type', '=', '0')
-            ->where('dosen_id', $dosen_pengampu->dosen_id)
             ->orderByDesc('id_rep_rps_uas')
             ->get();
-        //dd($data_matkul, $dosen_pengampu);
+        debug($data_rps);
         return view('admin.content.dosenPengampu.dosen_matkul', compact('data_matkul', 'dosen_pengampu', 'data_uas', 'data_rps'));
     }
 
@@ -120,9 +127,9 @@ class DosenMatkulController extends Controller
         $data_matkul = MatkulKBK::findOrFail($id_matkul);
         $dosen_pengampu = $this->getDosen();
         $id_matkul_kbk = $data_matkul->id_matkul_kbk;
-        $id_dosen_matkul = $dosen_pengampu->dosen_id;
+        $id_dosen_matkul = $dosen_pengampu->id_dosen_matkul;
         /* debug(compact('data_thnakd', 'data_dosen', 'data_matkul', 'nextNumber')); */
-        //dd($id_matkul, $id_dosen_matkul, $id_smt_thnakd);
+        //dd($id_matkul, $dosen_pengampu, $id_smt_thnakd);
         return view('admin.content.dosenPengampu.form.upload_rps_form', compact('id_smt_thnakd', 'id_dosen_matkul', 'id_matkul_kbk', 'nextNumber'));
     }
 
@@ -135,7 +142,7 @@ class DosenMatkulController extends Controller
         $validator = Validator::make($request->all(), [
             'id_rep_rps' => 'required',
             'id_smt_thnakd' => 'required',
-            'id_dosen' => 'required',
+            'id_dosen_matkul' => 'required',
             'id_matkul' => 'required',
             'type' => 'required',
             'upload_file' => 'required|mimes:pdf',
@@ -154,7 +161,7 @@ class DosenMatkulController extends Controller
             $data = [
                 'id_rep_rps_uas' => $request->id_rep_rps,
                 'smt_thnakd_id' => $request->id_smt_thnakd,
-                'dosen_id' => $request->id_dosen,
+                'dosen_matkul_id' => $request->id_dosen_matkul,
                 'matkul_kbk_id' => $request->id_matkul,
                 'type' => $request->type,
                 'file' => $filename,
@@ -195,7 +202,7 @@ class DosenMatkulController extends Controller
         }
         $data = [
             'smt_thnakd_id' => $request->id_smt_thnakd,
-            'dosen_id' => $request->id_dosen,
+            'dosen_matkul_id' => $request->id_dosen,
             'matkul_kbk_id' => $request->id_matkul,
         ];
 
@@ -257,12 +264,11 @@ class DosenMatkulController extends Controller
             ->select('smt_thnakd.*')
             ->first();
         $id_smt_thnakd = $data_thnakd->id_smt_thnakd;
-        $data_matkul = Matkul::findOrFail($id_matkul);
+        $data_matkul = MatkulKBK::findOrFail($id_matkul);
         $dosen_pengampu = $this->getDosen();
-        $id_matkul = $data_matkul->id_matkul;
-        $id_dosen_matkul = $dosen_pengampu->dosen_id;
-
-        return view('admin.content.dosenPengampu.form.upload_uas_form', compact('id_smt_thnakd', 'id_dosen_matkul', 'id_matkul', 'nextNumber'));
+        $id_matkul_kbk = $data_matkul->id_matkul_kbk;
+        $id_dosen_matkul = $dosen_pengampu->id_dosen_matkul;
+        return view('admin.content.dosenPengampu.form.upload_uas_form', compact('id_smt_thnakd', 'id_dosen_matkul', 'id_matkul_kbk', 'nextNumber'));
     }
     /**
      * Store a newly created resource in storage.
@@ -274,9 +280,10 @@ class DosenMatkulController extends Controller
             'id_smt_thnakd' => 'required',
             'id_dosen' => 'required',
             'id_matkul' => 'required',
+            'type' => 'required',
             'upload_file' => 'required|mimes:pdf',
         ]);
-
+        //dd($request->all());
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
         }
@@ -288,10 +295,11 @@ class DosenMatkulController extends Controller
             $file->storeAs($path, $filename);
 
             $data = [
-                'id_rep_uas' => $request->id_rep_uas,
+                'id_rep_rps_uas' => $request->id_rep_uas,
                 'smt_thnakd_id' => $request->id_smt_thnakd,
-                'dosen_id' => $request->id_dosen,
-                'matkul_id' => $request->id_matkul,
+                'dosen_matkul_id' => $request->id_dosen,
+                'matkul_kbk_id' => $request->id_matkul,
+                'type' => $request->type,
                 'file' => $filename,
             ];
 
@@ -307,8 +315,8 @@ class DosenMatkulController extends Controller
      */
     public function edit_uas(string $id)
     {
-        $data_uas = RepRpsUas::where('id_rep_uas', $id)->first();
-        //dd(compact('data_dosen', 'data_matkul', 'data_ver_uas'));
+        $data_uas = RepRpsUas::where('id_rep_rps_uas', $id)->first();
+        //dd($data_uas);
         return view('admin.content.dosenPengampu.form.upload_uas_edit', compact('data_uas'));
     }
 
@@ -329,10 +337,9 @@ class DosenMatkulController extends Controller
         }
         $data = [
             'smt_thnakd_id' => $request->id_smt_thnakd,
-            'dosen_id' => $request->id_dosen,
-            'matkul_id' => $request->id_matkul,
+            'dosen_matkul_id' => $request->id_dosen,
+            'matkul_kbk_id' => $request->id_matkul,
         ];
-
 
         $oldData = RepRpsUas::where('id_rep_rps_uas', $id)->first();;
         //debug($oldData->file);
@@ -342,7 +349,6 @@ class DosenMatkulController extends Controller
             Storage::delete('public/uploads/uas/repositori_files/' . $oldData->file);
         }
         $filename = null;
-
         // Jika file baru diunggah, hapus file lama dan simpan file baru
         if ($request->hasFile('upload_file')) {
 
@@ -352,11 +358,10 @@ class DosenMatkulController extends Controller
             $path = 'public/uploads/uas/repositori_files/';
             $file->storeAs($path, $filename); // Simpan file dengan nama aslinya
 
-
             $data['file'] = $filename;
         }
 
-        /* dd($request->all()); */
+        //dd($request->all());
         RepRpsUas::where('id_rep_rps_uas', $id)->update($data);
         return redirect()->route('dosen_matkul')->with('success', 'Data berhasil diperbarui.');
     }

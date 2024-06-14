@@ -16,8 +16,8 @@ class VerRpsUasSeeder extends Seeder
     public function run(): void
     {
         $VerRPSData = [
-            [1, 40, '1', '3', 'tidak ada', '2024-01-23'],
-            [2, 40, '1', '3', 'tidak ada', '2024-01-23'],
+            [1, 9, '1', '3', 'tidak ada', '2024-01-23'],
+            [2, 9, '1', '3', 'tidak ada', '2024-01-23'],
         ];
 
         foreach ($VerRPSData as $data) {
@@ -26,7 +26,7 @@ class VerRpsUasSeeder extends Seeder
             DB::table('ver_rps_uas')->insert([
                 'id_ver_rps_uas' => $nextNumber,
                 'rep_rps_uas_id' => $data[0],
-                'dosen_id' => $data[1],
+                'pengurus_id' => $data[1],
                 'status_verifikasi' => $data[2],
                 'rekomendasi'=> $data[3],
                 'saran' => $data[4],

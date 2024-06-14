@@ -15,8 +15,8 @@ class RepRpsUasSeeder extends Seeder
     public function run(): void
     {
         $RepRPSData = [
-            [3, 14, 6, '0', '', '2024-05-23', '2024-06-01'],
-            [3, 14, 6, '1', '', '2024-05-23', '2024-06-01']
+            [3, 3, 6, '0', '', '2024-05-23', '2024-06-01'],
+            [3, 3, 6, '1', '', '2024-05-23', '2024-06-01']
         ];
 
         foreach ($RepRPSData as $data) {
@@ -24,7 +24,7 @@ class RepRpsUasSeeder extends Seeder
             DB::table('rep_rps_uas')->insert([
                 'id_rep_rps_uas' =>  $nextNumber ,
                 'smt_thnakd_id' => $data[0],
-                'dosen_id' => $data[1],
+                'dosen_matkul_id' => $data[1],
                 'matkul_kbk_id' => $data[2],
                 'type' => $data[3],
                 'file' => $data[4],

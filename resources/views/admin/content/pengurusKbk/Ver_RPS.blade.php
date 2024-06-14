@@ -81,7 +81,7 @@
                                                     <th>{{ $no++ }}</th>
                                                     {{-- <th>{{ $data_rep->id_rep_rps }}</th> --}}
                                                     <th>{{ optional($data_rep->r_matkulKbk)->r_matkul->kode_matkul }}</th>
-                                                    <th>{{ optional($data_rep->r_dosen)->nama_dosen }}</th>
+                                                    <th>{{ optional($data_rep->r_dosen_matkul)->r_dosen->nama_dosen }}</th>
                                                     <th>{{ optional($data_rep->r_matkulKbk)->r_matkul->semester }}</th>
                                                     <th>{{ optional($data_rep->r_smt_thnakd)->smt_thnakd }}</th>
                                                     <th style="width: 10%;">
@@ -152,10 +152,10 @@
                                             <th>{{ $no++ }}</th>
                                             {{-- <th>{{ $data_rep->id_rep_rps }}</th> --}}
                                             <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->kode_matkul }}</th>
-                                            <th>{{ optional($data_ver->r_rep_rps_uas)->r_dosen->nama_dosen }}</th>
+                                            <th>{{ optional($data_ver->r_rep_rps_uas)->r_dosen_matkul->r_dosen->nama_dosen }}</th>
                                             <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->semester }}</th>
                                             <th>{{ optional($data_ver->r_rep_rps_uas)->r_smt_thnakd->smt_thnakd }}</th>
-                                            <th>{{ optional($data_ver->r_dosen)->nama_dosen }}</th>
+                                            <th>{{ optional($data_ver->r_pengurus)->r_dosen->nama_dosen }}</th>
 
                                             <th>
                                                 @if ($data_ver->file_verifikasi)
@@ -167,23 +167,6 @@
                                                     File Tidak Ada
                                                 @endif
                                             </th>
-                                            {{-- <th>
-                                                @php
-                                                    $cek_data_file = App\Models\Ver_Rps::where(
-                                                        'rep_rps_id',
-                                                        $data_rep->id_rep_rps,
-                                                    )->value('file_verifikasi');
-                                                @endphp
-                                                @if ($cek_data_file)
-                                                    <a href="{{ asset('storage/uploads/rps/ver_files/' . $data_rep->file) }}"
-                                                        class="btn btn-primary mb-2 d-flex align-items-center"
-                                                        target="_blank"><i class="bi bi-file-earmark-arrow-down"></i>
-                                                        Unduh</a>
-                                                @else
-                                                    File Tidak Ada
-                                                @endif
-                                            </th> --}}
-
                                             <th>
                                                 @if ($data_ver->status_ver_rps == 0)
                                                     Tidak Diverifikasi
@@ -247,7 +230,7 @@
                                             </div>
                                         </div>
                                         {{-- Modal Detail Tabel Verifikasi --}}
-                                        <div class="modal fade" id="detail{{ $data_ver->id_ver_rps }}" tabindex="-1"
+                                        <div class="modal fade" id="detail{{ $data_ver->id_ver_rps_uas }}" tabindex="-1"
                                             aria-labelledby="detailLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
@@ -289,13 +272,13 @@
                                                                         <label class="form-label">Dosen
                                                                             Upload</label>
                                                                         <input type="text" class="form-control"
-                                                                            value="{{ optional($data_ver->r_rep_rps_uas)->r_dosen->nama_dosen }}" readonly>
+                                                                            value="{{ optional($data_ver->r_rep_rps_uas)->r_dosen_matkul->r_dosen->nama_dosen }}" readonly>
                                                                     </div>
                                                                     <div class="col">
                                                                         <label class="form-label">Dosen
                                                                             Verifikasi</label>
                                                                         <input type="text" class="form-control"
-                                                                            value="{{ optional($data_ver->r_dosen)->nama_dosen }}"
+                                                                            value="{{ optional($data_ver->r_pengurus)->r_dosen->nama_dosen}}"
                                                                             readonly>
                                                                     </div>
                                                                 </div>
