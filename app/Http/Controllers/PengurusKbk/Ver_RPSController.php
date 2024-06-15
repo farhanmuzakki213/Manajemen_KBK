@@ -6,9 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\DosenPengampuMatkul;
 use App\Models\Pengurus_kbk;
 use App\Models\RepRpsUas;
+use App\Models\User;
 use App\Models\VerRpsUas;
+use App\Notifications\VerifikasiRps;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification as FacadesNotification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -142,7 +146,12 @@ class Ver_RPSController extends Controller
             ->where('id_rep_rps_uas', $rep_id)
             ->orderByDesc('id_rep_rps_uas')
             ->get();
-        debug(compact('data_dosen', 'data_rep_rps', 'nextNumber', 'rep_id'));
+        /* $repRpsUas = RepRpsUas::where('id_rep_rps_uas', $rep_id)->first();
+        $dosenmatkul = $repRpsUas->dosen_matkul_id;
+
+        //$dosenmatkul->notify(new VerifikasiRps($repRpsUas, $pengurus_kbk)); */
+        //debug('dosenmatkul');
+        debug(compact('data_dosen', 'data_rep_rps', 'nextNumber', 'rep_id'/* , 'repRpsUas', 'pengurus_kbk', 'dosenmatkul' */));
         return view('admin.content.pengurusKbk.form.ver_rps_form', compact('data_dosen', 'data_rep_rps', 'nextNumber', 'rep_id'));
     }
 
@@ -189,8 +198,18 @@ class Ver_RPSController extends Controller
             'saran' => $request->filled('saran') ? $request->saran : 'Tidak ada',
             'tanggal_diverifikasi' => $request->date,
         ];
-        VerRpsUas::create($data);
-        return redirect()->route('ver_rps')->with('success', 'Data berhasil disimpan.');
+        //VerRpsUas::create($data);
+
+        $pengurus_kbk = $this->getDosen();
+        debug($pengurus_kbk);
+        $id_rep_rps_uas = $request->id_rep_rps;
+        $repRpsUas = RepRpsUas::where('id_rep_rps_uas', $id_rep_rps_uas)->first();
+        $dosenmatkul = User::where('name', $repRpsUas->r_dosen_matkul->r_dosen->nama_dosen);
+
+        //$dosenmatkul->notify(new VerifikasiRps($repRpsUas, $pengurus_kbk));
+        FacadesNotification::send($dosenmatkul,new VerifikasiRps());
+        debug(compact('dosenmatkul','pengurus_kbk','repRpsUas'));
+        //return redirect()->route('ver_rps')->with('success', 'Data berhasil disimpan.');
         //dd($request->all());
     }
 
