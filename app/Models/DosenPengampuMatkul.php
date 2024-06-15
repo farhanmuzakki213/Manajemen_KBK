@@ -29,8 +29,4 @@ class DosenPengampuMatkul extends Model
     public function r_smt_thnakd(){
         return $this->belongsTo(ThnAkademik::class, 'smt_thnakd_id','id_smt_thnakd');
     }
-
-    public function r_RepRpsUas(){
-        return $this->hasOne(RepRpsUas::class, 'dosen_matkul_id','id_dosen_matkul');
-    }
 }

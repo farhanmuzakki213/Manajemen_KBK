@@ -5,20 +5,34 @@ namespace App\Http\Controllers\PengurusKbk;
 use App\Http\Controllers\Controller;
 use App\Models\Mahasiswa;
 use App\Models\Dosen;
+use App\Models\DosenKBK;
+use App\Models\Pengurus_kbk;
 use App\Models\ReviewProposalTAModel;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
 class PenugasanReviewController extends Controller
 {
+
+    public function getDosen()
+    {
+        $user = Auth::user()->name;
+        $user_email = Auth::user()->email;
+        $pengurus_kbk = Pengurus_kbk::whereHas('r_dosen', function ($query) use ($user, $user_email) {
+            $query->where('nama_dosen', $user)
+                ->where('email', $user_email);
+        })->first();
+        return $pengurus_kbk;
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        $pengurus_kbk = $this->getDosen();
+        debug($pengurus_kbk);
         $data_review_proposal_ta = ReviewProposalTAModel:: with('proposal_ta', 'reviewer_satu_dosen', 'reviewer_dua_dosen', 'p_reviewDetail')
             ->orderByDesc('review_proposal_ta.id_penugasan')
             ->get();
@@ -31,12 +45,12 @@ class PenugasanReviewController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($id_proposal_ta)
     {
         $nextNumber = $this->getCariNomor();
-        $data_mahasiswa = Mahasiswa::all();
-        $data_dosen = Dosen::all();
-        $data_review_proposal_ta = ReviewProposalTAModel::all();
+        $pengurus_kbk = $this->getDosen();
+        debug($pengurus_kbk);
+        $data_dosen_kbk = DosenKBK::where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id)->get();
 
         debug(compact('data_mahasiswa', 'data_dosen', 'data_review_proposal_ta', 'nextNumber'));
         return view('admin.content.pengurusKbk.form.penugasan_review_form', compact('data_mahasiswa', 'data_dosen', 'data_review_proposal_ta', 'nextNumber'));
@@ -105,12 +119,15 @@ class PenugasanReviewController extends Controller
      */
     public function edit(string $id)
     {
-        $data_mahasiswa = Mahasiswa::all();
-        $data_dosen = Dosen::all();
-        $data_review_proposal_ta = ReviewProposalTAModel::all();
-
-        debug(compact('data_dosen', 'data_penugasan_review', 'data_mahasiswa'));
-        return view('admin.content.pengurusKbk.form.penugasan_review_edit', compact('data_dosen', 'data_penugasan_review', 'data_mahasiswa'));
+        $pengurus_kbk = $this->getDosen();
+        debug($pengurus_kbk);
+        $data_dosen_kbk = DosenKBK::where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id)->get();
+        $data_review_proposal_ta = ReviewProposalTAModel::with('reviewer_satu_dosen', 'reviewer_dua_dosen')
+        ->where('id_penugasan', $id)->first();
+        $mahasiswa = ReviewProposalTAModel::with('proposal_ta.r_mahasiswa')
+        ->where('id_penugasan', $id)->get();
+        debug(compact('data_dosen_kbk', 'data_review_proposal_ta', 'mahasiswa'));
+        return view('admin.content.pengurusKbk.form.penugasan_review_edit', compact('data_dosen_kbk', 'data_review_proposal_ta', 'mahasiswa'));
     }
 
     /**

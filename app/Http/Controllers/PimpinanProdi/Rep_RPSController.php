@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\PimpinanProdi;
 
-use App\Models\RepRpsUas;
 use App\Models\VerRpsUas;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class Rep_RPSController extends Controller

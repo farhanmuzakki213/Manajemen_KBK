@@ -32,45 +32,93 @@ class Ver_RPSController extends Controller
     {
         $pengurus_kbk = $this->getDosen();
         debug($pengurus_kbk);
-        $data_ver_rps = VerRpsUas::with('r_pengurus', 'r_pengurus.r_dosen', 'r_rep_rps_uas', 'r_rep_rps_uas.r_smt_thnakd')
-            ->whereHas('r_rep_rps_uas', function ($query) {
-                $query->where('type', '=', '0');
-            })
-            ->whereHas('r_rep_rps_uas.r_smt_thnakd', function ($query) {
-                $query->where('status_smt_thnakd', '=', '1');
-            })
-            ->whereHas('r_pengurus', function ($query) use ($pengurus_kbk) {
-                $query
-                    ->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id);
+        $data_ver_rps = VerRpsUas::with([
+            'r_pengurus',
+            'r_pengurus.r_dosen',
+            'r_rep_rps_uas',
+            'r_rep_rps_uas.r_smt_thnakd',
+            'r_rep_rps_uas.r_matkulKbk'
+        ])
+            ->where(function ($query) use ($pengurus_kbk) {
+                $query->whereHas('r_rep_rps_uas', function ($subQuery) use ($pengurus_kbk) {
+                    $subQuery->whereHas('r_matkulKbk', function ($nestedQuery) use ($pengurus_kbk) {
+                        $nestedQuery->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id);
+                    })
+                        ->whereHas('r_smt_thnakd', function ($nestedQuery) {
+                            $nestedQuery->where('status_smt_thnakd', '=', '1');
+                        })
+                        ->where('type', '=', '0');
+                });
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
         debug($data_ver_rps);
         $data_matkul_kbk = DosenPengampuMatkul::with([
-            'r_RepRpsUas', 
-            'r_RepRpsUas.r_dosen_matkul.r_dosen', 
-            'r_RepRpsUas.r_matkulKbk', 
-            'r_RepRpsUas.r_smt_thnakd', 
-            'p_matkulKbk.r_matkul', 
-            'p_kelas.r_smt_thnakd', 
-            'r_dosen', 
-            'r_smt_thnakd'
+            'p_matkulKbk.r_matkul', 'p_kelas', 'r_dosen', 'r_smt_thnakd', 'p_matkulKbk'
         ])
-        ->where(function ($query) use ($pengurus_kbk) {
-            $query->whereHas('r_RepRpsUas', function ($subQuery) use ($pengurus_kbk) {
-                $subQuery->whereHas('r_matkulKbk', function ($nestedQuery) use ($pengurus_kbk) {
-                    $nestedQuery->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id);
-                })->whereHas('r_smt_thnakd', function ($nestedQuery) {
-                    $nestedQuery->where('status_smt_thnakd', '=', '1');
-                })->where('type', '=', '1');
-            })->orWhereHas('p_kelas.r_smt_thnakd', function ($subQuery) {
-                $subQuery->where('status_smt_thnakd', '=', '1');
-            });
-        })
-        ->orderByDesc('id_dosen_matkul')
-        ->get();
+            ->whereHas('r_smt_thnakd', function ($query) {
+                $query->where('status_smt_thnakd', '=', '1');
+            })
+            ->whereHas('p_matkulKbk', function ($query) use ($pengurus_kbk) {
+                $query->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id);
+            })
+            ->orderByDesc('id_dosen_matkul')
+            ->get();
         debug($data_matkul_kbk);
-        return view('admin.content.pengurusKbk.Ver_RPS', compact('data_matkul_kbk', 'data_ver_rps'));
+        $data_array = $data_matkul_kbk->flatMap(function ($item) use ($pengurus_kbk) {
+            if ($item->p_matkulKbk->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id)->first()) {
+                return $item->p_matkulKbk->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id)->map(function ($matkulKbk) use ($item) {
+                    return [
+                        'nama_dosen' => $item->r_dosen->nama_dosen,
+                        'smt_thnakd' => $item->r_smt_thnakd->smt_thnakd,
+                        'kode_matkul' => optional($matkulKbk->r_matkul)->kode_matkul,
+                        'semester' => optional($matkulKbk->r_matkul)->semester,
+                    ];
+                });
+            } else {
+                return [];
+            }
+        })->toArray();
+
+        debug($data_array);
+        $data_rep_rps = RepRpsUas::with('r_dosen_matkul', 'r_dosen_matkul.r_dosen', 'r_matkulKbk', 'r_smt_thnakd')
+            ->whereHas('r_smt_thnakd', function ($query) {
+                $query->where('status_smt_thnakd', '=', '1');
+            })
+            ->whereHas('r_matkulKbk', function ($query) use ($pengurus_kbk) {
+                $query->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id);
+            })
+            ->where('type', '=', '0')
+            ->orderByDesc('id_rep_rps_uas')
+            ->get();
+        debug($data_rep_rps);
+        $data_array_formatted = collect($data_array)->map(function ($item) {
+            return [
+                'nama_dosen' => $item['nama_dosen'],
+                'smt_thnakd' => $item['smt_thnakd'],
+                'kode_matkul' => $item['kode_matkul'],
+                'semester' => $item['semester'],
+            ];
+        });
+        $data_array_gabungan = $data_array_formatted->map(function ($item) use ($data_rep_rps) {
+            $matched_data = $data_rep_rps->first(function ($data_rep_rps_item) use ($item) {
+                return $item['nama_dosen'] == optional($data_rep_rps_item->r_dosen_matkul)->r_dosen->nama_dosen
+                    && $item['smt_thnakd'] == optional($data_rep_rps_item->r_smt_thnakd)->smt_thnakd
+                    && $item['kode_matkul'] == optional(optional($data_rep_rps_item->r_matkulKbk)->r_matkul)->kode_matkul
+                    && $item['semester'] == optional(optional($data_rep_rps_item->r_matkulKbk)->r_matkul)->semester;
+            });
+            return [
+                'nama_dosen' => $item['nama_dosen'],
+                'kode_matkul' => $item['kode_matkul'],
+                'smt_thnakd' => $item['smt_thnakd'],
+                'semester' => $item['semester'],
+                'id_rep_rps_uas' => $matched_data ? $matched_data->id_rep_rps_uas : null,
+                'file' => $matched_data ? $matched_data->file : null,
+            ];
+        });
+        $result = $data_array_gabungan->toArray();
+        debug($result);
+        return view('admin.content.pengurusKbk.Ver_RPS', compact('data_ver_rps', 'result'));
     }
 
     /**

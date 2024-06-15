@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\PimpinanProdi;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\ReviewProposalTAModel;

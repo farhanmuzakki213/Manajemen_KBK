@@ -14,7 +14,7 @@
                                     <p><a href="{{ route('PenugasanReview') }}" class="btn btn-success"> Kembali</a></p>
                                 </div>
                             </div>
-                            <form method="post" action="{{ route('PenugasanReview.update', ['id' => $data_penugasan_review->id_penugasan]) }}" enctype="multipart/form-data">
+                            <form method="post" action="{{ route('PenugasanReview.update', ['id' => $data_review_proposal_ta->id_penugasan]) }}" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="mb-3">
@@ -24,15 +24,15 @@
                                         </div>
                                     @endif
                                 </div>
-                                <input type="hidden" class="form-control" id="id_penugasan" name="id_penugasan" value="{{ $data_penugasan_review->id_penugasan }}">
+                                <input type="hidden" class="form-control" id="id_penugasan" name="id_penugasan" value="{{ $data_review_proposal_ta->id_penugasan }}">
                                 <div class="mb-3">
                                     <label for="nama_mahasiswa" class="form-label">Nama Mahasiswa</label>
                                     <select class="form-select" aria-label="Default select example" name="nama_mahasiswa" id="nama_mahasiswa" disabled>
                                         <option selected disabled>Pilih NIM | Nama Mahasiswa</option>
-                                        @foreach ($data_mahasiswa as $mahasiswa)
-                                            <option value="{{$mahasiswa->id_proposal_ta}}"
-                                                {{ $mahasiswa->id_proposal_ta == $data_penugasan_review->proposal_ta_id ? 'selected' : '' }}>
-                                                {{ $mahasiswa->nim }} | {{ $mahasiswa->nama }}
+                                        @foreach ($mahasiswa as $mahasiswa)
+                                            <option value="{{$mahasiswa->proposal_ta->id_proposal_ta}}"
+                                                {{ $mahasiswa->proposal_ta->id_proposal_ta == $data_review_proposal_ta->proposal_ta_id ? 'selected' : '' }}>
+                                                {{ $mahasiswa->proposal_ta->r_mahasiswa->nim }} | {{ $mahasiswa->proposal_ta->r_mahasiswa->nama }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -46,10 +46,10 @@
                                     <select class="form-select" aria-label="Default select example" name="reviewer_satu"
                                         id="reviewer_satu" required>
                                         <option selected disabled>Pilih Nama Reviewer 1</option>
-                                        @foreach ($data_dosen as $dosen)
-                                            <option value="{{ $dosen->id_dosen }}"
-                                                {{ $dosen->id_dosen == $data_penugasan_review->reviewer_satu ? 'selected' : '' }}>
-                                                {{ $dosen->nama_dosen }}
+                                        @foreach ($data_dosen_kbk as $dosen_kbk)
+                                            <option value="{{ $dosen_kbk->id_dosen_kbk }}"
+                                                {{ $dosen_kbk->id_dosen_kbk == $data_review_proposal_ta->reviewer_satu ? 'selected' : '' }}>
+                                                {{ $dosen_kbk->r_dosen->nama_dosen }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -62,10 +62,10 @@
                                     <select class="form-select" aria-label="Default select example" name="reviewer_dua"
                                         id="reviewer_dua" required>
                                         <option selected disabled>Pilih Nama Reviewer 2</option>
-                                        @foreach ($data_dosen as $dosen)
-                                            <option value="{{ $dosen->id_dosen }}"
-                                                {{ $dosen->id_dosen == $data_penugasan_review->reviewer_dua ? 'selected' : '' }}>
-                                                {{ $dosen->nama_dosen }}
+                                        @foreach ($data_dosen_kbk as $dosen_kbk)
+                                            <option value="{{ $dosen_kbk->id_dosen_kbk}}"
+                                                {{ $dosen_kbk->id_dosen_kbk == $data_review_proposal_ta->reviewer_dua ? 'selected' : '' }}>
+                                                {{ $dosen_kbk->r_dosen->nama_dosen }}
                                             </option>
                                         @endforeach
                                     </select>

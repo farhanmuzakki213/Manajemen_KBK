@@ -69,42 +69,49 @@
                                         @php
                                             $no = 1;
                                         @endphp
-                                        @foreach ($data_matkul_kbk as $data_rep)
-                                            @php
-                                                $cek_data_rep = App\Models\VerRpsUas::where(
-                                                    'rep_rps_uas_id',
-                                                    $data_rep->id_rep_rps_uas,
+                                        @foreach ($result as $data_rep)
+                                        @php
+                                            $cek_data_rep = false;
+                                            if ($data_rep['id_rep_rps_uas'] !== null) {
+                                                $cek_data_rep = App\Models\VerRpsUas::whereHas(
+                                                    'r_rep_rps_uas',
+                                                    function ($query) use ($data_rep) {
+                                                        $query
+                                                            ->where('type', '=', '0')
+                                                            ->where('rep_rps_uas_id', $data_rep['id_rep_rps_uas']);
+                                                    },
                                                 )->exists();
-                                            @endphp
-                                            <tr class="table-Light">
-                                                <th>{{ $no++ }}</th>
-                                                {{-- <th>{{ $data_rep->id_rep_rps }}</th> --}}
-                                                @if (!$cek_data_rep)
-                                                    {{ optional($data_rep->r_RepRpsUas)->r_matkulKbk->r_matkul->kode_matkul  }}
+                                            }
+                                        @endphp
+                                        <tr class="table-Light">
+                                            <th>{{ $no++ }}</th>
+                                            <th>{{ $data_rep['kode_matkul'] }}</th>
+                                            <th>{{ $data_rep['nama_dosen'] }}</th>
+                                            <th>{{ $data_rep['semester'] }}</th>
+                                            <th>{{ $data_rep['smt_thnakd'] }}</th>
+                                            <th style="width: 10%;">
+                                                @if ($data_rep['id_rep_rps_uas'] === null)
+                                                    <p style="color: red">File belum diupload</p>
                                                 @else
-                                                    {{ $data_rep->p_matkulKbk->r_matkul->kode_matkul }}
-                                                @endif
-                                                {{-- <th>{{ optional($data_rep->r_dosen)->nama_dosen }}</th>
-                                                <th>{{ optional($data_rep->r_RepRpsUas)->r_matkulKbk->r_matkul->semester }}
-                                                </th>
-                                                <th>{{ optional($data_rep->r_smt_thnakd)->smt_thnakd }}</th>
-                                                <th style="width: 10%;">
                                                     @if (!$cek_data_rep)
                                                         <div class="row">
-                                                            <a href="{{ route('ver_rps.create', ['id' => $data_rep->r_RepRpsUas->id_rep_rps_uas]) }}"
-                                                                class="btn btn-primary mb-2 d-flex align-items-center"><i
-                                                                    class="bi bi-pencil-square"></i> Review</a>
-                                                            <a href="{{ asset('storage/uploads/rps/repositori_files/' . $data_rep->file) }}"
+                                                            <a href="{{ route('ver_rps.create', ['id' => $data_rep['id_rep_rps_uas']]) }}"
+                                                                class="btn btn-primary mb-2 d-flex align-items-center">
+                                                                <i class="bi bi-pencil-square"></i> Review
+                                                            </a>
+                                                            <!-- Pastikan path file sesuai dengan struktur dan nama yang benar -->
+                                                            <a href="{{ asset('storage/uploads/rps/repositori_files/' . $data_rep['file']) }}"
                                                                 class="btn btn-primary mb-2 d-flex align-items-center"
-                                                                target="_blank"><i
-                                                                    class="bi bi-file-earmark-arrow-down"></i>
-                                                                FileRPS</a>
+                                                                target="_blank">
+                                                                <i class="bi bi-file-earmark-arrow-down"></i> Fileuas
+                                                            </a>
                                                         </div>
                                                     @else
-                                                        <p>Sudah diverifikasi</p>
+                                                        <p style="color: green">Sudah diverifikasi</p>
                                                     @endif
-                                                </th> --}}
-                                            </tr>
+                                                @endif
+                                            </th>
+                                        </tr>
                                         @endforeach
                                     </tbody>
                                 </table>

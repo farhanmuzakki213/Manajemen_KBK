@@ -69,34 +69,45 @@
                                         @php
                                             $no = 1;
                                         @endphp
-                                        @foreach ($data_rep_uas as $data_rep)
+                                        @foreach ($result as $data_rep)
                                             @php
-                                                $cek_data_rep = App\Models\VerRpsUas::where(
-                                                    'rep_rps_uas_id',
-                                                    $data_rep->id_rep_rps_uas,
-                                                )->exists();
+                                                $cek_data_rep = false;
+                                                if ($data_rep['id_rep_rps_uas'] !== null) {
+                                                    $cek_data_rep = App\Models\VerRpsUas::whereHas(
+                                                        'r_rep_rps_uas',
+                                                        function ($query) use ($data_rep) {
+                                                            $query
+                                                                ->where('type', '=', '1')
+                                                                ->where('rep_rps_uas_id', $data_rep['id_rep_rps_uas']);
+                                                        },
+                                                    )->exists();
+                                                }
                                             @endphp
                                             <tr class="table-Light">
                                                 <th>{{ $no++ }}</th>
-                                                {{-- <th>{{ $data_rep->id_rep_uas }}</th> --}}
-                                                <th>{{ optional($data_rep->r_matkulKbk)->r_matkul->kode_matkul }}</th>
-                                                <th>{{ optional($data_rep->r_dosen_matkul)->r_dosen->nama_dosen }}</th>
-                                                <th>{{ optional($data_rep->r_matkulKbk)->r_matkul->semester }}</th>
-                                                <th>{{ optional($data_rep->r_smt_thnakd)->smt_thnakd }}</th>
+                                                <th>{{ $data_rep['kode_matkul'] }}</th>
+                                                <th>{{ $data_rep['nama_dosen'] }}</th>
+                                                <th>{{ $data_rep['semester'] }}</th>
+                                                <th>{{ $data_rep['smt_thnakd'] }}</th>
                                                 <th style="width: 10%;">
-                                                    @if (!$cek_data_rep)
-                                                        <div class="row">
-                                                            <a href="{{ route('ver_soal_uas.create', ['id' => $data_rep->id_rep_rps_uas]) }}"
-                                                                class="btn btn-primary mb-2 d-flex align-items-center"><i
-                                                                    class="bi bi-pencil-square"></i> Review</a>
-                                                            <a href="{{ asset('storage/uploads/uas/repositori_files/' . $data_rep->file) }}"
-                                                                class="btn btn-primary mb-2 d-flex align-items-center"
-                                                                target="_blank"><i
-                                                                    class="bi bi-file-earmark-arrow-down"></i>
-                                                                Fileuas</a>
-                                                        </div>
+                                                    @if ($data_rep['id_rep_rps_uas'] === null)
+                                                        <p style="color: red">File belum diupload</p>
                                                     @else
-                                                        <p>Sudah diverifikasi</p>
+                                                        @if (!$cek_data_rep)
+                                                            <div class="row">
+                                                                <a href="{{ route('ver_soal_uas.create', ['id' => $data_rep['id_rep_rps_uas']]) }}"
+                                                                    class="btn btn-primary mb-2 d-flex align-items-center">
+                                                                    <i class="bi bi-pencil-square"></i> Review
+                                                                </a>
+                                                                <a href="{{ asset('storage/uploads/uas/repositori_files/'. $data_rep['file']) }}"
+                                                                    class="btn btn-primary mb-2 d-flex align-items-center"
+                                                                    target="_blank">
+                                                                    <i class="bi bi-file-earmark-arrow-down"></i> Fileuas
+                                                                </a>
+                                                            </div>
+                                                        @else
+                                                            <p style="color: green">Sudah diverifikasi</p>
+                                                        @endif
                                                     @endif
                                                 </th>
                                             </tr>
@@ -178,10 +189,10 @@
                                                     <a href="{{ route('ver_soal_uas.edit', ['id' => $data_ver->id_ver_rps_uas]) }}"
                                                         class="btn btn-primary mb-2 d-flex align-items-center"><i
                                                             class="bi bi-pencil-square"></i>Revisi</a>
-                                                    <a href="{{ asset('storage/uploads/rps/repositori_files/' . $data_ver->file) }}"
+                                                    <a href="{{ asset('storage/uploads/uas/repositori_files/'. $data_ver->r_rep_rps_uas->file) }}"
                                                         class="btn btn-primary mb-2 d-flex align-items-center"
                                                         target="_blank"><i
-                                                            class="bi bi-file-earmark-arrow-down"></i>FileRPS</a>
+                                                            class="bi bi-file-earmark-arrow-down"></i>FileUas</a>
                                                     <a data-bs-toggle="modal"
                                                         data-bs-target="#detail{{ $data_ver->id_ver_rps_uas }}"
                                                         class="btn btn-primary mb-2 d-flex align-items-center"><i
