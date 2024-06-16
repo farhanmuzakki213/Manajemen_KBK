@@ -10,9 +10,8 @@ use App\Models\User;
 use App\Models\VerRpsUas;
 use App\Notifications\VerifikasiRps;
 use Illuminate\Http\Request;
-use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Notification as FacadesNotification;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -146,12 +145,13 @@ class Ver_RPSController extends Controller
             ->where('id_rep_rps_uas', $rep_id)
             ->orderByDesc('id_rep_rps_uas')
             ->get();
-        /* $repRpsUas = RepRpsUas::where('id_rep_rps_uas', $rep_id)->first();
-        $dosenmatkul = $repRpsUas->dosen_matkul_id;
+        /* $repRpsUas = RepRpsUas::with('r_dosen_matkul.r_dosen', 'r_dosen_matkul.p_matkulKbk')->where('id_rep_rps_uas', $id)->first();
 
-        //$dosenmatkul->notify(new VerifikasiRps($repRpsUas, $pengurus_kbk)); */
-        //debug('dosenmatkul');
-        debug(compact('data_dosen', 'data_rep_rps', 'nextNumber', 'rep_id'/* , 'repRpsUas', 'pengurus_kbk', 'dosenmatkul' */));
+        // Assuming r_dosen_matkul is related to the User model
+        $dosenMatkul = User::where('name', $repRpsUas->r_dosen_matkul->r_dosen->nama_dosen)
+        ->where('email', $repRpsUas->r_dosen_matkul->r_dosen->email)->first(); */
+
+        debug(compact('data_dosen', 'data_rep_rps', 'nextNumber', 'rep_id'/* , 'repRpsUas', 'dosenMatkul' */));
         return view('admin.content.pengurusKbk.form.ver_rps_form', compact('data_dosen', 'data_rep_rps', 'nextNumber', 'rep_id'));
     }
 
@@ -198,18 +198,21 @@ class Ver_RPSController extends Controller
             'saran' => $request->filled('saran') ? $request->saran : 'Tidak ada',
             'tanggal_diverifikasi' => $request->date,
         ];
-        //VerRpsUas::create($data);
+        VerRpsUas::create($data);
 
         $pengurus_kbk = $this->getDosen();
-        debug($pengurus_kbk);
-        $id_rep_rps_uas = $request->id_rep_rps;
-        $repRpsUas = RepRpsUas::where('id_rep_rps_uas', $id_rep_rps_uas)->first();
-        $dosenmatkul = User::where('name', $repRpsUas->r_dosen_matkul->r_dosen->nama_dosen);
+        $repRpsUas = RepRpsUas::with('r_dosen_matkul.r_dosen', 'r_dosen_matkul.p_matkulKbk')->where('id_rep_rps_uas', $request->id_rep_rps)->first();
+        $verRpsUas = VerRpsUas::with('r_pengurus.r_dosen')->where('id_ver_rps_uas', $request->id_ver_rps)->first();
+        // Assuming r_dosen_matkul is related to the User model
+        $dosenMatkul = User::where('name', $repRpsUas->r_dosen_matkul->r_dosen->nama_dosen)
+        ->where('email', $repRpsUas->r_dosen_matkul->r_dosen->email)->first();
 
-        //$dosenmatkul->notify(new VerifikasiRps($repRpsUas, $pengurus_kbk));
-        FacadesNotification::send($dosenmatkul,new VerifikasiRps());
-        debug(compact('dosenmatkul','pengurus_kbk','repRpsUas'));
-        //return redirect()->route('ver_rps')->with('success', 'Data berhasil disimpan.');
+        if ($dosenMatkul) {
+            Notification::send($dosenMatkul, new VerifikasiRps($repRpsUas, $verRpsUas));
+        }
+        debug(compact('dosenMatkul', 'verRpsUas', 'repRpsUas'));
+        //dd(compact('dosenMatkul', 'pengurus_kbk', 'repRpsUas'));
+        return redirect()->route('ver_rps')->with('success', 'Data berhasil disimpan.');
         //dd($request->all());
     }
 

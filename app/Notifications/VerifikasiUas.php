@@ -14,9 +14,12 @@ class VerifikasiUas extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    protected $repRpsUas;
+    protected $verRpsUas;
+    public function __construct($repRpsUas, $verRpsUas)
     {
-        //
+        $this->repRpsUas = $repRpsUas;
+        $this->verRpsUas = $verRpsUas;
     }
 
     /**
@@ -26,7 +29,7 @@ class VerifikasiUas extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return ['database'];
     }
 
     /**
@@ -47,8 +50,23 @@ class VerifikasiUas extends Notification
      */
     public function toArray(object $notifiable): array
     {
+        $rekomendasi = $this->verRpsUas->rekomendasi;
+        $message = 'Verifikasi UAS telah berhasil dilakukan.';
+
+        if ($rekomendasi == 1) {
+            $message .= ' dan UAS Tidak Layak Pakai.';
+        } elseif ($rekomendasi == 2) {
+            $message .= ' dan UAS Butuh beberapa revisi.';
+        } elseif ($rekomendasi == 3) {
+            $message .= ' dan layak dipakai.';
+        }
         return [
-            //
+            'pengurus_kbk' => $this->verRpsUas->r_pengurus->r_dosen->nama_dosen,
+            'tanggal_ver' => $this->verRpsUas->tanggal_verifikasi,
+            'dosen' => $this->repRpsUas->dosen_id,
+            'matkul' => $this->repRpsUas->r_matkulKbk->r_matkul->kode_matkul,
+            'rekomendasi' => $message,
+            'Saran' => $this->verRpsUas->saran,
         ];
     }
 }

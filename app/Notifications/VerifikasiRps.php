@@ -2,8 +2,6 @@
 
 namespace App\Notifications;
 
-use App\Models\Pengurus_kbk;
-use App\Models\RepRpsUas;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -16,12 +14,12 @@ class VerifikasiRps extends Notification
     /**
      * Create a new notification instance.
      */
-    protected $dosen_matkul;
-    protected $pengurusKbk;
-    public function __construct(RepRpsUas $dosen_matkul, Pengurus_kbk $pengurusKbk)
+    protected $repRpsUas;
+    protected $verRpsUas;
+    public function __construct($repRpsUas, $verRpsUas)
     {
-        $this->dosen_matkul = $dosen_matkul;
-        $this->pengurusKbk = $pengurusKbk;
+        $this->repRpsUas = $repRpsUas;
+        $this->verRpsUas = $verRpsUas;
     }
 
     /**
@@ -52,11 +50,23 @@ class VerifikasiRps extends Notification
      */
     public function toArray(object $notifiable): array
     {
+        $rekomendasi = $this->verRpsUas->rekomendasi;
+        $message = 'Verifikasi RPS telah berhasil dilakukan.';
+
+        if ($rekomendasi == 1) {
+            $message .= ' dan RPS Tidak Layak Pakai.';
+        } elseif ($rekomendasi == 2) {
+            $message .= ' dan RPS Butuh beberapa revisi.';
+        } elseif ($rekomendasi == 3) {
+            $message .= ' dan layak dipakai.';
+        }
         return [
-            'message' => 'Verifikasi RPS telah berhasil dilakukan.',
-            'pengurus_kbk' => $this->pengurusKbk->r_dosen->id_dosen,
-            'dosen' => $this->dosen_matkul->dosen_id,
-            'matkul' => $this->dosen_matkul->matkul_kbk_id,
+            'pengurus_kbk' => $this->verRpsUas->r_pengurus->r_dosen->nama_dosen,
+            'tanggal_ver' => $this->verRpsUas->tanggal_verifikasi,
+            'dosen' => $this->repRpsUas->dosen_id,
+            'matkul' => $this->repRpsUas->r_matkulKbk->r_matkul->kode_matkul,
+            'rekomendasi' => $message,
+            'Saran' => $this->verRpsUas->saran,
         ];
     }
 }
