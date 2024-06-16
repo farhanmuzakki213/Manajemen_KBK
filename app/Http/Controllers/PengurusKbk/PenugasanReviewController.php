@@ -186,8 +186,8 @@ class PenugasanReviewController extends Controller
             ->orderByDesc('review_proposal_ta.id_penugasan')
             ->get();
 
-
-        debug($data_review_proposal_ta);
+            /* $userRoles = Auth::user()->roles->pluck('name','name')->all(); */
+        debug($data_review_proposal_ta/* , $userRoles */ );
         return view('admin.content.pengurusKbk.Hasil_Review', compact('data_review_proposal_ta'));
     }
 

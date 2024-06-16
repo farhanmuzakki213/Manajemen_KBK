@@ -11,8 +11,11 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\DosenPengampuMatkul;
 use App\Models\Pengurus_kbk;
+use App\Models\User;
+use App\Notifications\VerifikasiUas;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -195,6 +198,18 @@ class Ver_Soal_UASController extends Controller
             'tanggal_diverifikasi' => $request->date,
         ];
         VerRpsUas::create($data);
+
+        $pengurus_kbk = $this->getDosen();
+        $repRpsUas = RepRpsUas::with('r_dosen_matkul.r_dosen', 'r_dosen_matkul.p_matkulKbk')->where('id_rep_rps_uas', $request->id_rep_uas)->first();
+        $verRpsUas = VerRpsUas::with('r_pengurus.r_dosen')->where('id_ver_rps_uas', $request->id_ver_uas)->first();
+        // Assuming r_dosen_matkul is related to the User model
+        $dosenMatkul = User::where('name', $repRpsUas->r_dosen_matkul->r_dosen->nama_dosen)
+        ->where('email', $repRpsUas->r_dosen_matkul->r_dosen->email)->first();
+
+        if ($dosenMatkul) {
+            Notification::send($dosenMatkul, new VerifikasiUas($repRpsUas, $verRpsUas));
+        }
+        debug(compact('dosenMatkul', 'verRpsUas', 'repRpsUas'));
         return redirect()->route('ver_soal_uas')->with('success', 'Data berhasil disimpan.');
         //dd($request->all());
     }
