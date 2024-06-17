@@ -13,15 +13,16 @@ class PimpinanProdi extends Model
     public $timestamps = false;
     protected $primaryKey = 'id_pimpinan_prodi';
 
-    public function r_dosen(){
-        return $this->belongsTo(Dosen::class, 'dosen_id','id_dosen');
+    public function r_jabatan_pimpinan(){
+        return $this->belongsTo(JabatanPimpinan::class, 'jabatan_pimpinan_id','id_jabatan_pimpinan');
     }
 
     public function r_prodi(){
         return $this->belongsTo(Prodi::class, 'prodi_id','id_prodi');
     }
 
-    public function r_jabatan_pimpinan(){
-        return $this->belongsTo(JabatanPimpinan::class, 'jabatan_pimpinan_id','id_jabatan_pimpinan');
+    public function r_dosen(){
+        return $this->belongsTo(Dosen::class, 'dosen_id','id_dosen');
     }
+
 }

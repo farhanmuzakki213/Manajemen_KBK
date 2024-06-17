@@ -116,6 +116,12 @@
                                                                 <textarea class="form-control" id="Judul" name="Judul" rows="3"
                                                                     readonly>{{ optional($data->proposal_ta)->judul }}</textarea>
                                                             </div>
+
+                                                            <div class="mb-3">
+                                                                <label for="jenis_kbk" class="form-label">Jenis KBK</label>
+                                                                <input type="text" class="form-control" id="jenis_kbk" value="{{ optional($data->proposal_ta)->r_jenis_kbk->jenis_kbk }}" readonly>
+                                                            </div>
+
                                                             <div class="mb-3">
                                                                 <label for="status" class="form-label">Status Proposal</label>
                                                                 <input type="text" class="form-control" id="status"

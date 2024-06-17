@@ -82,22 +82,16 @@
                                                 </th>
                                                 <th style="width: 14%;">
                                                     <div class="row">
-                                                        @if ($data->status_review_proposal == 3)
-                                                            <a data-bs-toggle="modal"
-                                                                data-bs-target="#edit{{ $data->penugasan_id }}"
-                                                                class="btn btn-primary mb-2 d-flex align-items-center">
-                                                                <i class="bi bi-pencil-square"></i> Ubah Status
-                                                            </a>
-                                                        @else
-                                                            <a href="{{ route('hasil_review_proposal_ta.edit', ['id' => $data->penugasan_id]) }}"
-                                                                class="btn btn-primary mb-2 d-flex align-items-center">
-                                                                <i class="bi bi-pencil-square"></i> Ubah Status
-                                                            </a>
-                                                        @endif
                                                         <a data-bs-toggle="modal"
-                                                            data-bs-target="#detail{{ $data->penugasan_id }}"
-                                                            class="btn btn-secondary d-flex align-items-center"><i
-                                                                class="bi bi-three-dots-vertical"></i>Detail</a>
+                                                           data-bs-target="#edit{{ $data->penugasan_id }}"
+                                                           class="btn btn-primary mb-2 d-flex align-items-center">
+                                                           <i class="bi bi-pencil-square"></i> Ubah Status
+                                                        </a>
+                                                        <a data-bs-toggle="modal"
+                                                           data-bs-target="#detail{{ $data->penugasan_id }}"
+                                                           class="btn btn-secondary d-flex align-items-center">
+                                                           <i class="bi bi-three-dots-vertical"></i>Detail
+                                                        </a>
                                                     </div>
                                                 </th>
                                             </tr>

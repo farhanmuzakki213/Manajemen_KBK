@@ -14,32 +14,33 @@
                                     <p><a href="{{ route('review_proposal_ta') }}" class="btn btn-success"> Kembali</a></p>
                                 </div>
                             </div>
-                            <form method="post" action="{{ route('review_proposal_ta.update', ['id' => $data_review_proposal_ta->id_penugasan]) }}" enctype="multipart/form-data">
+                            <form method="post" action="{{ route('review_proposal_ta.update', ['id' => $data_review_proposal_ta_detail->penugasan_id]) }}" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
-                                <input type="hidden" class="form-control" id="id_penugasan" name="id_penugasan" value="{{ $data_review_proposal_ta->id_penugasan }}">
+                                <input type="hidden" class="form-control" id="penugasan_id" name="penugasan_id" value="{{ $data_review_proposal_ta_detail->penugasan_id }}">
+                                <input type="hidden" class="form-control" id="reviewer" name="reviewer" value="{{ $data_review_proposal_ta_detail->dosen }}">
                                 <div class="mb-3">
                                     <label for="status" class="form-label">Status</label><br>
+                                    {{-- <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="status" id="aktif" value="0" {{ $data_review_proposal_ta_detail->status_review_proposal == 0 ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="aktif">Diajukan</label>
+                                    </div> --}}
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status" id="aktif" value="0" {{ $data_review_proposal_ta->status_review_proposal == 0 ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="aktif">Di ajukan</label>
+                                        <input class="form-check-input" type="radio" name="status" id="aktif" value="1" {{ $data_review_proposal_ta_detail->status_review_proposal == 1 ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="aktif">DiTolak</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status" id="aktif" value="1" {{ $data_review_proposal_ta->status_review_proposal == 1 ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="aktif">Di Tolak</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status" id="aktif" value="2" {{ $data_review_proposal_ta->status_review_proposal == 2 ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="aktif">Di Revisi</label>
+                                        <input class="form-check-input" type="radio" name="status" id="aktif" value="2" {{ $data_review_proposal_ta_detail->status_review_proposal == 2 ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="aktif">DiRevisi</label>
                                     </div> 
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status" id="aktif" value="3" {{ $data_review_proposal_ta->status_review_proposal == 3 ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="aktif">Di Terima</label>
+                                        <input class="form-check-input" type="radio" name="status" id="aktif" value="3" {{ $data_review_proposal_ta_detail->status_review_proposal == 3 ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="aktif">DiTerima</label>
                                     </div>                                   
                                 </div>
                                 <div class="mb-3">
                                     <label for="catatan" class="form-label">Catatan</label>
-                                    <textarea class="form-control" id="catatan" name="catatan" rows="3">{{ $data_review_proposal_ta->catatan }}</textarea>
+                                    <textarea class="form-control" id="catatan" name="catatan" rows="3">{{ $data_review_proposal_ta_detail->catatan }}</textarea>
                                     @error('catatan')
                                         <small>{{ $message }}</small>
                                     @enderror

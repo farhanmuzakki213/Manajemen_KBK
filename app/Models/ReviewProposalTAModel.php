@@ -28,10 +28,21 @@ class ReviewProposalTAModel extends Model
     {
         return $this->belongsTo(DosenKBK::class, 'reviewer_dua', 'id_dosen_kbk');
     }
+    
+    public function pimpinan_prodi_dosen()
+    {
+        return $this->belongsTo(PimpinanProdi::class, 'pimpinan_prodi_id', 'id_pimpinan_prodi');
+    }
 
 
     public function p_reviewDetail()
     {
         return $this->hasMany(ReviewProposalTaDetailPivot::class, 'penugasan_id', 'id_penugasan');
     }
+
+    public function review_proposal_ta_detail()
+    {
+        return $this->hasOne(ReviewProposalTaDetailPivot::class, 'penugasan_id', 'id_penugasan');
+    }
+    
 }

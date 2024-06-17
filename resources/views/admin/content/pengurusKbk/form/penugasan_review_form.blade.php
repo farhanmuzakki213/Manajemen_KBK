@@ -38,45 +38,55 @@
                                     @endif
                                 </div>
                                 <div class="mb-3">
-                                    <label for="nama_mahasiswa" class="form-label">Nama Mahasiswa</label>
-                                    <select class="form-select" aria-label="Default select example" name="nama_mahasiswa"
-                                        id="nama_mahasiswa" required>
-                                        <option selected disabled>Pilih NIM | Nama Mahasiswa</option>
-                                        @foreach ($data_mahasiswa as $mahasiswa)
-                                            <option value="{{ $mahasiswa->id_proposal_ta }}">{{ $mahasiswa->nim }} |
-                                                {{ $mahasiswa->nama }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('nama_mahasiswa')
+                                    <label for="proposal_ta_id" class="form-label">Nama Mahasiswa</label>
+                                    <input type="text" class="form-control" id="proposal_ta_id" name="proposal_ta_id" value="{{ $selected_proposal_ta->r_mahasiswa->nim }} | {{ $selected_proposal_ta->r_mahasiswa->nama }}" readonly>
+                                    <input type="hidden" name="proposal_ta_id" value="{{ $selected_proposal_ta->id_proposal_ta }}">
+                                    @error('proposal_ta_id')
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>
+                                
+                                
                                 <div class="mb-3">
                                     <label for="reviewer_satu" class="form-label">Nama Reviewer 1</label>
-                                    <select class="form-select" aria-label="Default select example" name="reviewer_satu"
-                                        id="reviewer_satu" required>
+                                    <select class="form-select" aria-label="Default select example" name="reviewer_satu" id="reviewer_satu" required>
                                         <option selected disabled>Pilih Nama Reviewer 1</option>
-                                        @foreach ($data_dosen as $dosen)
-                                            <option value="{{ $dosen->id_dosen }}">{{ $dosen->nama_dosen }}</option>
+                                        @foreach ($data_dosen_kbk as $dosen_kbk)
+                                            <option value="{{ $dosen_kbk->id_dosen_kbk }}">{{ $dosen_kbk->r_dosen->nama_dosen }}</option>
                                         @endforeach
                                     </select>
                                     @error('reviewer_satu')
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>
+                            
                                 <div class="mb-3">
                                     <label for="reviewer_dua" class="form-label">Nama Reviewer 2</label>
-                                    <select class="form-select" aria-label="Default select example" name="reviewer_dua"
-                                        id="reviewer_dua" required>
+                                    <select class="form-select" aria-label="Default select example" name="reviewer_dua" id="reviewer_dua" required>
                                         <option selected disabled>Pilih Nama Reviewer 2</option>
-                                        @foreach ($data_dosen as $dosen)
-                                            <option value="{{ $dosen->id_dosen }}">{{ $dosen->nama_dosen }}</option>
+                                        @foreach ($data_dosen_kbk as $dosen_kbk)
+                                            <option value="{{ $dosen_kbk->id_dosen_kbk }}">{{ $dosen_kbk->r_dosen->nama_dosen }}</option>
                                         @endforeach
                                     </select>
                                     @error('reviewer_dua')
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>
+
+                                <div class="mb-3">
+                                    <label for="pimpinan_prodi" class="form-label">Nama Pimpinan Prodi</label>
+                                    <select class="form-select" aria-label="Default select example" name="pimpinan_prodi" id="pimpinan_prodi" required>
+                                        <option selected disabled>Pilih Nama Pimpinan Prodi</option>
+                                        @foreach ($data_pimpinan_prodi as $pimpinan_prodi)
+                                            <option value="{{ $pimpinan_prodi->id_pimpinan_prodi }}">{{ $pimpinan_prodi->r_dosen->nama_dosen }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('pimpinan_prodi')
+                                        <small>{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                
+
                                 <div class="mb-3">
                                     {{-- <label for="date" class="form-label">Tanggal Penugasan</label> --}}
                                     <input type="hidden" class="form-control" id="date" name="date"
