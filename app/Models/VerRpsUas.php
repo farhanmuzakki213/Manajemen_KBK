@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Ramsey\Uuid\Uuid;
 
 class VerRpsUas extends Model
 {
+    use Notifiable;
     protected $fillable = [
         'id_ver_rps_uas',
         'rep_rps_uas_id',
