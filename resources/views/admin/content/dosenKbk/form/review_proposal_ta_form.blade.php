@@ -17,35 +17,10 @@
                             <form method="post" action="{{ route('review_proposal_ta.store') }}"
                                 enctype="multipart/form-data">
                                 @csrf
-                                <div class="mb-3">
-                                    <input type="hidden" class="form-control" id="penugasan_id" name="penugasan_id"
-                                        value="{{ $penugasan_id }}" readonly>
-                                    @error('penugasan_id')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                    @if (Session::has('error'))
-                                        <div class="alert alert-danger" role="alert">
-                                            {{ Session::get('error') }}
-                                        </div>
-                                    @endif
-                                </div>
-
-                                @foreach ($reviewer_data as $data)
-                                    @php
-                                        $reviewer =
-                                            $data->reviewer_role == 'reviewer_satu'
-                                                ? 1
-                                                : ($data->reviewer_role == 'reviewer_dua'
-                                                    ? 2
-                                                    : '');
-                                    @endphp
-
-                                    <input type="hidden" class="form-control" id="reviewer" name="reviewer"
-                                        value="{{ $reviewer }}" readonly>
-                                @endforeach
-                               
-
-
+                                <input type="hidden" class="form-control" id="penugasan_id" name="penugasan_id"
+                                    value="{{ $penugasan_id }}" readonly>
+                                <input type="hidden" class="form-control" id="reviewer" name="reviewer"
+                                    value="{{ $dosen_review }}" readonly>
                                 <div class="mb-3">
                                     <label for="status" class="form-label">Status</label><br>
                                     <div class="form-check form-check-inline">
@@ -54,8 +29,8 @@
                                         <label class="form-check-label" for="aktif">DiTolak</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status"
-                                            id="tidak_layak_pakai" value="2">
+                                        <input class="form-check-input" type="radio" name="status" id="tidak_layak_pakai"
+                                            value="2">
                                         <label class="form-check-label" for="tidak_aktif">DiRevisi</label>
                                     </div>
                                     <div class="form-check form-check-inline">
@@ -74,8 +49,6 @@
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>
-
-
                                 <div class="mb-3">
                                     {{-- <label for="date" class="form-label">Tanggal Penugasan</label> --}}
                                     <input type="hidden" class="form-control" id="date" name="date"

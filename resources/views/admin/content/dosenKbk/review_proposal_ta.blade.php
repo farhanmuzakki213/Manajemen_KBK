@@ -27,12 +27,6 @@
                 <div class="container-fluid">
                     <!-- DataReview Proposal TA -->
                     <div class="card shadow mb-4">
-                        {{-- <div class="card-header py-2">
-            <div class="d-grid gap-2 d-md-block">
-                <a href="{{ route('PenugasanReview.create') }}" class="btn btn-primary me-md-3"><i
-                        class="bi bi-file-earmark-plus"></i> New</a>
-            </div>
-        </div> --}}
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Tabel Penugasan Proposal TA</h6>
                         </div>
@@ -45,7 +39,6 @@
                                             <th>Nama Mahasiswa</th>
                                             <th>Pembimbing 1</th>
                                             <th>Pembimbing 2</th>
-                                            <th>Jenis KBK</th>
                                             <th>Tanggal Pengajuan</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -56,122 +49,115 @@
                                             <th>Nama Mahasiswa</th>
                                             <th>Pembimbing 1</th>
                                             <th>Pembimbing 2</th>
-                                            <th>Jenis KBK</th>
                                             <th>Tanggal Pengajuan</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        @foreach ($data_review_proposal_ta as $data)
                                         @php
-                                        // Ambil data penugasan dari ReviewProposalTaDetailPivot
-                                        $existsInDetail = App\Models\ReviewProposalTaDetailPivot::where('penugasan_id', $data['id_penugasan'])
-                                            ->exists();
-                                    
-                                            $existsDosen = App\Models\ReviewProposalTaDetailPivot::
-                                            where('dosen', $data['p_reviewDetail'][0]['dosen']) // Asumsikan 'dosen' ada di indeks 0 dari array 'p_reviewDetail'
-                                            ->exists();
-                                    
-                                        // Tentukan kondisi untuk menampilkan tombol atau pesan
-                                        $showButtons = !$existsInDetail && !$isReviewed;
-                                    @endphp
-                                
-                                    <tr class="table-Light">
-                                        <th>{{ $data->id_penugasan }}</th>
-                                        <th>{{ optional($data->proposal_ta)->r_mahasiswa->nama }}</th>
-                                        <th>{{ optional($data->proposal_ta)->r_pembimbing_satu->nama_dosen }}</th>
-                                        <th>{{ optional($data->proposal_ta)->r_pembimbing_dua->nama_dosen }}</th>
-                                        <th>{{ optional($data->proposal_ta)->r_jenis_kbk->jenis_kbk }}</th>
-                                        <th>{{ $data->tanggal_penugasan }}</th>
-                                        <th style="width: 10%;">
-                                            @if ($existsInDetail)
-                                            <div class="row">
-                                                <a href="{{ route('review_proposal_ta.create', ['id' => $data->id_penugasan]) }}"
-                                                    class="btn btn-primary mb-2 d-flex align-items-center"><i class="bi bi-pencil-square"></i>Review</a>
-                                
-                                                <a data-bs-toggle="modal" data-bs-target="#detail{{ $data->id_penugasan }}"
-                                                    class="btn btn-primary d-flex align-items-center"><i class="bi bi-three-dots-vertical"></i>Detail</a>
-                                            </div>
-                                            @else
-                                            Data Sudah DiReview
-                                            @endif
-                                        </th>
-                                    </tr>
+                                            $no = 1;
+                                        @endphp
+                                        @foreach ($reviewer_data as $data)
+                                            @php
 
-                                                {{-- Modal Detail Tabel --}}
-                                                <div class="modal fade" id="detail{{ $data->id_penugasan }}" tabindex="-1"
-                                                    aria-labelledby="detailLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="detailLabel">Detail penugasan
-                                                                    KBK</h5>
-                                                                <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                $existsInDetail = App\Models\ReviewProposalTaDetailPivot::where(
+                                                    'penugasan_id',
+                                                    $data->id_penugasan,
+                                                )
+                                                    ->where('dosen', $data->dosen_r)
+                                                    ->exists();
+                                            @endphp
+
+                                            <tr class="table-Light">
+                                                <th>{{ $no++ }}</th>
+                                                <th>{{ $data->nama }}</th>
+                                                <th>{{ $data->pembimbing_satu }}</th>
+                                                <th>{{ $data->pembimbing_dua }}</th>
+                                                <th>{{ $data->tanggal_penugasan }}</th>
+                                                <th style="width: 10%;">
+                                                    @if (!$existsInDetail)
+                                                        <div class="row">
+                                                            <a href="{{ route('review_proposal_ta.create', ['id' => $data->id_penugasan, 'dosen' => $data->dosen_r]) }}"
+                                                                class="btn btn-primary mb-2 d-flex align-items-center"><i
+                                                                    class="bi bi-pencil-square"></i>Review</a>
+
+                                                            <a data-bs-toggle="modal"
+                                                                data-bs-target="#detail{{ $data->id_penugasan }}"
+                                                                class="btn btn-primary d-flex align-items-center"><i
+                                                                    class="bi bi-three-dots-vertical"></i>Detail</a>
+                                                        </div>
+                                                    @else
+                                                        Data Sudah DiReview
+                                                    @endif
+                                                </th>
+                                            </tr>
+
+                                            {{-- Modal Detail Tabel --}}
+                                            <div class="modal fade" id="detail{{ $data->id_penugasan }}" tabindex="-1"
+                                                aria-labelledby="detailLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="detailLabel">Detail penugasan
+                                                                KBK</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="mb-3">
+                                                                <label for="nama_mahasiswa" class="form-label">Nama
+                                                                    Mahasiswa</label>
+                                                                <input type="text" class="form-control"
+                                                                    value="{{ $data->nama }}" readonly>
                                                             </div>
-                                                            <div class="modal-body">
-                                                                <div class="mb-3">
-                                                                    <label for="nama_mahasiswa" class="form-label">Nama
-                                                                        Mahasiswa</label>
-                                                                    <input type="text" class="form-control"
-                                                                        value="{{ optional($data->proposal_ta)->r_mahasiswa->nama }}"
-                                                                        readonly>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="nim" class="form-label">NIM</label>
-                                                                    <input type="text" class="form-control"
-                                                                        value="{{ optional($data->proposal_ta)->r_mahasiswa->nim }}"
-                                                                        readonly>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="nama_dosen_satu"
-                                                                        class="form-label">Pembimbing 1</label>
-                                                                    <input type="text" class="form-control"
-                                                                        value="{{ optional($data->proposal_ta)->r_pembimbing_satu->nama_dosen }}"
-                                                                        readonly>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="nama_dosen_dua"
-                                                                        class="form-label">Pembimbing 2</label>
-                                                                    <input type="text" class="form-control"
-                                                                        value="{{ optional($data->proposal_ta)->r_pembimbing_dua->nama_dosen }}"
-                                                                        readonly>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="judul" class="form-label">Judul</label>
-                                                                    <textarea class="form-control" rows="3" readonly>{{ optional($data->proposal_ta)->judul }}</textarea>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="jenis_kbk" class="form-label">Jenis
-                                                                        KBK</label>
-                                                                    <input type="text" class="form-control"
-                                                                        value="{{ optional($data->proposal_ta)->r_jenis_kbk->jenis_kbk }}"
-                                                                        readonly>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="reviewer_satu" class="form-label">Reviewer
-                                                                        1</label>
-                                                                    <input type="text" class="form-control"
-                                                                        value="{{ optional($data->reviewer_satu_dosen)->r_dosen->nama_dosen }}"
-                                                                        readonly>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="reviewer_dua" class="form-label">Reviewer
-                                                                        2</label>
-                                                                    <input type="text" class="form-control"
-                                                                        value="{{ optional($data->reviewer_dua_dosen)->r_dosen->nama_dosen }}"
-                                                                        readonly>
-                                                                </div>
-                                                                <!-- tambahkan input untuk atribut lainnya jika diperlukan -->
+                                                            <div class="mb-3">
+                                                                <label for="nim" class="form-label">NIM</label>
+                                                                <input type="text" class="form-control"
+                                                                    value="{{ $data->nim }}" readonly>
                                                             </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-bs-dismiss="modal">Close</button>
+                                                            <div class="mb-3">
+                                                                <label for="nama_dosen_satu" class="form-label">Pembimbing
+                                                                    1</label>
+                                                                <input type="text" class="form-control"
+                                                                    value="{{ $data->pembimbing_satu }}" readonly>
                                                             </div>
+                                                            <div class="mb-3">
+                                                                <label for="nama_dosen_dua" class="form-label">Pembimbing
+                                                                    2</label>
+                                                                <input type="text" class="form-control"
+                                                                    value="{{ $data->pembimbing_dua }}" readonly>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="judul" class="form-label">Judul</label>
+                                                                <textarea class="form-control" rows="3" readonly>{{ $data->judul }}</textarea>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="jenis_kbk" class="form-label">Jenis
+                                                                    KBK</label>
+                                                                <input type="text" class="form-control"
+                                                                    value="{{ $data->jenis_kbk_id }}" readonly>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="reviewer_satu" class="form-label">Reviewer
+                                                                    1</label>
+                                                                <input type="text" class="form-control"
+                                                                    value="{{ $data->reviewer_satu }}" readonly>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="reviewer_dua" class="form-label">Reviewer
+                                                                    2</label>
+                                                                <input type="text" class="form-control"
+                                                                    value="{{ $data->reviewer_dua }}" readonly>
+                                                            </div>
+                                                            <!-- tambahkan input untuk atribut lainnya jika diperlukan -->
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            
+                                            </div>
                                         @endforeach
 
                                     </tbody>
@@ -187,8 +173,6 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-2">
                             <div class="d-grid gap-2 d-md-block">
-                                {{-- <a href="{{ route('review_proposal_ta.create') }}" class="btn btn-primary me-md-3"><i
-                                        class="bi bi-file-earmark-plus"></i> New</a> --}}
                             </div>
                         </div>
                         <div class="card-body">
@@ -217,123 +201,118 @@
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        @foreach ($data_detail as $data)
-                                            <tr class="table-Light">
-                                                <th>{{ $data->penugasan_id }}</th>
-                                                <th>{{ optional($data->p_reviewProposal)->proposal_ta->r_mahasiswa->nama }}
-                                                </th>
-                                                <th>{{ $data->p_reviewProposal->tanggal_penugasan }}</th>
-                                                <th>{{ $data->tanggal_review }}</th>
-                                                <th>
-                                                    @if ($data->status_review_proposal == 0)
-                                                        DiAjukan
-                                                    @elseif ($data->status_review_proposal == 1)
-                                                        DiTolak
-                                                    @elseif ($data->status_review_proposal == 2)
-                                                        DiRevisi
-                                                    @else
-                                                        DiTerima
-                                                    @endif
-                                                </th>
-                                                <th>{{ $data->catatan }}</th>
-                                                <th style="width: 10%;">
-                                                    <div class="row">
-                                                        <a href="{{ route('review_proposal_ta.edit', ['id' => $data->penugasan_id]) }}"
-                                                            class="btn btn-primary mb-2 d-flex align-items-center"><i
-                                                                class="bi bi-pencil-square"></i>Edit</a>
-                                                        <a data-bs-toggle="modal"
-                                                            data-bs-target="#staticBackdrop{{ $data->penugasan_id, $data->dosen }}"
-                                                            class="btn btn-danger mb-2 d-flex align-items-center"><i
-                                                                class="bi bi-trash"></i>Delete</a>
-                                                        <a data-bs-toggle="modal"
-                                                            data-bs-target="#detail{{ $data->id_penugasan }}"
-                                                            class="btn btn-primary d-flex align-items-center"><i
-                                                                class="bi bi-three-dots-vertical"></i>Detail</a>
-                                                    </div>
-                                                </th>
-                                            </tr>
-
-                                            {{-- Modal Konfirmasi hapus data --}}
-                                            <div class="modal fade"
-                                                id="staticBackdrop{{ $data->penugasan_id, $data->dosen }}"
-                                                data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                                                aria-labelledby="staticBackdropLabel" aria-hidden="true">>
-                                                <div class="modal-dialog modal-dialog-centered">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h4 class="modal-title fs-5" id="staticBackdropLabel">
-                                                                Konfirmasi
-                                                                Hapus Data</h4>
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                        @php
+                                            $no = 1;
+                                        @endphp
+                                        @foreach ($reviewer_data_detail as $data)
+                                            @if ($data->dosen == $data->dosen_r)
+                                                <tr class="table-Light">
+                                                    <td>{{ $no++ }}</td>
+                                                    <td>{{ $data->nama }}</td>
+                                                    <td>{{ $data->tanggal_penugasan }}</td>
+                                                    <td>{{ $data->tanggal_review }}</td>
+                                                    <td>
+                                                        @if ($data->status_review_proposal == 0)
+                                                            DiAjukan
+                                                        @elseif ($data->status_review_proposal == 1)
+                                                            DiTolak
+                                                        @elseif ($data->status_review_proposal == 2)
+                                                            DiRevisi
+                                                        @else
+                                                            DiTerima
+                                                        @endif
+                                                    </td>
+                                                    <td>{{ $data->catatan }}</td>
+                                                    <td style="width: 10%;">
+                                                        <div class="row">
+                                                            <a href="{{ route('review_proposal_ta.edit', ['id' => $data->penugasan_id, 'dosen' => $data->dosen_r]) }}"
+                                                                class="btn btn-primary mb-2 d-flex align-items-center"><i
+                                                                    class="bi bi-pencil-square"></i>Edit</a>
+                                                            <a data-bs-toggle="modal"
+                                                                data-bs-target="#staticBackdrop{{ $data->penugasan_id, $data->dosen }}"
+                                                                class="btn btn-danger mb-2 d-flex align-items-center"><i
+                                                                    class="bi bi-trash"></i>Delete</a>
+                                                            <a data-bs-toggle="modal"
+                                                                data-bs-target="#detail{{ $data->penugasan_id }}"
+                                                                class="btn btn-primary d-flex align-items-center"><i
+                                                                    class="bi bi-three-dots-vertical"></i>Detail</a>
                                                         </div>
-                                                        <div class="modal-body">
-                                                            <p>Apakah kamu yakin ingin menghapus data ini?
-                                                                <b>{{ optional($data->p_reviewProposal)->proposal_ta->r_mahasiswa->nama }}</b>
-                                                            </p>
-                                                        </div>
-                                                        <div class="modal-footer justify-content-between">
+                                                    </td>
+                                                </tr>
 
-
-                                                            <form
-                                                                action="{{ route('review_proposal_ta.delete', ['id' => $data->penugasan_id, 'dosen' => $data->dosen]) }}"
-                                                                method="POST">
-
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="button" class="btn btn-default"
-                                                                    data-bs-dismiss="modal">Close</button>
-                                                                <button type="submit" class="btn btn-primary">Ya,
-                                                                    Hapus</button>
-                                                            </form>
+                                                {{-- Modal Konfirmasi hapus data --}}
+                                                <div class="modal fade"
+                                                    id="staticBackdrop{{ $data->penugasan_id, $data->dosen }}"
+                                                    data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title fs-5" id="staticBackdropLabel">
+                                                                    Konfirmasi Hapus Data
+                                                                </h4>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>Apakah kamu yakin ingin menghapus data ini?
+                                                                    <b>{{ $data->nama }}</b>
+                                                                </p>
+                                                            </div>
+                                                            <div class="modal-footer justify-content-between">
+                                                                <form
+                                                                    action="{{ route('review_proposal_ta.delete', ['id' => $data->penugasan_id, 'dosen' => $data->dosen]) }}"
+                                                                    method="POST">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="button" class="btn btn-default"
+                                                                        data-bs-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-primary">Ya,
+                                                                        Hapus</button>
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            {{-- Modal Detail Tabel --}}
-                                            <div class="modal fade" id="detail{{ $data->id_penugasan }}" tabindex="-1"
-                                                aria-labelledby="detailLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="detailLabel">Detail Review
-                                                                Proposal TA
-                                                            </h5>
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-
-                                                            <div class="mb-3">
-                                                                <label for="nama_mahasiswa" class="form-label">Nama
-                                                                    Mahasiswa</label>
-                                                                <input type="text" class="form-control"
-                                                                    id="nama_mahasiswa"
-                                                                    value="{{ optional($data->p_reviewProposal)->proposal_ta->r_mahasiswa->nama }}"
-                                                                    readonly>
+                                                {{-- Modal Detail Tabel --}}
+                                                <div class="modal fade" id="detail{{ $data->penugasan_id }}"
+                                                    tabindex="-1" aria-labelledby="detailLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="detailLabel">Detail Review
+                                                                    Proposal TA</h5>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
-                                                            <div class="mb-3">
-                                                                <label for="nama_mahasiswa" class="form-label">Nama
-                                                                    Mahasiswa</label>
-                                                                <input type="text" class="form-control"
-                                                                    id="nama_mahasiswa"
-                                                                    value="{{ optional($data->p_reviewProposal)->proposal_ta->r_mahasiswa->nim }}"
-                                                                    readonly>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label for="Judul" class="form-label">Judul</label>
-                                                                <textarea class="form-control" id="Judul" name="Judul" rows="3" readonly>{{ optional($data->p_reviewProposal)->proposal_ta->judul }}</textarea>
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label for="reviewer" class="form-label">Reviewer</label>
-                                                                <input type="text" class="form-control" id="reviewer"
-                                                                    value="{{ $data->dosen }}" readonly>
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <div class="col">
+                                                            <div class="modal-body">
+                                                                <div class="mb-3">
+                                                                    <label for="nama_mahasiswa" class="form-label">Nama
+                                                                        Mahasiswa</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="nama_mahasiswa" value="{{ $data->nama }}"
+                                                                        readonly>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="nim_mahasiswa" class="form-label">NIM
+                                                                        Mahasiswa</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="nim_mahasiswa" value="{{ $data->nim }}"
+                                                                        readonly>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="Judul" class="form-label">Judul</label>
+                                                                    <textarea class="form-control" id="Judul" name="Judul" rows="3" readonly>{{ $data->judul }}</textarea>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="reviewer"
+                                                                        class="form-label">Reviewer</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="reviewer" value="{{ $data->dosen }}"
+                                                                        readonly>
+                                                                </div>
+                                                                <div class="mb-3">
                                                                     <label for="status"
                                                                         class="form-label">Status</label>
                                                                     <input type="text" class="form-control"
@@ -341,40 +320,44 @@
                                                                         value="{{ $data->status_review_proposal == 0 ? 'DiAjukan' : ($data->status_review_proposal == 1 ? 'DiTolak' : ($data->status_review_proposal == 2 ? 'Direvisi' : 'Diterima')) }}"
                                                                         readonly>
                                                                 </div>
-                                                            </div>
-
-
-                                                            <div class="mb-3">
-                                                                <label for="catatan" class="form-label">Catatan</label>
-                                                                <textarea class="form-control" id="catatan" name="catatan" rows="3" readonly>{{ $data->catatan }}</textarea>
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <div class="row">
-                                                                    <div class="col">
-                                                                        <label class="form-label">Tanggal
-                                                                            Pengajuan</label>
-                                                                        <input type="text" class="form-control"
-                                                                            value="{{ $data->p_reviewProposal->tanggal_penugasan }}"
-                                                                            readonly>
+                                                                <div class="mb-3">
+                                                                    <label for="catatan"
+                                                                        class="form-label">Catatan</label>
+                                                                    <textarea class="form-control" id="catatan" name="catatan" rows="3" readonly>
+                                                                {{ $data->catatan }}
+                                                                </textarea>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            <label for="tanggal_pengajuan"
+                                                                                class="form-label">Tanggal
+                                                                                Pengajuan</label>
+                                                                            <input type="text" class="form-control"
+                                                                                value="{{ $data->tanggal_penugasan }}"
+                                                                                readonly>
+                                                                        </div>
                                                                     </div>
-                                                                    <div class="col">
-                                                                        <label class="form-label">Tanggal
-                                                                            Review</label>
-                                                                        <input type="text" class="form-control"
-                                                                            value="{{ $data->tanggal_review }}" readonly>
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            <label for="tanggal_pengajuan"
+                                                                                class="form-label">Tanggal
+                                                                                Review</label>
+                                                                            <input type="text" class="form-control"
+                                                                                value="{{ $data->tanggal_review }}"
+                                                                                readonly>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <!-- tambahkan input untuk atribut lainnya jika diperlukan -->
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Close</button>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Close</button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            @endif
                                         @endforeach
                                     </tbody>
                                 </table>

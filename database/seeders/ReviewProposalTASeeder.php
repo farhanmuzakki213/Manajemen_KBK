@@ -15,7 +15,8 @@ class ReviewProposalTASeeder extends Seeder
     public function run(): void
     {
         $PenugasanData = [
-            [487, 3, 10, 2, '1', '2024-01-17']
+            [487, 3, 2, 3, '1', '2024-01-17'],
+            [727, 3, 4, 3, '1', '2024-01-17']
         ];
 
         foreach ($PenugasanData as $data) {
