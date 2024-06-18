@@ -38,8 +38,7 @@ class ReviewProposalTAController extends Controller
     public function index()
     {
         $dosen_kbk = $this->getDosen();
-        // debug($dosen_kbk);
-
+        /* debug($dosen_kbk); */
         $data_review_proposal_ta = ReviewProposalTAModel::where(function ($query) use ($dosen_kbk) {
             $query->where('reviewer_satu', $dosen_kbk->id_dosen_kbk)
                 ->orWhere('reviewer_dua', $dosen_kbk->id_dosen_kbk);
@@ -49,139 +48,118 @@ class ReviewProposalTAController extends Controller
 
         debug($data_review_proposal_ta->toArray());
 
+        $reviewer_data = $data_review_proposal_ta->map(function ($item) use ($dosen_kbk) {
+            $reviewer = null;
+        
+            // Determine the reviewer role
+            if ($item->reviewer_satu == $dosen_kbk->id_dosen_kbk) {
+                $reviewer = '1';
+            } elseif ($item->reviewer_dua == $dosen_kbk->id_dosen_kbk) {
+                $reviewer = '2';
+            }
+        
+            // Extract 'dosen' from 'p_reviewDetail', default to null if empty
+            $dosen_review = $item->p_reviewDetail->isNotEmpty() ? $item->p_reviewDetail->first()->dosen : null;
+        
+            // Prepare data object based on whether 'dosen_review' is null or not
+            $dataObject = (object) [
+                'id_penugasan' => $item->id_penugasan,
+                'reviewer_satu' => $item->reviewer_satu_dosen->id_dosen_kbk,
+                'reviewer_dua' => $item->reviewer_dua_dosen->id_dosen_kbk,
+                'tanggal_penugasan' => $item->tanggal_penugasan,
+                'pembimbing_satu' => $item->proposal_ta->r_pembimbing_satu->nama_dosen,
+                'pembimbing_dua' => $item->proposal_ta->r_pembimbing_dua->nama_dosen,
+                'judul' => $item->proposal_ta->judul,
+                'jenis_kbk_id' => $item->proposal_ta->jenis_kbk_id,
+                'nama' => $item->proposal_ta->r_mahasiswa->nama,
+                'nim' => $item->proposal_ta->r_mahasiswa->nim,
+                'prodi_id' => $item->proposal_ta->r_mahasiswa->prodi_id,
+                'dosen_r' => $reviewer
+            ];
+        
+            // Add 'dosen' to data object if 'dosen_review' is not null
+            if ($dosen_review !== null) {
+                $dataObject->dosen = $dosen_review;
+            }
+        
+            return $dataObject;
+        });
+        
+        
 
-        $id_penugasan_array = $data_review_proposal_ta->pluck('id_penugasan')->toArray();
-
-        // debug($id_penugasan_array);
-
+        debug($reviewer_data->toArray());
         // Ambil penugasan hanya untuk dosen yang terpilih sebagai reviewer pada tabel review
         $data_review_proposal_ta_detail = ReviewProposalTaDetailPivot::whereHas('p_reviewProposal', function ($query) use ($dosen_kbk) {
             $query->where(function ($query) use ($dosen_kbk) {
                 $query->where('reviewer_satu', $dosen_kbk->id_dosen_kbk)
                     ->orWhere('reviewer_dua', $dosen_kbk->id_dosen_kbk);
             });
-        })->with('p_reviewProposal.proposal_ta.r_mahasiswa')
-            ->whereIn('penugasan_id', $id_penugasan_array)
-            ->orderByDesc('review_proposal_ta_detail_pivot.penugasan_id')
+        })->with([
+            'p_reviewProposal.proposal_ta.r_mahasiswa',
+            'p_reviewProposal.proposal_ta.r_pembimbing_satu',
+            'p_reviewProposal.proposal_ta.r_pembimbing_dua',
+            'p_reviewProposal.p_reviewDetail',
+            'p_reviewProposal.reviewer_satu_dosen',
+            'p_reviewProposal.reviewer_dua_dosen'
+        ])
+            ->orderByDesc('penugasan_id')
             ->get();
 
-        // debug($data_review_proposal_ta_detail->toArray());
+        debug($data_review_proposal_ta_detail->toArray());
 
-        $id_penugasan_detail = $data_review_proposal_ta_detail->pluck('penugasan_id')->toArray();
-        debug($id_penugasan_detail);
-
-
-        // Mengambil reviewer_satu dan reviewer_dua dari setiap item di $data_review_proposal_ta_detail
-        $reviewer_data = $data_review_proposal_ta_detail->map(function ($item) use ($dosen_kbk) {
-            // Inisialisasi reviewer sebagai null
+        $reviewer_data_detail = $data_review_proposal_ta_detail->map(function ($detail) use ($dosen_kbk) {
+            $item = $detail;
             $reviewer = null;
 
-            // Cek apakah dosen_kbk adalah reviewer_satu
+            // Determine the reviewer role
             if ($item->p_reviewProposal->reviewer_satu == $dosen_kbk->id_dosen_kbk) {
                 $reviewer = '1';
-            }
-
-            // Cek apakah dosen_kbk adalah reviewer_dua
-            if ($item->p_reviewProposal->reviewer_dua == $dosen_kbk->id_dosen_kbk) {
+            } elseif ($item->p_reviewProposal->reviewer_dua == $dosen_kbk->id_dosen_kbk) {
                 $reviewer = '2';
             }
 
-            // Kembalikan objek baru hanya dengan atribut penugasan_id dan reviewer
-            return (object)[
+            // Return the desired attributes in a new object
+            return (object) [
                 'penugasan_id' => $item->penugasan_id,
-                'dosen' => $reviewer
+                'reviewer_satu' => $item->p_reviewProposal->reviewer_satu_dosen->id_dosen_kbk,
+                'reviewer_dua' => $item->p_reviewProposal->reviewer_dua_dosen->id_dosen_kbk,
+                'tanggal_penugasan' => $item->p_reviewProposal->tanggal_penugasan,
+                'pembimbing_satu' => $item->p_reviewProposal->proposal_ta->r_pembimbing_satu->nama_dosen,
+                'pembimbing_dua' => $item->p_reviewProposal->proposal_ta->r_pembimbing_dua->nama_dosen,
+                'judul' => $item->p_reviewProposal->proposal_ta->judul,
+                'jenis_kbk_id' => $item->p_reviewProposal->proposal_ta->jenis_kbk_id,
+                'nama' => $item->p_reviewProposal->proposal_ta->r_mahasiswa->nama,
+                'nim' => $item->p_reviewProposal->proposal_ta->r_mahasiswa->nim,
+                'prodi_id' => $item->p_reviewProposal->proposal_ta->r_mahasiswa->prodi_id,
+                'dosen' => $item->dosen,
+                'tanggal_review' => $item->tanggal_review,
+                'status_review_proposal' => $item->status_review_proposal,
+                'catatan' => $item->catatan,
+                'dosen_r' => $reviewer
             ];
-        })
-            ->filter(function ($item) {
-                // Hanya kembalikan item di mana reviewer (dosen) bukan null
-                return !is_null($item->dosen);
-            });
-
-            debug($reviewer_data->toArray());
-
-         
+        });   
+        // $penugasan_ids sekarang berisi semua penugasan_id dari $reviewer_data_detail
 
 
-        $data_proposal_ta = ProposalTAModel::orderByDesc('id_proposal_ta')->get();
-
-
-        $dosen_values = $reviewer_data->pluck('dosen')->toArray(); // Ambil nilai dosen dan ubah menjadi array
-
-        // debug($dosen_values);
-        
-        $dosen_value = $reviewer_data->pluck('dosen')->first();
-        
-        debug($dosen_value);
-
-        $data_detail = $data_review_proposal_ta_detail->filter(function ($item) use ($dosen_values) {
-            return in_array($item->dosen, $dosen_values);
-        });
-
-        // debug($data_detail->toArray());
-
-        // Ambil review proposal TA hanya untuk dosen yang terpilih sebagai reviewer pada tabel penugasan
-
-
-        return view('admin.content.dosenKbk.review_proposal_ta', compact('data_detail', 'id_penugasan_detail', 'data_proposal_ta', 'data_review_proposal_ta'));
+        debug($reviewer_data_detail->toArray());
+        return view('admin.content.dosenKbk.review_proposal_ta', compact('reviewer_data_detail', 'reviewer_data'));
     }
 
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(string $id)
+    public function create(string $id, string $dosen)
     {
-        // Cek apakah penugasan sudah ada
-        $cek_data = ReviewProposalTaDetailPivot::where('penugasan_id', $id)->first();
-
-        if ($cek_data) {
-            // Jika sudah ada, kembalikan ke halaman dengan pesan error
-            return redirect()->route('PenugasanReview')->with('error', 'Data sudah diambil.');
-        }
-
         $nextNumber = $this->getCariNomor();
         $dosen_kbk = $this->getDosen();
         $data_dosen_kbk = DosenKBK::where('jenis_kbk_id', $dosen_kbk->jenis_kbk_id)->get();
 
         $penugasan_id = $id;
+        $dosen_review = $dosen;
+        debug($dosen_review);
 
-        $data_review_proposal_ta = ReviewProposalTAModel::where(function ($query) use ($dosen_kbk) {
-            $query->where('reviewer_satu', $dosen_kbk->id_dosen_kbk)
-                ->orWhere('reviewer_dua', $dosen_kbk->id_dosen_kbk);
-        })->with('proposal_ta.r_mahasiswa', 'p_reviewDetail')
-            ->orderByDesc('review_proposal_ta.id_penugasan')
-            ->get();
-
-        // debug($data_review_proposal_ta->toArray());
-
-        $reviewer_data = $data_review_proposal_ta->map(function ($item) use ($dosen_kbk, $penugasan_id) {
-            // Inisialisasi reviewer sebagai null
-            $reviewer = null;
-
-            // Cek apakah dosen_kbk adalah reviewer_satu dan id_penugasan cocok
-            if ($item->reviewer_satu == $dosen_kbk->id_dosen_kbk && $item->id_penugasan == $penugasan_id) {
-                $reviewer = 'reviewer_satu';
-            }
-
-            // Cek apakah dosen_kbk adalah reviewer_dua dan id_penugasan cocok
-            if ($item->reviewer_dua == $dosen_kbk->id_dosen_kbk && $item->id_penugasan == $penugasan_id) {
-                $reviewer = 'reviewer_dua';
-            }
-
-            // Tambahkan peran reviewer ke setiap item
-            $item->reviewer_role = $reviewer;
-            return $item;
-        })
-            ->filter(function ($item) {
-                // Hanya kembalikan item di mana reviewer_role bukan null
-                return !is_null($item->reviewer_role);
-            });
-
-        debug($reviewer_data->toArray());
-
-
-
-        return view('admin.content.dosenKbk.form.review_proposal_ta_form', compact('data_dosen_kbk', 'reviewer_data', 'penugasan_id', 'nextNumber'));
+        return view('admin.content.dosenKbk.form.review_proposal_ta_form', compact('data_dosen_kbk', 'dosen_review', 'penugasan_id', 'nextNumber'));
     }
 
     /**
@@ -217,82 +195,24 @@ class ReviewProposalTAController extends Controller
         // Set pesan keberhasilan
         return redirect()->route('review_proposal_ta')->with('success', 'Data berhasil dibuat');
     }
-
-    // public function store(Request $request)
-    // {
-    //     $validator = Validator::make($request->all(), [
-    //         'penugasan_id' => 'required',
-    //         'catatan' => 'nullable|string',
-    //         'date' => 'required|date',
-    //     ]);
-
-    //     if ($validator->fails()) {
-    //         return redirect()->back()->withInput()->withErrors($validator);
-    //     }
-
-    //     try {
-    //         DB::beginTransaction();
-
-    //         // Ambil penugasan_id dari request
-    //         $penugasan_id = $request->penugasan_id;
-
-    //         // Loop untuk setiap reviewer yang ada
-    //         foreach ($request->reviewer as $reviewer) {
-    //             $statusKey = 'status_' . $reviewer;
-
-    //             // Simpan data sesuai dengan reviewer yang aktif
-    //             $data = [
-    //                 'penugasan_id' => $penugasan_id,
-    //                 'dosen' => $reviewer,
-    //                 'status_review_proposal' => $request->input($statusKey),
-    //                 'catatan' => $request->catatan,
-    //                 'tanggal_review' => $request->date,
-    //             ];
-
-    //             // Simpan data
-    //             ReviewProposalTaDetailPivot::create($data);
-    //         }
-
-    //         DB::commit();
-
-    //         return redirect()->route('review_proposal_ta')->with('success', 'Data berhasil disimpan');
-    //     } catch (\Exception $e) {
-    //         DB::rollback();
-
-    //         return redirect()->back()->withInput()->withErrors(['error' => 'Gagal menyimpan data. ' . $e->getMessage()]);
-    //     }
-    // }
-
-
-
-
-
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        $data_dosen = Dosen::all();
-        $data_mahasiswa = Mahasiswa::all();
-        $data_proposal_ta = ProposalTAModel::all();
-        return view('admin.content.dosenKbk.review_proposal_ta', compact('data_dosen', 'data_proposal_ta', 'data_mahasiswa'));
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id, string $dosen)
     {
-        $data_dosen = Dosen::all();
-        $data_review_proposal_ta_detail = ReviewProposalTaDetailPivot::with('p_reviewProposal.reviewer_dua_dosen.r_dosen', 'p_reviewProposal.reviewer_satu_dosen.r_dosen')->where('penugasan_id', $id)
-            ->first();
-        /* ->join('dosen as dosen_satu', 'review_proposal_ta.reviewer_satu', '=', 'dosen_satu.id_dosen')
-            ->join('dosen as dosen_dua', 'review_proposal_ta.reviewer_dua', '=', 'dosen_dua.id_dosen')
-            ->select('review_proposal_ta.*', 'dosen_satu.nama_dosen as reviewer_satu_nama', 'dosen_dua.nama_dosen as reviewer_dua_nama')
-            ->orderByDesc('review_proposal_ta.id_penugasan')
-            */
-        debug(compact('data_dosen', 'data_review_proposal_ta_detail'));
-        return view('admin.content.dosenKbk.form.review_proposal_ta_edit', compact('data_dosen', 'data_review_proposal_ta_detail'));
+        $penugasan_id = $id;
+        $dosen_review = $dosen;
+        $data_dosen = ReviewProposalTaDetailPivot::where('penugasan_id', $id)->where('dosen', $dosen)->first();
+        debug($dosen_review);
+        return view('admin.content.dosenKbk.form.review_proposal_ta_edit', compact('data_dosen', 'dosen_review', 'penugasan_id'));
     }
 
     /**
@@ -319,7 +239,7 @@ class ReviewProposalTAController extends Controller
             'tanggal_review' => $request->date,
         ];
         //dd($request->all());
-        ReviewProposalTaDetailPivot::where('penugasan_id', $id)->update($data);
+        ReviewProposalTaDetailPivot::where('penugasan_id', $id)->where('dosen', $request->reviewer)->update($data);
         return redirect()->route('review_proposal_ta')->with('success', 'Data berhasil diperbarui.');
     }
 

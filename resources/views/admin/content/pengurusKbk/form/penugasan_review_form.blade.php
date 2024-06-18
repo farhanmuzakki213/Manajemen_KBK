@@ -41,6 +41,7 @@
                                     <label for="proposal_ta_id" class="form-label">Nama Mahasiswa</label>
                                     <input type="text" class="form-control" id="proposal_ta_id" name="proposal_ta_id" value="{{ $selected_proposal_ta->r_mahasiswa->nim }} | {{ $selected_proposal_ta->r_mahasiswa->nama }}" readonly>
                                     <input type="hidden" name="proposal_ta_id" value="{{ $selected_proposal_ta->id_proposal_ta }}">
+                                    <input type="hidden" name="pimpinan_prodi" value="{{ $data_pimpinan_prodi->id_pimpinan_prodi }}">
                                     @error('proposal_ta_id')
                                         <small>{{ $message }}</small>
                                     @enderror
@@ -71,21 +72,7 @@
                                     @error('reviewer_dua')
                                         <small>{{ $message }}</small>
                                     @enderror
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="pimpinan_prodi" class="form-label">Nama Pimpinan Prodi</label>
-                                    <select class="form-select" aria-label="Default select example" name="pimpinan_prodi" id="pimpinan_prodi" required>
-                                        <option selected disabled>Pilih Nama Pimpinan Prodi</option>
-                                        @foreach ($data_pimpinan_prodi as $pimpinan_prodi)
-                                            <option value="{{ $pimpinan_prodi->id_pimpinan_prodi }}">{{ $pimpinan_prodi->r_dosen->nama_dosen }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('pimpinan_prodi')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </div>
-                                
+                                </div>                               
 
                                 <div class="mb-3">
                                     {{-- <label for="date" class="form-label">Tanggal Penugasan</label> --}}

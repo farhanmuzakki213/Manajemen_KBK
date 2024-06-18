@@ -74,22 +74,6 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="pimpinan_prodi" class="form-label">Pimpinan Prodi</label>
-                                    <select class="form-select" aria-label="Default select example" name="pimpinan_prodi"
-                                        id="pimpinan_prodi" required>
-                                        <option selected disabled>Pimpinan Prodi</option>
-                                        @foreach ($data_pimpinan_prodi as $pimpinan_prodi)
-                                            <option value="{{ $pimpinan_prodi->id_pimpinan_prodi}}"
-                                                {{ $pimpinan_prodi->id_pimpinan_prodi == $data_review_proposal_ta->pimpinan_prodi_id ? 'selected' : '' }}>
-                                                {{ $pimpinan_prodi->r_dosen->nama_dosen }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('pimpinan_prodi')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </div>
-                                <div class="mb-3">
                                     {{-- <label for="date" class="form-label">Tanggal Penugasan</label> --}}
                                     <input type="hidden" class="form-control" id="date" name="date" value="{{ \Carbon\Carbon::now()->toDateString() }}">
                                     @error('date')

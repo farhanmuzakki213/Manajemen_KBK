@@ -17,6 +17,7 @@ return new class extends Migration
             $table->enum('status_review_proposal', ['0', '1', '2', '3'])->default('0')->comment('0: Di Ajukan, 1: Di Tolak, 2: Di Revisi, 3: Di Terima');
             $table->text('catatan');
             $table->date('tanggal_review');
+            $table->unique(['penugasan_id', 'dosen']);
         });
 
         Schema::table('review_proposal_ta_detail_pivot', function (Blueprint $table) {

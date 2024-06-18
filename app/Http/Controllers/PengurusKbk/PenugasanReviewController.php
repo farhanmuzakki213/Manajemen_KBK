@@ -55,25 +55,22 @@ class PenugasanReviewController extends Controller
     {
         // Cek apakah penugasan sudah ada
         $cek_data = ReviewProposalTAModel::where('id_penugasan', $id)->first();
-    
+        debug($id);
         if ($cek_data) {
             // Jika sudah ada, kembalikan ke halaman dengan pesan error
             return redirect()->route('PenugasanReview')->with('error', 'Data sudah diambil.');
         }
     
         $nextNumber = $this->getCariNomor();
+        $selected_proposal_ta = ProposalTAModel::with('r_mahasiswa')->where('id_proposal_ta', $id)->first();
         $pengurus_kbk = $this->getDosen();
         $data_dosen_kbk = DosenKBK::where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id)->get();
-        $data_pimpinan_prodi = PimpinanProdi::with('r_dosen')->get();
-    
+        $data_pimpinan_prodi = PimpinanProdi::with('r_dosen')->where('prodi_id', $selected_proposal_ta->r_mahasiswa->prodi_id)->first();
+        debug($data_pimpinan_prodi);
+
         // Ambil proposal TA yang terkait dengan ID proposal yang dipilih
-        $selected_proposal_ta = ProposalTAModel::with('r_mahasiswa')->where('id_proposal_ta', $id)->first();
-    
-        // Ambil semua proposal TA (untuk dropdown mahasiswa)
-        $all_proposal_ta = ProposalTAModel::with('r_mahasiswa')->get();
-    
         return view('admin.content.pengurusKbk.form.penugasan_review_form', compact(
-            'data_pimpinan_prodi', 'data_dosen_kbk', 'nextNumber', 'selected_proposal_ta', 'all_proposal_ta'
+            'data_pimpinan_prodi', 'data_dosen_kbk', 'nextNumber', 'selected_proposal_ta'
         ));
     }
 
@@ -162,7 +159,6 @@ class PenugasanReviewController extends Controller
             'id_penugasan' => 'required',
             'reviewer_satu' => 'required',
             'reviewer_dua' => 'required',
-            'pimpinan_prodi' => 'required',
             'date' => 'required|date',
         ]);
 
@@ -181,7 +177,6 @@ class PenugasanReviewController extends Controller
             'id_penugasan' => $request->id_penugasan,
             'reviewer_satu' => $request->reviewer_satu,
             'reviewer_dua' => $request->reviewer_dua,
-            'pimpinan_prodi_id' => $request->pimpinan_prodi,
             'tanggal_penugasan' => $request->date,
         ];
 
