@@ -18,6 +18,10 @@ class VerRpsUasSeeder extends Seeder
         $VerRPSData = [
             [1, 9, '3', 'tidak ada', '2024-01-23'],
             [2, 9, '3', 'tidak ada', '2024-01-23'],
+            [5, 9, '1', 'tidak ada', '2024-01-23'],
+            [6, 9, '2', 'tidak ada', '2024-01-23'],
+            [8, 9, '3', 'tidak ada', '2024-01-23'],
+            [9, 9, '1', 'tidak ada', '2024-01-23'],
         ];
 
         foreach ($VerRPSData as $data) {

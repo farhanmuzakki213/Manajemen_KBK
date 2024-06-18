@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ver_rps_uas', function (Blueprint $table) {
-            $table->bigInteger('id_ver_rps_uas')->primary();
+            $table->bigInteger('id_ver_rps_uas')->primary()->unsigned();
             $table->bigInteger('rep_rps_uas_id');
             $table->bigInteger('pengurus_id');
             $table->enum('rekomendasi', ['0', '1', '2', '3'])->default('0')->comment('0: Belum Diveriikasi, 1: Tidak Layak Pakai, 2: Revisi, 3: layak Dipakai');

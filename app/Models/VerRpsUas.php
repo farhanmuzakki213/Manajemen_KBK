@@ -9,7 +9,7 @@ use Ramsey\Uuid\Uuid;
 
 class VerRpsUas extends Model
 {
-    use Notifiable;
+    use HasFactory;
     protected $fillable = [
         'id_ver_rps_uas',
         'rep_rps_uas_id',

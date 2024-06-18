@@ -309,7 +309,9 @@ Route::group(['middleware' => ['role:pengurus-kbk']], function () {
     // Verifikasi RPS
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/verifikasi_rps', [Ver_RPSController::class, 'index'])->middleware(['auth', 'verified'])->name('ver_rps');
+        Route::get('/verifikasi_rps_berita_acara', [Ver_RPSController::class, 'beritaAcara'])->middleware(['auth', 'verified'])->name('ver_rps_berita_acara');
         Route::post('/verifikasi_rps/store', [Ver_RPSController::class, 'store'])->middleware(['auth', 'verified'])->name('ver_rps.store');
+        Route::post('/verifikasi_rps_berita_acara/store', [Ver_RPSController::class, 'storeBeritaAcara'])->middleware(['auth', 'verified'])->name('ver_rps_berita_acara.store');
         Route::get('/verifikasi_rps/create/{id}', [Ver_RPSController::class, 'create'])->middleware(['auth', 'verified'])->name('ver_rps.create');
         Route::get('/verifikasi_rps/edit/{id}', [Ver_RPSController::class, 'edit'])->middleware(['auth', 'verified'])->name('ver_rps.edit');
         Route::put('/verifikasi_rps/update/{id}', [Ver_RPSController::class, 'update'])->middleware(['auth', 'verified'])->name('ver_rps.update');
