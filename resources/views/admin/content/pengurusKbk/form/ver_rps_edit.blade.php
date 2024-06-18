@@ -17,6 +17,7 @@
                                 @method('PUT')
                                 <div class="mb-3">
                                     <input type="hidden" class="form-control" id="id_ver_rps" name="id_ver_rps" value="{{ $data_ver_rps->id_ver_rps_uas }}" readonly>
+                                    <input type="hidden" class="form-control" id="rep_rps_uas_id" name="rep_rps_uas_id" value="{{ $data_ver_rps->rep_rps_uas_id }}" readonly>
                                     @error('id_ver_rps')
                                         <small>{{ $message }}</small>
                                     @enderror
@@ -48,7 +49,7 @@
                                 </div>
                                 <div class="col-5 mb-3">
                                     <div class="input-group date">
-                                        <input type="hidden" class="form-control" id="date" name="date" value="{{ \Carbon\Carbon::now()->toDateString() }}"/>
+                                        <input type="hidden" class="form-control" id="date" name="date" value="{{ \Carbon\Carbon::now()}}"/>
                                     </div>
                                     @error('date')
                                         <small>{{ $message }}</small>

@@ -25,6 +25,7 @@
                                     @endif
                                 </div>
                                 <input type="hidden" class="form-control" id="id_penugasan" name="id_penugasan" value="{{ $data_review_proposal_ta->id_penugasan }}">
+                                <input type="hidden" class="form-control" id="proposal_ta_id" name="proposal_ta_id" value="{{ $data_review_proposal_ta->proposal_ta_id }}">
                                 <div class="mb-3">
                                     <label for="nama_mahasiswa" class="form-label">Nama Mahasiswa</label>
                                     <select class="form-select" aria-label="Default select example" name="nama_mahasiswa" id="nama_mahasiswa" disabled>
@@ -75,7 +76,7 @@
                                 </div>
                                 <div class="mb-3">
                                     {{-- <label for="date" class="form-label">Tanggal Penugasan</label> --}}
-                                    <input type="hidden" class="form-control" id="date" name="date" value="{{ \Carbon\Carbon::now()->toDateString() }}">
+                                    <input type="hidden" class="form-control" id="date" name="date" value="{{ \Carbon\Carbon::now()}}">
                                     @error('date')
                                         <small>{{ $message }}</small>
                                     @enderror

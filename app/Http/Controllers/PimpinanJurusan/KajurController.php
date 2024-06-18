@@ -48,13 +48,13 @@ class KajurController extends Controller
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('semester');
 
-        $data_ver_rps = VerRpsUas:: with('r_dosen', 'r_rep_rps_uas')
+        $data_ver_rps = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas')
             ->whereHas('r_rep_rps_uas', function ($query) {
                 $query->where('type', '=', '0'); 
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
-
+            debug($data_ver_rps);
         return view('admin.content.pimpinanJurusan.GrafikRPS', compact('banyak_pengunggahan', 'banyak_verifikasi', 'semester', 'data_ver_rps'));
     }
 
@@ -80,7 +80,7 @@ class KajurController extends Controller
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('semester');
 
-        $data_ver_uas = VerRpsUas:: with('r_dosen', 'r_rep_rps_uas')
+        $data_ver_uas = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas')
             ->whereHas('r_rep_rps_uas', function ($query) {
                 $query->where('type', '=', '1'); 
             })
@@ -146,7 +146,7 @@ class KajurController extends Controller
 
     public function RepRPSJurusan()
     {
-        $data_rep_rps = VerRpsUas:: with('r_dosen', 'r_rep_rps_uas.r_smt_thnakd')
+        $data_rep_rps = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_smt_thnakd')
         ->whereHas('r_rep_rps_uas.r_smt_thnakd', function ($query) {
             $query->where('status_smt_thnakd', '=', '1'); 
         })
@@ -161,7 +161,7 @@ class KajurController extends Controller
 
     public function RepSoalUASJurusan()
     {
-        $data_rep_soal_uas = VerRpsUas:: with('r_dosen', 'r_rep_rps_uas.r_smt_thnakd')
+        $data_rep_soal_uas = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_smt_thnakd')
         ->whereHas('r_rep_rps_uas.r_smt_thnakd', function ($query) {
             $query->where('status_smt_thnakd', '=', '1'); 
         })

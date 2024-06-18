@@ -63,7 +63,7 @@
                                             @foreach ($data_ver_soal_uas as $data_ver)
                                                 <tr class="table-Light">
                                                     <th>{{ $data_ver->id_ver_rps_uas }}</th>
-                                                    <th>{{ optional($data_ver->r_rep_rps_uas)->r_dosen->nama_dosen }}</th>
+                                                    <th>{{ optional($data_ver->r_pengurus)->r_dosen->nama_dosen }}</th>
                                                     <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->kode_matkul }}</th>
                                                     <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->semester }}</th>
                                                     <th><a href="{{ asset('storage/uploads/ver_soal_uas_files/' . $data_ver->file_verifikasi) }}" target="_blank">{{ $data_ver->file_verifikasi }}</a>

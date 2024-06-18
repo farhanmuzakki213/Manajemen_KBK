@@ -12,7 +12,7 @@ class Berita_Ver_UASController extends Controller
     
     public function index()
     {
-        $data_ver_soal_uas = VerRpsUas:: with('r_dosen', 'r_rep_rps_uas.r_smt_thnakd')
+        $data_ver_soal_uas = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_smt_thnakd')
         ->whereHas('r_rep_rps_uas.r_smt_thnakd', function ($query) {
             $query->where('status_smt_thnakd', '=', '1'); 
         })

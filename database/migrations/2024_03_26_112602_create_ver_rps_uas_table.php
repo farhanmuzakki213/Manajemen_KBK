@@ -17,7 +17,8 @@ return new class extends Migration
             $table->bigInteger('pengurus_id');
             $table->enum('rekomendasi', ['0', '1', '2', '3'])->default('0')->comment('0: Belum Diveriikasi, 1: Tidak Layak Pakai, 2: Revisi, 3: layak Dipakai');
             $table->text('saran')->nullable();
-            $table->date('tanggal_diverifikasi');
+            $table->timestamp('tanggal_diverifikasi');
+            $table->timestamps();
         });
 
         Schema::table('ver_rps_uas', function (Blueprint $table) {

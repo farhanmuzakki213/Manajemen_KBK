@@ -1,6 +1,7 @@
 <?php
 
 /* Admin */
+
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\MahasiswaController;
 use App\Http\Controllers\Admin\JurusanController;
@@ -254,12 +255,16 @@ Route::group(['middleware' => ['role:dosen-pengampu']], function () {
         Route::get('/upload_rps/edit/{id}', [DosenMatkulController::class, 'edit_rps'])->middleware(['auth', 'verified'])->name('upload_rps.edit');
         Route::put('/upload_rps/update/{id}', [DosenMatkulController::class, 'update_rps'])->middleware(['auth', 'verified'])->name('upload_rps.update');
         Route::delete('/upload_rps/delete/{id}', [DosenMatkulController::class, 'delete_rps'])->middleware(['auth', 'verified'])->name('upload_rps.delete');
+
         //Upload_UAS
         Route::post('/upload_soal_uas/store', [DosenMatkulController::class, 'store_uas'])->middleware(['auth', 'verified'])->name('upload_soal_uas.store');
         Route::get('/upload_soal_uas/create/{id_matkul}', [DosenMatkulController::class, 'create_uas'])->middleware(['auth', 'verified'])->name('upload_soal_uas.create');
         Route::get('/upload_soal_uas/edit/{id}', [DosenMatkulController::class, 'edit_uas'])->middleware(['auth', 'verified'])->name('upload_soal_uas.edit');
         Route::put('/upload_soal_uas/update/{id}', [DosenMatkulController::class, 'update_uas'])->middleware(['auth', 'verified'])->name('upload_soal_uas.update');
         Route::delete('/upload_soal_uas/delete/{id}', [DosenMatkulController::class, 'delete_uas'])->middleware(['auth', 'verified'])->name('upload_soal_uas.delete');
+        /* Route::get('/dosen_matkul_notifikasi_uas/{dosen_matkul_id}/{matkul_kbk_id}', [DosenMatkulController::class, 'show_uas'])
+            ->name('notifikasi_uas.show'); */
+        Route::get('/dosen_matkul_notifikasi/{dosen_matkul_id}/{matkul_kbk_id}', [DosenMatkulController::class, 'show'])->name('notifikasi.show');
     });
 });
 
@@ -276,6 +281,7 @@ Route::group(['middleware' => ['role:dosen-kbk']], function () {
         Route::get('/review_proposal_ta/edit/{id}/{dosen}', [ReviewProposalTAController::class, 'edit'])->middleware(['auth', 'verified'])->name('review_proposal_ta.edit');
         Route::put('/review_proposal_ta/update/{id}', [ReviewProposalTAController::class, 'update'])->middleware(['auth', 'verified'])->name('review_proposal_ta.update');
         Route::delete('/review_proposal_ta/delete/{id}/{dosen}', [ReviewProposalTAController::class, 'delete'])->middleware(['auth', 'verified'])->name('review_proposal_ta.delete');
+        Route::get('/dosen_kbk_notifikasi/{id_penugasan}', [ReviewProposalTAController::class, 'show'])->name('dosen_kbk_notifikasi.show');
     });
 });
 

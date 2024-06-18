@@ -182,7 +182,7 @@ class Ver_Soal_UASController extends Controller
             'id_pengurus_kbk' => 'required',
             'rekomendasi' => 'required',
             'saran' => 'nullable',
-            'date' => 'required|date',
+            'date' => 'required|date_format:Y-m-d H:i:s',
         ]);
 
         if ($validator->fails()) {
@@ -197,17 +197,21 @@ class Ver_Soal_UASController extends Controller
             'saran' => $request->filled('saran') ? $request->saran : 'Tidak ada',
             'tanggal_diverifikasi' => $request->date,
         ];
-        VerRpsUas::create($data);
+        DB::beginTransaction();
+        try{
+            VerRpsUas::create($data);
+            $repRpsUas = RepRpsUas::with('r_dosen_matkul.r_dosen', 'r_dosen_matkul.p_matkulKbk')->where('id_rep_rps_uas', $request->id_rep_uas)->first();
+            $verRpsUas = VerRpsUas::with('r_pengurus.r_dosen')->where('id_ver_rps_uas', $request->id_ver_uas)->first();
+            $dosenMatkul = User::where('name', $repRpsUas->r_dosen_matkul->r_dosen->nama_dosen)
+            ->where('email', $repRpsUas->r_dosen_matkul->r_dosen->email)->first();
 
-        $pengurus_kbk = $this->getDosen();
-        $repRpsUas = RepRpsUas::with('r_dosen_matkul.r_dosen', 'r_dosen_matkul.p_matkulKbk')->where('id_rep_rps_uas', $request->id_rep_uas)->first();
-        $verRpsUas = VerRpsUas::with('r_pengurus.r_dosen')->where('id_ver_rps_uas', $request->id_ver_uas)->first();
-        // Assuming r_dosen_matkul is related to the User model
-        $dosenMatkul = User::where('name', $repRpsUas->r_dosen_matkul->r_dosen->nama_dosen)
-        ->where('email', $repRpsUas->r_dosen_matkul->r_dosen->email)->first();
-
-        if ($dosenMatkul) {
-            Notification::send($dosenMatkul, new VerifikasiUas($repRpsUas, $verRpsUas));
+            if ($dosenMatkul) {
+                Notification::send($dosenMatkul, new VerifikasiUas($repRpsUas, $verRpsUas));
+            }
+            DB::commit();
+        } catch (\Throwable $th){
+            DB::rollback();
+            return redirect()->route('ver_soal_uas')->with('error', 'Gagal menyimpan data verifikasi.');
         }
         debug(compact('dosenMatkul', 'verRpsUas', 'repRpsUas'));
         return redirect()->route('ver_soal_uas')->with('success', 'Data berhasil disimpan.');
@@ -237,9 +241,10 @@ class Ver_Soal_UASController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id_ver_uas' => 'required',
+            'rep_rps_uas_id' => 'required',
             'rekomendasi' => 'required',
             'saran' => 'nullable',
-            'date' => 'required|date',
+            'date' => 'required|date_format:Y-m-d H:i:s',
         ]);
 
         if ($validator->fails()) {
@@ -247,13 +252,28 @@ class Ver_Soal_UASController extends Controller
         }
         $data = [
             'id_ver_rps_uas' => $request->id_ver_uas,
+            'rep_rps_uas_id' => $request->rep_rps_uas_id,
             'rekomendasi' => $request->rekomendasi,
             'saran' => $request->filled('saran') ? $request->saran : 'Tidak ada',
             'tanggal_diverifikasi' => $request->date,
         ];
+        DB::beginTransaction();
+        try{
+            VerRpsUas::where('id_ver_rps_uas', $id)->update($data);
+            $repRpsUas = RepRpsUas::with('r_dosen_matkul.r_dosen', 'r_dosen_matkul.p_matkulKbk')->where('id_rep_rps_uas', $request->rep_rps_uas_id)->first();
+            $verRpsUas = VerRpsUas::with('r_pengurus.r_dosen')->where('id_ver_rps_uas', $request->id_ver_uas)->first();
+            $dosenMatkul = User::where('name', $repRpsUas->r_dosen_matkul->r_dosen->nama_dosen)
+            ->where('email', $repRpsUas->r_dosen_matkul->r_dosen->email)->first();
 
-        // Update data
-        VerRpsUas::where('id_ver_rps_uas', $id)->update($data);
+            if ($dosenMatkul) {
+                Notification::send($dosenMatkul, new VerifikasiUas($repRpsUas, $verRpsUas));
+            }
+            DB::commit();
+        } catch (\Throwable $th){
+            DB::rollback();
+            return redirect()->route('ver_soal_uas')->with('error', 'Gagal menyimpan data verifikasi.');
+        }
+
         return redirect()->route('ver_soal_uas')->with('success', 'Data berhasil diperbarui.');
     }
     /**

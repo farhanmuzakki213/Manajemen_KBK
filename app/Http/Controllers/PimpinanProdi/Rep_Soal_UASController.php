@@ -15,7 +15,7 @@ class Rep_Soal_UASController extends Controller
      */
     public function index()
     {
-        $data_rep_soal_uas = VerRpsUas:: with('r_dosen', 'r_rep_rps_uas.r_smt_thnakd')
+        $data_rep_soal_uas = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_smt_thnakd')
         ->whereHas('r_rep_rps_uas.r_smt_thnakd', function ($query) {
             $query->where('status_smt_thnakd', '=', '1'); 
         })

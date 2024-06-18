@@ -49,7 +49,7 @@
                                         <tr class="table-Light">
                                             <th>{{ $loop->iteration }}</th>
                                             <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->nama_matkul }}</th>
-                                            <th>{{ optional($data_ver->r_rep_rps_uas)->r_dosen->nama_dosen }}</th>
+                                            <th>{{ optional($data_ver->r_pengurus)->r_dosen->nama_dosen }}</th>
                                             <th>{{ optional($data_ver->r_rep_rps_uas)->r_smt_thnakd->smt_thnakd }}</th>
                                             <th>{{ \Carbon\Carbon::parse($data_ver->created_at)->format('d-m-Y') }}</th>
                                             <th>
