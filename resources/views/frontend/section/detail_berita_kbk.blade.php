@@ -12,7 +12,7 @@
                 <img src="{{ $data_berita-> foto_sampul }}" class="img-fluid rounded-end" alt="...">
               </div>
           <h2 class="card-title">{{ $data_berita-> judul }}</h2>
-          <p class="card-text">{{ $data_berita-> isi_berita }}</p>
+          <p class="card-text-detail">{{ $data_berita-> isi_berita }}</p>
           <a href="/" class="btn btn-warning">Kembali</a>
         </div>
       </div>

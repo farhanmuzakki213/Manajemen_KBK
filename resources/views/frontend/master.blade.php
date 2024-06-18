@@ -7,6 +7,7 @@
     @include('frontend.section.berita_kbk')
     <!-- Services-->
     @include('frontend.section.struktur_kbk')
+    @include('frontend.section.data')
     <!-- Portfolio Grid-->
    
 

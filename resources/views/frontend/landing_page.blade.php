@@ -18,6 +18,7 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{{asset('frontend/landing-page/css/styles.css')}}" rel="stylesheet" />
         <link href="{{asset('frontend/landing-page/css/berita.css')}}" rel="stylesheet" />
+        <link href="{{asset('frontend/landing-page/css/data.css')}}" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" crossorigin="">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.css">
         <link rel="stylesheet" href="{{asset('frontend/landing-page/css/struktur.css')}}">
@@ -45,5 +46,6 @@
         <!-- Core theme JS-->
         <script src="{{asset('frontend/landing-page/js/scripts.js')}}"></script>
         <script src="{{asset('frontend/landing-page/js/main.js')}}"></script>
+        <script src="{{asset('frontend/landing-page/js/berita.js')}}"></script>
     </body>
 </html>

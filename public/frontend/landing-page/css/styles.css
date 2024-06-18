@@ -655,7 +655,7 @@ progress {
 } 
 
 .shadow_prodi {
-  padding: 20px; /* Atur padding sesuai kebutuhan */
+  padding: 10px; /* Atur padding sesuai kebutuhan */
   display: inline-block; /* Pastikan tinggi dan lebar sesuai dengan konten di dalam */
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
@@ -851,8 +851,8 @@ progress {
 }
 
 .row_prodi > div {
-  flex: 1 1 200px; /* Misalnya, lebar tetap untuk setiap gambar */
-  margin: 10px; /* Atur margin sesuai kebutuhan */
+  flex: 1 1 50px; /* Misalnya, lebar tetap untuk setiap gambar */
+  margin: 1px; /* Atur margin sesuai kebutuhan */
   text-align: center; /* Untuk menengahkan konten di dalam div */
 }
 
