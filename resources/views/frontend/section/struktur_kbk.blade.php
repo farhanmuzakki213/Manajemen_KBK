@@ -1,5 +1,5 @@
 <section class="page-section bg-light" id="struktural">
-    <h1 class="text-center">Struktural</h1>
+    <h1 class="text-center ">Struktural</h1>
     <div class="container-main">
         <div class="card__container swiper">
             <div class="card__content">

@@ -1,86 +1,15 @@
-<style>
-    .card {
-        border-radius: 30px;
-        box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
-    }
-
-    .card-img-top {
-        border-radius: 50px;
-        padding: 20px;
-        object-fit: cover;
-        height: 200px;
-    }
-
-    .card-body {
-        padding: 25px;
-        margin-top: -15px;
-        height: 310px;
-        overflow: hidden;
-    }
-
-    .btn-primary {
-        border-radius: 50px;
-        width: 120px;
-        margin-bottom: 600px;
-    }
-
-    .btn-primary:hover {
-        background-color: black;
-        border: none;
-    }
-
-    h3,
-    h6 {
-        color: rgb(0, 0, 0);
-    }
-
-    .detail-content {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-        line-height: 2.5;
-    }
-
-    .detail-content .image-container {
-        flex: 0 0 40%;
-        padding: 20px;
-    }
-
-    .detail-content .image-container img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 50px;
-        object-fit: cover;
-    }
-
-    .detail-content .text-container {
-        flex: 0 0 60%;
-        padding: 60px;
-    }
-
-    .detail-content h3 {
-        margin-bottom: 10px;
-        line-height: 2.5;
-    }
-
-    .detail-content h6 {
-        margin-bottom: 10px;
-        line-height: 2.5;
-    }
-</style>
-
 <section class="page-section bg-light" id="berita">
-    <div class="container py-5">
-        <h1 class="text-center mb-5">Berita</h1>
+    <div class="container-berita py-5">
+        <h1 class="text-center mb-5 text-3xl font-bold">Berita</h1>
         <div class="row row-cols-1 row-cols-md-3 g-4">
             @foreach ($data_berita as $data)
-            <div class="col">
-                <div class="card">
+            <div class="col-berita">
+                <div class="card h-100 border-0">
                     <img src="{{$data->foto_sampul}}" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h4 class="card-title">{{$data->judul}}</h4>
                         <p class="card-text" style="height: 100px; overflow: hidden;">{{$data->isi_berita}}</p>
-                        <div class="text-center">
+                        <div class="text-center mt-auto">
                             <a href="/berita/{{ $data->id_berita }}" class="btn btn-primary">Read More</a>
                         </div>
                     </div>
@@ -90,6 +19,40 @@
         </div>
     </div>
 </section>
+
+
+
+
+
+{{-- <section class="page-section bg-gray-100 py-10" id="berita">
+    <div class="container mx-auto px-4">
+        <h1 class="text-center text-3xl font-bold mb-10">Berita</h1>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            @foreach ($data_berita as $data)
+                <div class="relative flex flex-col mt-6 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl">
+                    <div class="relative h-56 mx-4 -mt-6 overflow-hidden text-white shadow-lg bg-clip-border rounded-xl bg-blue-gray-500 shadow-blue-gray-500/40">
+                        <img src="{{ $data->foto_sampul }}" alt="card-image" class="w-full h-full object-cover" />
+                    </div>
+                    <div class="p-6">
+                        <h5 class="block mb-2 font-sans text-xl font-semibold leading-snug text-blue-gray-900">
+                            {{ $data->judul }}
+                        </h5>
+                        <p class="block font-sans text-base font-light leading-relaxed text-gray-700">
+                            {{ $data->isi_berita }}
+                        </p>
+                    </div>
+                    <div class="p-6 pt-0 flex flex-col items-center mt-auto">
+                        <a href="/berita/{{ $data->id_berita }}" class="inline-block px-6 py-3 text-xs font-bold uppercase bg-gray-900 text-white rounded-lg shadow-md hover:shadow-lg focus:opacity-85 focus:outline-none focus:shadow-none active:opacity-85 active:shadow-none">
+                            Read More
+                        </a>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</section> --}}
+
+
 
 {{-- <script>
     document.querySelectorAll('.read-more').forEach(item => {
@@ -109,3 +72,34 @@
         });
     });
 </script> --}}
+
+{{-- <section class="page-section bg-gray-100 py-10" id="berita">
+    <div class="container mx-auto px-4">
+        <h1 class="text-center text-3xl font-bold mb-10">Berita</h1>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            @foreach ($data_berita as $data)
+            <div class="relative flex flex-col mt-6 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl">
+                <div
+                    class="relative h-56 mx-4 -mt-6 overflow-hidden text-white shadow-lg bg-clip-border rounded-xl bg-blue-gray-500 shadow-blue-gray-500/40">
+                    <img src="{{$data->foto_sampul}}" alt="card-image" class="w-full h-full object-cover" />
+                </div>
+                <div class="p-6">
+                    <h5 class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+                        {{$data->judul}}
+                    </h5>
+                    <p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
+                        {{$data->isi_berita}}
+                    </p>
+                </div>
+                <div class="p-6 pt-0 flex flex-col text-center self-start mt-auto">
+                    <a href="/berita/{{ $data->id_berita }}" class="align-middle select-none font-sans font-bold uppercase text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
+                        Read More
+                    </a>
+                </div>
+                
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section> --}}
+

@@ -1,31 +1,116 @@
-.card-img-top-berita{
-    border-radius: 50px;
-    padding: 20px;
-    width: 414px;
-    height: 289px;
-}
-.card-berita{
-    border-radius: 30px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
-    width: 416px;
-    height: 520px;
-}
-.card-body-berita{
-    padding: 25px;
-    margin-top: -15px;
-    width: 414px;
-    height: 154px;
+.container-berita {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    width: 100%;
+    padding-right: calc(var(--bs-gutter-x) * 0.5);
+    padding-left: calc(var(--bs-gutter-x) * 0.5);
+    margin-right: auto;
+    margin-left: auto;
 }
 
-.card-text-berita{
-    width: 364px;
-    height: 72px;
+@media (min-width: 576px) {
+    .container-berita {
+        max-width: 540px;
+    }
 }
-.btn-primary-berita{
-    border-radius: 50px;
-    width: 120px;
+
+@media (min-width: 768px) {
+    .container-berita {
+        max-width: 720px;
+    }
 }
-.btn-primary-berita:hover{
-    background-color: black;
-    border: none;
+
+@media (min-width: 992px) {
+    .container-berita {
+        max-width: 960px;
+    }
 }
+
+@media (min-width: 1200px) {
+    .container-berita {
+        max-width: 1140px;
+    }
+}
+
+@media (min-width: 1400px) {
+    .container-berita {
+        max-width: 1320px;
+    }
+}
+    
+
+.card {
+        border-radius: 20px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+
+    }
+
+    .card-img-top {
+        border-radius: 30px;
+        padding: 20px;
+        object-fit: cover;
+        height: 200px;
+    }
+
+    
+
+    .card-body {
+        padding: 25px;
+        margin-top: -15px;
+        height: 310px;
+        overflow: hidden;
+    }
+
+
+
+    .btn-primary {
+        border-radius: 50px;
+        width: 120px;
+        margin-bottom: 600px;
+    }
+
+    .btn-primary:hover {
+        background-color: black;
+        border: none;
+    }
+
+    h3,
+    h6 {
+        color: rgb(0, 0, 0);
+    }
+
+    .detail-content {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        line-height: 2.5;
+    }
+
+    .detail-content .image-container {
+        flex: 0 0 40%;
+        padding: 20px;
+    }
+
+    .detail-content .image-container img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 50px;
+        object-fit: cover;
+    }
+
+    .detail-content .text-container {
+        flex: 0 0 60%;
+        padding: 60px;
+    }
+
+    .detail-content h3 {
+        margin-bottom: 10px;
+        line-height: 2.5;
+    }
+
+    .detail-content h6 {
+        margin-bottom: 10px;
+        line-height: 2.5;
+    }
+
+    
