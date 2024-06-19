@@ -209,7 +209,7 @@ class Ver_Soal_UASController extends Controller
                 Notification::send($dosenMatkul, new VerifikasiUas($repRpsUas, $verRpsUas));
             }
             DB::commit();
-        } catch (\Throwable $th){
+        } catch (\Throwable){
             DB::rollback();
             return redirect()->route('ver_soal_uas')->with('error', 'Gagal menyimpan data verifikasi.');
         }
@@ -269,7 +269,7 @@ class Ver_Soal_UASController extends Controller
                 Notification::send($dosenMatkul, new VerifikasiUas($repRpsUas, $verRpsUas));
             }
             DB::commit();
-        } catch (\Throwable $th){
+        } catch (\Throwable){
             DB::rollback();
             return redirect()->route('ver_soal_uas')->with('error', 'Gagal menyimpan data verifikasi.');
         }

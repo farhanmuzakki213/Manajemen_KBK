@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('file_proposal');
             $table->bigInteger('pembimbing_satu');
             $table->bigInteger('pembimbing_dua');
-            $table->bigInteger('jenis_kbk_id')->unsigned();
+            $table->bigInteger('jenis_kbk_id');
         });
 
         Schema::table('proposal_ta', function (Blueprint $table) {

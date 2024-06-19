@@ -36,10 +36,6 @@
                     <!-- DataDosen -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                            <a href="{{ route('ver_rps_berita_acara') }}"
-                                class="btn btn-primary mb-2 d-flex align-items-center">
-                                <i class="ti ti-upload"></i> Upload Berita Acara
-                            </a>
                             <button id="toggleTableBtn" class="btn btn-primary" onclick="toggleTable()">Toggle
                                 Tabel</button>
                         </div>

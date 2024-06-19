@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
-class Berita_Ver_UASController extends Controller
+class Berita_Ver_RPSController extends Controller
 {
     public function getDosen()
     {
@@ -36,16 +36,16 @@ class Berita_Ver_UASController extends Controller
             'r_jenis_kbk',
         ])
             ->where('kaprodi', $kaprodi->id_pimpinan_prodi)
-            ->where('type', '=', '1')
+            ->where('type', '=', '0')
             ->get();
 
-        return view('admin.content.pimpinanProdi.berita_acara_ver_uas', compact('data_berita_acara'));
+        return view('admin.content.pimpinanProdi.berita_acara_ver_rps', compact('data_berita_acara'));
     }
 
     public function edit(string $id){
         $beritaAcara = VerBeritaAcara::find($id);
         debug($beritaAcara);
-        return view('admin.content.pimpinanProdi.form.berita_acara_ver_uas_edit', compact('beritaAcara'));
+        return view('admin.content.pimpinanProdi.form.berita_acara_ver_rps_edit', compact('beritaAcara'));
     }
 
     public function update(Request $request, string $id){
@@ -70,7 +70,7 @@ class Berita_Ver_UASController extends Controller
         // Memeriksa apakah ada file lama
         if ($oldData->file !== null && $request->hasFile('file_berita_acara')) {
             // Hapus file lama dari storage
-            Storage::delete('public/uploads/uas/berita_acara/' . $oldData->file);
+            Storage::delete('public/uploads/rps/berita_acara/' . $oldData->file);
         }
         $filename = null;
         // Jika file baru diunggah, hapus file lama dan simpan file baru
@@ -79,7 +79,7 @@ class Berita_Ver_UASController extends Controller
             $file = $request->file('file_berita_acara');
             $filename = $file->getClientOriginalName(); // Mendapatkan nama asli file
 
-            $path = 'public/uploads/uas/berita_acara/';
+            $path = 'public/uploads/rps/berita_acara/';
             $file->storeAs($path, $filename); // Simpan file dengan nama aslinya
 
             $data['file_berita_acara'] = $filename;
@@ -87,6 +87,6 @@ class Berita_Ver_UASController extends Controller
 
         //dd($request->all());
         VerBeritaAcara::where('id_berita_acara', $id)->update($data);
-        return redirect()->route('berita_ver_uas')->with('success', 'Data berhasil diperbarui.');
+        return redirect()->route('berita_ver_rps')->with('success', 'Data berhasil diperbarui.');
     }
 }

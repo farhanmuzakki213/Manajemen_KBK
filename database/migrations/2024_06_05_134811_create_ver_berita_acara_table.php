@@ -15,6 +15,7 @@ return new class extends Migration
             $table->bigIncrements('id_berita_acara')->unsigned();
             $table->bigInteger('kajur');
             $table->bigInteger('kaprodi');
+            $table->bigInteger('jenis_kbk_id');
             $table->string('file_berita_acara');
             $table->enum('Status_dari_kaprodi', ['0', '1'])->default('0')->comment('0: Di Tolak, 1: Disetujui');
             $table->enum('Status_dari_kajur', ['0', '1'])->default('0')->comment('0: Tidak diketahui, 1: Di ketahui');
@@ -28,6 +29,8 @@ return new class extends Migration
             $table->foreign('kajur')->references('id_pimpinan_jurusan')->on('pimpinan_jurusan')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('kaprodi')->references('id_pimpinan_prodi')->on('pimpinan_prodi')
+                ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('jenis_kbk_id')->references('id_jenis_kbk')->on('jenis_kbk')
                 ->onUpdate('cascade')->onDelete('cascade');
         });
     }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('matkul_kbk', function (Blueprint $table) {
             $table->bigInteger('id_matkul_kbk')->primary();
             $table->bigInteger('matkul_id');
-            $table->bigInteger('jenis_kbk_id')->unsigned();
+            $table->bigInteger('jenis_kbk_id');
             $table->bigInteger('kurikulum_id');
         });
 

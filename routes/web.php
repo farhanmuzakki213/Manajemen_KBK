@@ -21,15 +21,20 @@ use App\Http\Controllers\Admin\PimpinanProdiController;
 use App\Http\Controllers\DosenPengampu\DosenMatkulController;
 /* Pimpinan Jurusan */
 use App\Http\Controllers\PimpinanJurusan\KajurController;
+use App\Http\Controllers\PimpinanJurusan\Berita_Ver_UAS_KajurController;
+use App\Http\Controllers\PimpinanJurusan\Berita_Ver_RPS_KajurController;
 /* Pimpinan Prodi */
 use App\Http\Controllers\PimpinanProdi\Rep_Soal_UASController;
 use App\Http\Controllers\PimpinanProdi\Rep_RPSController;
 use App\Http\Controllers\PimpinanProdi\Berita_Ver_UASController;
+use App\Http\Controllers\PimpinanProdi\Berita_Ver_RPSController;
 use App\Http\Controllers\PimpinanProdi\HasilFinalProposalTAController;
 /* Pengurus KBK */
 use App\Http\Controllers\PengurusKbk\PenugasanReviewController;
 use App\Http\Controllers\PengurusKbk\Ver_RPSController;
 use App\Http\Controllers\PengurusKbk\Ver_Soal_UASController;
+use App\Http\Controllers\PengurusKbk\VerBeritaAcaraRpsController;
+use App\Http\Controllers\PengurusKbk\VerBeritaAcaraUasController;
 /* Dosen KBK */
 use App\Http\Controllers\DosenKbk\ReviewProposalTAController;
 /* Landing Page */
@@ -239,6 +244,15 @@ Route::group(['middleware' => ['role:pimpinan-prodi']], function () {
     // Berita Acara Verifikasi Soal_UAS
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/Berita_Acara_verifikasi_soal_uas', [Berita_Ver_UASController::class, 'index'])->middleware(['auth', 'verified'])->name('berita_ver_uas');
+        Route::get('/Berita_Acara_verifikasi_soal_uas/{id}', [Berita_Ver_UASController::class, 'edit'])->middleware(['auth', 'verified'])->name('berita_ver_uas.edit');
+        Route::put('/Berita_Acara_verifikasi_soal_uas/{id}', [Berita_Ver_UASController::class, 'update'])->middleware(['auth', 'verified'])->name('berita_ver_uas.update');
+    });
+
+    // Berita Acara Verifikasi RPS
+    Route::middleware(['auth', 'verified'])->group(function () {
+        Route::get('/Berita_Acara_verifikasi_rps', [Berita_Ver_RPSController::class, 'index'])->middleware(['auth', 'verified'])->name('berita_ver_rps');
+        Route::get('/Berita_Acara_verifikasi_rps/{id}', [Berita_Ver_RPSController::class, 'edit'])->middleware(['auth', 'verified'])->name('berita_ver_rps.edit');
+        Route::put('/Berita_Acara_verifikasi_rps/{id}', [Berita_Ver_RPSController::class, 'update'])->middleware(['auth', 'verified'])->name('berita_ver_rps.update');
     });
 });
 
@@ -309,9 +323,7 @@ Route::group(['middleware' => ['role:pengurus-kbk']], function () {
     // Verifikasi RPS
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/verifikasi_rps', [Ver_RPSController::class, 'index'])->middleware(['auth', 'verified'])->name('ver_rps');
-        Route::get('/verifikasi_rps_berita_acara', [Ver_RPSController::class, 'beritaAcara'])->middleware(['auth', 'verified'])->name('ver_rps_berita_acara');
         Route::post('/verifikasi_rps/store', [Ver_RPSController::class, 'store'])->middleware(['auth', 'verified'])->name('ver_rps.store');
-        Route::post('/verifikasi_rps_berita_acara/store', [Ver_RPSController::class, 'storeBeritaAcara'])->middleware(['auth', 'verified'])->name('ver_rps_berita_acara.store');
         Route::get('/verifikasi_rps/create/{id}', [Ver_RPSController::class, 'create'])->middleware(['auth', 'verified'])->name('ver_rps.create');
         Route::get('/verifikasi_rps/edit/{id}', [Ver_RPSController::class, 'edit'])->middleware(['auth', 'verified'])->name('ver_rps.edit');
         Route::put('/verifikasi_rps/update/{id}', [Ver_RPSController::class, 'update'])->middleware(['auth', 'verified'])->name('ver_rps.update');
@@ -329,6 +341,28 @@ Route::group(['middleware' => ['role:pengurus-kbk']], function () {
         Route::get('/verifikasi_soal_uas/show/{id}', [Ver_Soal_UASController::class, 'show'])->middleware(['auth', 'verified'])->name('ver_soal_uas.show');
         Route::delete('/verifikasi_soal_uas/delete/{id}', [Ver_Soal_UASController::class, 'delete'])->middleware(['auth', 'verified'])->name('ver_soal_uas.delete');
     });
+
+    // Verifikasi Berita Acara RPS
+    Route::middleware(['auth', 'verified'])->group(function () {
+        Route::get('/upload_rps_berita_acara', [VerBeritaAcaraRpsController::class, 'index'])->middleware(['auth', 'verified'])->name('upload_rps_berita_acara');
+        Route::post('/upload_rps_berita_acara/store', [VerBeritaAcaraRpsController::class, 'store'])->middleware(['auth', 'verified'])->name('upload_rps_berita_acara.store');
+        Route::get('/upload_rps_berita_acara/create', [VerBeritaAcaraRpsController::class, 'create'])->middleware(['auth', 'verified'])->name('upload_rps_berita_acara.create');
+        Route::get('/upload_rps_berita_acara/edit/{id}', [VerBeritaAcaraRpsController::class, 'edit'])->middleware(['auth', 'verified'])->name('upload_rps_berita_acara.edit');
+        Route::patch('/upload_rps_berita_acara/update/{beritaAcara}', [VerBeritaAcaraRpsController::class, 'update'])->middleware(['auth', 'verified'])->name('upload_rps_berita_acara.update');
+        Route::get('/upload_rps_berita_acara/show/{id}', [VerBeritaAcaraRpsController::class, 'show'])->middleware(['auth', 'verified'])->name('upload_rps_berita_acara.show');
+        Route::delete('/upload_rps_berita_acara/delete/{id}', [VerBeritaAcaraRpsController::class, 'delete'])->middleware(['auth', 'verified'])->name('upload_rps_berita_acara.delete');
+    });
+
+    // Verifikasi Berita Acara Soal_UAS
+    Route::middleware(['auth', 'verified'])->group(function () {
+        Route::get('/upload_uas_berita_acara', [VerBeritaAcaraUasController::class, 'index'])->middleware(['auth', 'verified'])->name('upload_uas_berita_acara');
+        Route::post('/upload_uas_berita_acara/store', [VerBeritaAcaraUasController::class, 'store'])->middleware(['auth', 'verified'])->name('upload_uas_berita_acara.store');
+        Route::get('/upload_uas_berita_acara/create', [VerBeritaAcaraUasController::class, 'create'])->middleware(['auth', 'verified'])->name('upload_uas_berita_acara.create');
+        Route::get('/upload_uas_berita_acara/edit/{id}', [VerBeritaAcaraUasController::class, 'edit'])->middleware(['auth', 'verified'])->name('upload_uas_berita_acara.edit');
+        Route::patch('/upload_uas_berita_acara/update/{beritaAcara}', [VerBeritaAcaraUasController::class, 'update'])->middleware(['auth', 'verified'])->name('upload_uas_berita_acara.update');
+        Route::get('/upload_uas_berita_acara/show/{id}', [VerBeritaAcaraUasController::class, 'show'])->middleware(['auth', 'verified'])->name('upload_uas_berita_acara.show');
+        Route::delete('/upload_uas_berita_acara/delete/{id}', [VerBeritaAcaraUasController::class, 'delete'])->middleware(['auth', 'verified'])->name('upload_uas_berita_acara.delete');
+    });
 });
 
 /* ---Penurus KBK End--- */
@@ -345,6 +379,20 @@ Route::group(['middleware' => ['role:pimpinan-jurusan']], function () {
         Route::get('/grafik_rps', [KajurController::class, 'grafik_rps'])->middleware(['auth', 'verified'])->name('grafik_rps');
         Route::get('/grafik_uas', [KajurController::class, 'grafik_uas'])->middleware(['auth', 'verified'])->name('grafik_uas');
         Route::get('/grafik_proposal', [KajurController::class, 'grafik_proposal'])->middleware(['auth', 'verified'])->name('grafik_proposal');
+    });
+
+    // Berita Acara Verifikasi Soal_UAS Kajur
+    Route::middleware(['auth', 'verified'])->group(function () {
+        Route::get('/Kajur_Berita_Acara_soal_uas', [Berita_Ver_UAS_KajurController::class, 'index'])->middleware(['auth', 'verified'])->name('kajur_berita_ver_uas');
+        Route::get('/Kajur_Berita_Acara_soal_uas/{id}', [Berita_Ver_UAS_KajurController::class, 'edit'])->middleware(['auth', 'verified'])->name('kajur_berita_ver_uas.edit');
+        Route::put('/Kajur_Berita_Acara_soal_uas/{id}', [Berita_Ver_UAS_KajurController::class, 'update'])->middleware(['auth', 'verified'])->name('kajur_berita_ver_uas.update');
+    });
+
+    // Berita Acara Verifikasi RPS Kajur
+    Route::middleware(['auth', 'verified'])->group(function () {
+        Route::get('/Kajur_Berita_Acara_rps', [Berita_Ver_RPS_KajurController::class, 'index'])->middleware(['auth', 'verified'])->name('kajur_berita_ver_rps');
+        Route::get('/Kajur_Berita_Acara_rps/{id}', [Berita_Ver_RPS_KajurController::class, 'edit'])->middleware(['auth', 'verified'])->name('kajur_berita_ver_rps.edit');
+        Route::put('/Kajur_Berita_Acara_rps/{id}', [Berita_Ver_RPS_KajurController::class, 'update'])->middleware(['auth', 'verified'])->name('kajur_berita_ver_rps.update');
     });
 });
 

@@ -16,19 +16,19 @@
                         <div class="card-body">
                             <div class="row justify-content-end">
                                 <div class="col-2-kembali">
-                                    <p><a href="{{ route('upload_rps_berita_acara') }}" class="btn btn-success"> Kembali</a></p>
+                                    <p><a href="{{ route('upload_uas_berita_acara') }}" class="btn btn-success"> Kembali</a></p>
                                 </div>
                             </div>
-                            <form method="post" action="{{ route('upload_rps_berita_acara.store') }}" enctype="multipart/form-data">
+                            <form method="post" action="{{ route('upload_uas_berita_acara.store') }}" enctype="multipart/form-data">
                                 @csrf
                                 <input type="hidden" class="form-control" id="id_berita_acara" name="id_berita_acara" value="{{ $nextNumber }}" readonly>
                                 <input type="hidden" class="form-control" id="jenis_kbk_id" name="jenis_kbk_id" value="{{ $pengurus_kbk->jenis_kbk_id }}" readonly>
-                                <input type="hidden" class="form-control" id="type" name="type" value="0" readonly>
+                                <input type="hidden" class="form-control" id="type" name="type" value="1" readonly>
                                 <input type="hidden" class="form-control" id="kajur" name="kajur" value="{{ $kajur }}" readonly>
                                 <input type="hidden" class="form-control" id="prodi" name="prodi" value="{{ $kaprodi }}" readonly>
                                 
                                 <div class="mb-3">
-                                    <label for="file_berita_acara" class="form-label">Upload File Berita Acara Rps</label>
+                                    <label for="file_berita_acara" class="form-label">Upload File Berita Acara Uas</label>
                                     <input type="file" class="form-control" id="file_berita_acara" name="file_berita_acara">
                                     @error('file_berita_acara')
                                         <small>{{ $message }}</small>

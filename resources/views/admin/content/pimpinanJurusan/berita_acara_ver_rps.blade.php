@@ -125,10 +125,10 @@
                                                 <th>{{ optional($data->r_jenis_kbk)->jenis_kbk }}</th>
                                                 <th style="width: 10%;">
                                                     <div class="row">
-                                                        <a href="{{ route('berita_ver_uas.edit', ['id' => $data->id_berita_acara]) }}"
+                                                        <a href="{{ route('kajur_berita_ver_rps.edit', ['id' => $data->id_berita_acara]) }}"
                                                             class="btn btn-primary mb-2 d-flex align-items-center"><i
                                                                 class="bi bi-pencil-square"></i>Upload</a>
-                                                        <a href="{{ asset('storage/uploads/uas/berita_acara/' . $data->file_berita_acara) }}"
+                                                        <a href="{{ asset('storage/uploads/rps/berita_acara/' . $data->file_berita_acara) }}"
                                                             class="btn btn-primary mb-2 d-flex align-items-center"
                                                             target="_blank"><i
                                                                 class="bi bi-file-earmark-arrow-down"></i>File</a>

@@ -1,3 +1,6 @@
+@section('styles')
+    
+@endsection
 <aside class="left-sidebar">
     <!-- Sidebar scroll-->
     <div>
@@ -249,6 +252,22 @@
                             <span class="hide-menu">Tabel & Grafik Proposal TA</span>
                         </a>
                     </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('kajur_berita_ver_rps') }}" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-aperture"></i>
+                            </span>
+                            <span class="hide-menu">Verifikasi Berita Acara RPS</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('kajur_berita_ver_uas') }}" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-aperture"></i>
+                            </span>
+                            <span class="hide-menu">Verifikasi Berita Acara UAS</span>
+                        </a>
+                    </li>
                     @endhasrole
                     @hasrole('pimpinan-prodi')
                     <li class="nav-small-cap">
@@ -280,11 +299,19 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('berita_ver_rps') }}" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-aperture"></i>
+                            </span>
+                            <span class="hide-menu">Verifikasi Berita Acara RPS</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('berita_ver_uas') }}" aria-expanded="false">
                             <span>
                                 <i class="ti ti-aperture"></i>
                             </span>
-                            <span class="hide-menu">Berita Acara Verifikasi UAS</span>
+                            <span class="hide-menu">Verifikasi Berita Acara UAS</span>
                         </a>
                     </li>
                     @endhasrole
@@ -325,6 +352,22 @@
                             <span class="hide-menu">Verifikasi Soal UAS </span>
                         </a>
                     </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('upload_rps_berita_acara') }}" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-aperture"></i>
+                            </span>
+                            <span class="hide-menu">Upload Berita Acara RPS </span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('upload_uas_berita_acara') }}" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-aperture"></i>
+                            </span>
+                            <span class="hide-menu">Upload Berita Acara UAS </span>
+                        </a>
+                    </li>
                     @endhasrole
                     @hasrole('dosen-pengampu')
                     <li class="nav-small-cap">
@@ -361,3 +404,6 @@
     </div>
     <!-- End Sidebar scroll-->
 </aside>
+@section('scripts')
+    <script src="{{ asset('backend/assets/js/sidebarmenu.js') }}"></script>
+@endsection
