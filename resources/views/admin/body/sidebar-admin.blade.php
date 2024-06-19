@@ -70,14 +70,6 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ route('dosen') }}" aria-expanded="false">
-                            <span>
-                                <i class="ti ti-aperture"></i>
-                            </span>
-                            <span class="hide-menu">Dosen</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('mahasiswa') }}" aria-expanded="false">
                             <span>
                                 <i class="ti ti-aperture"></i>
@@ -127,14 +119,6 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ route('DosenPengampuMatkul') }}" aria-expanded="false">
-                            <span>
-                                <i class="ti ti-aperture"></i>
-                            </span>
-                            <span class="hide-menu">Dosen Pengampu Matkul </span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('pimpinanjurusan') }}" aria-expanded="false">
                             <span>
                                 <i class="ti ti-aperture"></i>
@@ -163,6 +147,22 @@
                     </a>
                 </li> --}}
 
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('dosen') }}" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-aperture"></i>
+                            </span>
+                            <span class="hide-menu">Dosen</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('DosenPengampuMatkul') }}" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-aperture"></i>
+                            </span>
+                            <span class="hide-menu">Dosen Pengampu Matkul </span>
+                        </a>
+                    </li>
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('pengurus_kbk') }}" aria-expanded="false">
                             <span>

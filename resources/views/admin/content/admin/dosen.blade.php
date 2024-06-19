@@ -27,7 +27,10 @@
                     <!-- DataDosen -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Aksi</h6>
+                            <div class="d-grid gap-2 d-md-block">
+                                <a href="{{ route('dosen.create') }}" class="btn btn-primary me-md-3"><i
+                                            class="bi bi-file-earmark-plus"></i> New</a>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -87,11 +90,13 @@
                                                 @endif
                                             </th>
                                             <th>
+                                                <a href="{{ route('dosen.edit', ['id' => $data->id_dosen]) }}"
+                                                    class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
+                                                <a data-bs-toggle="modal"
+                                                    data-bs-target="#staticBackdrop{{ $data->id_dosen }}"
+                                                    class="btn btn-danger"><i class="bi bi-trash"></i></a>
                                                 <a data-bs-toggle="modal" data-bs-target="#detail{{ $data->id_dosen }}" class="btn btn-secondary"><i class="bi bi-three-dots-vertical"></i></a>
                                             </th>
-
-                                            
-
                                         </tr>
 
                                         {{-- Modal Detail Tabel --}}
