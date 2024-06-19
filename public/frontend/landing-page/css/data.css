@@ -1,7 +1,8 @@
 .fact {
-    background:url("../assets/img/data/4.svg");
-    background-position: center center;
-    background-repeat: no-repeat;
+    background:linear-gradient(rgba(0, 0, 0, 0.34), rgba(0, 0, 0, 0.329)), url("../assets/img/data/data2.jpg");
     background-size: cover;
+    background-attachment: fixed;
     font-family: "Montserrat", sans-serif;
+    padding-top: 3rem;
+    padding-bottom: 3rem; 
 }

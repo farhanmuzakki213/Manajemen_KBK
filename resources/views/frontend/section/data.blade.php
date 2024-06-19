@@ -1,8 +1,8 @@
-<div class="container-fluid fact bg-dark my-5 py-5">
+<div class="container-data fact bg-dark">
     <div class="container">
         <div class="row g-4">
             <div class="col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.1s">
-                <i class="fa fa-check fa-2x text-white mb-3"></i>
+                <i class="fa fa-briefcase fa-2x text-white mb-3"></i>
                 <h2 class="text-white mb-2" data-toggle="counter-up">5</h2>
                 <p class="text-white mb-0">Jenis KBK</p>
             </div>
@@ -18,7 +18,7 @@
             </div>
             <div class="col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.7s">
 
-                <i class="fa fa-school-circle-check fa-2x text-white mb-3"></i>
+                <i class="fa fa-book-open fa-2x text-white mb-3"></i>
                 <h2 class="text-white mb-2" data-toggle="counter-up">8</h2>
                 <p class="text-white mb-0">Program Studi</p>
             </div>

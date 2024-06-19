@@ -8,7 +8,7 @@
         <meta name="author" content="" />
         <title>Manajemen KBK</title>
         <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="{{asset('frontend/landing-page/assets/img/logo.svg')}}" />
+        <link rel="icon" type="image/x-icon" href="{{asset('frontend/landing-page/assets/img/logo-putih1.svg')}}" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
@@ -19,10 +19,11 @@
         <link href="{{asset('frontend/landing-page/css/styles.css')}}" rel="stylesheet" />
         <link href="{{asset('frontend/landing-page/css/berita.css')}}" rel="stylesheet" />
         <link href="{{asset('frontend/landing-page/css/data.css')}}" rel="stylesheet" />
+        <link href="{{asset('frontend/landing-page/css/about.css')}}" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" crossorigin="">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.css">
         <link rel="stylesheet" href="{{asset('frontend/landing-page/css/struktur.css')}}">
-        {{-- <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet"> --}}
+        {{-- @yield('styles') --}}
         {{-- <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet"> --}}
     </head>
     <body id="page-top">

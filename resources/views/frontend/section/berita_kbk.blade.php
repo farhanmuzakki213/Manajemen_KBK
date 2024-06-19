@@ -1,27 +1,4 @@
-{{-- <section class="page-section bg-light" id="berita">
-    <div class="container-berita py-5">
-        <h1 class="text-center mb-5 text-3xl font-bold">Berita</h1>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            @foreach ($data_berita as $data)
-            <div class="col-berita">
-                <div class="card h-100 border-0">
-                    <img src="{{$data->foto_sampul}}" class="card-img-top" alt="...">
-                    <div class="card-body d-flex flex-column">
-                        <h4 class="card-title">{{$data->judul}}</h4>
-                        <p class="card-text mb-4">{{$data->isi_berita}}</p>
-                        <div class="mt-auto text-start">
-                            <a href="/berita/{{ $data->id_berita }}" class="btn btn-primary">Read More</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</section> --}}
-
-
-<section class="page-section bg-light" id="berita">
+<section class="page-section bg-white" id="berita">
     <div class="container-berita py-5">
         <h1 class="text-center mb-5 text-3xl font-bold">Berita</h1>
         <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -42,10 +19,10 @@
         </div>
         <div class="text-center mt-4">
             <button id="loadMore" class="btn_detail p-0">
-                <img src="{{asset('frontend/landing-page/assets/img/icon/down-arrow2.svg')}}" alt="Tampilkan Lebih Banyak" width="50" height="50">
+                <img src="{{asset('frontend/landing-page/assets/img/icon/down-arrow2.svg')}}" alt="Tampilkan Lebih Banyak" width="30" height="30">
             </button>
             <button id="loadLess" class="btn_detail p-0" style="display: none;">
-                <img src="{{asset('frontend/landing-page/assets/img/icon/up-arrow2.svg')}}" alt="Tampilkan Lebih Sedikit" width="50" height="50">
+                <img src="{{asset('frontend/landing-page/assets/img/icon/up-arrow2.svg')}}" alt="Tampilkan Lebih Sedikit" width="30" height="30">
             </button>
         </div>
     </div>
