@@ -5,15 +5,22 @@ namespace App\Http\Controllers\PengurusKbk;
 use App\Http\Controllers\Controller;
 use App\Models\DosenPengampuMatkul;
 use App\Models\Pengurus_kbk;
+use App\Models\PimpinanJurusan;
+use App\Models\PimpinanProdi;
 use App\Models\RepRpsUas;
 use App\Models\User;
+use App\Models\VerBeritaAcara;
+use App\Models\VerBeritaAcaraDetail;
 use App\Models\VerRpsUas;
 use App\Notifications\VerifikasiRps;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
+use App\Http\Requests\Auth\BeritaAcara\beritaAcaraCreate;
 
 class Ver_RPSController extends Controller
 {
@@ -121,7 +128,7 @@ class Ver_RPSController extends Controller
         });
         $result = $data_array_gabungan->toArray();
         debug($result);
-        return view('admin.content.pengurusKbk.Ver_RPS', compact('data_ver_rps', 'result'));
+        return view('admin.content.pengurusKbk.Ver_RPS', compact('data_ver_rps', 'result', 'pengurus_kbk'));
     }
 
     /**
@@ -145,11 +152,6 @@ class Ver_RPSController extends Controller
             ->where('id_rep_rps_uas', $rep_id)
             ->orderByDesc('id_rep_rps_uas')
             ->get();
-        /* $repRpsUas = RepRpsUas::with('r_dosen_matkul.r_dosen', 'r_dosen_matkul.p_matkulKbk')->where('id_rep_rps_uas', $id)->first();
-
-        // Assuming r_dosen_matkul is related to the User model
-        $dosenMatkul = User::where('name', $repRpsUas->r_dosen_matkul->r_dosen->nama_dosen)
-        ->where('email', $repRpsUas->r_dosen_matkul->r_dosen->email)->first(); */
 
         debug(compact('data_dosen', 'data_rep_rps', 'nextNumber', 'rep_id'/* , 'repRpsUas', 'dosenMatkul' */));
         return view('admin.content.pengurusKbk.form.ver_rps_form', compact('data_dosen', 'data_rep_rps', 'nextNumber', 'rep_id'));
@@ -183,7 +185,7 @@ class Ver_RPSController extends Controller
             'id_pengurus_kbk' => 'required',
             'rekomendasi' => 'required',
             'saran' => 'nullable',
-            'date' => 'required|date',
+            'date' => 'required|date_format:Y-m-d H:i:s',
         ]);
 
         if ($validator->fails()) {
@@ -198,19 +200,24 @@ class Ver_RPSController extends Controller
             'saran' => $request->filled('saran') ? $request->saran : 'Tidak ada',
             'tanggal_diverifikasi' => $request->date,
         ];
-        VerRpsUas::create($data);
 
-        $pengurus_kbk = $this->getDosen();
-        $repRpsUas = RepRpsUas::with('r_dosen_matkul.r_dosen', 'r_dosen_matkul.p_matkulKbk')->where('id_rep_rps_uas', $request->id_rep_rps)->first();
-        $verRpsUas = VerRpsUas::with('r_pengurus.r_dosen')->where('id_ver_rps_uas', $request->id_ver_rps)->first();
-        // Assuming r_dosen_matkul is related to the User model
-        $dosenMatkul = User::where('name', $repRpsUas->r_dosen_matkul->r_dosen->nama_dosen)
-        ->where('email', $repRpsUas->r_dosen_matkul->r_dosen->email)->first();
-
-        if ($dosenMatkul) {
-            Notification::send($dosenMatkul, new VerifikasiRps($repRpsUas, $verRpsUas));
+        DB::beginTransaction();
+        try {
+            VerRpsUas::create($data);
+            $repRpsUas = RepRpsUas::with('r_dosen_matkul.r_dosen', 'r_dosen_matkul.p_matkulKbk')->where('id_rep_rps_uas', $request->id_rep_rps)->first();
+            $verRpsUas = VerRpsUas::with('r_pengurus.r_dosen')->where('id_ver_rps_uas', $request->id_ver_rps)->first();
+            $dosenMatkul = User::where('name', $repRpsUas->r_dosen_matkul->r_dosen->nama_dosen)
+                ->where('email', $repRpsUas->r_dosen_matkul->r_dosen->email)->first();
+            if ($dosenMatkul) {
+                Notification::send($dosenMatkul, new VerifikasiRps($repRpsUas, $verRpsUas));
+            }
+            DB::commit();
+        } catch (\Throwable) {
+            DB::rollback();
+            return redirect()->route('ver_rps')->with('error', 'Gagal menyimpan data verifikasi.');
         }
-        debug(compact('dosenMatkul', 'verRpsUas', 'repRpsUas'));
+
+        //debug(compact('dosenMatkul', 'verRpsUas', 'repRpsUas'));
         //dd(compact('dosenMatkul', 'pengurus_kbk', 'repRpsUas'));
         return redirect()->route('ver_rps')->with('success', 'Data berhasil disimpan.');
         //dd($request->all());
@@ -238,9 +245,10 @@ class Ver_RPSController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id_ver_rps' => 'required',
+            'rep_rps_uas_id' => 'required',
             'rekomendasi' => 'required',
             'saran' => 'nullable',
-            'date' => 'required|date',
+            'date' => 'required|date_format:Y-m-d H:i:s',
         ]);
 
         if ($validator->fails()) {
@@ -248,13 +256,27 @@ class Ver_RPSController extends Controller
         }
         $data = [
             'id_ver_rps_uas' => $request->id_ver_rps,
+            'rep_rps_uas_id' => $request->rep_rps_uas_id,
             'rekomendasi' => $request->rekomendasi,
             'saran' => $request->filled('saran') ? $request->saran : 'Tidak ada',
             'tanggal_diverifikasi' => $request->date,
         ];
+        DB::beginTransaction();
+        try {
+            VerRpsUas::where('id_ver_rps_uas', $id)->update($data);
+            $repRpsUas = RepRpsUas::with('r_dosen_matkul.r_dosen', 'r_dosen_matkul.p_matkulKbk')->where('id_rep_rps_uas', $request->rep_rps_uas_id)->first();
+            $verRpsUas = VerRpsUas::with('r_pengurus.r_dosen')->where('id_ver_rps_uas', $request->id_ver_rps)->first();
+            $dosenMatkul = User::where('name', $repRpsUas->r_dosen_matkul->r_dosen->nama_dosen)
+                ->where('email', $repRpsUas->r_dosen_matkul->r_dosen->email)->first();
+            if ($dosenMatkul) {
+                Notification::send($dosenMatkul, new VerifikasiRps($repRpsUas, $verRpsUas));
+            }
+            DB::commit();
+        } catch (\Throwable) {
+            DB::rollback();
+            return redirect()->route('ver_rps')->with('error', 'Gagal menyimpan data verifikasi.');
+        }
 
-        // Update data
-        VerRpsUas::where('id_ver_rps_uas', $id)->update($data);
         return redirect()->route('ver_rps')->with('success', 'Data berhasil diperbarui.');
     }
 

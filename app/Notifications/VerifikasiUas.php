@@ -67,6 +67,11 @@ class VerifikasiUas extends Notification
             'matkul' => $this->repRpsUas->r_matkulKbk->r_matkul->kode_matkul,
             'rekomendasi' => $message,
             'Saran' => $this->verRpsUas->saran,
+            'id_ver_rps_uas' => $this->verRpsUas->id_ver_rps_uas,
+            'url' => route('notifikasi.show', [
+                'dosen_matkul_id' => $this->repRpsUas->dosen_matkul_id,
+                'matkul_kbk_id' => $this->repRpsUas->matkul_kbk_id
+            ]),
         ];
     }
 }

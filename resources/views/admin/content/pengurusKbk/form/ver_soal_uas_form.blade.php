@@ -54,7 +54,7 @@
                             <div class="col-5 mb-3">
                                 <div class="input-group date">
                                     <input type="hidden" class="form-control" id="date" name="date"
-                                        value="{{ \Carbon\Carbon::now()->toDateString() }}" />
+                                        value="{{ \Carbon\Carbon::now()}}" />
                                 </div>
                                 @error('date')
                                     <small>{{ $message }}</small>

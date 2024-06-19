@@ -77,7 +77,7 @@
                                 <div class="mb-3">
                                     {{-- <label for="date" class="form-label">Tanggal Penugasan</label> --}}
                                     <input type="hidden" class="form-control" id="date" name="date"
-                                        value="{{ \Carbon\Carbon::now()->toDateString() }}">
+                                        value="{{ \Carbon\Carbon::now()}}">
                                     @error('date')
                                         <small>{{ $message }}</small>
                                     @enderror

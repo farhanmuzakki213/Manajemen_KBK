@@ -1,4 +1,29 @@
 @extends('admin.admin_master')
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('backend/assets/css/multi-dropdown.css') }}" />
+    <link href="{{ asset('backend/assets/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+    <style>
+        .dropdown-item {
+            width: auto; /* Lebar menyesuaikan dengan konten */
+            white-space: nowrap; /* Konten tidak akan melintasi baris */
+        }
+        
+        .dropdown-item .row {
+            display: flex; /* Menggunakan flexbox untuk mengatur kolom */
+            flex-wrap: nowrap; /* Konten tidak akan melintasi baris */
+        }
+    
+        .dropdown-item .col-lg-3 {
+            flex: 1; /* Kolom kode_matkul mengambil 1 bagian */
+        }
+    
+        .dropdown-item .col-lg-4 {
+            flex: 3; /* Kolom nama_matkul mengambil 3 bagian */
+        }
+    </style>
+    
+    
+@endsection
 @section('admin')
     <div class="container-fluid">
         <div class="card">
@@ -24,154 +49,108 @@
                     }, 5000); // 5000 milliseconds = 5 detik
                 </script>
                 <div class="container-fluid">
-                    <!-- DataDosen -->
+                    <!-- Data Verifikasi RPS -->
                     <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <div class="card-header py-2">
-                                <div class="d-grid gap-2 d-md-block">
-                                    {{-- <a href="{{ route('berita_acara_ver_uas.create') }}" class="btn btn-primary me-md-3"><i
-                                            class="bi bi-file-earmark-plus"></i> New</a> --}}
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                        <thead>
-                                            <tr class="table-info">
-                                                <th>#</th>
-                                                <th>Nama Dosen</th>
-                                                <th>kode Kuliah</th>
-                                                <th>Semester</th>
-                                                <th>File Verifikasi</th>
-                                                <th>Status</th>
-                                                <th>Tanggal Verifikasi</th>
-                                            
-                                            </tr>
-                                        </thead>
-                                        <tfoot>
-                                            <tr class="table-info">
-                                                <th>#</th>
-                                                <th>Nama Dosen</th>
-                                                <th>kode Kuliah</th>
-                                                <th>Semester</th>
-                                                <th>File Verifikasi</th>
-                                                <th>Status</th>
-                                                <th>Tanggal Verifikasi</th>
-                                            </tr>
-                                        </tfoot>
-                                        <tbody>
-                                            @foreach ($data_ver_soal_uas as $data_ver)
-                                                <tr class="table-Light">
-                                                    <th>{{ $data_ver->id_ver_rps_uas }}</th>
-                                                    <th>{{ optional($data_ver->r_rep_rps_uas)->r_dosen->nama_dosen }}</th>
-                                                    <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->kode_matkul }}</th>
-                                                    <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->semester }}</th>
-                                                    <th><a href="{{ asset('storage/uploads/ver_soal_uas_files/' . $data_ver->file_verifikasi) }}" target="_blank">{{ $data_ver->file_verifikasi }}</a>
-                                                    </th>
-                                                    <th>
-                                                        @if ($data_ver->status_ver_uas == 0)
-                                                            Tidak Diverifikasi
-                                                        @else
-                                                            Diverifikasi
-                                                        @endif
-                                                    </th>
-                                                    <th>{{ $data_ver->tanggal_diverifikasi }}</th>
-
-                                                    {{-- <th>
-                                                        <a href="{{ route('ver_soal_uas.edit', ['id' => $data->id_ver_uas]) }}"
-                                                            class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
-                                                        <a data-bs-toggle="modal"
-                                                            data-bs-target="#staticBackdrop{{ $data->id_ver_uas }}"
-                                                            class="btn btn-danger"><i class="bi bi-trash"></i></a>
-                                                        <a data-bs-toggle="modal"
-                                                            data-bs-target="#detail{{ $data->id_ver_uas }}"
-                                                            class="btn btn-secondary"><i
-                                                                class="bi bi-three-dots-vertical"></i></a>
-                                                    </th> --}}
-                                                </tr>
-                                                {{-- Modal Konfirmasi hapus data --}}
-                                                {{-- <div class="modal fade" id="staticBackdrop{{ $data->id_ver_uas }}"
-                                                    data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                                                    aria-labelledby="staticBackdropLabel" aria-hidden="true">>
-                                                    <div class="modal-dialog modal-dialog-centered">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h4 class="modal-title fs-5" id="staticBackdropLabel">
-                                                                    Konfirmasi
-                                                                    Hapus Data</h4>
-                                                                <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <p>Apakah kamu yakin ingin menghapus data Ini
-                                                                    <b>{{ $data->id_ver_uas }}</b>
-                                                                </p>
-                                                            </div>
-                                                            <div class="modal-footer justify-content-between">
-
-                                                                <form
-                                                                    action="{{ route('ver_soal_uas.delete', ['id' => $data->id_ver_uas]) }}"
-                                                                    method="POST">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="button" class="btn btn-default"
-                                                                        data-bs-dismiss="modal">Close</button>
-                                                                    <button type="submit" class="btn btn-primary">Ya,
-                                                                        Hapus</button>
-                                                                </form>
-                                                            </div>
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-primary">Data Berita Acara</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr class="table-info">
+                                            <th>#</th>
+                                            {{-- <th>id rep</th> --}}
+                                            <th>Kode Matkul</th>
+                                            <th>Dosen Upload Berita Acara</th>
+                                            <th>Prodi</th>
+                                            <th>Jurusan</th>
+                                            <th>Jenis KBK</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr class="table-info">
+                                            <th>#</th>
+                                            {{-- <th>id rep</th> --}}
+                                            <th>Kode Matkul</th>
+                                            <th>Dosen Upload Berita Acara</th>
+                                            <th>Prodi</th>
+                                            <th>Jurusan</th>
+                                            <th>Jenis KBK</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        @php
+                                            $no = 1;
+                                        @endphp
+                                        @foreach ($data_berita_acara as $data)
+                                            <tr class="table-Light">
+                                                <th>{{ $no++ }}</th>
+                                                {{-- <th>{{ $data_rep->id_rep_rps }}</th> --}}
+                                                <th>
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                            id="dropdownMenuButton" data-toggle="dropdown"
+                                                            aria-haspopup="true" aria-expanded="false">
+                                                            Mata Kuliah
+                                                        </button>
+                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                            @foreach ($data->p_ver_rps_uas as $data_matkul)
+                                                                <div class="dropdown-item">
+                                                                    <div class="row">
+                                                                        <div class="col-lg-2">
+                                                                            {{ optional(optional($data_matkul->r_rep_rps_uas)->r_matkulKbk)->r_matkul->kode_matkul }}
+                                                                        </div>
+                                                                        <div class="col-lg-5">
+                                                                            {{ optional(optional($data_matkul->r_rep_rps_uas)->r_matkulKbk)->r_matkul->nama_matkul }}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            @endforeach
                                                         </div>
                                                     </div>
-                                                </div> --}}
-                                                {{-- Modal Detail Tabel --}}
-                                                {{-- <div class="modal fade" id="detail{{ $data->id_ver_uas }}" tabindex="-1"
-                                                    aria-labelledby="detailLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title fs-5" id="detailLabel">Detail Matkul
-                                                                </h5>
-                                                                <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <form>
-                                                                    <div class="mb-3">
-                                                                        <label for="kode_matkul" class="col-form-label">Kode
-                                                                            Matkul</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="kode_matkul"
-                                                                            value="{{ $data->kode_matkul }}" readonly>
-                                                                    </div>
-                                                                    <div class="mb-3">
-                                                                        <label for="message-text"
-                                                                            class="col-form-label">Nama Matkul</label>
-                                                                        <input class="form-control" id="message-text"
-                                                                            value="{{ $data->nama_matkul }}"
-                                                                            readonly></input>
-                                                                    </div>
-                                                                    <div class="mb-3">
-                                                                        <label for="catatan"
-                                                                            class="form-label">Catatan</label>
-                                                                        <textarea class="form-control" id="catatan" name="catatan" rows="3" readonly>{{ $data->catatan }}</textarea>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-primary"
-                                                                    data-bs-dismiss="modal">Close</button>
-                                                            </div>
-                                                        </div>
+                                                </th>
+
+                                                <th>
+                                                    @foreach ($data->first()->p_ver_rps_uas->unique('pengurus_id') as $data_pengurus)
+                                                        {{ optional($data_pengurus->r_pengurus)->r_dosen->nama_dosen }}
+                                                    @endforeach
+                                                </th>
+                                                <th>{{ optional($data->r_pimpinan_prodi)->r_prodi->prodi }}
+                                                </th>
+                                                <th>{{ optional($data->r_pimpinan_jurusan)->r_jurusan->jurusan }}
+                                                </th>
+                                                <th>{{ optional($data->r_jenis_kbk)->jenis_kbk }}</th>
+                                                <th style="width: 10%;">
+                                                    <div class="row">
+                                                        <a href="{{ route('berita_ver_uas.edit', ['id' => $data->id_berita_acara]) }}"
+                                                            class="btn btn-primary mb-2 d-flex align-items-center"><i
+                                                                class="bi bi-pencil-square"></i>Upload</a>
+                                                        <a href="{{ asset('storage/uploads/uas/berita_acara/' . $data->file_berita_acara) }}"
+                                                            class="btn btn-primary mb-2 d-flex align-items-center"
+                                                            target="_blank"><i
+                                                                class="bi bi-file-earmark-arrow-down"></i>File</a>
                                                     </div>
-                                                </div> --}}
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
+                                                </th>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    @endsection
+    </div>
+@endsection
+@section('scripts')
+    <script src="{{ asset('backend/assets/js/jquery3-1-1.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/multi-dropdown.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/sidebarmenu.js') }}"></script>
+    <script src="{{ asset('backend/assets/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('backend/assets/datatables/dataTables.bootstrap4.min.js') }}"></script>
+@endsection

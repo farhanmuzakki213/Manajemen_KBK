@@ -18,7 +18,7 @@ return new class extends Migration
             $table->bigInteger('reviewer_dua');
             $table->bigInteger('pimpinan_prodi_id');
             $table->enum('status_final_proposal', ['0', '1'])->default('0')->comment('0: Belum Final, 1: Final');
-            $table->date('tanggal_penugasan');
+            $table->timestamp('tanggal_penugasan');
         });
 
         Schema::table('review_proposal_ta', function (Blueprint $table) {

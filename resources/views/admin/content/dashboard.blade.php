@@ -15,14 +15,6 @@
                         {{ Session::get('error') }}
                     </div>
                 @endif
-                <script>
-                    setTimeout(function() {
-                        var element = document.getElementById('delay');
-                        if (element) {
-                            element.parentNode.removeChild(element);
-                        }
-                    }, 5000); // 5000 milliseconds = 5 detik
-                </script>
                 <div class="container-fluid">
                     <div class="container-fluid">
                         @hasanyrole('super-admin|admin|pimpinan-jurusan|pimpinan-prodi|dosen-pengampu|pengurus-kbk|dosen-kbk')
@@ -473,7 +465,9 @@
             </div>
         </div>
     </div>
-
+@endsection
+@section('scripts')
+    <script src="{{ asset('backend/assets/js/dashboard.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script type="text/javascript">
         var chart = {
@@ -588,5 +582,13 @@
 
         var chart = new ApexCharts(document.querySelector("#chart"), chart);
         chart.render();
+    </script>
+    <script>
+        setTimeout(function() {
+            var element = document.getElementById('delay');
+            if (element) {
+                element.parentNode.removeChild(element);
+            }
+        }, 5000);
     </script>
 @endsection

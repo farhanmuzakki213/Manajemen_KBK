@@ -12,18 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ver_berita_acara_detail_pivot', function (Blueprint $table) {
-            $table->bigInteger('berita_acara_id');
-            $table->bigInteger('ver_rps_uas_id');
-            $table->bigInteger('prodi_id');
-        });
+            $table->bigInteger('berita_acara_id')->unsigned();
+            $table->bigInteger('ver_rps_uas_id')->unsigned();
 
-        Schema::table('ver_berita_acara_detail_pivot', function (Blueprint $table) {
-            $table->foreign('berita_acara_id')->references('id_berita_acara')->on('ver_berita_acara')
-                ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('prodi_id')->references('id_prodi')->on('prodi')
-                ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('ver_rps_uas_id')->references('id_ver_rps_uas')->on('ver_rps_uas')
-                ->onUpdate('cascade')->onDelete('cascade');
+            // Pastikan tipe data kolom sesuai dengan tipe data di tabel referensi
+            // Pastikan urutan pembuatan tabel sudah benar
+
+            $table->foreign('berita_acara_id')->references('id_berita_acara')->on('ver_berita_acara')->onDelete('cascade');
+            $table->foreign('ver_rps_uas_id')->references('id_ver_rps_uas')->on('ver_rps_uas')->onDelete('cascade');
         });
     }
 

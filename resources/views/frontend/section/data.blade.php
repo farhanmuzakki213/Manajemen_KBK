@@ -1,4 +1,6 @@
+
 <div class="container-data fact bg-dark">
+<div class="container-fluid fact bg-dark my-2 py-2">
     <div class="container">
         <div class="row g-4">
             <div class="col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.1s">
@@ -25,3 +27,5 @@
         </div>
     </div>
 </div>
+</div>
+

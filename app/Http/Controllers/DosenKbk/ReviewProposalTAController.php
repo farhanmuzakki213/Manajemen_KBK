@@ -172,7 +172,7 @@ class ReviewProposalTAController extends Controller
             'reviewer' => 'required',
             'status' => 'required',
             'catatan' => 'required',
-            'date' => 'required|date',
+            'date' => 'required|date_format:Y-m-d H:i:s',
         ]);
 
         if ($validator->fails()) {
@@ -224,8 +224,8 @@ class ReviewProposalTAController extends Controller
             'penugasan_id' => 'required',
             'reviewer' => 'required',
             'status' => 'required',
-            'catatan',
-            'date' => 'required|date',
+            'catatan' => 'nullable',
+            'date' => 'required|date_format:Y-m-d H:i:s',
         ]);
 
         if ($validator->fails()) {
