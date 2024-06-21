@@ -4,7 +4,25 @@
         <div class="card">
             <div class="card-body">
                 <!-- Page Heading -->
-                <h5 class="card-title fw-semibold mb-4">Tambah Role </h5>
+                <h5 class="card-title fw-semibold mb-4">Tambah User</h5>
+                @if (Session::has('success'))
+                    <div id="delay" class="alert alert-success" role="alert">
+                        {{ Session::get('success') }}
+                    </div>
+                @endif
+                @if ($errors->has('error'))
+                    <div id="delay" class="alert alert-danger" role="alert">
+                        {{ $errors->first('error') }}
+                    </div>
+                @endif
+                <script>
+                    setTimeout(function() {
+                        var element = document.getElementById('delay');
+                        if (element) {
+                            element.parentNode.removeChild(element);
+                        }
+                    }, 5000); // 5000 milliseconds = 5 detik
+                </script>
                 <div class="container-fluid">
                     <!-- Form Tambah Data -->
                     <div class="card shadow mb-4">
@@ -17,7 +35,7 @@
                             <form method="post" action="{{ url('users') }}">
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="name" class="form-label">Nama</label>
+                                    <label for="name" class="form-label">Username</label>
                                     <input type="text" class="form-control" id="name" name="name">
                                     @error('name')
                                         <small>{{ $message }}</small>
@@ -25,7 +43,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email</label>
-                                    <input type="text" class="form-control" id="email" name="email">
+                                    <input type="text" class="form-control" id="email" name="email" disabled>
                                     @error('email')
                                         <small>{{ $message }}</small>
                                     @enderror
@@ -42,7 +60,7 @@
                                     <select name="roles[]" class="form-control" multiple>
                                         <option value="" disabled selected>Pilih Role</option>
                                         @foreach ($roles as $role)
-                                            <option class="mb-2" value="{{$role}}">{{$role}}</option>
+                                            <option class="mb-2" value="{{ $role }}">{{ $role }}</option>
                                         @endforeach
                                     </select>
                                     @error('name')
