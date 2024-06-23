@@ -27,7 +27,10 @@
                     <!-- DataDosen -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Aksi</h6>
+                            <a href="{{ route('dosen.show') }}"
+                                    class="btn btn-primary me-md-3">
+                                    <i class="ti ti-upload"></i> Ambil Data API
+                                </a>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -41,9 +44,6 @@
                                             <th>gender</th>
                                             <th>Jurusan</th>
                                             <th>prodi</th>
-                                            {{-- <th>Email</th>
-                                            <th>Password</th>
-                                            <th>Foto</th>--}}
                                             <th>Status</th> 
                                             <th>Action</th>
                                         </tr>
@@ -57,9 +57,6 @@
                                             <th>gender</th>
                                             <th>Jurusan</th>
                                             <th>prodi</th>
-                                            {{-- <th>Email</th>
-                                            <th>Password</th>
-                                            <th>Foto</th>--}}
                                             <th>Status</th> 
                                             <th>Action</th>
                                         </tr>

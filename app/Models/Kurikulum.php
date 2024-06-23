@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Kurikulum extends Model
 {
     use HasFactory;
-    protected $fillabel = [
-        'kode_kurikulum', 'nama_kurikulum', 'tahun', 'prodi_id', 'status_kurikulum'
+    protected $fillable = [
+        'id_kurikulum', 'kode_kurikulum', 'nama_kurikulum', 'tahun', 'prodi_id', 'status_kurikulum'
     ];
+    public $timestamps = false;
     protected $table = 'kurikulum';
     protected $primaryKey = 'id_kurikulum';
 

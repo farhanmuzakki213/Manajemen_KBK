@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Dosen extends Model
 {
     use HasFactory;
-    protected $fillabel = [
-        'nama_dosen', 'nidn', 'nip', 'gender', 'jurusan_id', 'prodi_id', 'email', 'password', 'image', 'status_dosen'
+    protected $fillable = [
+        'id_dosen', 'nama_dosen', 'nidn', 'nip', 'gender', 'jurusan_id', 'prodi_id', 'email', 'password', 'image', 'status_dosen'
     ];
     protected $table = 'dosen';
     protected $primaryKey = 'id_dosen';
-    
+    public $timestamps = false;
     public function r_jurusan(){
         return $this->belongsTo(Jurusan::class, 'jurusan_id','id_jurusan');
     }

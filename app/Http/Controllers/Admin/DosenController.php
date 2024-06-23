@@ -8,7 +8,9 @@ use App\Models\Jurusan;
 use App\Models\Prodi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class DosenController extends Controller
 {
@@ -51,18 +53,6 @@ class DosenController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        $data_dosen = Dosen::with(['r_jurusan', 'r_prodi'])->findOrFail($id);
-        $data_jurusan = Jurusan::all();
-        $data_prodi = Prodi::all();
-    
-        return view('admin.content.Dosen', compact('data_dosen', 'data_jurusan', 'data_prodi'));
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
@@ -84,5 +74,85 @@ class DosenController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function storeAPI(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $differences = json_decode($request->differences, true);
+            //dd($differences);
+            foreach ($differences as $data) {
+                $nextNumber = $this->getCariNomor();
+                $data_jurusan = Jurusan::where('kode_jurusan', $data['kode_jurusan'])->pluck('id_jurusan')->first();
+                debug($data_jurusan);
+                $data_prodi = Prodi::where('kode_prodi', $data['kode_prodi'])->pluck('id_prodi')->first();
+                debug($data_prodi);
+                $data_create =[
+                    'id_dosen' => $nextNumber,
+                    'nama_dosen' => $data['nama'],
+                    'nidn' => $data['nidn'],
+                    'nip' => $data['nip'],
+                    'gender' => $data['gender'],
+                    'jurusan_id' => $data_jurusan,
+                    'prodi_id' => $data_prodi,
+                    'email' => $data['email'],
+                    'password' => Hash::make('12345678'),
+                ];
+                //dd($data_create);
+                Dosen::create($data_create);
+            }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menambahkan data: ' . $e->getMessage());
+        }
+        return redirect()->route('dosen')->with('success', 'Data berhasil ditambahkan.');
+    }
+    function getCariNomor()
+    {
+        // Mendapatkan semua ID dari tabel rep_rps
+        $id_dosen = Dosen::pluck('id_dosen')->toArray();
+        // Loop untuk memeriksa nomor dari 1 sampai takhingga
+        for ($i = 1;; $i++) {
+            // Jika $i tidak ditemukan di dalam array $id_rep_rps, kembalikan nilai $i
+            if (!in_array($i, $id_dosen)) {
+                return $i;
+                break;
+            }
+        }
+        return $i;
+    }
+    /**
+     * Display the specified resource.
+     */
+    public function show()
+    {
+        try {
+            $response = Http::get('https://umkm-pnp.com/heni/index.php?folder=dosen&file=index');
+
+            if ($response->successful()) {
+                // Mengambil data dari database berdasarkan urutan descending id_kurikulum
+                $dataBase_dosen = Dosen::orderByDesc('id_dosen')->pluck('nidn')->toArray();
+                //dd($dataBase_matkul);
+                $data = $response->json();
+                $dataAPI_dosen = $data['list'];
+                $differencesArray = collect($dataAPI_dosen)->reject(function ($item) use ($dataBase_dosen) {
+                    return in_array($item['nidn'], $dataBase_dosen);
+                })->all();
+                //dd($differencesArray);
+                debug($dataBase_dosen);
+                debug($dataAPI_dosen);
+                debug($differencesArray);
+
+                return view('admin.content.admin.DataAPI.dosenAPI', ['data_dosen' => $dataAPI_dosen, 'differences' => $differencesArray]);
+            } else {
+                Log::error('Request failed', ['status' => $response->status(), 'body' => $response->body()]);
+                return view('admin.content.admin.DataAPI.dosenAPI')->with('error', 'Failed to fetch data');
+            }
+        } catch (\Exception $e) {
+            Log::error('Request exception', ['exception' => $e]);
+            return view('admin.content.admin.DataAPI.dosenAPI')->with('error', 'Exception occurred');
+        }
     }
 }

@@ -89,23 +89,30 @@ Route::group(['middleware' => ['role:admin']], function () {
     // Admin
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/repositori_proposal_ta', [AdminController::class, 'RepProposalTA'])->name('rep_proposal_ta');
-        Route::get('/example', [AdminController::class, 'example'])->name('example');
+        Route::get('/repositori_proposal_ta/dataAPI', [AdminController::class, 'show'])->middleware(['auth', 'verified'])->name('rep_proposal_ta.show');
+        Route::post('/repositori_proposal_ta/storeAPI', [AdminController::class, 'storeAPI'])->middleware(['auth', 'verified'])->name('rep_proposal_ta.storeAPI');
     });
 
     // Mahasiswa
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->middleware(['auth', 'verified'])->name('mahasiswa');
+        Route::get('/mahasiswa/dataAPI', [MahasiswaController::class, 'show'])->middleware(['auth', 'verified'])->name('mahasiswa.show');
+        Route::post('/mahasiswa/storeAPI', [MahasiswaController::class, 'storeAPI'])->middleware(['auth', 'verified'])->name('mahasiswa.storeAPI');
     });
 
     // Jurusan
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/jurusan', [JurusanController::class, 'index'])->middleware(['auth', 'verified'])->name('jurusan');
+        Route::get('/jurusan/dataAPI', [JurusanController::class, 'show'])->middleware(['auth', 'verified'])->name('jurusan.show');
+        Route::post('/jurusan/store', [JurusanController::class, 'store'])->middleware(['auth', 'verified'])->name('jurusan.store');
     });
 
 
     // Prodi
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/prodi', [ProdiController::class, 'index'])->middleware(['auth', 'verified'])->name('prodi');
+        Route::get('/prodi/dataAPI', [ProdiController::class, 'show'])->middleware(['auth', 'verified'])->name('prodi.show');
+        Route::post('/prodi/storeAPI', [ProdiController::class, 'storeAPI'])->middleware(['auth', 'verified'])->name('prodi.storeAPI');
     });
 
 
@@ -118,12 +125,15 @@ Route::group(['middleware' => ['role:admin']], function () {
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/dosen', [DosenController::class, 'index'])->name('dosen');
         Route::post('/dosen', [DosenController::class, 'store']);
-        Route::get('/dosen/show/{id}', [DosenController::class, 'show'])->middleware(['auth', 'verified'])->name('dosen.show');
+        Route::get('/dosen/dataAPI', [DosenController::class, 'show'])->middleware(['auth', 'verified'])->name('dosen.show');
+        Route::post('/dosen/storeAPI', [DosenController::class, 'storeAPI'])->middleware(['auth', 'verified'])->name('dosen.storeAPI');
     });
 
     // Kurikulum
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/kurikulum', [KurikulumController::class, 'index'])->middleware(['auth', 'verified'])->name('kurikulum');
+        Route::get('/kurikulum/dataAPI', [KurikulumController::class, 'show'])->middleware(['auth', 'verified'])->name('kurikulum.show');
+        Route::post('/kurikulum/store', [KurikulumController::class, 'store'])->middleware(['auth', 'verified'])->name('kurikulum.store');
     });
 
     // Dosen Pengampu Matkul
@@ -135,11 +145,15 @@ Route::group(['middleware' => ['role:admin']], function () {
     // Pimpinan Jurusan
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/pimpinamjurusan', [PimpinanJurusanController::class, 'index'])->middleware(['auth', 'verified'])->name('pimpinanjurusan');
+        Route::get('/pimpinamjurusan/dataAPI', [PimpinanJurusanController::class, 'show'])->middleware(['auth', 'verified'])->name('pimpinanjurusan.show');
+        Route::post('/pimpinamjurusan/storeAPI', [PimpinanJurusanController::class, 'storeAPI'])->middleware(['auth', 'verified'])->name('pimpinanjurusan.storeAPI');
     });
 
     // Pimpinan Prodi
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/pimpinamprodi', [PimpinanProdiController::class, 'index'])->middleware(['auth', 'verified'])->name('pimpinanprodi');
+        Route::get('/pimpinamprodi/dataAPI', [PimpinanProdiController::class, 'show'])->middleware(['auth', 'verified'])->name('pimpinanprodi.show');
+        Route::post('/pimpinamprodi/storeAPI', [PimpinanProdiController::class, 'storeAPI'])->middleware(['auth', 'verified'])->name('pimpinanprodi.storeAPI');
     });
 
     // Pengurus_KBK
@@ -189,6 +203,8 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::delete('/matkul/delete/{id}', [MatkulController::class, 'delete'])->middleware(['auth', 'verified'])->name('matkul.delete');
         Route::get('/matkul/export/excel', [MatkulController::class, 'export_excel'])->name('matkul.export');
         Route::post('/matkul/import', [MatkulController::class, 'import'])->name('matkul.import');
+        Route::get('/matkul/dataAPI', [MatkulController::class, 'show'])->middleware(['auth', 'verified'])->name('matkul.show');
+        Route::post('/matkul/storeAPI', [MatkulController::class, 'storeAPI'])->middleware(['auth', 'verified'])->name('matkul.storeAPI');
     });
 
     // Matkul_KBK

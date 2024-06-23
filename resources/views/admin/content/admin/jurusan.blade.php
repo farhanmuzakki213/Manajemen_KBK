@@ -1,4 +1,11 @@
 @extends('admin.admin_master')
+@section('styles')
+    <style>
+        .table-Light.selected {
+            background-color: lightblue;
+        }
+    </style>
+@endsection
 @section('admin')
     <div class="container-fluid">
         <div class="card">
@@ -26,8 +33,14 @@
                 <div class="container-fluid">
                     <!-- Data Jurusan -->
                     <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Aksi</h6>
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                            <a href="{{ route('jurusan.show') }}"
+                                class="btn btn-primary mb-2 d-flex align-items-center">
+                                <i class="ti ti-upload"></i> Ambil Data API
+                            </a>
+                            <a href="delete-row" class="btn btn-danger mb-2 d-flex align-items-center">
+                                <i class="bi bi-trash""></i> Hapus
+                            </a>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -63,4 +76,22 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+    <script>
+        var table3 = $("#sing_row_del").DataTable();
+
+        $("#sing_row_del tbody").on("click", "tr", function() {
+            if ($(this).hasClass("selected")) {
+                $(this).removeClass("selected");
+            } else {
+                table3.$("tr.selected").removeClass("selected");
+                $(this).addClass("selected");
+            }
+        });
+
+        $("#delete-row").click(function() {
+            table3.row(".selected").remove().draw(false);
+        });
+    </script>
 @endsection
