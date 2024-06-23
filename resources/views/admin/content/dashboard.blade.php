@@ -1,4 +1,5 @@
 @extends('admin.admin_master')
+
 @section('admin')
     <div class="container-fluid">
         <div class="card">
