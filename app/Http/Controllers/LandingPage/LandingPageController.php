@@ -20,16 +20,19 @@ class LandingPageController extends Controller
             ->get();
 
         $data_berita = DB::table('berita')
-            ->orderByDesc('id_berita')
+            ->orderBy('id_berita')
             ->get();
             
         return view('frontend.master', compact('data_berita', 'data_pengurus_kbk'));
         //dd(compact('data_berita', 'data_pegurus_kbk'));
     } 
 
-    public function detail($id_berita)
+    public function detail($id)
     {
-        $data_berita = Berita::find($id_berita);
+        $data_berita = Berita::find($id);
+        if (!$data_berita) {
+            abort(404, 'Berita tidak ditemukan');
+        }
         return view('frontend.section.detail_berita_kbk', compact('data_berita'));
     }
 

@@ -1,4 +1,4 @@
-<div class="container-fluid_2 py-5">
+<div class="container-fluid_2 py-5" id="deskripsi">
     <div class="container_2 pt-5">
         <div class="row_2" >
             <div class="col-lg-6" style="min-height: 500px;">

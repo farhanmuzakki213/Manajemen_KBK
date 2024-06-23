@@ -2,48 +2,49 @@
 
 /* Admin */
 
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\MahasiswaController;
-use App\Http\Controllers\Admin\JurusanController;
-use App\Http\Controllers\Admin\ProdiController;
-use App\Http\Controllers\Admin\ThnAkademikController;
-use App\Http\Controllers\Admin\DosenController;
-use App\Http\Controllers\Admin\KurikulumController;
-use App\Http\Controllers\Admin\PimpinanJurusanController;
-use App\Http\Controllers\Admin\MatkulController;
-use App\Http\Controllers\Admin\Pengurus_kbkController;
-use App\Http\Controllers\Admin\DosenKBKController;
-use App\Http\Controllers\Admin\DosenPengampuMatkulController;
-use App\Http\Controllers\Admin\JenisKbkController;
-use App\Http\Controllers\Admin\MatkulKBKController;
-use App\Http\Controllers\Admin\PimpinanProdiController;
-/* Dosen Pengampu */
-use App\Http\Controllers\DosenPengampu\DosenMatkulController;
-/* Pimpinan Jurusan */
-use App\Http\Controllers\PimpinanJurusan\KajurController;
-use App\Http\Controllers\PimpinanJurusan\Berita_Ver_UAS_KajurController;
-use App\Http\Controllers\PimpinanJurusan\Berita_Ver_RPS_KajurController;
-/* Pimpinan Prodi */
-use App\Http\Controllers\PimpinanProdi\Rep_Soal_UASController;
-use App\Http\Controllers\PimpinanProdi\Rep_RPSController;
-use App\Http\Controllers\PimpinanProdi\Berita_Ver_UASController;
-use App\Http\Controllers\PimpinanProdi\Berita_Ver_RPSController;
-use App\Http\Controllers\PimpinanProdi\HasilFinalProposalTAController;
-/* Pengurus KBK */
-use App\Http\Controllers\PengurusKbk\PenugasanReviewController;
-use App\Http\Controllers\PengurusKbk\Ver_RPSController;
-use App\Http\Controllers\PengurusKbk\Ver_Soal_UASController;
-use App\Http\Controllers\PengurusKbk\VerBeritaAcaraRpsController;
-use App\Http\Controllers\PengurusKbk\VerBeritaAcaraUasController;
-/* Dosen KBK */
-use App\Http\Controllers\DosenKbk\ReviewProposalTAController;
-/* Landing Page */
-use App\Http\Controllers\LandingPage\LandingPageController;
-/* End */
-use App\Http\Controllers\ExampleController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ExampleController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Routing\Route as RoutingRoute;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\DosenController;
+use App\Http\Controllers\Admin\ProdiController;
+use App\Http\Controllers\Admin\MatkulController;
+use App\Http\Controllers\Admin\JurusanController;
+use App\Http\Controllers\Admin\DosenKBKController;
+use App\Http\Controllers\Admin\JenisKbkController;
+use App\Http\Controllers\Admin\KurikulumController;
+use App\Http\Controllers\Admin\MahasiswaController;
+use App\Http\Controllers\Admin\MatkulKBKController;
+use App\Http\Controllers\Admin\ThnAkademikController;
+/* Dosen Pengampu */
+use App\Http\Controllers\Admin\Pengurus_kbkController;
+/* Pimpinan Jurusan */
+use App\Http\Controllers\Admin\PimpinanProdiController;
+use App\Http\Controllers\PengurusKbk\Ver_RPSController;
+use App\Http\Controllers\Admin\PimpinanJurusanController;
+/* Pimpinan Prodi */
+use App\Http\Controllers\PimpinanJurusan\KajurController;
+use App\Http\Controllers\PimpinanProdi\kaprodiController;
+use App\Http\Controllers\PimpinanProdi\Rep_RPSController;
+use App\Http\Controllers\LandingPage\LandingPageController;
+use App\Http\Controllers\PengurusKbk\Ver_Soal_UASController;
+/* Pengurus KBK */
+use App\Http\Controllers\Admin\DosenPengampuMatkulController;
+use App\Http\Controllers\DosenKbk\ReviewProposalTAController;
+use App\Http\Controllers\DosenPengampu\DosenMatkulController;
+use App\Http\Controllers\PimpinanProdi\Rep_Soal_UASController;
+use App\Http\Controllers\PengurusKbk\PenugasanReviewController;
+/* Dosen KBK */
+use App\Http\Controllers\PimpinanProdi\Berita_Ver_RPSController;
+/* Landing Page */
+use App\Http\Controllers\PimpinanProdi\Berita_Ver_UASController;
+/* End */
+use App\Http\Controllers\PengurusKbk\VerBeritaAcaraRpsController;
+use App\Http\Controllers\PengurusKbk\VerBeritaAcaraUasController;
+use App\Http\Controllers\PimpinanProdi\HasilFinalProposalTAController;
+use App\Http\Controllers\PimpinanJurusan\Berita_Ver_RPS_KajurController;
+use App\Http\Controllers\PimpinanJurusan\Berita_Ver_UAS_KajurController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,7 +75,7 @@ Route::group(['middleware' => ['role:super-admin']], function () {
 Route::get('/', [LandingPageController::class, 'index']);
 
 // Detail Berita
-Route::get('/berita/{id_berita}', [LandingPageController::class, 'detail']);
+Route::get('/detail_berita/{id}', [LandingPageController::class, 'detail']);
 
 
 Route::get('/dashboard', function () {
@@ -222,6 +223,10 @@ require __DIR__ . '/auth.php';
 Route::group(['middleware' => ['role:pimpinan-prodi']], function () {
     // Repositori RPS
     Route::middleware(['auth', 'verified'])->group(function () {
+        Route::get('/dashboard_kaprodi', [kaprodiController::class, 'dashboard_kaprodi'])->middleware(['auth', 'verified'])->name('dashboard_kaprodi');
+    });
+
+    Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/repositori_rps', [Rep_RPSController::class, 'index'])->middleware(['auth', 'verified'])->name('rep_rps');
         Route::post('/repositori_rps/store', [Rep_RPSController::class, 'store'])->middleware(['auth', 'verified'])->name('rep_rps.store');
         Route::get('/repositori_rps/create', [Rep_RPSController::class, 'create'])->middleware(['auth', 'verified'])->name('rep_rps.create');
@@ -279,6 +284,9 @@ Route::group(['middleware' => ['role:dosen-pengampu']], function () {
         /* Route::get('/dosen_matkul_notifikasi_uas/{dosen_matkul_id}/{matkul_kbk_id}', [DosenMatkulController::class, 'show_uas'])
             ->name('notifikasi_uas.show'); */
         Route::get('/dosen_matkul_notifikasi/{dosen_matkul_id}/{matkul_kbk_id}', [DosenMatkulController::class, 'show'])->name('notifikasi.show');
+        Route::get('/dashboard_pengampu', [DosenMatkulController::class, 'dashboard_pengampu'])->middleware(['auth', 'verified'])->name('dashboard_pengampu');
+        // Route::get('/api/prodi-data/{prodiId}', [ProdiController::class, 'getProdiData']);
+
     });
 });
 
@@ -379,6 +387,7 @@ Route::group(['middleware' => ['role:pimpinan-jurusan']], function () {
         Route::get('/grafik_rps', [KajurController::class, 'grafik_rps'])->middleware(['auth', 'verified'])->name('grafik_rps');
         Route::get('/grafik_uas', [KajurController::class, 'grafik_uas'])->middleware(['auth', 'verified'])->name('grafik_uas');
         Route::get('/grafik_proposal', [KajurController::class, 'grafik_proposal'])->middleware(['auth', 'verified'])->name('grafik_proposal');
+        Route::get('/dashboard_pimpinan', [KajurController::class, 'dashboard_pimpinan'])->middleware(['auth', 'verified'])->name('dashboard_pimpinan');
     });
 
     // Berita Acara Verifikasi Soal_UAS Kajur
