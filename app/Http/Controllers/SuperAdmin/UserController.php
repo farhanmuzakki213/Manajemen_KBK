@@ -5,6 +5,8 @@ namespace App\Http\Controllers\SuperAdmin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
@@ -16,7 +18,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::get();
-        return view('admin.content.superadmin.user.index',[
+        return view('admin.content.superadmin.user.index', [
             'users' => $users
         ]);
     }
@@ -26,8 +28,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::pluck('name','name')->all();
-        return view('admin.content.superadmin.user.create',[
+        $roles = Role::pluck('name', 'name')->all();
+        return view('admin.content.superadmin.user.create', [
             'roles' => $roles
         ]);
     }
@@ -37,7 +39,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $request -> validate([
+        $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|string|min:8|max:30',
@@ -51,7 +53,7 @@ class UserController extends Controller
         ]);
 
         $user->syncRoles($request->roles);
-        return redirect('/users')->with('success','User berhasil dibuat dengan hak akses');
+        return redirect('/users')->with('success', 'User berhasil dibuat dengan hak akses');
     }
 
     /**
@@ -59,7 +61,6 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        
     }
 
     /**
@@ -67,9 +68,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $roles = Role::pluck('name','name')->all();
-        $userRoles = $user->roles->pluck('name','name')->all();
-        return view('admin.content.superadmin.user.edit',[
+        $roles = Role::pluck('name', 'name')->all();
+        $userRoles = $user->roles->pluck('name', 'name')->all();
+        return view('admin.content.superadmin.user.edit', [
             'user' => $user,
             'roles' => $roles,
             'userRoles' => $userRoles,
@@ -81,26 +82,57 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $request -> validate([
+        $request->validate([
             'name' => 'required|string|max:255',
             'password' => 'nullable|string|min:8|max:30',
-            'roles' => 'required',
+            'roles' => 'required|array',
         ]);
 
-        $data = [
-            'name' => $request->name,
-            'roles' => $request->roles,
-        ];
+        $userRoles = $user->roles->pluck('name')->toArray();
+        
 
-        if(!empty($request->password)){
+        if (in_array('super-admin', $userRoles) || in_array('admin', $userRoles)) {
             $data = [
-                'password' => Hash::make($request->password),
+                'name' => $request->name,
+                'roles' => $request->roles,
             ];
-        }
 
-        $user->update($data);
-        $user->syncRoles($request->roles);
-        return redirect('/users')->with('success','User berhasil di perbaharui dengan hak akses');
+            // Jika password diubah, hash password baru
+            if (!empty($request->password)) {
+                $data['password'] = Hash::make($request->password);
+            }
+
+            $user->update($data);
+            $user->syncRoles($request->roles);
+
+            return redirect('/users')->with('success', 'User berhasil diperbarui dengan hak akses.');
+        }elseif(!in_array('super-admin', $request->roles) || !in_array('admin', $request->roles)){
+            $dosenExists = DB::table('dosen')
+            ->where('nama_dosen', $request->name)
+            ->where('email', $request->email)
+            ->exists();
+            if (!$dosenExists) {
+                return redirect()->back()->withInput()->with('error', 'Data user tidak sesuai dengan data dosen (nama dan email tidak cocok).');
+            }
+            $allowedRoles = array_diff($request->roles, ['admin', 'super-admin']);
+            if(!$allowedRoles){
+                return redirect()->back()->withInput()->with('error', 'Dosen tidak boleh memiliki akses admin atau super admin.');
+            }
+            $data = [
+                'name' => $request->name,
+                'roles' => $request->allowedRoles,
+            ];
+    
+            // Jika password diubah, hash password baru
+            if (!empty($request->password)) {
+                $data['password'] = Hash::make($request->password);
+            }
+    
+            $user->update($data);
+            $user->syncRoles($allowedRoles);
+    
+            return redirect('/users')->with('success', 'User berhasil diperbarui dengan hak akses. Tanpa hak akses admin atau super admin');
+        }
     }
 
     /**
@@ -110,6 +142,6 @@ class UserController extends Controller
     {
         $user = User::findOrFail($userId);
         $user->delete();
-        return redirect('/users')->with('success','User berhasil di hapus');
+        return redirect('/users')->with('success', 'User berhasil di hapus');
     }
 }
