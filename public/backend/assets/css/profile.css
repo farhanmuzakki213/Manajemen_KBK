@@ -1,0 +1,108 @@
+@charset "UTF-8";
+@import url(https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap);
+
+/*!
+ * Tabler Icons 1.112.0 by tabler - https://tabler.io
+ * License - https://github.com/tabler/tabler-icons/blob/master/LICENSE
+ */
+@font-face {
+    font-family: tabler-icons;
+    font-style: normal;
+    font-weight: 400;
+    src: url(../fonts/tabler-icons/fonts/tabler-icons.eot);
+    src: url(../fonts/tabler-icons/fonts/tabler-icons.eot?#iefix) format("embedded-opentype"), url(../fonts/tabler-icons/fonts/tabler-icons.woff2) format("woff2"), url(../fonts/tabler-icons/fonts/tabler-icons.woff) format("woff"), url(../fonts/tabler-icons/fonts/tabler-icons.ttf) format("truetype"), url(../fonts/tabler-icons/fonts/tabler-icons.svg#tabler-icons) format("svg")
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    @font-face {
+        font-family: tabler-icons;
+        src: url(../fonts/tabler-icons/fonts/tabler-icons.svg#tabler-icons) format("svg")
+    }
+}
+
+.bg-info-subtle {
+    background-color: var(--bs-info-bg-subtle) !important
+}
+
+.btn.bg-info-subtle:hover {
+    background-color: var(--bs-info) !important;
+    color: var(--bs-white) !important
+}
+
+.shadow-none {
+    box-shadow: none !important
+}
+
+.position-relative {
+    position: relative !important
+}
+
+.overflow-hidden {
+    overflow: hidden !important
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem !important
+}
+
+html[dir=rtl] .mb-4,
+html[dir=rtl] .my-4 {
+    margin-bottom: 1.5rem !important
+}
+
+.align-items-center {
+    align-items: center !important
+}
+
+.breadcrumb {
+    --bs-breadcrumb-padding-x: 0;
+    --bs-breadcrumb-padding-y: 0;
+    --bs-breadcrumb-margin-bottom: 0;
+    --bs-breadcrumb-font-size: 0.875rem;
+    --bs-breadcrumb-divider-color: #2a3547;
+    --bs-breadcrumb-item-padding-x: 0.5rem;
+    --bs-breadcrumb-item-active-color: #5a6a85;
+    display: flex;
+    flex-wrap: wrap;
+    padding: var(--bs-breadcrumb-padding-y) var(--bs-breadcrumb-padding-x);
+    margin-bottom: var(--bs-breadcrumb-margin-bottom);
+    font-size: var(--bs-breadcrumb-font-size);
+    list-style: none;
+    background-color: var(--bs-breadcrumb-bg);
+    border-radius: var(--bs-breadcrumb-border-radius)
+}
+
+.breadcrumb-item+.breadcrumb-item {
+    padding-left: var(--bs-breadcrumb-item-padding-x)
+}
+
+.breadcrumb-item+.breadcrumb-item::before {
+    float: left;
+    padding-right: var(--bs-breadcrumb-item-padding-x);
+    color: var(--bs-breadcrumb-divider-color);
+    content: var(--bs-breadcrumb-divider, "•")
+}
+
+.breadcrumb-item.active {
+    color: var(--bs-breadcrumb-item-active-color)
+}
+
+html[dir=rtl] .breadcrumb-item+.breadcrumb-item::before {
+    float: right
+}
+
+html[dir=rtl] .breadcrumb-item+.breadcrumb-item {
+    padding-left: 0;
+    padding-right: .5rem
+}
+
+html[dir=rtl] .breadcrumb-item+.breadcrumb-item::before {
+    padding-left: .5rem;
+    padding-right: 0
+}
+
+[data-bs-theme=dark] .breadcrumb-item+.breadcrumb-item::before,
+[data-bs-theme=dark] .nav-pills .nav-link,
+[data-bs-theme=dark] .nav-tabs .nav-link {
+    color: #7c8fac
+}
