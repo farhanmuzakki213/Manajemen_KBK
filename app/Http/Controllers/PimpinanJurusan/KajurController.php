@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers\PimpinanJurusan;
 
-use App\Http\Controllers\Controller;
 use App\Models\RepRpsUas;
-use App\Models\ReviewProposalTaDetailPivot;
-use App\Models\ReviewProposalTAModel;
 use App\Models\VerRpsUas;
+use App\Models\ThnAkademik;
 use Illuminate\Http\Request;
+use App\Models\PimpinanJurusan;
+use App\Models\ProposalTAModel;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\Prodi;
+use Illuminate\Support\Facades\Auth;
+use App\Models\ReviewProposalTAModel;
+use App\Models\ReviewProposalTaDetailPivot;
 
 
 class KajurController extends Controller
@@ -17,15 +22,240 @@ class KajurController extends Controller
      * Display a listing of the resource.
      */
 
+    public function getDosen()
+    {
+        $user = Auth::user()->name;
+        $user_email = Auth::user()->email;
+        $kajur = PimpinanJurusan::whereHas('r_dosen', function ($query) use ($user, $user_email) {
+            $query->where('nama_dosen', $user)
+                ->where('email', $user_email);
+        })->first();
+        return $kajur;
+    }
+
+
+
+    public function dashboard_pimpinan(Request $request)
+    {
+        // Get current academic semester
+        $smt_thnakd_saat_ini = ThnAkademik::where('status_smt_thnakd', '1')->first();
+
+        // Get current department head (Kajur) data
+        $kajur = $this->getDosen();
+
+        // Get all Prodi
+        $prodi = Prodi::where('jurusan_id', 7)->get();
+
+        // Initialize variables to store counts for selected Prodi
+        $total_banyak_pengunggahan_rps = 0;
+        $total_banyak_verifikasi_rps = 0;
+        $total_banyak_pengunggahan_uas = 0;
+        $total_banyak_verifikasi_uas = 0;
+        $total_jumlah_proposal = 0;
+        $total_jumlah_review_proposal = 0;
+
+        // Get selected Prodi ID from request
+        $prodi_id = $request->input('prodi_id');
+
+        // Loop through each Prodi or filter by selected Prodi
+        foreach ($prodi as $single_prodi) {
+            if ($prodi_id && $prodi_id != $single_prodi->id_prodi) {
+                continue; // Skip if Prodi is selected and doesn't match current iteration
+            }
+
+            // Count RPS uploads and verifications for this Prodi
+            $queryRPS = RepRpsUas::where('type', '=', '0')
+                ->whereHas('r_smt_thnakd', function ($query) use ($smt_thnakd_saat_ini) {
+                    $query->where('id_smt_thnakd', $smt_thnakd_saat_ini->id_smt_thnakd);
+                })
+                ->whereHas('r_dosen_matkul.p_kelas.r_prodi', function ($query) use ($single_prodi) {
+                    $query->where('prodi_id', $single_prodi->id_prodi);
+                });
+
+            $banyak_pengunggahan_rps = $queryRPS->count();
+            $banyak_verifikasi_rps = VerRpsUas::whereHas('r_rep_rps_uas', function ($query) use ($kajur, $queryRPS) {
+                $query->whereIn('id_rep_rps_uas', $queryRPS->pluck('id_rep_rps_uas')->all());
+            })->count();
+
+            $total_banyak_pengunggahan_rps += $banyak_pengunggahan_rps;
+            $total_banyak_verifikasi_rps += $banyak_verifikasi_rps;
+
+            // Count UAS uploads and verifications for this Prodi
+            $queryUAS = RepRpsUas::where('type', '=', '1')
+                ->whereHas('r_smt_thnakd', function ($query) use ($smt_thnakd_saat_ini) {
+                    $query->where('id_smt_thnakd', $smt_thnakd_saat_ini->id_smt_thnakd);
+                })
+                ->whereHas('r_dosen_matkul.p_kelas.r_prodi', function ($query) use ($single_prodi) {
+                    $query->where('prodi_id', $single_prodi->id_prodi);
+                });
+
+            $banyak_pengunggahan_uas = $queryUAS->count();
+            $banyak_verifikasi_uas = VerRpsUas::whereHas('r_rep_rps_uas', function ($query) use ($kajur, $queryUAS) {
+                $query->whereIn('id_rep_rps_uas', $queryUAS->pluck('id_rep_rps_uas')->all());
+            })->count();
+
+            $total_banyak_pengunggahan_uas += $banyak_pengunggahan_uas;
+            $total_banyak_verifikasi_uas += $banyak_verifikasi_uas;
+
+            // Count Thesis Proposal data for this Prodi
+            $jumlah_proposal = ProposalTAModel::whereHas('r_mahasiswa', function ($query) use ($single_prodi) {
+                $query->where('prodi_id', $single_prodi->id_prodi);
+            })->count();
+
+            $total_jumlah_proposal += $jumlah_proposal;
+
+            // Count Thesis Proposal Review data for this Prodi
+            $jumlah_review_proposal = ReviewProposalTaDetailPivot::whereHas('p_reviewProposal.proposal_ta.r_mahasiswa', function ($query) use ($single_prodi) {
+                $query->where('prodi_id', $single_prodi->id_prodi);
+            })->count();
+
+            $total_jumlah_review_proposal += $jumlah_review_proposal;
+
+            if ($prodi_id) {
+                break; // Stop the loop if specific Prodi is selected to prevent unnecessary iterations
+            }
+        }
+
+        // Calculate totals
+        $total_rps = $total_banyak_pengunggahan_rps + $total_banyak_verifikasi_rps;
+        $total_uas = $total_banyak_pengunggahan_uas + $total_banyak_verifikasi_uas;
+        $total_ta = $total_jumlah_proposal + $total_jumlah_review_proposal;
+
+        // Calculate percentages
+        $percentUploadedRPS = $total_rps > 0 ? ($total_banyak_pengunggahan_rps / $total_rps) * 100 : 0;
+        $percentVerifiedRPS = $total_rps > 0 ? ($total_banyak_verifikasi_rps / $total_rps) * 100 : 0;
+        $percentUploadedUAS = $total_uas > 0 ? ($total_banyak_pengunggahan_uas / $total_uas) * 100 : 0;
+        $percentVerifiedUAS = $total_uas > 0 ? ($total_banyak_verifikasi_uas / $total_uas) * 100 : 0;
+        $percentProposalTA = $total_ta > 0 ? ($total_jumlah_proposal / $total_ta) * 100 : 0;
+        $percentReviewProposalTA = $total_ta > 0 ? ($total_jumlah_review_proposal / $total_ta) * 100 : 0;
+
+        // Return view with data
+        return view('admin.content.PimpinanJurusan.dashboard_pimpinan', compact(
+            'percentUploadedRPS',
+            'percentVerifiedRPS',
+            'percentUploadedUAS',
+            'percentVerifiedUAS',
+            'percentProposalTA',
+            'percentReviewProposalTA',
+            'total_banyak_pengunggahan_rps',
+            'total_banyak_verifikasi_rps',
+            'total_banyak_pengunggahan_uas',
+            'total_banyak_verifikasi_uas',
+            'total_jumlah_proposal',
+            'total_jumlah_review_proposal',
+            'smt_thnakd_saat_ini', // Include current semester for filtering options in view
+            'prodi' // Pass all Prodi to the view
+        ));
+    }
+
+
+
+
+
+
+
+
+    // public function dashboard_pimpinan()
+    // {
+    //     // Get current academic semester
+    //     $smt_thnakd_saat_ini = ThnAkademik::where('status_smt_thnakd', '1')->first();
+
+    //     // Get current department head (Kajur) data
+    //     $kajur = $this->getDosen();
+
+    //     $prodi = Prodi::all();
+
+    //     // Count RPS uploads and verifications
+    //     $queryRPS = RepRpsUas::where('type', '=', '0')
+    //         ->whereHas('r_smt_thnakd', function ($query) use ($smt_thnakd_saat_ini) {
+    //             $query->where('id_smt_thnakd', $smt_thnakd_saat_ini->id_smt_thnakd);
+    //         })
+    //         ->whereHas('r_dosen_matkul.p_kelas.r_prodi', function ($query) use ($kajur) {
+    //             $query->where('prodi_id', $kajur->prodi_id);
+    //         });
+
+    //     $banyak_pengunggahan_rps = $queryRPS->count();
+    //     $banyak_verifikasi_rps = VerRpsUas::whereHas('r_rep_rps_uas', function ($query) use ($kajur, $queryRPS) {
+    //         $query->whereIn('id_rep_rps_uas', $queryRPS->pluck('id_rep_rps_uas')->all());
+    //     })->count();
+
+    //     // Count UAS uploads and verifications
+    //     $queryUAS = RepRpsUas::where('type', '=', '1')
+    //         ->whereHas('r_smt_thnakd', function ($query) use ($smt_thnakd_saat_ini) {
+    //             $query->where('id_smt_thnakd', $smt_thnakd_saat_ini->id_smt_thnakd);
+    //         })
+    //         ->whereHas('r_dosen_matkul.p_kelas.r_prodi', function ($query) use ($kajur) {
+    //             $query->where('prodi_id', $kajur->prodi_id);
+    //         });
+
+    //     $banyak_pengunggahan_uas = $queryUAS->count();
+    //     $banyak_verifikasi_uas = VerRpsUas::whereHas('r_rep_rps_uas', function ($query) use ($kajur, $queryUAS) {
+    //         $query->whereIn('id_rep_rps_uas', $queryUAS->pluck('id_rep_rps_uas')->all());
+    //     })->count();
+
+    //     // Fetch Thesis Proposal data
+    //     $data_proposal_ta = ProposalTAModel::with('r_mahasiswa.r_prodi')
+    //         ->whereHas('r_mahasiswa.r_prodi', function ($query) use ($kajur) {
+    //             $query->where('prodi_id', $kajur->prodi_id);
+    //         })
+    //         ->orderBy('proposal_ta.id_proposal_ta', 'desc')
+    //         ->get();
+
+    //     $jumlah_proposal = $data_proposal_ta->count();
+
+    //     // Fetch Thesis Proposal Review data
+    //     $data_review_proposal_ta = ReviewProposalTaDetailPivot::with('p_reviewProposal', 'p_reviewProposal.proposal_ta.r_mahasiswa.r_prodi')
+    //         ->whereHas('p_reviewProposal.proposal_ta.r_mahasiswa.r_prodi', function ($query) use ($kajur) {
+    //             $query->where('prodi_id', $kajur->prodi_id);
+    //         })
+    //         ->orderBy('review_proposal_ta_detail_pivot.penugasan_id', 'desc')
+    //         ->get();
+
+    //     $jumlah_review_proposal = $data_review_proposal_ta->count();
+
+    //     // Calculate totals
+    //     $total_rps = $banyak_pengunggahan_rps + $banyak_verifikasi_rps;
+    //     $total_uas = $banyak_pengunggahan_uas + $banyak_verifikasi_uas;
+    //     $total_ta = $jumlah_proposal + $jumlah_review_proposal;
+
+    //     // Calculate percentages
+    //     $percentUploadedRPS = $total_rps > 0 ? ($banyak_pengunggahan_rps / $total_rps) * 100 : 0;
+    //     $percentVerifiedRPS = $total_rps > 0 ? ($banyak_verifikasi_rps / $total_rps) * 100 : 0;
+    //     $percentUploadedUAS = $total_uas > 0 ? ($banyak_pengunggahan_uas / $total_uas) * 100 : 0;
+    //     $percentVerifiedUAS = $total_uas > 0 ? ($banyak_verifikasi_uas / $total_uas) * 100 : 0;
+    //     $percentProposalTA = $total_ta > 0 ? ($jumlah_proposal / $total_ta) * 100 : 0;
+    //     $percentReviewProposalTA = $total_ta > 0 ? ($jumlah_review_proposal / $total_ta) * 100 : 0;
+
+    //     // Return view with data
+    //     return view('admin.content.PimpinanJurusan.dashboard_pimpinan', compact(
+    //         'percentUploadedRPS',
+    //         'percentVerifiedRPS',
+    //         'percentUploadedUAS',
+    //         'percentVerifiedUAS',
+    //         'percentProposalTA',
+    //         'percentReviewProposalTA',
+    //         'banyak_pengunggahan_rps',
+    //         'banyak_verifikasi_rps',
+    //         'banyak_pengunggahan_uas',
+    //         'banyak_verifikasi_uas',
+    //         'jumlah_proposal',
+    //         'jumlah_review_proposal',
+    //         'smt_thnakd_saat_ini' // Include current semester for filtering options in view
+    //     ));
+    // }
+
+
     public function RepProposalTAJurusan()
     {
-        $data_rep_proposal_jurusan = ReviewProposalTAModel:: with('proposal_ta', 'reviewer_satu_dosen', 'reviewer_dua_dosen', 'p_reviewDetail')
+        $data_rep_proposal_jurusan = ReviewProposalTAModel::with('proposal_ta', 'reviewer_satu_dosen', 'reviewer_dua_dosen', 'p_reviewDetail')
             ->orderByDesc('id_penugasan')
             ->get();
 
         debug($data_rep_proposal_jurusan);
         return view('admin.content.pimpinanJurusan.rep_proposal_ta_jurusan', compact('data_rep_proposal_jurusan'));
     }
+
+
 
     public function grafik_rps()
     {
@@ -48,13 +278,13 @@ class KajurController extends Controller
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('semester');
 
-        $data_ver_rps = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas')
+        $data_ver_rps = VerRpsUas::with('r_pengurus.r_dosen', 'r_rep_rps_uas')
             ->whereHas('r_rep_rps_uas', function ($query) {
-                $query->where('type', '=', '0'); 
+                $query->where('type', '=', '0');
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
-            debug($data_ver_rps);
+        debug($data_ver_rps);
         return view('admin.content.pimpinanJurusan.GrafikRPS', compact('banyak_pengunggahan', 'banyak_verifikasi', 'semester', 'data_ver_rps'));
     }
 
@@ -80,9 +310,9 @@ class KajurController extends Controller
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('semester');
 
-        $data_ver_uas = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas')
+        $data_ver_uas = VerRpsUas::with('r_pengurus.r_dosen', 'r_rep_rps_uas')
             ->whereHas('r_rep_rps_uas', function ($query) {
-                $query->where('type', '=', '1'); 
+                $query->where('type', '=', '1');
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
@@ -146,30 +376,30 @@ class KajurController extends Controller
 
     public function RepRPSJurusan()
     {
-        $data_rep_rps = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_smt_thnakd')
-        ->whereHas('r_rep_rps_uas.r_smt_thnakd', function ($query) {
-            $query->where('status_smt_thnakd', '=', '1'); 
-        })
-        ->whereHas('r_rep_rps_uas', function ($query) {
-            $query->where('type', '=', '0'); 
-        })
-        ->orderByDesc('id_ver_rps_uas')
+        $data_rep_rps = VerRpsUas::with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_smt_thnakd')
+            ->whereHas('r_rep_rps_uas.r_smt_thnakd', function ($query) {
+                $query->where('status_smt_thnakd', '=', '1');
+            })
+            ->whereHas('r_rep_rps_uas', function ($query) {
+                $query->where('type', '=', '0');
+            })
+            ->orderByDesc('id_ver_rps_uas')
             ->get();
-            //dd($data_rep_rps);
+        //dd($data_rep_rps);
         return view('admin.content.pimpinanJurusan.rep_RPS_jurusan', compact('data_rep_rps'));
     }
 
     public function RepSoalUASJurusan()
     {
-        $data_rep_soal_uas = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_smt_thnakd')
-        ->whereHas('r_rep_rps_uas.r_smt_thnakd', function ($query) {
-            $query->where('status_smt_thnakd', '=', '1'); 
-        })
-        ->whereHas('r_rep_rps_uas', function ($query) {
-            $query->where('type', '=', '1'); 
-        })
-        ->orderByDesc('id_ver_rps_uas')
-        ->get();
+        $data_rep_soal_uas = VerRpsUas::with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_smt_thnakd')
+            ->whereHas('r_rep_rps_uas.r_smt_thnakd', function ($query) {
+                $query->where('status_smt_thnakd', '=', '1');
+            })
+            ->whereHas('r_rep_rps_uas', function ($query) {
+                $query->where('type', '=', '1');
+            })
+            ->orderByDesc('id_ver_rps_uas')
+            ->get();
         debug($data_rep_soal_uas);
         return view('admin.content.pimpinanJurusan.rep_Soal_UAS_jurusan', compact('data_rep_soal_uas'));
     }

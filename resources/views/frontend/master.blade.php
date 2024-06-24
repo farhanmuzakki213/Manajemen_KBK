@@ -2,6 +2,7 @@
 @section('landing_page')
     <!-- Clients-->
     
+    @include('frontend.body.header')
     @include('frontend.section.prodi')
 
     @include('frontend.section.penjelasan_kbk')

@@ -5,16 +5,55 @@
             @foreach ($data_berita as $index => $data)
             <div class="col-berita {{ $index >= 3 ? 'hidden' : '' }}">
                 <div class="card h-100 border-0">
-                    <img src="{{$data->foto_sampul}}" class="card-img-top" alt="...">
+                    <img src="{{ asset($data->foto_sampul) }}" class="card-img-top" alt="...">
                     <div class="card-body d-flex flex-column">
                         <h4 class="card-title">{{$data->judul}}</h4>
                         <p class="card-text mb-4">{{$data->isi_berita}}</p>
                         <div class="mt-auto text-start">
-                            <a href="/berita/{{ $data->id_berita }}" class="btn btn-primary">Read More</a>
+                            {{-- <a href="/detail_berita/{{ $data->id_berita }}" class="btn btn-primary">Read More</a> --}}
+                            <a data-bs-toggle="modal" data-bs-target="#detail{{ $data->id_berita }}" class="btn btn-primary">Read More</a>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
+
+            {{-- Modal Detail Tabel --}}
+            <div class="modal fade" id="detail{{ $data->id_berita }}" tabindex="-1"
+                aria-labelledby="detailLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="detailLabel">Detail Berita "{{ $data->judul }}"</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card-body-detail">
+                                <img src="{{ asset($data->foto_sampul) }}" class="img-custom"
+                                    alt="{{ $data->judul }}">
+                                <div class="text-container">
+                                    <h4 class="card-title-detail">{{ $data->judul }}</h4>
+                                    <div class="card-text-detail">
+                                        @foreach (explode("\n", $data->isi_berita) as $paragraph)
+                                            @if (!empty(trim($paragraph)))
+                                                <p>{!! e($paragraph) !!}</p>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <!-- tambahkan input untuk atribut lainnya jika diperlukan -->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             @endforeach
         </div>
         <div class="text-center mt-4">
@@ -27,6 +66,7 @@
         </div>
     </div>
 </section>
+
 
 
 

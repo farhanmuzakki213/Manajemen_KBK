@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top navbar-detail" id="mainNav">
     <div class="container">
-        <a class="navbar-brand" href="#page-top"><img src="{{asset('frontend/landing-page/assets/img/logoti3-white.svg')}}"/></a>
+        <a class="navbar-brand" href="#page-top"><img src="{{asset('frontend/landing-page/assets/img/logos/logoti3-white.svg')}}"/></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             Menu
             <i class="fas fa-bars ms-1"></i>
@@ -8,6 +8,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
 
+                <li class="nav-item"><a class="nav-link" href="#deskripsi">KBK</a></li>
                 <li class="nav-item"><a class="nav-link" href="#berita">Berita</a></li>
                 <li class="nav-item"><a class="nav-link" href="#struktural">Struktural</a></li>
                 
@@ -20,3 +21,7 @@
         </div>
     </div>
 </nav>
+
+
+
+

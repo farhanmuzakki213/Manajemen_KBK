@@ -40,10 +40,16 @@
             /* Warna teks untuk tombol aktif */
         }
 
-        /* Menambahkan jarak antara h3 dan paragraf */
-        /* .service .tab-content h3 {
-            margin-bottom: 40px !important;
-        } */
+        
+
+        .tab-pane {
+            opacity: 0;
+            transition: opacity 0.9s ease-in-out;
+        }
+
+        .tab-pane.show {
+            opacity: 1;
+        }
 
         .tab-pane p {
             text-align: justify;
@@ -56,6 +62,7 @@
             width: 100%;
             height: 400px;
             object-fit: cover;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.57);
         }
 
         @media (min-width: 310px) {
@@ -74,6 +81,7 @@
             .tab-pane img {
                 max-height: 325px;
             }
+
             .tab-pane .media-1 {
                 margin-top: 350px;
                 /* Ubah margin-top sesuai kebutuhan Anda */
@@ -90,6 +98,7 @@
             .tab-pane img {
                 max-height: 350px;
             }
+
             .tab-pane .media-1 {
                 margin-top: 370px;
                 /* Ubah margin-top sesuai kebutuhan Anda */
@@ -100,6 +109,7 @@
             .tab-pane img {
                 max-height: 365px;
             }
+
             .tab-pane .media-1 {
                 margin-top: 380px;
                 /* Ubah margin-top sesuai kebutuhan Anda */
@@ -110,6 +120,7 @@
             .tab-pane img {
                 max-height: 380px;
             }
+
             .tab-pane .media-1 {
                 margin-top: 20px;
                 /* Ubah margin-top sesuai kebutuhan Anda */
@@ -172,7 +183,7 @@
                             <div class="col-md-6">
                                 <div class="position-relative h-100">
                                     <img class="position-absolute img-fluid"
-                                        src="frontend/landing-page/assets/img/jenis/programming1.jpg"
+                                        src="frontend/landing-page/assets/img/jenis/programming1.webp"
                                         style="object-fit: cover;" alt="">
                                 </div>
                             </div>
@@ -194,7 +205,7 @@
                             <div class="col-md-6">
                                 <div class="position-relative h-100">
                                     <img class="position-absolute img-fluid"
-                                        src="frontend/landing-page/assets/img/jenis/it-infrastruktur1.jpg"
+                                        src="frontend/landing-page/assets/img/jenis/it-infrastruktur1.webp"
                                         style="object-fit: cover;" alt="">
                                 </div>
                             </div>
@@ -215,7 +226,7 @@
                             <div class="col-md-6">
                                 <div class="position-relative h-100">
                                     <img class="position-absolute img-fluid"
-                                        src="frontend/landing-page/assets/img/jenis/networking.jpg"
+                                        src="frontend/landing-page/assets/img/jenis/networking.webp"
                                         style="object-fit: cover;" alt="">
                                 </div>
                             </div>
@@ -236,7 +247,7 @@
                             <div class="col-md-6">
                                 <div class="position-relative h-100">
                                     <img class="position-absolute img-fluid"
-                                        src="frontend/landing-page/assets/img/jenis/cait3.png"
+                                        src="frontend/landing-page/assets/img/jenis/cait2.webp"
                                         style="object-fit: cover;" alt="">
                                 </div>
                             </div>
@@ -257,7 +268,7 @@
                             <div class="col-md-6">
                                 <div class="position-relative h-100">
                                     <img class="position-absolute img-fluid"
-                                        src="frontend/landing-page/assets/img/jenis/softam.jpg"
+                                        src="frontend/landing-page/assets/img/jenis/softam.webp"
                                         style="object-fit: cover;" alt="">
                                 </div>
                             </div>
@@ -283,3 +294,28 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const tabLinks = document.querySelectorAll('.nav-link');
+
+    tabLinks.forEach(tabLink => {
+        tabLink.addEventListener('click', function () {
+            const targetPaneId = this.getAttribute('data-bs-target');
+            const targetPane = document.querySelector(targetPaneId);
+
+            // Hapus kelas active dari semua tab-link
+            tabLinks.forEach(link => link.classList.remove('active'));
+
+            // Tambahkan kelas active pada tab-link yang diklik
+            this.classList.add('active');
+
+            // Tampilkan tab-pane yang sesuai dengan tab-link yang diklik
+            const allPanes = document.querySelectorAll('.tab-pane');
+            allPanes.forEach(pane => pane.classList.remove('show', 'active'));
+
+            targetPane.classList.add('show', 'active');
+        });
+    });
+});
+
+</script>

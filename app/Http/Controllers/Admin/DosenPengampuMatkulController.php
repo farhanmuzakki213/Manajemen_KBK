@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Exports\ExportDosenPengampuMatkul;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\DosenPengampuMatkul;
+use App\Models\Dosen;
 use App\Models\Matkul;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\DosenPengampuMatkul;
+use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ExportDosenPengampuMatkul;
+use App\Models\ThnAkademik;
+use Illuminate\Support\Facades\Validator;
 
 class DosenPengampuMatkulController extends Controller
 {
@@ -28,7 +31,10 @@ class DosenPengampuMatkulController extends Controller
      */
     public function create()
     {
-        //
+        $data_dosen = Dosen::all();
+        $data_smt = ThnAkademik::all();
+
+        return view('admin.content.admin.form.dosenMatkul_form', compact('data_dosen', 'data_smt'));
     }
 
     public function export_excel(){
@@ -40,7 +46,22 @@ class DosenPengampuMatkulController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'id_dosen_matkul' => 'required',
+            'dosen_id' => 'required',
+            'smt_thnakd_id' => 'required',
+        ]);
+
+        if ($validator->fails()) return redirect()->back()->withInput()->withErrors($validator);
+
+        $data = [
+            'id_dosen_matkul' => $request->id_dosen_matkul,
+            'dosen_id' => $request->nama_dosen,
+            'smt_thnakd_id' => $request->smt_thnakd,
+        ];
+        DosenPengampuMatkul::create($data);
+        return redirect()->route('DosenPengampuMatkul');
+        //dd($request->all());
     }
 
     /**
@@ -48,7 +69,11 @@ class DosenPengampuMatkulController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data_dosen_pengampu = DosenPengampuMatkul::findOrFail($id);
+        $data_dosen = Dosen::all();
+        $data_smt = ThnAkademik::all();
+
+        return view('admin.content.admin.DosenPengampuMatkul', compact('data_dosen', 'data_smt'));
     }
 
     /**
@@ -56,7 +81,13 @@ class DosenPengampuMatkulController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data_dosen = Dosen::all();
+        $data_smt = ThnAkademik::all();
+
+        $data_dosen_pengampu = DosenPengampuMatkul::where('id_dosen_matkul', $id)->first();
+        //dd(compact('data_kurikulum', 'data_matkul', 'data_jenis_kbk'));
+
+        return view('admin.content.admin.form.DosenPengampuMatkul_edit', compact('data_dosen', 'data_smt', 'data_dosen_pengampu'));
     }
 
     /**
@@ -64,7 +95,22 @@ class DosenPengampuMatkulController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'id_dosen_matkul' => 'required',
+            'dosen_id' => 'required',
+            'smt_thnakd_id' => 'required',
+
+        ]);
+
+        if ($validator->fails()) return redirect()->back()->withInput()->withErrors($validator);
+
+        $data = [
+            'id_dosen_matkul' => $request->id_dosen_matkul,
+            'dosen_id' => $request->nama_dosen,
+            'smt_thnakd_id' => $request->smt_thnakd,
+        ];
+        DosenPengampuMatkul::where('id_dosen_matkul', $id)->update($data);
+        return redirect()->route('DosenPengampuMatkul');
     }
 
     /**
@@ -72,6 +118,11 @@ class DosenPengampuMatkulController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $data_dosen_pengampu = DosenPengampuMatkul::where('id_dosen_matkul', $id)->first();
+
+        if ($data_dosen_pengampu) {
+            DosenPengampuMatkul::where('id_dosen_matkul', $id)->delete();
+        }
+        return redirect()->route('DosenPengampuMatkul');
     }
 }
