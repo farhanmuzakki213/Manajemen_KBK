@@ -28,8 +28,10 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-2">
                             <div class="d-grid gap-2 d-md-block">
+                                <a href="{{ route('DosenPengampuMatkul.create') }}" class="btn btn-primary me-md-3"><i
+                                    class="bi bi-file-earmark-plus"></i> New</a>
                                 <a href="{{ route('DosenPengampuMatkul.export') }}" class="btn btn-primary me-md-3"><i
-                                        class="bi bi-box-arrow-in-up"></i> Export</a>
+                                    class="bi bi-box-arrow-in-up"></i> Export</a>
                             </div>
                         </div>
                         <div class="card-body">
@@ -42,6 +44,7 @@
                                             <th>Mata Kuliah</th>
                                             <th>kelas</th>
                                             <th>Tahun Ajaran</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -51,6 +54,7 @@
                                             <th>Mata Kuliah</th>
                                             <th>kelas</th>
                                             <th>Tahun Ajaran</th>
+                                            <th>Action</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>                                        
@@ -69,6 +73,13 @@
                                                 @endforeach
                                             </th>
                                             <th>{{$data->r_smt_thnakd->smt_thnakd}}</th>
+                                            <th>
+                                                <a href="{{ route('DosenPengampuMatkul.edit', ['id' => $data->id_dosen_matkul]) }}"
+                                                    class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
+                                                <a data-bs-toggle="modal"
+                                                    data-bs-target="#staticBackdrop{{ $data->id_dosen_matkul }}"
+                                                    class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                                            </th>
                                         </tr>
                                         @endforeach
                                     </tbody>

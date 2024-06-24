@@ -5,6 +5,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExampleController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Dosen;
 use Illuminate\Routing\Route as RoutingRoute;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\DosenController;
@@ -117,9 +118,13 @@ Route::group(['middleware' => ['role:admin']], function () {
 
     // Dosen
     Route::middleware(['auth', 'verified'])->group(function () {
-        Route::get('/dosen', [DosenController::class, 'index'])->name('dosen');
-        Route::post('/dosen', [DosenController::class, 'store']);
+        Route::get('/dosen', [DosenController::class, 'index'])->middleware(['auth', 'verified'])->name('dosen');
+        Route::post('/dosen/store', [DosenController::class, 'store'])->middleware(['auth', 'verified'])->name('dosen.store');
         Route::get('/dosen/show/{id}', [DosenController::class, 'show'])->middleware(['auth', 'verified'])->name('dosen.show');
+        Route::get('/dosen/create', [DosenController::class, 'create'])->middleware(['auth', 'verified'])->name('dosen.create');
+        Route::get('/dosen/edit/{id}', [DosenController::class, 'edit'])->middleware(['auth', 'verified'])->name('dosen.edit');
+        Route::put('/dosen/update/{id}', [DosenController::class, 'update'])->middleware(['auth', 'verified'])->name('dosen.update');
+        Route::delete('/dosen/delete/{id}', [DosenController::class, 'delete'])->middleware(['auth', 'verified'])->name('dosen.delete');
     });
 
     // Kurikulum
@@ -130,7 +135,12 @@ Route::group(['middleware' => ['role:admin']], function () {
     // Dosen Pengampu Matkul
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/DosenPengampuMatkul', [DosenPengampuMatkulController::class, 'index'])->middleware(['auth', 'verified'])->name('DosenPengampuMatkul');
+        Route::post('/DosenPengampuMatkul', [DosenPengampuMatkulController::class, 'store'])->middleware(['auth', 'verified'])->name('DosenPengampuMatkul.store');
         Route::get('/DosenPengampuMatkul/export/excel', [DosenPengampuMatkulController::class, 'export_excel'])->name('DosenPengampuMatkul.export');
+        Route::get('/DosenPengampuMatkul/create', [DosenPengampuMatkulController::class, 'create'])->middleware(['auth', 'verified'])->name('DosenPengampuMatkul.create');
+        Route::get('/DosenPengampuMatkul/edit/{id}', [DosenPengampuMatkulController::class, 'edit'])->middleware(['auth', 'verified'])->name('DosenPengampuMatkul.edit');
+        Route::put('/DosenPengampuMatkul/update/{id}', [DosenPengampuMatkulController::class, 'update'])->middleware(['auth', 'verified'])->name('DosenPengampuMatkul.update');
+        Route::delete('/DosenPengampuMatkul/delete/{id}', [DosenPengampuMatkulController::class, 'delete'])->middleware(['auth', 'verified'])->name('DosenPengampuMatkul.delete');
     });
 
     // Pimpinan Jurusan
