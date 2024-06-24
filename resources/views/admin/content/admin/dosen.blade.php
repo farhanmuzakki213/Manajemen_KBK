@@ -27,6 +27,10 @@
                     <!-- DataDosen -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
+                            <a href="{{ route('dosen.show') }}"
+                                    class="btn btn-primary me-md-3">
+                                    <i class="ti ti-upload"></i> Ambil Data API
+                                </a>
                             <div class="d-grid gap-2 d-md-block">
                                 <a href="{{ route('dosen.create') }}" class="btn btn-primary me-md-3"><i
                                             class="bi bi-file-earmark-plus"></i> New</a>
@@ -44,9 +48,6 @@
                                             <th>gender</th>
                                             <th>Jurusan</th>
                                             <th>prodi</th>
-                                            {{-- <th>Email</th>
-                                            <th>Password</th>
-                                            <th>Foto</th>--}}
                                             <th>Status</th> 
                                             <th>Action</th>
                                         </tr>
@@ -60,9 +61,6 @@
                                             <th>gender</th>
                                             <th>Jurusan</th>
                                             <th>prodi</th>
-                                            {{-- <th>Email</th>
-                                            <th>Password</th>
-                                            <th>Foto</th>--}}
                                             <th>Status</th> 
                                             <th>Action</th>
                                         </tr>

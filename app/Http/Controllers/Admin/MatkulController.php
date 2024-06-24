@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use App\Imports\ImportMatkul;
 use App\Models\Kurikulum;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 
@@ -92,19 +94,6 @@ class MatkulController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-{
-    $data_matkul = Matkul::findOrFail($id);
-    $data_kurikulum = Kurikulum::all();
-    // $data_smt_thnakd = DB::table('smt_thnakd')->get();
-    //dd($data_smt_thnakd);
-    return view('admin.content.admin.Matkul', compact('data_matkul', 'data_kurikulum'));
-}
-
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
@@ -177,4 +166,70 @@ class MatkulController extends Controller
 
         //dd($data_matkul);
     }
+    public function storeAPI(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $differences = json_decode($request->differences, true);
+            //dd($differences);
+            foreach ($differences as $data) {
+                $data_create =[
+                    'id_matkul' => $data['id_matakuliah'],
+                    'kode_matkul' => $data['kode_matakuliah'],
+                    'nama_matkul' => $data['nama_matakuliah'],
+                    'TP' => $data['TP'],
+                    'sks' => $data['sks'],
+                    'jam' => $data['jam'],
+                    'sks_teori' => $data['sks_teori'],
+                    'sks_praktek' => $data['jam_praktek'],
+                    'jam_teori' => $data['jam_teori'],
+                    'jam_praktek' => $data['jam_praktek'],
+                    'semester' => $data['semester'],
+                    'kurikulum_id' => $data['id_kurikulum'],
+                ];
+                //dd($data_create);
+                Matkul::create($data_create);
+            }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menambahkan data: ' . $e->getMessage());
+        }
+        return redirect()->route('matkul')->with('success', 'Data berhasil ditambahkan.');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show()
+    {
+        try {
+            $response = Http::get('https://umkm-pnp.com/heni/index.php?folder=matakuliah&file=index');
+
+            if ($response->successful()) {
+                // Mengambil data dari database berdasarkan urutan descending id_kurikulum
+                $dataBase_matkul = Matkul::orderByDesc('id_matkul')->pluck('kode_matkul')->toArray();
+                //dd($dataBase_matkul);
+                $data = $response->json();
+                $dataAPI_matkul = $data['list'];
+                $differencesArray = collect($dataAPI_matkul)->reject(function ($item) use ($dataBase_matkul) {
+                    return in_array($item['kode_matakuliah'], $dataBase_matkul);
+                })->all();
+                //dd($differencesArray);
+                debug($dataBase_matkul);
+                debug($dataAPI_matkul);
+                debug($differencesArray);
+
+                return view('admin.content.admin.DataAPI.matkulAPI', ['data_matkul' => $dataAPI_matkul, 'differences' => $differencesArray]);
+            } else {
+                Log::error('Request failed', ['status' => $response->status(), 'body' => $response->body()]);
+                return view('admin.content.admin.DataAPI.matkulAPI')->with('error', 'Failed to fetch data');
+            }
+        } catch (\Exception $e) {
+            Log::error('Request exception', ['exception' => $e]);
+            return view('admin.content.admin.DataAPI.matkulAPI')->with('error', 'Exception occurred');
+        }
+    }
 }
+
+    

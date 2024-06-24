@@ -26,8 +26,14 @@
                 <div class="container-fluid">
                     <!-- Data Kurikulum -->
                     <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Aksi</h6>
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                            <a href="{{ route('kurikulum.show') }}"
+                                class="btn btn-primary mb-2 d-flex align-items-center">
+                                <i class="ti ti-upload"></i> Ambil Data API
+                            </a>
+                            <a href="delete-row" class="btn btn-danger mb-2 d-flex align-items-center">
+                                <i class="bi bi-trash""></i> Hapus
+                            </a>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
