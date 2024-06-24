@@ -2,12 +2,13 @@
 
 /* Admin */
 
+use App\Models\Dosen;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExampleController;
 use App\Http\Controllers\ProfileController;
-use App\Models\Dosen;
 use Illuminate\Routing\Route as RoutingRoute;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DosenController;
 use App\Http\Controllers\Admin\ProdiController;
 use App\Http\Controllers\Admin\MatkulController;
@@ -33,14 +34,16 @@ use App\Http\Controllers\PengurusKbk\Ver_Soal_UASController;
 /* Pengurus KBK */
 use App\Http\Controllers\Admin\DosenPengampuMatkulController;
 use App\Http\Controllers\DosenKbk\ReviewProposalTAController;
+use App\Http\Controllers\DosenKbk\dosen_kbkController;
 use App\Http\Controllers\DosenPengampu\DosenMatkulController;
+use App\Http\Controllers\PengurusKbk\PengurusKbkController;
 use App\Http\Controllers\PimpinanProdi\Rep_Soal_UASController;
-use App\Http\Controllers\PengurusKbk\PenugasanReviewController;
 /* Dosen KBK */
-use App\Http\Controllers\PimpinanProdi\Berita_Ver_RPSController;
+use App\Http\Controllers\PengurusKbk\PenugasanReviewController;
 /* Landing Page */
-use App\Http\Controllers\PimpinanProdi\Berita_Ver_UASController;
+use App\Http\Controllers\PimpinanProdi\Berita_Ver_RPSController;
 /* End */
+use App\Http\Controllers\PimpinanProdi\Berita_Ver_UASController;
 use App\Http\Controllers\PengurusKbk\VerBeritaAcaraRpsController;
 use App\Http\Controllers\PengurusKbk\VerBeritaAcaraUasController;
 use App\Http\Controllers\PimpinanProdi\HasilFinalProposalTAController;
@@ -89,6 +92,10 @@ Route::get('/admin/logout', [AdminController::class, 'destroy'])->name('admin.lo
 /* ---Admin Start--- */
 Route::group(['middleware' => ['role:admin']], function () {
     // Admin
+    Route::middleware(['auth', 'verified'])->group(function () {
+        Route::get('/dashboard_admin', [DashboardController::class, 'dashboard_admin'])->middleware(['auth', 'verified'])->name('dashboard_admin');
+    });
+
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/repositori_proposal_ta', [AdminController::class, 'RepProposalTA'])->name('rep_proposal_ta');
         Route::get('/repositori_proposal_ta/dataAPI', [AdminController::class, 'show'])->middleware(['auth', 'verified'])->name('rep_proposal_ta.show');
@@ -250,6 +257,8 @@ Route::group(['middleware' => ['role:pimpinan-prodi']], function () {
     // Repositori RPS
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/dashboard_kaprodi', [kaprodiController::class, 'dashboard_kaprodi'])->middleware(['auth', 'verified'])->name('dashboard_kaprodi');
+            Route::get('/grafik_rps_prodi', [kaprodiController::class, 'grafik_rps'])->middleware(['auth', 'verified'])->name('grafik_rps_prodi');
+            Route::get('/grafik_uas_prodi', [kaprodiController::class, 'grafik_uas'])->middleware(['auth', 'verified'])->name('grafik_uas_prodi');
     });
 
     Route::middleware(['auth', 'verified'])->group(function () {
@@ -323,6 +332,10 @@ Route::group(['middleware' => ['role:dosen-pengampu']], function () {
 Route::group(['middleware' => ['role:dosen-kbk']], function () {
     // ReviewProposalTA
     Route::middleware(['auth', 'verified'])->group(function () {
+        Route::get('/dashboard_dosenKbk', [dosen_kbkController::class, 'dashboard_dosenKbk'])->middleware(['auth', 'verified'])->name('dashboard_dosenKbk');
+    });
+
+    Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/review_proposal_ta', [ReviewProposalTAController::class, 'index'])->middleware(['auth', 'verified'])->name('review_proposal_ta');
         Route::post('/review_proposal_ta/store', [ReviewProposalTAController::class, 'store'])->middleware(['auth', 'verified'])->name('review_proposal_ta.store');
         Route::get('/review_proposal_ta/create/{id}/{dosen}', [ReviewProposalTAController::class, 'create'])->middleware(['auth', 'verified'])->name('review_proposal_ta.create');
@@ -340,6 +353,12 @@ Route::group(['middleware' => ['role:dosen-kbk']], function () {
 /* ---Pengurus KBK Start--- */
 Route::group(['middleware' => ['role:pengurus-kbk']], function () {
     // Penugasan Reviewer Proposal TA
+    Route::middleware(['auth', 'verified'])->group(function () {
+        Route::get('/dashboard_pengurus', [PengurusKbkController::class, 'dashboard_pengurus'])->middleware(['auth', 'verified'])->name('dashboard_pengurus');
+        Route::get('/grafik_rps_pengurus', [PengurusKbkController::class, 'grafik_rps'])->middleware(['auth', 'verified'])->name('grafik_rps_pengurus');
+        Route::get('/grafik_uas_pengurus', [PengurusKbkController::class, 'grafik_uas'])->middleware(['auth', 'verified'])->name('grafik_uas_pengurus');
+    });
+
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/PenugasanReview', [PenugasanReviewController::class, 'index'])->middleware(['auth', 'verified'])->name('PenugasanReview');
         Route::post('/PenugasanReview/store', [PenugasanReviewController::class, 'store'])->middleware(['auth', 'verified'])->name('PenugasanReview.store');
