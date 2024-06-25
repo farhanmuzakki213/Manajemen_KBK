@@ -272,20 +272,31 @@ class KajurController extends Controller
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('banyak_verifikasi', 'smt_thnakd.smt_thnakd');
 
+        $banyak_berita = DB::table('ver_rps_uas')
+            ->join('ver_berita_acara_detail_pivot', 'ver_rps_uas.id_ver_rps_uas', '=', 'ver_berita_acara_detail_pivot.ver_rps_uas_id')
+            ->join('ver_berita_acara', 'ver_berita_acara.id_berita_acara', '=', 'ver_berita_acara_detail_pivot.berita_acara_id')
+            ->join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')
+            ->join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
+            ->select(DB::raw("smt_thnakd.smt_thnakd, COUNT(ver_berita_acara.id_berita_acara) as banyak_berita"))
+            ->where('ver_berita_acara.type', '=', '0')
+            ->groupBy('smt_thnakd.smt_thnakd')
+            ->pluck('banyak_berita', 'smt_thnakd.smt_thnakd');
+        // dd($banyak_berita);
+
         $semester = RepRpsUas::join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
             ->select(DB::raw("smt_thnakd.smt_thnakd as semester"))
             ->where('type', '=', '0')
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('semester');
 
-        $data_ver_rps = VerRpsUas::with('r_pengurus.r_dosen', 'r_rep_rps_uas')
+        $data_ver_rps = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas')
             ->whereHas('r_rep_rps_uas', function ($query) {
-                $query->where('type', '=', '0');
+                $query->where('type', '=', '0'); 
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
-        debug($data_ver_rps);
-        return view('admin.content.pimpinanJurusan.GrafikRPS', compact('banyak_pengunggahan', 'banyak_verifikasi', 'semester', 'data_ver_rps'));
+            debug($data_ver_rps);
+        return view('admin.content.pimpinanJurusan.GrafikRPS', compact('banyak_pengunggahan', 'banyak_verifikasi', 'semester', 'data_ver_rps', 'banyak_berita'));
     }
 
 
@@ -304,20 +315,30 @@ class KajurController extends Controller
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('banyak_verifikasi', 'smt_thnakd.smt_thnakd');
 
+        $banyak_berita = DB::table('ver_rps_uas')
+            ->join('ver_berita_acara_detail_pivot', 'ver_rps_uas.id_ver_rps_uas', '=', 'ver_berita_acara_detail_pivot.ver_rps_uas_id')
+            ->join('ver_berita_acara', 'ver_berita_acara.id_berita_acara', '=', 'ver_berita_acara_detail_pivot.berita_acara_id')
+            ->join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')
+            ->join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
+            ->select(DB::raw("smt_thnakd.smt_thnakd, COUNT(ver_berita_acara.id_berita_acara) as banyak_berita"))
+            ->where('ver_berita_acara.type', '=', '1')
+            ->groupBy('smt_thnakd.smt_thnakd')
+            ->pluck('banyak_berita', 'smt_thnakd.smt_thnakd');
+
         $semester = RepRpsUas::join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
             ->select(DB::raw("smt_thnakd.smt_thnakd as semester"))
             ->where('type', '=', '1')
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('semester');
 
-        $data_ver_uas = VerRpsUas::with('r_pengurus.r_dosen', 'r_rep_rps_uas')
+        $data_ver_uas = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas')
             ->whereHas('r_rep_rps_uas', function ($query) {
-                $query->where('type', '=', '1');
+                $query->where('type', '=', '1'); 
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
 
-        return view('admin.content.pimpinanJurusan.GrafikUAS', compact('banyak_pengunggahan', 'banyak_verifikasi', 'semester', 'data_ver_uas'));
+        return view('admin.content.pimpinanJurusan.GrafikUAS', compact('banyak_pengunggahan', 'banyak_verifikasi', 'banyak_berita', 'semester', 'data_ver_uas'));
     }
 
     public function grafik_proposal()

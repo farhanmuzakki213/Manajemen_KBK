@@ -28,7 +28,6 @@
                                             <th>Matakuliah</th>
                                             <th>Dosen Pengampu</th>
                                             <th>Semester</th>
-                                            <th>Prodi</th>
                                             <th>Tanggal Pengunggahan</th>
                                             <th>Status Verifikasi</th>
                                             <th>Tanggal Verifikasi</th>
@@ -40,7 +39,6 @@
                                             <th>Matakuliah</th>
                                             <th>Dosen Pengampu</th>
                                             <th>Semester</th>
-                                            <th>Prodi</th>
                                             <th>Tanggal Pengunggahan</th>
                                             <th>Status Verifikasi</th>
                                             <th>Tanggal Verifikasi</th>
@@ -53,7 +51,6 @@
                                             <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->nama_matkul }}</th>
                                             <th>{{ optional($data_ver->r_pengurus)->r_dosen->nama_dosen }}</th>
                                             <th>{{ optional($data_ver->r_rep_rps_uas)->r_smt_thnakd->smt_thnakd }}</th>
-                                            <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->r_kurikulum->r_prodi->prodi }}</th>
                                             <th>{{ \Carbon\Carbon::parse($data_ver->created_at)->format('d-m-Y') }}</th>
                                             <th>
                                                 @if ($data_ver->status_ver_uas == 0)

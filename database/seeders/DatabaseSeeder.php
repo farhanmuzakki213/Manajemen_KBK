@@ -45,5 +45,7 @@ class DatabaseSeeder extends Seeder
         $this->call([ReviewProposalTADetailSeeder::class,]);
         $this->call([RepRpsUasSeeder::class,]);
         $this->call([VerRpsUasSeeder::class,]);
+        $this->call([BeritaVerSeeder::class,]);
+        $this->call([BeritaDetailSeeder::class,]);
     }
 }

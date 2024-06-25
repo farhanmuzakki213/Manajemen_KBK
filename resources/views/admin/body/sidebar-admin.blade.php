@@ -65,6 +65,14 @@
                         <span class="hide-menu">Admin</span>
                     </li>
                     <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('dashboard_admin') }}" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-aperture"></i>
+                            </span>
+                            <span class="hide-menu">Dashboard Admin</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('rep_proposal_ta') }}" aria-expanded="false">
                             <span>
                                 <i class="ti ti-aperture"></i>
@@ -330,11 +338,35 @@
                             <span class="hide-menu">Verifikasi Berita Acara UAS</span>
                         </a>
                     </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('grafik_rps_prodi') }}" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-aperture"></i>
+                            </span>
+                            <span class="hide-menu">Tabel & Grafik RPS</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('grafik_uas_prodi') }}" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-aperture"></i>
+                            </span>
+                            <span class="hide-menu">Tabel & Grafik UAS</span>
+                        </a>
+                    </li>
                     @endhasrole
                     @hasrole('pengurus-kbk')
                     <li class="nav-small-cap">
                         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                         <span class="hide-menu">Pengurus KBK</span>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('dashboard_pengurus') }}" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-aperture"></i>
+                            </span>
+                            <span class="hide-menu">Dashboard pengurus</span>
+                        </a>
                     </li>
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('PenugasanReview') }}" aria-expanded="false">
@@ -384,6 +416,22 @@
                             <span class="hide-menu">Upload Berita Acara UAS </span>
                         </a>
                     </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('grafik_rps_pengurus') }}" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-aperture"></i>
+                            </span>
+                            <span class="hide-menu">Tabel & Grafik RPS</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('grafik_uas_pengurus') }}" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-aperture"></i>
+                            </span>
+                            <span class="hide-menu">Tabel & Grafik UAS</span>
+                        </a>
+                    </li>
                     @endhasrole
                     @hasrole('dosen-pengampu')
                     <li class="nav-small-cap">
@@ -411,6 +459,14 @@
                     <li class="nav-small-cap">
                         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                         <span class="hide-menu">Dosen KBK</span>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('dashboard_dosenKbk') }}" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-aperture"></i>
+                            </span>
+                            <span class="hide-menu">Dashboard Dosen KBK</span>
+                        </a>
                     </li>
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('review_proposal_ta') }}" aria-expanded="false">

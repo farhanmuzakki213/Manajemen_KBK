@@ -4,10 +4,10 @@
         <div class="card">
             <div class="card-body">
                 <!-- Page Heading -->
-                <h5 class="card-title fw-semibold mb-4">Grafik dan Tabel Pengunggahan dan Verifikasi UAS</h5>
+                <h5 class="card-title fw-semibold mb-4">Grafik dan Tabel Pengunggahan dan Verifikasi RPS</h5>
                 <div class="container-fluid">
                     <!-- DataVerifikasiRPS -->
-                    <div class="card shadow mb-4">
+                    <div class="card shadow my-4">
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
                                 <h6 class="m-0 font-weight-bold text-primary">Grafik</h6>
@@ -28,7 +28,6 @@
                                             <th>Matakuliah</th>
                                             <th>Dosen Pengampu</th>
                                             <th>Semester</th>
-                                            <th>Prodi</th>
                                             <th>Tanggal Pengunggahan</th>
                                             <th>Status Verifikasi</th>
                                             <th>Tanggal Verifikasi</th>
@@ -40,23 +39,21 @@
                                             <th>Matakuliah</th>
                                             <th>Dosen Pengampu</th>
                                             <th>Semester</th>
-                                            <th>Prodi</th>
                                             <th>Tanggal Pengunggahan</th>
                                             <th>Status Verifikasi</th>
                                             <th>Tanggal Verifikasi</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>                                        
-                                        @foreach ($data_ver_uas as $data_ver)
+                                        @foreach ($data_ver_rps as $data_ver)
                                         <tr class="table-Light">
                                             <th>{{ $loop->iteration }}</th>
                                             <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->nama_matkul }}</th>
                                             <th>{{ optional($data_ver->r_pengurus)->r_dosen->nama_dosen }}</th>
                                             <th>{{ optional($data_ver->r_rep_rps_uas)->r_smt_thnakd->smt_thnakd }}</th>
-                                            <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->r_kurikulum->r_prodi->prodi }}</th>
                                             <th>{{ \Carbon\Carbon::parse($data_ver->created_at)->format('d-m-Y') }}</th>
                                             <th>
-                                                @if ($data_ver->status_ver_uas == 0)
+                                                @if ($data_ver->status_ver_rps == 0)
                                                     Tidak Diverifikasi
                                                 @else
                                                     Diverifikasi
@@ -103,7 +100,7 @@
             plotOptions: {
                 bar: {
                     horizontal: false,
-                    columnWidth: '5%',
+                    columnWidth: '15%',
                     endingShape: 'rounded'
                 }
             },
