@@ -209,7 +209,7 @@
                             <span>
                                 <i class="ti ti-aperture"></i>
                             </span>
-                            <span class="hide-menu">Dashboard Pimpinan Jurusan</span>
+                            <span class="hide-menu">Dashboard Pimpinan</span>
                         </a>
                     </li>
                     <li class="sidebar-item">

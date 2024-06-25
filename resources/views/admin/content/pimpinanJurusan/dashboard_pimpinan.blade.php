@@ -9,32 +9,45 @@
                     <select id="prodiSelect" class="form-select" name="prodi_id">
                         <option value="">Semua Prodi</option>
                         @foreach ($prodi as $single_prodi)
-                            <option value="{{ $single_prodi->id_prodi }}">{{ $single_prodi->prodi }}</option>
+                            <option value="{{ $single_prodi->id_prodi }}" {{ request('prodi_id') == $single_prodi->id_prodi ? 'selected' : '' }}>{{ $single_prodi->prodi }}</option>
                         @endforeach
                     </select>
                     <button type="submit" class="btn btn-primary mt-3">Filter</button>
                 </form>
-                
             </div>
         </div>
+        
+        @php
+            $selectedProdi = $prodi->firstWhere('id_prodi', request('prodi_id'));
+            $title = $selectedProdi ? $selectedProdi->prodi : 'Semua Prodi';
+        @endphp
+
+        <h2 class="text-center mt-5">Prodi {{ $title }}</h2>
+
         <div class="charts-row py-5">
-            <div class="chart-container">
+            <div class="chart-container chart-container-center">
                 <h3>RPS</h3>
                 <div id="chartRPS"></div>
-                <p><strong>Unggahan:</strong> <span id="banyakPengunggahanRPS">{{ $total_banyak_pengunggahan_rps }}</span></p>
-                <p><strong>Verifikasi:</strong> <span id="banyakVerifikasiRPS">{{ $total_banyak_verifikasi_rps }}</span></p>
+                <div class="text-center">
+                    <p><strong>Unggahan:</strong> <span id="banyakPengunggahanRPS">{{ $total_banyak_pengunggahan_rps }}</span></p>
+                    <p><strong>Verifikasi:</strong> <span id="banyakVerifikasiRPS">{{ $total_banyak_verifikasi_rps }}</span></p>
+                </div>
             </div>
-            <div class="chart-container">
+            <div class="chart-container chart-container-center">
                 <h3>UAS</h3>
                 <div id="chartUAS"></div>
-                <p><strong>Unggahan:</strong> <span id="banyakPengunggahanUAS">{{ $total_banyak_pengunggahan_uas }}</span></p>
-                <p><strong>Verifikasi:</strong> <span id="banyakVerifikasiUAS">{{ $total_banyak_verifikasi_uas }}</span></p>
+                <div class="text-center">
+                    <p><strong>Unggahan:</strong> <span id="banyakPengunggahanUAS">{{ $total_banyak_pengunggahan_uas }}</span></p>
+                    <p><strong>Verifikasi:</strong> <span id="banyakVerifikasiUAS">{{ $total_banyak_verifikasi_uas }}</span></p>
+                </div>
             </div>
-            <div class="chart-container">
+            <div class="chart-container chart-container-center">
                 <h3>Proposal TA</h3>
                 <div id="chartTA"></div>
-                <p><strong>Proposal:</strong> <span id="jumlahProposal">{{ $total_jumlah_proposal }}</span></p>
-                <p><strong>Review:</strong> <span id="jumlahReviewProposal">{{ $total_jumlah_review_proposal }}</span></p>
+                <div class="text-center">
+                    <p><strong>Proposal:</strong> <span id="jumlahProposal">{{ $total_jumlah_proposal }}</span></p>
+                    <p><strong>Review:</strong> <span id="jumlahReviewProposal">{{ $total_jumlah_review_proposal }}</span></p>
+                </div>
             </div>
         </div>
     </div>
@@ -58,11 +71,17 @@
                 .then(function(response) {
                     var data = response.data;
                     updateCharts(data);
+                    updateTitle(prodiId);
                 })
                 .catch(function(error) {
                     console.error('Error fetching data:', error);
                 });
             });
+
+            function updateTitle(prodiId) {
+                var selectedProdi = prodiSelect.options[prodiSelect.selectedIndex].text;
+                document.querySelector('.text-center.mt-5').textContent = 'Prodi ' + (selectedProdi || 'Semua Prodi');
+            }
 
             // Function to update charts and text values
             function updateCharts(data) {
@@ -78,7 +97,7 @@
                 document.getElementById('jumlahReviewProposal').textContent = data.total_jumlah_review_proposal;
             }
 
-            // Initial chart data (you can keep this if you want to show initial data)
+            // Initial chart data
             var initialData = {
                 total_banyak_pengunggahan_rps: {{ $total_banyak_pengunggahan_rps }},
                 total_banyak_verifikasi_rps: {{ $total_banyak_verifikasi_rps }},
@@ -87,18 +106,6 @@
                 total_jumlah_proposal: {{ $total_jumlah_proposal }},
                 total_jumlah_review_proposal: {{ $total_jumlah_review_proposal }}
             };
-
-            // Common chart options (unchanged)
-            // ...
-
-            // Options for RPS Chart (unchanged)
-            // ...
-
-            // Options for UAS Chart (unchanged)
-            // ...
-
-            // Options for Proposal TA Chart (unchanged)
-            // ...
 
             // Common chart options
             var commonOptions = {
@@ -163,26 +170,7 @@
             var optionsTA = {
                 ...commonOptions,
                 series: [initialData.total_jumlah_proposal, initialData.total_jumlah_review_proposal],
-                labels: ['Proposal', 'Review'],
-                plotOptions: {
-                    pie: {
-                        donut: {
-                            size: '65%',
-                            labels: {
-                                show: true,
-                                total: {
-                                    show: true,
-                                    label: 'Total',
-                                    formatter: function(w) {
-                                        return w.globals.seriesTotals.reduce((a, b) => a + b, 0);
-                                    }
-                                }
-                            },
-                            minAngleToShowLabel: 0,
-                            expandOnClick: true
-                        }
-                    }
-                }
+                labels: ['Proposal', 'Review']
             };
 
             // Render Proposal TA Chart
@@ -203,6 +191,10 @@
         .chart-container {
             flex: 1 1 45%; /* Each chart uses around 45% of the container's width */
             min-width: 300px; /* Minimum width to prevent charts from being too small */
+        }
+
+        .chart-container-center {
+            text-align: center; /* Center-align text in this container */
         }
 
         #chartRPS, #chartUAS, #chartTA {

@@ -1,24 +1,31 @@
 @extends('admin.admin_master')
+
 @section('admin')
 <div class="container py-5">
     <div class="charts-row py-5">
         <div class="chart-container">
-            <h3>RPS</h3>
+            <h3 class="text-center">RPS</h3>
             <div id="chartRPS"></div>
-            <p><strong>Unggahan:</strong> {{ $banyak_pengunggahan_rps }}</p>
-            <p><strong>Verifikasi:</strong> {{ $banyak_verifikasi_rps }}</p>
+            <div class="text-center mt-3">
+                <p><strong>Unggahan:</strong> {{ $banyak_pengunggahan_rps }}</p>
+                <p><strong>Verifikasi:</strong> {{ $banyak_verifikasi_rps }}</p>
+            </div>
         </div>
         <div class="chart-container">
-            <h3>UAS</h3>
+            <h3 class="text-center">UAS</h3>
             <div id="chartUAS"></div>
-            <p><strong>Unggahan:</strong> {{ $banyak_pengunggahan_uas }}</p>
-            <p><strong>Verifikasi:</strong> {{ $banyak_verifikasi_uas }}</p>
+            <div class="text-center mt-3">
+                <p><strong>Unggahan:</strong> {{ $banyak_pengunggahan_uas }}</p>
+                <p><strong>Verifikasi:</strong> {{ $banyak_verifikasi_uas }}</p>
+            </div>
         </div>
         <div class="chart-container">
-            <h3>Proposal TA</h3>
+            <h3 class="text-center">Proposal TA</h3>
             <div id="chartTA"></div>
-            <p><strong>Proposal:</strong> {{ $jumlah_proposal }}</p>
-            <p><strong>Review:</strong> {{ $jumlah_review_proposal }}</p>
+            <div class="text-center mt-3">
+                <p><strong>Proposal:</strong> {{ $jumlah_proposal }}</p>
+                <p><strong>Review:</strong> {{ $jumlah_review_proposal }}</p>
+            </div>
         </div>
     </div>
 </div>
@@ -32,8 +39,8 @@
         var banyakVerifikasiRPS = @json($banyak_verifikasi_rps);
         var banyakPengunggahanUas = @json($banyak_pengunggahan_uas);
         var banyakVerifikasiUas = @json($banyak_verifikasi_uas);
-        var jumlahProposal = @json($jumlah_proposal); // Correct variable name
-        var jumlahReviewProposal = @json($jumlah_review_proposal); // Correct variable name
+        var jumlahProposal = @json($jumlah_proposal);
+        var jumlahReviewProposal = @json($jumlah_review_proposal);
 
         // Common chart options to ensure consistent appearance
         var commonOptions = {
@@ -113,8 +120,8 @@
                                 }
                             }
                         },
-                        minAngleToShowLabel: 0, // Ensure small slices are visible
-                        expandOnClick: true // Allow slices to expand on click for better visibility
+                        minAngleToShowLabel: 0,
+                        expandOnClick: true
                     }
                 }
             }
@@ -141,6 +148,7 @@
     #chartRPS, #chartUAS, #chartTA {
         width: 100%;
         height: 300px; /* Adequate height for charts */
+        margin: 0 auto; /* Center align charts */
     }
 </style>
 @endsection

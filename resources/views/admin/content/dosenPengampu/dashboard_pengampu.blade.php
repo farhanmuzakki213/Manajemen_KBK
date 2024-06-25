@@ -1,18 +1,23 @@
 @extends('admin.admin_master')
+
 @section('admin')
 <div class="container py-5">
     <div class="charts-row py-5">
         <div class="chart-container">
-            <h3>RPS</h3>
+            <h3 class="text-center">RPS</h3>
             <div id="chartRPS"></div>
-            <p><strong>Unggahan:</strong> {{ $banyak_pengunggahan_rps }}</p>
-            <p><strong>Verifikasi:</strong> {{ $banyak_verifikasi_rps }}</p>
+            <div class="text-center mt-3">
+                <p><strong>Unggahan:</strong> {{ $banyak_pengunggahan_rps }}</p>
+                <p><strong>Verifikasi:</strong> {{ $banyak_verifikasi_rps }}</p>
+            </div>
         </div>
         <div class="chart-container">
-            <h3>UAS</h3>
+            <h3 class="text-center">UAS</h3>
             <div id="chartUAS"></div>
-            <p><strong>Unggahan:</strong> {{ $banyak_pengunggahan_uas }}</p>
-            <p><strong>Verifikasi:</strong> {{ $banyak_verifikasi_uas }}</p>
+            <div class="text-center mt-3">
+                <p><strong>Unggahan:</strong> {{ $banyak_pengunggahan_uas }}</p>
+                <p><strong>Verifikasi:</strong> {{ $banyak_verifikasi_uas }}</p>
+            </div>
         </div>
     </div>
 </div>
@@ -103,6 +108,7 @@
     #chartRPS, #chartUAS {
         width: 100%;
         height: 300px; /* Adequate height for charts */
+        margin: 0 auto; /* Center align charts */
     }
 </style>
 @endsection
