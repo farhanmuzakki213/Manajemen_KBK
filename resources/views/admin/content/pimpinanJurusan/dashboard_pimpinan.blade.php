@@ -22,7 +22,7 @@
             $title = $selectedProdi ? $selectedProdi->prodi : 'Semua Prodi';
         @endphp
 
-        <h2 class="text-center mt-5">Prodi {{ $title }}</h2>
+        <h2 class="text-center mt-5">{{ $title }}</h2>
 
         <div class="charts-row py-5">
             <div class="chart-container chart-container-center">
