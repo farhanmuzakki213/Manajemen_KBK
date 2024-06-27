@@ -65,7 +65,7 @@ class UserProfileController extends Controller
         //dd($user->profile_picture);
         $user->save();
 
-        return redirect()->route('profile.edit')->with('success', 'Profile updated successfully');
+        return redirect()->route('profile.edit')->with('gambar', 'Profile updated successfully');
     }
 
     public function resetProfilePicture()
@@ -83,7 +83,7 @@ class UserProfileController extends Controller
         //dd($user->profile_picture);
         $user->save();
 
-        return response()->json(['success' => 'Profile picture reset successfully']);
+        return redirect()->route('profile.edit')->with('reset', 'Profile Reset successfully');
     }
 
     public function updatePassword(Request $request)
@@ -106,9 +106,6 @@ class UserProfileController extends Controller
             'password' => Hash::make($request->new_password),
         ]);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Password changed successfully!',
-        ]);
+        return redirect()->route('profile.edit')->with('password', 'Password updated successfully');
     }
 }

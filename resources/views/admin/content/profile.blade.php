@@ -47,13 +47,14 @@
                                 <div class="card w-100 border position-relative overflow-hidden">
                                     <div class="card-body p-4">
                                         <h4 class="card-title">Change Profile</h4>
-                                        @if (session('status'))
+                                        @if (session('gambar'))
                                             <div class="alert alert-success" role="alert">
-                                                {{ session('status') }}
+                                                {{ session('gambar') }}
                                             </div>
-                                        @elseif (session('error'))
-                                            <div class="alert alert-danger" role="alert">
-                                                {{ session('error') }}
+                                        @endif
+                                        @if (session('reset'))
+                                            <div class="alert alert-success" role="alert">
+                                                {{ session('reset') }}
                                             </div>
                                         @endif
                                         <div class="text-center mt-4">
@@ -87,7 +88,12 @@
                                 <div class="card w-100 border position-relative overflow-hidden">
                                     <div class="card-body p-4">
                                         <h4 class="card-title mb-4">Change Password</h4>
-                                        <form id="password-update-form" action="{{ route('password.update') }}"
+                                        @if (session('password'))
+                                            <div class="alert alert-success" role="alert">
+                                                {{ session('password') }}
+                                            </div>
+                                        @endif
+                                        <form id="password-update-form" action="{{ route('password.updatePassword') }}"
                                             method="POST">
                                             @csrf
                                             @method('PUT')
@@ -120,7 +126,8 @@
                                                 @enderror
                                             </div>
 
-                                            <button type="submit" class="btn btn-primary mt-3">Change Password</button>
+                                            <button type="submit" id="submit-update-password"
+                                                class="btn btn-primary mt-3">Change Password</button>
                                         </form>
                                     </div>
                                 </div>
@@ -135,62 +142,58 @@
                                             <div class="row">
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
-                                                        <label for="exampleInputtext" class="form-label">Your
+                                                        <label for="exampleInputtext" class="form-label">
                                                             Name</label>
                                                         <input type="text" class="form-control" id="exampleInputtext"
-                                                            placeholder="Mathew Anderson">
+                                                            value="{{ $user->name }}" disabled>
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label class="form-label">Location</label>
-                                                        <select class="form-select" aria-label="Default select example">
-                                                            <option selected="">United Kingdom</option>
-                                                            <option value="1">United States</option>
-                                                            <option value="2">United Kingdom</option>
-                                                            <option value="3">India</option>
-                                                            <option value="3">Russia</option>
-                                                        </select>
+                                                        <label class="form-label">NIDN</label>
+                                                        <input type="text" class="form-control" id="exampleInputtext2"
+                                                            value="{{ $userDosen->nidn }}" disabled>
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label for="exampleInputtext1" class="form-label">Email</label>
+                                                        <label for="exampleInputtext1" class="form-label">Jurusan</label>
                                                         <input type="email" class="form-control" id="exampleInputtext1"
-                                                            placeholder="info@modernize.com">
+                                                            value="{{ $userDosen->r_jurusan->jurusan }}" disabled>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="exampleInputtext1" class="form-label">Jenis
+                                                            Kelamin</label>
+                                                        <input type="email" class="form-control" id="exampleInputtext1"
+                                                            value="{{ $userDosen->gender }}" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
-                                                        <label for="exampleInputtext2" class="form-label">Store
-                                                            Name</label>
+                                                        <label for="exampleInputtext1" class="form-label">Email</label>
+                                                        <input type="email" class="form-control" id="exampleInputtext1"
+                                                            value="{{ $user->email }}" disabled>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">NIP</label>
                                                         <input type="text" class="form-control" id="exampleInputtext2"
-                                                            placeholder="Maxima Studio">
+                                                            value="{{ $userDosen->nip }}" disabled>
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label class="form-label">Currency</label>
-                                                        <select class="form-select" aria-label="Default select example">
-                                                            <option selected="">India (INR)</option>
-                                                            <option value="1">US Dollar ($)</option>
-                                                            <option value="2">United Kingdom (Pound)</option>
-                                                            <option value="3">India (INR)</option>
-                                                            <option value="3">Russia (Ruble)</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="exampleInputtext3" class="form-label">Phone</label>
+                                                        <label for="exampleInputtext3" class="form-label">Prodi</label>
                                                         <input type="text" class="form-control" id="exampleInputtext3"
-                                                            placeholder="+91 12345 65478">
+                                                            value="{{ $userDosen->r_prodi->prodi }}" disabled>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="exampleInputtext1" class="form-label">Status</label>
+                                                        <input type="email" class="form-control" id="exampleInputtext1"
+                                                            value="@if ($userDosen->status == 0) Aktif
+                                                            @else
+                                                                Tidak Aktif @endif"
+                                                            disabled>
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
-                                                    <div>
-                                                        <label for="exampleInputtext4" class="form-label">Address</label>
-                                                        <input type="text" class="form-control" id="exampleInputtext4"
-                                                            placeholder="814 Howard Street, 120065, India">
-                                                    </div>
-                                                </div>
-                                                <div class="col-12">
-                                                    <div class="d-flex align-items-center justify-content-end mt-4 gap-6">
+                                                    {{-- <div class="d-flex align-items-center justify-content-end mt-4 gap-6">
                                                         <button class="btn btn-primary">Save</button>
                                                         <button class="btn bg-danger-subtle text-danger">Cancel</button>
-                                                    </div>
+                                                    </div> --}}
                                                 </div>
                                             </div>
                                         </form>
@@ -224,7 +227,8 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             // Form submit event listener
-            document.getElementById('password-update-form').addEventListener('submit', function(event) {
+            var submit = document.getElementById('submit-update-password')
+            document.getElementById('password-update-form').addEventListener(submit, function(event) {
                 event.preventDefault(); // Prevent the form from submitting normally
 
                 // Collect form data
@@ -247,7 +251,8 @@
                             document.getElementById('new_password_confirmation').value = '';
 
                             // Show success message
-                            const successAlert = `<div class="alert alert-success" role="alert">${data.message}</div>`;
+                            const successAlert =
+                                `<div class="alert alert-success" role="alert">${data.message}</div>`;
                             document.getElementById('password-update-form').insertAdjacentHTML(
                                 'beforebegin', successAlert);
                         } else if (data.status === 'error') {
@@ -260,8 +265,8 @@
                             });
                         }
                     })
+                    .catch(error => console.error('Error:', error));
             });
         });
     </script>
 @endsection
-

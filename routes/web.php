@@ -248,7 +248,7 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::put('/profile/update', [UserProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile/reset', [UserProfileController::class, 'resetProfilePicture'])->name('profile.reset');
     Route::delete('/profile', [UserProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::put('/profile/password', [UserProfileController::class, 'updatePassword'])->name('password.update');
+    Route::put('/profile/password/update', [UserProfileController::class, 'updatePassword'])->name('password.updatePassword');
 });
 
 require __DIR__ . '/auth.php';
