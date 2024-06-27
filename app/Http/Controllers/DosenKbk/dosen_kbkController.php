@@ -64,7 +64,8 @@ class dosen_kbkController extends Controller
     ];
     debug($data);
 
-    return view('admin.content.dashboard', $data);
+    /* return $data; */
+    return view('admin.content.dosenKbk.dashboard_dosenKbk', compact('data', 'jumlah_proposal', 'jumlah_review_proposal'));
 }
 
 

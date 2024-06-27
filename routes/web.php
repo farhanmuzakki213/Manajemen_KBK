@@ -84,44 +84,9 @@ Route::get('/', [LandingPageController::class, 'index']);
 Route::get('/detail_berita/{id}', [LandingPageController::class, 'detail']);
 
 
-// Route::get('/dashboard', function () {
-//     return view('admin.content.dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::get('/dashboard', function () {
-    Route::group(['middleware' => ['role:dosen-kbk']], function () {
-        return app()->make(dosen_kbkController::class)->dashboard_dosenKbk();
-    });
-    
-    Route::group(['middleware' => ['role:dosen-pengampu']], function () {
-        app(DosenMatkulController::class)->dashboard_pengampu();
-    });
-    
-   
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-// Route::group(['middleware' => ['role:super-admin|admin|pimpinan-jurusan|pimpinan-prodi|dosen-pengampu|pengurus-kbk|dosen-kbk']], function () {
-//     Route::group(['middleware' => ['role:super-admin']], function () {
-//     });
-//     Route::group(['middleware' => ['role:admin']], function () {
-//         Route::get('/dashboard_admin', [AdminController::class, 'dashboard_admin']);
-//     });
-//     Route::group(['middleware' => ['role:pimpinan-jurusan']], function () {
-//         Route::get('/dashboard_pimpinan', [KajurController::class, 'dashboard_pimpinan']);
-//     });
-//     Route::group(['middleware' => ['role:pimpinan-prodi']], function () {
-//         Route::get('/dashboard_kaprodi', [kaprodiController::class, 'dashboard_kaprodi']);
-//     });
-//     Route::group(['middleware' => ['role:dosen-pengampu']], function () {
-//         Route::get('/dashboard_pengampu', [DosenMatkulController::class, 'dashboard_pengampu']);
-//     });
-//     Route::group(['middleware' => ['role:pengurus-kbk']], function () {
-//         Route::get('/dashboard_pengurus', [PengurusKbkController::class, 'dashboard_pengurus']);
-//     });
-//     Route::group(['middleware' => ['role:dosen-kbk']], function () {
-//         Route::get('/dashboard_dosenKbk', [dosen_kbkController::class, 'dashboard_dosenKbk']);
-//     });
-// })->name('dashboard');
+Route::get('/profile', function () {
+    return view('admin.content.profile');
+})->middleware(['auth', 'verified'])->name('profile');
 
 Route::get('/admin/logout', [AdminController::class, 'destroy'])->name('admin.logout');
 /* Route::get('/contoh', [ExampleController::class, 'create']); */

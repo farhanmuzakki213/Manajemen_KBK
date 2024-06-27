@@ -109,5 +109,5 @@
         width: 100%;
         height: 300px; /* Adequate height for charts */
     }
-</style>
-@endsection
+    </style>
+    @endsection
