@@ -129,8 +129,9 @@ class DosenMatkulController extends Controller
         $percentUploadedUas = $total_uas > 0 ? ($banyak_pengunggahan_uas / $total_uas) * 100 : 0;
         $percentVerifiedUas = $total_uas > 0 ? ($banyak_verifikasi_uas / $total_uas) * 100 : 0;
     
+        // dd($banyak_pengunggahan_rps);
         // Include counts in the compact function
-        return view('admin.content.DosenPengampu.dashboard_pengampu', compact(
+        return view('admin.content.dashboard', compact(
             'data_matkul',
             'dosen_pengampu',
             'percentUploaded', 'percentVerified',

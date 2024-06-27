@@ -32,13 +32,133 @@
                                 <h5>Dashboard pimpinan prodi</h5>
                             @endhasrole
                             @hasrole('dosen-pengampu')
-                                <h5>Dashboard dosen pengampu</h5>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5>Dashboard dosen pengampu</h5>
+                                        <div class="charts-row pt-3 pb-5">
+                                            <div class="chart-container">
+                                                <h3>RPS</h3>
+                                                <div id="chartRpsPengampu"></div>
+                                                @isset($banyak_pengunggahan_rps)
+                                                    <p>Banyak Unggahan RPS: {{ $banyak_pengunggahan_rps }}</p>
+                                                @endisset
+                                                @isset($banyak_verifikasi_rps)
+                                                    <p>Banyak Verifikasi RPS: {{ $banyak_verifikasi_rps }}</p>
+                                                @endisset
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             @endhasrole
                             @hasrole('pengurus-kbk')
                                 <h5>Dashboard pengurus kbk</h5>
                             @endhasrole
                             @hasrole('dosen-kbk')
-                                <h5>Dashboard dosen kbk</h5>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5>Dashboard dosen kbk</h5>
+                                    <div class="charts-row pt-3 pb-5">
+                                        <div class="chart-container">
+                                            <h3>Proposal TA</h3>
+                                            {{-- <div id="chartTADosenKbk"></div> --}}
+                                            {{-- <p><strong>Penugasan:</strong> {{ $jumlah_proposal }}</p> --}}
+                                            {{-- @foreach ($data as $kbk) --}}
+                                            <p>Jumlah Proposal TA: {{ $jumlah_proposal }}</p>
+                                            {{-- @endforeach --}}
+                                            
+                                            {{-- @if(isset($data)) --}}
+
+    {{-- <p>Jumlah Proposal TA: {{ $data->jumlah_proposal }}</p>
+    <p>Jumlah Review Proposal TA: {{ $data['jumlah_review_proposal'] }}</p>
+    <p>Percent Proposal TA: {{ $data['percentProposalTA'] }}%</p>
+    <p>Percent Review Proposal TA: {{ $data['percentReviewProposalTA'] }}%</p> --}}
+{{-- @else
+    <p>No data available</p>
+@endif --}}
+
+                                            
+                                            {{-- @isset($jumlah_review_proposal)
+                                                <p>Jumlah Proposal TA: {{ $jumlah_review_proposal }}</p>
+                                            @endisset --}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+                                <script type="text/javascript">
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        // Define data from Blade variables
+                                        var jumlahProposal = @json($jumlah_proposal ?? 0);
+                                        var jumlahReviewProposal = @json($jumlah_review_proposal ?? 0);
+
+                                        // Common chart options to ensure consistent appearance
+                                        var commonOptions = {
+                                            chart: {
+                                                type: 'donut',
+                                                height: 300,
+                                                width: '100%'
+                                            },
+                                            plotOptions: {
+                                                pie: {
+                                                    donut: {
+                                                        size: '65%',
+                                                        labels: {
+                                                            show: true,
+                                                            total: {
+                                                                show: true,
+                                                                label: 'Total',
+                                                                formatter: function (w) {
+                                                                    return w.globals.seriesTotals.reduce((a, b) => a + b, 0);
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            tooltip: {
+                                                y: {
+                                                    formatter: function (value) {
+                                                        return value + ' data';
+                                                    }
+                                                }
+                                            },
+                                            legend: {
+                                                position: 'bottom'
+                                            },
+                                            colors: ['#008FFB', '#00E396']
+                                        };
+
+                                        // Options for Proposal TA Chart
+                                        var optionsTA = {
+                                            ...commonOptions,
+                                            series: [jumlahProposal, jumlahReviewProposal],
+                                            labels: ['Proposal', 'Review'],
+                                            plotOptions: {
+                                                pie: {
+                                                    donut: {
+                                                        size: '65%',
+                                                        labels: {
+                                                            show: true,
+                                                            total: {
+                                                                show: true,
+                                                                label: 'Total',
+                                                                formatter: function (w) {
+                                                                    return w.globals.seriesTotals.reduce((a, b) => a + b, 0);
+                                                                }
+                                                            }
+                                                        },
+                                                        minAngleToShowLabel: 0, // Ensure small slices are visible
+                                                        expandOnClick: true // Allow slices to expand on click for better visibility
+                                                    }
+                                                }
+                                            }
+                                        };
+
+                                        // Render Proposal TA Chart
+                                        var chartTADosenKbk = new ApexCharts(document.querySelector("#chartTADosenKbk"), optionsTA);
+                                        chartTADosenKbk.render();
+                                    });
+                                </script>
                             @endhasrole
                         @endhasanyrole
                         {{-- <div class="row">

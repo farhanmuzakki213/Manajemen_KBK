@@ -2,13 +2,15 @@
 
 /* Admin */
 
+use App\Models\User;
 use App\Models\Dosen;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExampleController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Routing\Route as RoutingRoute;
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DosenController;
 use App\Http\Controllers\Admin\ProdiController;
 use App\Http\Controllers\Admin\MatkulController;
@@ -17,32 +19,32 @@ use App\Http\Controllers\Admin\DosenKBKController;
 use App\Http\Controllers\Admin\JenisKbkController;
 use App\Http\Controllers\Admin\KurikulumController;
 use App\Http\Controllers\Admin\MahasiswaController;
-use App\Http\Controllers\Admin\MatkulKBKController;
-use App\Http\Controllers\Admin\ThnAkademikController;
 /* Dosen Pengampu */
-use App\Http\Controllers\Admin\Pengurus_kbkController;
+use App\Http\Controllers\Admin\MatkulKBKController;
 /* Pimpinan Jurusan */
+use App\Http\Controllers\Admin\ThnAkademikController;
+use App\Http\Controllers\Admin\Pengurus_kbkController;
+use App\Http\Controllers\DosenKbk\dosen_kbkController;
+/* Pimpinan Prodi */
 use App\Http\Controllers\Admin\PimpinanProdiController;
 use App\Http\Controllers\PengurusKbk\Ver_RPSController;
 use App\Http\Controllers\Admin\PimpinanJurusanController;
-/* Pimpinan Prodi */
 use App\Http\Controllers\PimpinanJurusan\KajurController;
 use App\Http\Controllers\PimpinanProdi\kaprodiController;
+/* Pengurus KBK */
 use App\Http\Controllers\PimpinanProdi\Rep_RPSController;
 use App\Http\Controllers\LandingPage\LandingPageController;
+use App\Http\Controllers\PengurusKbk\PengurusKbkController;
 use App\Http\Controllers\PengurusKbk\Ver_Soal_UASController;
-/* Pengurus KBK */
 use App\Http\Controllers\Admin\DosenPengampuMatkulController;
 use App\Http\Controllers\DosenKbk\ReviewProposalTAController;
-use App\Http\Controllers\DosenKbk\dosen_kbkController;
-use App\Http\Controllers\DosenPengampu\DosenMatkulController;
-use App\Http\Controllers\PengurusKbk\PengurusKbkController;
-use App\Http\Controllers\PimpinanProdi\Rep_Soal_UASController;
 /* Dosen KBK */
-use App\Http\Controllers\PengurusKbk\PenugasanReviewController;
+use App\Http\Controllers\DosenPengampu\DosenMatkulController;
 /* Landing Page */
-use App\Http\Controllers\PimpinanProdi\Berita_Ver_RPSController;
+use App\Http\Controllers\PimpinanProdi\Rep_Soal_UASController;
 /* End */
+use App\Http\Controllers\PengurusKbk\PenugasanReviewController;
+use App\Http\Controllers\PimpinanProdi\Berita_Ver_RPSController;
 use App\Http\Controllers\PimpinanProdi\Berita_Ver_UASController;
 use App\Http\Controllers\PengurusKbk\VerBeritaAcaraRpsController;
 use App\Http\Controllers\PengurusKbk\VerBeritaAcaraUasController;
@@ -82,9 +84,44 @@ Route::get('/', [LandingPageController::class, 'index']);
 Route::get('/detail_berita/{id}', [LandingPageController::class, 'detail']);
 
 
+// Route::get('/dashboard', function () {
+//     return view('admin.content.dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
 Route::get('/dashboard', function () {
-    return view('admin.content.dashboard');
+    Route::group(['middleware' => ['role:dosen-kbk']], function () {
+        return app()->make(dosen_kbkController::class)->dashboard_dosenKbk();
+    });
+    
+    Route::group(['middleware' => ['role:dosen-pengampu']], function () {
+        app(DosenMatkulController::class)->dashboard_pengampu();
+    });
+    
+   
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Route::group(['middleware' => ['role:super-admin|admin|pimpinan-jurusan|pimpinan-prodi|dosen-pengampu|pengurus-kbk|dosen-kbk']], function () {
+//     Route::group(['middleware' => ['role:super-admin']], function () {
+//     });
+//     Route::group(['middleware' => ['role:admin']], function () {
+//         Route::get('/dashboard_admin', [AdminController::class, 'dashboard_admin']);
+//     });
+//     Route::group(['middleware' => ['role:pimpinan-jurusan']], function () {
+//         Route::get('/dashboard_pimpinan', [KajurController::class, 'dashboard_pimpinan']);
+//     });
+//     Route::group(['middleware' => ['role:pimpinan-prodi']], function () {
+//         Route::get('/dashboard_kaprodi', [kaprodiController::class, 'dashboard_kaprodi']);
+//     });
+//     Route::group(['middleware' => ['role:dosen-pengampu']], function () {
+//         Route::get('/dashboard_pengampu', [DosenMatkulController::class, 'dashboard_pengampu']);
+//     });
+//     Route::group(['middleware' => ['role:pengurus-kbk']], function () {
+//         Route::get('/dashboard_pengurus', [PengurusKbkController::class, 'dashboard_pengurus']);
+//     });
+//     Route::group(['middleware' => ['role:dosen-kbk']], function () {
+//         Route::get('/dashboard_dosenKbk', [dosen_kbkController::class, 'dashboard_dosenKbk']);
+//     });
+// })->name('dashboard');
 
 Route::get('/admin/logout', [AdminController::class, 'destroy'])->name('admin.logout');
 /* Route::get('/contoh', [ExampleController::class, 'create']); */
@@ -92,9 +129,9 @@ Route::get('/admin/logout', [AdminController::class, 'destroy'])->name('admin.lo
 /* ---Admin Start--- */
 Route::group(['middleware' => ['role:admin']], function () {
     // Admin
-    Route::middleware(['auth', 'verified'])->group(function () {
-        Route::get('/dashboard_admin', [DashboardController::class, 'dashboard_admin'])->middleware(['auth', 'verified'])->name('dashboard_admin');
-    });
+    // Route::middleware(['auth', 'verified'])->group(function () {
+    //     Route::get('/dashboard_admin', [AdminController::class, 'dashboard_admin'])->middleware(['auth', 'verified'])->name('dashboard_admin');
+    // });
 
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/repositori_proposal_ta', [AdminController::class, 'RepProposalTA'])->name('rep_proposal_ta');
@@ -217,7 +254,7 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::get('/matkul/create', [MatkulController::class, 'create'])->middleware(['auth', 'verified'])->name('matkul.create');
         Route::get('/matkul/edit/{id}', [MatkulController::class, 'edit'])->middleware(['auth', 'verified'])->name('matkul.edit');
         Route::put('/matkul/update/{id}', [MatkulController::class, 'update'])->middleware(['auth', 'verified'])->name('matkul.update');
-        Route::get('/matkul/show/{id}', [MatkulController::class, 'show'])->middleware(['auth', 'verified'])->name('matkul.show');
+        // Route::get('/matkul/show/{id}', [MatkulController::class, 'show'])->middleware(['auth', 'verified'])->name('matkul.show');
         Route::delete('/matkul/delete/{id}', [MatkulController::class, 'delete'])->middleware(['auth', 'verified'])->name('matkul.delete');
         Route::get('/matkul/export/excel', [MatkulController::class, 'export_excel'])->name('matkul.export');
         Route::post('/matkul/import', [MatkulController::class, 'import'])->name('matkul.import');
