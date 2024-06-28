@@ -94,9 +94,9 @@ Route::get('/admin/logout', [AdminController::class, 'destroy'])->name('admin.lo
 /* ---Admin Start--- */
 Route::group(['middleware' => ['role:admin']], function () {
     // Admin
-    // Route::middleware(['auth', 'verified'])->group(function () {
-    //     Route::get('/dashboard_admin', [AdminController::class, 'dashboard_admin'])->middleware(['auth', 'verified'])->name('dashboard_admin');
-    // });
+    Route::middleware(['auth', 'verified'])->group(function () {
+        Route::get('/dashboard_admin', [AdminController::class, 'dashboard_admin'])->middleware(['auth', 'verified'])->name('dashboard_admin');
+    });
 
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/repositori_proposal_ta', [AdminController::class, 'RepProposalTA'])->name('rep_proposal_ta');

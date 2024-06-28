@@ -6,17 +6,49 @@
         <div class="chart-container">
             <h3 class="text-center">RPS</h3>
             <div id="chartRPS"></div>
-            <div class="text-center mt-3">
-                <p><strong>Unggahan:</strong> {{ $banyak_pengunggahan_rps }}</p>
-                <p><strong>Verifikasi:</strong> {{ $banyak_verifikasi_rps }}</p>
+            <div class="row justify-content-center text-center mt-3">
+                <!-- Card for Unggahan RPS -->
+                <div class="col-md-4 mb-4">
+                    <div class="card bg-primary text-white mx-auto">
+                        <div class="card-body">
+                            <h5 class="card-title">Unggahan</h5>
+                            <p class="card-text">{{ $banyak_pengunggahan_rps }}</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card for Verifikasi RPS -->
+                <div class="col-md-4 mb-4">
+                    <div class="card bg-success text-white mx-auto">
+                        <div class="card-body">
+                            <h5 class="card-title">Verifikasi</h5>
+                            <p class="card-text">{{ $banyak_verifikasi_rps }}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="chart-container">
             <h3 class="text-center">UAS</h3>
             <div id="chartUAS"></div>
-            <div class="text-center mt-3">
-                <p><strong>Unggahan:</strong> {{ $banyak_pengunggahan_uas }}</p>
-                <p><strong>Verifikasi:</strong> {{ $banyak_verifikasi_uas }}</p>
+            <div class="row justify-content-center text-center mt-3">
+                <!-- Card for Unggahan UAS -->
+                <div class="col-md-4 mb-4">
+                    <div class="card bg-primary text-white mx-auto">
+                        <div class="card-body">
+                            <h5 class="card-title">Unggahan</h5>
+                            <p class="card-text">{{ $banyak_pengunggahan_uas }}</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card for Verifikasi UAS -->
+                <div class="col-md-4 mb-4">
+                    <div class="card bg-success text-white mx-auto">
+                        <div class="card-body">
+                            <h5 class="card-title">Verifikasi</h5>
+                            <p class="card-text">{{ $banyak_verifikasi_uas }}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -96,7 +128,7 @@
 <style>
     .charts-row {
         display: flex;
-        justify-content: space-around;
+        justify-content: center; /* Center align the charts */
         align-items: flex-start;
         gap: 20px; /* Space between charts */
         flex-wrap: wrap; /* Ensure charts remain neat on small screens */
@@ -104,11 +136,15 @@
     .chart-container {
         flex: 1 1 45%; /* Each chart uses around 45% of the container's width */
         min-width: 300px; /* Minimum width to prevent charts from being too small */
+        margin: 0 auto; /* Center align the chart container */
     }
     #chartRPS, #chartUAS {
         width: 100%;
         height: 300px; /* Adequate height for charts */
-        margin: 0 auto; /* Center align charts */
+    }
+    .card {
+        min-height: 100px; /* Minimum height for card consistency */
+        margin: 0 auto; /* Center align the card */
     }
 </style>
 @endsection

@@ -34,22 +34,22 @@
     <div class="swiper-container swiper-container-prodi">
     <div class="swiper-wrapper swiper-wrapper-prodi">
     <div class="swiper-slide swiper-slide-prodi">
-      <img class="img-fluid d-block mx-auto" src="frontend/landing-page/assets/img/prodi/animasi.webp" aria-label="TRPL Logo" />
+      <img class="img-fluid d-block mx-auto" src="frontend/landing-page/assets/img/prodi/animasi2.png" aria-label="TRPL Logo" />
     </div>
     <div class="swiper-slide swiper-slide-prodi">
-      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/prodi/trpl.webp" aria-label="ANIMASI Logo" />
+      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/prodi/trpl2.png" aria-label="ANIMASI Logo" />
     </div>
     <div class="swiper-slide swiper-slide-prodi">
-      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/prodi/mi.webp" aria-label="MI Logo" />
+      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/prodi/mi2.png" aria-label="MI Logo" />
     </div>
     <div class="swiper-slide swiper-slide-prodi">
-      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/prodi/tkom.webp" aria-label="TKOM Logo" />
+      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/prodi/tk2.png" aria-label="TKOM Logo" />
     </div>
     <div class="swiper-slide swiper-slide-prodi">
-      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/prodi/si.webp" aria-label="SI Logo" />
+      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/prodi/si2.png" aria-label="SI Logo" />
     </div>
     <div class="swiper-slide swiper-slide-prodi">
-      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/prodi/adm_jaringan.webp" aria-label="ADM JARINGAN Logo" />
+      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/prodi/ajk2.png" aria-label="ADM JARINGAN Logo" />
     </div>
   </div>
   </div>

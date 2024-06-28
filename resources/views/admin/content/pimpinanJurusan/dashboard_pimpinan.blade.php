@@ -4,19 +4,21 @@
     <div class="container py-5">
         <div class="row">
             <div class="col-md-4 mb-3">
-                <form action="{{ route('dashboard_pimpinan') }}" method="GET">
+                <form id="filterForm" action="{{ route('dashboard_pimpinan') }}" method="GET">
                     <label for="prodiSelect" class="form-label">Pilih Prodi:</label>
                     <select id="prodiSelect" class="form-select" name="prodi_id">
                         <option value="">Semua Prodi</option>
                         @foreach ($prodi as $single_prodi)
-                            <option value="{{ $single_prodi->id_prodi }}" {{ request('prodi_id') == $single_prodi->id_prodi ? 'selected' : '' }}>{{ $single_prodi->prodi }}</option>
+                            <option value="{{ $single_prodi->id_prodi }}" {{ request('prodi_id') == $single_prodi->id_prodi ? 'selected' : '' }}>
+                                {{ $single_prodi->prodi }}
+                            </option>
                         @endforeach
                     </select>
-                    <button type="submit" class="btn btn-primary mt-3">Filter</button>
+                    {{-- <button type="submit" class="btn btn-primary mt-3">Filter</button> --}}
                 </form>
             </div>
         </div>
-        
+
         @php
             $selectedProdi = $prodi->firstWhere('id_prodi', request('prodi_id'));
             $title = $selectedProdi ? $selectedProdi->prodi : 'Semua Prodi';
@@ -25,28 +27,73 @@
         <h2 class="text-center mt-5">{{ $title }}</h2>
 
         <div class="charts-row py-5">
-            <div class="chart-container chart-container-center">
-                <h3>RPS</h3>
+            <!-- RPS Chart -->
+            <div class="chart-container">
+                <h3 class="text-center">RPS</h3>
                 <div id="chartRPS"></div>
-                <div class="text-center">
-                    <p><strong>Unggahan:</strong> <span id="banyakPengunggahanRPS">{{ $total_banyak_pengunggahan_rps }}</span></p>
-                    <p><strong>Verifikasi:</strong> <span id="banyakVerifikasiRPS">{{ $total_banyak_verifikasi_rps }}</span></p>
+                <div class="row justify-content-center text-center mt-3">
+                    <div class="col-md-5 mb-4">
+                        <div class="card bg-primary text-white mx-auto">
+                            <div class="card-body">
+                                <h5 class="card-title">Unggahan</h5>
+                                <p class="card-text" id="banyakPengunggahanRPS">{{ $total_banyak_pengunggahan_rps }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5 mb-4">
+                        <div class="card bg-success text-white mx-auto">
+                            <div class="card-body">
+                                <h5 class="card-title">Verifikasi</h5>
+                                <p class="card-text" id="banyakVerifikasiRPS">{{ $total_banyak_verifikasi_rps }}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="chart-container chart-container-center">
-                <h3>UAS</h3>
+            <!-- UAS Chart -->
+            <div class="chart-container">
+                <h3 class="text-center">UAS</h3>
                 <div id="chartUAS"></div>
-                <div class="text-center">
-                    <p><strong>Unggahan:</strong> <span id="banyakPengunggahanUAS">{{ $total_banyak_pengunggahan_uas }}</span></p>
-                    <p><strong>Verifikasi:</strong> <span id="banyakVerifikasiUAS">{{ $total_banyak_verifikasi_uas }}</span></p>
+                <div class="row justify-content-center text-center mt-3">
+                    <div class="col-md-5 mb-4">
+                        <div class="card bg-primary text-white mx-auto">
+                            <div class="card-body">
+                                <h5 class="card-title">Unggahan</h5>
+                                <p class="card-text" id="banyakPengunggahanUAS">{{ $total_banyak_pengunggahan_uas }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5 mb-4">
+                        <div class="card bg-success text-white mx-auto">
+                            <div class="card-body">
+                                <h5 class="card-title">Verifikasi</h5>
+                                <p class="card-text" id="banyakVerifikasiUAS">{{ $total_banyak_verifikasi_uas }}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="chart-container chart-container-center">
-                <h3>Proposal TA</h3>
+            <!-- Proposal TA Chart -->
+            <div class="chart-container">
+                <h3 class="text-center">Proposal TA</h3>
                 <div id="chartTA"></div>
-                <div class="text-center">
-                    <p><strong>Proposal:</strong> <span id="jumlahProposal">{{ $total_jumlah_proposal }}</span></p>
-                    <p><strong>Review:</strong> <span id="jumlahReviewProposal">{{ $total_jumlah_review_proposal }}</span></p>
+                <div class="row justify-content-center text-center mt-3">
+                    <div class="col-md-5 mb-4">
+                        <div class="card bg-primary text-white mx-auto">
+                            <div class="card-body">
+                                <h5 class="card-title">Proposal</h5>
+                                <p class="card-text" id="jumlahProposal">{{ $total_jumlah_proposal }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5 mb-4">
+                        <div class="card bg-success text-white mx-auto">
+                            <div class="card-body">
+                                <h5 class="card-title">Review</h5>
+                                <p class="card-text" id="jumlahReviewProposal">{{ $total_jumlah_review_proposal }}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -60,22 +107,10 @@
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function() {
             var prodiSelect = document.getElementById('prodiSelect');
+            var filterForm = document.getElementById('filterForm'); // Add form ID here
 
             prodiSelect.addEventListener('change', function() {
-                var prodiId = prodiSelect.value;
-                axios.get('{{ route("dashboard_pimpinan") }}', {
-                    params: {
-                        prodi_id: prodiId
-                    }
-                })
-                .then(function(response) {
-                    var data = response.data;
-                    updateCharts(data);
-                    updateTitle(prodiId);
-                })
-                .catch(function(error) {
-                    console.error('Error fetching data:', error);
-                });
+                filterForm.submit(); // Submit form on change
             });
 
             function updateTitle(prodiId) {
@@ -182,19 +217,25 @@
     <style>
         .charts-row {
             display: flex;
-            justify-content: space-around;
+            justify-content: space-around; /* Distribute charts evenly */
             align-items: flex-start;
             gap: 20px; /* Space between charts */
             flex-wrap: wrap; /* Ensure charts remain neat on small screens */
         }
 
         .chart-container {
-            flex: 1 1 45%; /* Each chart uses around 45% of the container's width */
+            flex: 1 1 30%; /* Each chart uses around 30% of the container's width */
             min-width: 300px; /* Minimum width to prevent charts from being too small */
+            margin: 0 auto; /* Center align the chart container */
         }
 
-        .chart-container-center {
-            text-align: center; /* Center-align text in this container */
+        .chart-container h3 {
+            margin-bottom: 20px; /* Space between heading and chart */
+        }
+
+        .card {
+            min-height: 100px; /* Minimum height for card consistency */
+            margin: 0 auto; /* Center align the card */
         }
 
         #chartRPS, #chartUAS, #chartTA {

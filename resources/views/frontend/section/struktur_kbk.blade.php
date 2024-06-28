@@ -21,7 +21,7 @@
                                 Bidang : {{ $data->r_jenis_kbk->jenis_kbk }}
                             </p>
 
-                            <a href="#" class="card__button">View More</a>
+                            {{-- <a href="#" class="card__button">View More</a> --}}
                         </div>
                     </article>
                     @endforeach
