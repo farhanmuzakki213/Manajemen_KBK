@@ -78,8 +78,8 @@ class PengurusKbkController extends Controller
             })
             ->count();
 
-        $data_proposal_ta = ProposalTAModel::with('proposal_ta.r_jenis_kbk')
-            ->whereHas('proposal_ta.r_jenis_kbk', function ($query) use ($pengurus) {
+        $data_proposal_ta = ProposalTAModel::with('r_jenis_kbk')
+            ->whereHas('r_jenis_kbk', function ($query) use ($pengurus) {
                 $query->where('jenis_kbk_id', $pengurus->jenis_kbk);
             })
             ->orderBy('proposal_ta.id_proposal_ta', 'desc')

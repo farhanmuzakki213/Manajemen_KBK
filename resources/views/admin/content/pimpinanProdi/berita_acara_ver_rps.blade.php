@@ -100,7 +100,7 @@
                                                             @foreach ($data->p_ver_rps_uas as $data_matkul)
                                                                 <div class="dropdown-item">
                                                                     <div class="row">
-                                                                        <div class="col-lg-2">
+                                                                        <div class="col-lg-5">
                                                                             {{ optional(optional($data_matkul->r_rep_rps_uas)->r_matkulKbk)->r_matkul->kode_matkul }}
                                                                         </div>
                                                                         <div class="col-lg-5">

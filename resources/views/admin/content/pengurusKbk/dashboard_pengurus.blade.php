@@ -1,26 +1,76 @@
 @extends('admin.admin_master')
+
 @section('admin')
-<div class="container fluid">
-    <div class="card">
-        <div class="card-body">
-            <div class="charts-row py-5">
-                <div class="chart-container">
-                    <h3>RPS</h3>
-                    <div id="chartRPS"></div>
-                    <p><strong>Unggahan:</strong> {{ $banyak_pengunggahan_rps }}</p>
-                    <p><strong>Verifikasi:</strong> {{ $banyak_verifikasi_rps }}</p>
+<div class="container py-5">
+    <div class="charts-row py-5">
+        <!-- RPS Chart -->
+        <div class="chart-container">
+            <h3 class="text-center">RPS</h3>
+            <div id="chartRPS"></div>
+            <div class="row justify-content-center text-center mt-3">
+                <div class="col-md-5 mb-4">
+                    <div class="card bg-primary text-white mx-auto h-100">
+                        <div class="card-body d-flex flex-column justify-content-center">
+                            <h5 class="card-title">Unggahan</h5>
+                            <p class="card-text">{{ $banyak_pengunggahan_rps }}</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="chart-container">
-                    <h3>UAS</h3>
-                    <div id="chartUAS"></div>
-                    <p><strong>Unggahan:</strong> {{ $banyak_pengunggahan_uas }}</p>
-                    <p><strong>Verifikasi:</strong> {{ $banyak_verifikasi_uas }}</p>
+                <div class="col-md-5 mb-4">
+                    <div class="card bg-success text-white mx-auto h-100">
+                        <div class="card-body d-flex flex-column justify-content-center">
+                            <h5 class="card-title">Verifikasi</h5>
+                            <p class="card-text">{{ $banyak_verifikasi_rps }}</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="chart-container">
-                    <h3>Proposal TA</h3>
-                    <div id="chartTA"></div>
-                    <p><strong>Proposal:</strong> {{ $jumlah_proposal }}</p>
-                    <p><strong>Review:</strong> {{ $jumlah_review_proposal }}</p>
+            </div>
+        </div>
+
+        <!-- UAS Chart -->
+        <div class="chart-container">
+            <h3 class="text-center">UAS</h3>
+            <div id="chartUAS"></div>
+            <div class="row justify-content-center text-center mt-3">
+                <div class="col-md-5 mb-4">
+                    <div class="card bg-primary text-white mx-auto h-100">
+                        <div class="card-body d-flex flex-column justify-content-center">
+                            <h5 class="card-title">Unggahan</h5>
+                            <p class="card-text">{{ $banyak_pengunggahan_uas }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 mb-4">
+                    <div class="card bg-success text-white mx-auto h-100">
+                        <div class="card-body d-flex flex-column justify-content-center">
+                            <h5 class="card-title">Verifikasi</h5>
+                            <p class="card-text">{{ $banyak_verifikasi_uas }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Proposal TA Chart -->
+        <div class="chart-container">
+            <h3 class="text-center">Proposal TA</h3>
+            <div id="chartTA"></div>
+            <div class="row justify-content-center text-center mt-3">
+                <div class="col-md-5 mb-4">
+                    <div class="card bg-primary text-white mx-auto h-100">
+                        <div class="card-body d-flex flex-column justify-content-center">
+                            <h5 class="card-title">Proposal</h5>
+                            <p class="card-text">{{ $jumlah_proposal }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 mb-4">
+                    <div class="card bg-success text-white mx-auto h-100">
+                        <div class="card-body d-flex flex-column justify-content-center">
+                            <h5 class="card-title">Review</h5>
+                            <p class="card-text">{{ $jumlah_review_proposal }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -36,8 +86,8 @@
         var banyakVerifikasiRPS = @json($banyak_verifikasi_rps);
         var banyakPengunggahanUas = @json($banyak_pengunggahan_uas);
         var banyakVerifikasiUas = @json($banyak_verifikasi_uas);
-        var jumlahProposal = @json($jumlah_proposal); // Correct variable name
-        var jumlahReviewProposal = @json($jumlah_review_proposal); // Correct variable name
+        var jumlahProposal = @json($jumlah_proposal);
+        var jumlahReviewProposal = @json($jumlah_review_proposal);
 
         // Common chart options to ensure consistent appearance
         var commonOptions = {
@@ -102,26 +152,7 @@
         var optionsTA = {
             ...commonOptions,
             series: [jumlahProposal, jumlahReviewProposal],
-            labels: ['Proposal', 'Review'],
-            plotOptions: {
-                pie: {
-                    donut: {
-                        size: '65%',
-                        labels: {
-                            show: true,
-                            total: {
-                                show: true,
-                                label: 'Total',
-                                formatter: function (w) {
-                                    return w.globals.seriesTotals.reduce((a, b) => a + b, 0);
-                                }
-                            }
-                        },
-                        minAngleToShowLabel: 0, // Ensure small slices are visible
-                        expandOnClick: true // Allow slices to expand on click for better visibility
-                    }
-                }
-            }
+            labels: ['Proposal', 'Review']
         };
 
         // Render Proposal TA Chart
@@ -133,15 +164,32 @@
 <style>
     .charts-row {
         display: flex;
-        justify-content: space-around;
+        justify-content: center; /* Center align charts row */
         align-items: flex-start;
         gap: 20px; /* Space between charts */
         flex-wrap: wrap; /* Ensure charts remain neat on small screens */
     }
+
     .chart-container {
-        flex: 1 1 45%; /* Each chart uses around 45% of the container's width */
+        flex: 1 1 30%; /* Each chart uses around 30% of the container's width */
         min-width: 300px; /* Minimum width to prevent charts from being too small */
+        max-width: 400px; /* Maximum width to prevent charts from stretching too wide */
+        margin: 0 auto; /* Center align the chart container */
     }
+
+    .chart-container h3 {
+        margin-bottom: 20px; /* Space between heading and chart */
+    }
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100px; /* Ensure cards have consistent height */
+        margin: 0 auto; /* Center align the card */
+    }
+
     #chartRPS, #chartUAS, #chartTA {
         width: 100%;
         height: 300px; /* Adequate height for charts */

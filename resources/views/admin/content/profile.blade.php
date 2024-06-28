@@ -145,47 +145,45 @@
                                                         <label for="exampleInputtext" class="form-label">
                                                             Name</label>
                                                         <input type="text" class="form-control" id="exampleInputtext"
-                                                            value="{{ $user->name }}" disabled>
+                                                            value="{{ $user->name ?? 'Data Tidak Ada' }}" disabled>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label class="form-label">NIDN</label>
                                                         <input type="text" class="form-control" id="exampleInputtext2"
-                                                            value="{{ $userDosen->nidn }}" disabled>
+                                                            value="{{ $userDosen->nidn ?? 'Data Tidak Ada' }}" disabled>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="exampleInputtext1" class="form-label">Jurusan</label>
                                                         <input type="email" class="form-control" id="exampleInputtext1"
-                                                            value="{{ $userDosen->r_jurusan->jurusan }}" disabled>
+                                                            value="{{ $userDosen->r_jurusan->jurusan ?? 'Data Tidak Ada' }}" disabled>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="exampleInputtext1" class="form-label">Jenis
                                                             Kelamin</label>
                                                         <input type="email" class="form-control" id="exampleInputtext1"
-                                                            value="{{ $userDosen->gender }}" disabled>
+                                                            value="{{ $userDosen->gender ?? 'Data Tidak Ada' }}" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
                                                         <label for="exampleInputtext1" class="form-label">Email</label>
                                                         <input type="email" class="form-control" id="exampleInputtext1"
-                                                            value="{{ $user->email }}" disabled>
+                                                            value="{{ $user->email ?? 'Data Tidak Ada' }}" disabled>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label class="form-label">NIP</label>
                                                         <input type="text" class="form-control" id="exampleInputtext2"
-                                                            value="{{ $userDosen->nip }}" disabled>
+                                                            value="{{ $userDosen->nip ?? 'Data Tidak Ada' }}" disabled>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="exampleInputtext3" class="form-label">Prodi</label>
                                                         <input type="text" class="form-control" id="exampleInputtext3"
-                                                            value="{{ $userDosen->r_prodi->prodi }}" disabled>
+                                                            value="{{ $userDosen->r_prodi->prodi ?? 'Data Tidak Ada' }}" disabled>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="exampleInputtext1" class="form-label">Status</label>
                                                         <input type="email" class="form-control" id="exampleInputtext1"
-                                                            value="@if ($userDosen->status == 0) Aktif
-                                                            @else
-                                                                Tidak Aktif @endif"
+                                                            value="{{ isset($userDosen->status) ? ($userDosen->status == 0 ? 'Aktif' : 'Tidak Aktif') : 'Data tidak ada' }}"
                                                             disabled>
                                                     </div>
                                                 </div>
@@ -208,7 +206,10 @@
     </div>
 @endsection
 @section('scripts')
+    <script src="{{ asset('backend/assets/js/sidebarmenu.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/side-drop.js') }}"></script>
     <script>
+        
         document.getElementById('reset-button').addEventListener('click', function() {
             fetch('{{ route('profile.reset') }}', {
                 method: 'POST',

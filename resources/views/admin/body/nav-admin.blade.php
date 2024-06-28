@@ -1,3 +1,5 @@
+
+
 <header class="app-header">
     <nav class="navbar navbar-expand-lg navbar-light">
         <ul class="navbar-nav">
@@ -134,7 +136,7 @@
                                 <p class="mb-0 fs-3">My Task</p>
                             </a>
                             <a href="{{ route('admin.logout') }}"
-                                class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                                class="btn btn-outline-primary mx-3 mt-2 mb-2 d-block">Logout</a>
                         </div>
                     </div>
                 </li>
