@@ -51,6 +51,7 @@ use App\Http\Controllers\PengurusKbk\VerBeritaAcaraUasController;
 use App\Http\Controllers\PimpinanProdi\HasilFinalProposalTAController;
 use App\Http\Controllers\PimpinanJurusan\Berita_Ver_RPS_KajurController;
 use App\Http\Controllers\PimpinanJurusan\Berita_Ver_UAS_KajurController;
+use App\Http\Controllers\UserProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -242,11 +243,12 @@ Route::group(['middleware' => ['role:admin']], function () {
 });
 /* Admin End */
 
-// Profil
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::middleware('auth', 'verified')->group(function () {
+    Route::get('/profile', [UserProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/update', [UserProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/reset', [UserProfileController::class, 'resetProfilePicture'])->name('profile.reset');
+    Route::delete('/profile', [UserProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::put('/profile/password/update', [UserProfileController::class, 'updatePassword'])->name('password.updatePassword');
 });
 
 require __DIR__ . '/auth.php';
