@@ -136,65 +136,54 @@
                                 <div class="card w-100 border position-relative overflow-hidden mb-0">
                                     <div class="card-body p-4">
                                         <h4 class="card-title">Personal Details</h4>
-                                        <p class="card-subtitle mb-4">To change your personal detail , edit and save
-                                            from here</p>
-                                        <form>
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="mb-3">
-                                                        <label for="exampleInputtext" class="form-label">
-                                                            Name</label>
-                                                        <input type="text" class="form-control" id="exampleInputtext"
-                                                            value="{{ $user->name ?? 'Data Tidak Ada' }}" disabled>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label class="form-label">NIDN</label>
-                                                        <input type="text" class="form-control" id="exampleInputtext2"
-                                                            value="{{ $userDosen->nidn ?? 'Data Tidak Ada' }}" disabled>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="exampleInputtext1" class="form-label">Jurusan</label>
-                                                        <input type="email" class="form-control" id="exampleInputtext1"
-                                                            value="{{ $userDosen->r_jurusan->jurusan ?? 'Data Tidak Ada' }}" disabled>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="exampleInputtext1" class="form-label">Jenis
-                                                            Kelamin</label>
-                                                        <input type="email" class="form-control" id="exampleInputtext1"
-                                                            value="{{ $userDosen->gender ?? 'Data Tidak Ada' }}" disabled>
-                                                    </div>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="mb-3">
+                                                    <label for="exampleInputtext" class="form-label">Name</label>
+                                                    <p class="form-control-static">{{ $user->name ?? 'Data Tidak Ada' }}
+                                                    </p>
                                                 </div>
-                                                <div class="col-lg-6">
-                                                    <div class="mb-3">
-                                                        <label for="exampleInputtext1" class="form-label">Email</label>
-                                                        <input type="email" class="form-control" id="exampleInputtext1"
-                                                            value="{{ $user->email ?? 'Data Tidak Ada' }}" disabled>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label class="form-label">NIP</label>
-                                                        <input type="text" class="form-control" id="exampleInputtext2"
-                                                            value="{{ $userDosen->nip ?? 'Data Tidak Ada' }}" disabled>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="exampleInputtext3" class="form-label">Prodi</label>
-                                                        <input type="text" class="form-control" id="exampleInputtext3"
-                                                            value="{{ $userDosen->r_prodi->prodi ?? 'Data Tidak Ada' }}" disabled>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="exampleInputtext1" class="form-label">Status</label>
-                                                        <input type="email" class="form-control" id="exampleInputtext1"
-                                                            value="{{ isset($userDosen->status) ? ($userDosen->status == 0 ? 'Aktif' : 'Tidak Aktif') : 'Data tidak ada' }}"
-                                                            disabled>
-                                                    </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">NIDN</label>
+                                                    <p class="form-control-static">
+                                                        {{ $userDosen->nidn ?? 'Data Tidak Ada' }}</p>
                                                 </div>
-                                                <div class="col-12">
-                                                    {{-- <div class="d-flex align-items-center justify-content-end mt-4 gap-6">
-                                                        <button class="btn btn-primary">Save</button>
-                                                        <button class="btn bg-danger-subtle text-danger">Cancel</button>
-                                                    </div> --}}
+                                                <div class="mb-3">
+                                                    <label for="exampleInputtext1" class="form-label">Jurusan</label>
+                                                    <p class="form-control-static">
+                                                        {{ $userDosen->r_jurusan->jurusan ?? 'Data Tidak Ada' }}</p>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="exampleInputtext1" class="form-label">Jenis
+                                                        Kelamin</label>
+                                                    <p class="form-control-static">
+                                                        {{ $userDosen->gender ?? 'Data Tidak Ada' }}</p>
                                                 </div>
                                             </div>
-                                        </form>
+                                            <div class="col-lg-6">
+                                                <div class="mb-3">
+                                                    <label for="exampleInputtext1" class="form-label">Email</label>
+                                                    <p class="form-control-static">{{ $user->email ?? 'Data Tidak Ada' }}
+                                                    </p>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">NIP</label>
+                                                    <p class="form-control-static">
+                                                        {{ $userDosen->nip ?? 'Data Tidak Ada' }}</p>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="exampleInputtext3" class="form-label">Prodi</label>
+                                                    <p class="form-control-static">
+                                                        {{ $userDosen->r_prodi->prodi ?? 'Data Tidak Ada' }}</p>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="exampleInputtext1" class="form-label">Status</label>
+                                                    <p class="form-control-static">
+                                                        {{ isset($userDosen->status) ? ($userDosen->status == 0 ? 'Aktif' : 'Tidak Aktif') : 'Data tidak ada' }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -209,7 +198,6 @@
     <script src="{{ asset('backend/assets/js/sidebarmenu.js') }}"></script>
     <script src="{{ asset('backend/assets/js/side-drop.js') }}"></script>
     <script>
-        
         document.getElementById('reset-button').addEventListener('click', function() {
             fetch('{{ route('profile.reset') }}', {
                 method: 'POST',
