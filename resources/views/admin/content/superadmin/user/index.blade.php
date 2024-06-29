@@ -65,22 +65,36 @@
                                                     <th>
                                                         @if (!empty($user->getRoleNames()))
                                                             @foreach ($user->getRoleNames() as $rolename)
-                                                                <label class="badge bg-primary mx-1">{{$rolename}}</label>
+                                                                <label
+                                                                    class="badge bg-primary mx-1">{{ $rolename }}</label>
                                                             @endforeach
                                                         @endif
                                                     </th>
                                                     <th style="width: 27%;">
                                                         <div class="row">
                                                             <div class="col-lg-5">
-                                                                <a href="{{ url('users/'.$user->id.'/edit')}}"
+                                                                <a href="{{ url('users/' . $user->id . '/edit') }}"
                                                                     class="btn btn-primary mb-2 d-flex align-items-center"><i
                                                                         class="bi bi-pencil-square"></i>Edit</a>
                                                             </div>
-                                                            <div class="col-lg-6">
-                                                                <a data-bs-toggle="modal"
-                                                                data-bs-target="#staticBackdrop{{ $user->id }}"
-                                                                class="btn btn-danger mb-2 d-flex align-items-center"><i class="bi bi-trash"></i>Delete</a>
-                                                            </div>
+                                                            @if (!empty($user->getRoleNames()))
+                                                                @php $isAdminOrSuperAdmin = false; @endphp
+                                                                @foreach ($user->getRoleNames() as $rolename)
+                                                                    @if ($rolename == 'admin' || $rolename == 'super-admin')
+                                                                        @php $isAdminOrSuperAdmin = true; @endphp
+                                                                    @endif
+                                                                @endforeach
+
+                                                                @if (!$isAdminOrSuperAdmin)
+                                                                    <div class="col-lg-6">
+                                                                        <a data-bs-toggle="modal"
+                                                                            data-bs-target="#staticBackdrop{{ $user->id }}"
+                                                                            class="btn btn-danger mb-2 d-flex align-items-center"><i
+                                                                                class="bi bi-trash"></i>Delete</a>
+                                                                    </div>
+                                                                @endif
+                                                            @endif
+
                                                         </div>
                                                     </th>
                                                 </tr>
@@ -104,8 +118,7 @@
                                                             </div>
                                                             <div class="modal-footer justify-content-between">
 
-                                                                <form
-                                                                    action="{{ url('users/'.$user->id.'/delete') }}"
+                                                                <form action="{{ url('users/' . $user->id . '/delete') }}"
                                                                     method="POST">
                                                                     @csrf
                                                                     @method('DELETE')
