@@ -64,9 +64,9 @@
                                                 <th>{{ $data->id_ver_rps_uas }}</th>
                                                 <th>{{ optional($data->r_rep_rps_uas)->r_matkulKbk->r_matkul->nama_matkul }}</th>
                                                 <th>{{ optional($data->r_rep_rps_uas)->r_matkulKbk->r_matkul->semester }}</th>
-                                                <th>{{ optional($data->r_pengurus)->r_dosen->nama_dosen }}</th>
+                                                <th>{{ optional($data->r_rep_rps_uas)->r_dosen_matkul->r_dosen->nama_dosen }}</th>
                                                 <th>{{ optional($data->r_rep_rps_uas)->r_matkulKbk->r_kurikulum->r_prodi->prodi }}</th>
-                                                <th>{{ optional($data->r_dosen)->nama_dosen }}</th>
+                                                <th>{{ optional($data->r_pengurus)->r_dosen->nama_dosen }}</th>
                                                 <th>
                                                     @if ($data->status_verifikasi == 0)
                                                         Tidak Diverifikasi
@@ -102,7 +102,7 @@
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="dosen_upload" class="form-label">Dosen Upload</label>
-                                                                <input type="text" class="form-control" id="dosen_upload" value="{{ optional($data->r_pengurus)->r_dosen->nama_dosen }}" readonly>
+                                                                <input type="text" class="form-control" id="dosen_upload" value="{{ optional($data->r_rep_rps_uas)->r_dosen_matkul->r_dosen->nama_dosen }}" readonly>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="prodi" class="form-label">Program Studi</label>
@@ -110,7 +110,7 @@
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="dosen_verifikasi" class="form-label">Dosen Verifikasi</label>
-                                                                <input type="text" class="form-control" id="dosen_verifikasi" value="{{ optional($data->r_dosen)->nama_dosen }}" readonly>
+                                                                <input type="text" class="form-control" id="dosen_verifikasi" value="{{ optional($data->r_pengurus)->r_dosen->nama_dosen }}" readonly>
                                                             </div>
                                                           
                                                             <div class="mb-3">

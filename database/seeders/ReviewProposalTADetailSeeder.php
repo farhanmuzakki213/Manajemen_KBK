@@ -15,7 +15,10 @@ class ReviewProposalTADetailSeeder extends Seeder
     public function run(): void
     {
         $Detail = [
+            [2, '2', '2', 'masih ada yang kurang dibagian pembahasannya', '2024-01-18'],
+            [1, '2', '2', 'masih ada yang kurang dibagian pembahasannya', '2024-01-18'],
             [1, '1', '2', 'masih ada yang kurang dibagian pembahasannya', '2024-01-18'],
+            [2, '1', '2', 'masih ada yang kurang dibagian pembahasannya', '2024-01-18'],
         ];
 
         foreach ($Detail as $data) {

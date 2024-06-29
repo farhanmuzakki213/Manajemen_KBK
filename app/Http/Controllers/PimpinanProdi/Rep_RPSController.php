@@ -13,7 +13,7 @@ class Rep_RPSController extends Controller
      */
     public function index()
     {
-        $data_rep_rps = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_smt_thnakd')
+        $data_rep_rps = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_smt_thnakd','r_rep_rps_uas.r_dosen_matkul.r_dosen')
             ->whereHas('r_rep_rps_uas.r_smt_thnakd', function ($query) {
                 $query->where('status_smt_thnakd', '=', '1'); 
             })

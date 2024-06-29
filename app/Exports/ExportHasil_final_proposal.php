@@ -2,7 +2,10 @@
 
 namespace App\Exports;
 
+use App\Models\PimpinanProdi;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Models\ReviewProposalTaDetailPivot;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
@@ -11,50 +14,83 @@ class ExportHasil_final_proposal implements FromCollection, WithHeadings
     /**
      * @return \Illuminate\Support\Collection
      */
+
+     public function getDosen()
+     {
+         $user = Auth::user()->name;
+         $user_email = Auth::user()->email;
+         $kaprodi = PimpinanProdi::whereHas('r_dosen', function ($query) use ($user, $user_email) {
+             $query->where('nama_dosen', $user)
+                 ->where('email', $user_email);
+         })->first();
+         return $kaprodi;
+     }
+
+     
     public function collection()
     {
-        $data_final_proposal_ta = DB::table('review_proposal_ta')
-            ->join('proposal_ta', 'review_proposal_ta.proposal_ta_id', '=', 'proposal_ta.id_proposal_ta')
-            ->join('dosen as reviewer_satu', 'review_proposal_ta.reviewer_satu', '=', 'reviewer_satu.id_dosen')
-            ->join('dosen as reviewer_dua', 'review_proposal_ta.reviewer_dua', '=', 'reviewer_dua.id_dosen')
-            ->join('dosen as pembimbing_satu', 'proposal_ta.pembimbing_satu', '=', 'pembimbing_satu.id_dosen')
-            ->join('dosen as pembimbing_dua', 'proposal_ta.pembimbing_dua', '=', 'pembimbing_dua.id_dosen')
-            ->join('mahasiswa', 'proposal_ta.mahasiswa_id', '=', 'mahasiswa.id_mahasiswa')
-            ->select(
-                'mahasiswa.nama',
-                'mahasiswa.nim',
-                'proposal_ta.judul',
-                'reviewer_satu.nama_dosen as reviewer_satu_nama',
-                'reviewer_dua.nama_dosen as reviewer_dua_nama',
-                'review_proposal_ta.status_final_proposal',
-                'pembimbing_satu.nama_dosen as pembimbing_satu_nama',
-                'pembimbing_dua.nama_dosen as pembimbing_dua_nama'
-            )
-            ->orderByDesc('review_proposal_ta.id_penugasan')
-            ->get()
-            ->map(function ($item) {
-                // Ubah nilai status_final_proposal
-                $item->status_final_proposal = $item->status_final_proposal == 0 ? 'Belum Final' : 'Final';
-                return $item;
-            });
+        $kaprodi = $this->getDosen();
+        // Mengambil data dengan join
+        $data_final_proposal_ta = ReviewProposalTaDetailPivot::with([
+            'p_reviewProposal.proposal_ta.r_mahasiswa', 
+            'p_reviewProposal.proposal_ta.r_pembimbing_satu', 
+            'p_reviewProposal.proposal_ta.r_pembimbing_dua',
+            'p_reviewProposal.reviewer_satu_dosen.r_dosen',
+            'p_reviewProposal.reviewer_dua_dosen.r_dosen'
+        ])
+        ->whereHas('p_reviewProposal', function($query) use($kaprodi){
+            $query->where('pimpinan_prodi_id',$kaprodi->id_pimpinan_prodi);
+        })
+        ->whereHas('p_reviewProposal', function($query) {
+            $query->where('status_final_proposal', '=', '1');
+        })
+        ->orderByDesc('penugasan_id')
+        ->get()
+        ->groupBy('penugasan_id');
 
-        return $data_final_proposal_ta;
+        // Ambil dua penugasan_id pertama
+        $two_penugasan_ids = $data_final_proposal_ta->keys()->take(2);
+
+        // Inisialisasi array untuk menyimpan data yang sudah digabungkan
+        $merged_data = [];
+
+        foreach ($two_penugasan_ids as $penugasan_id) {
+            // Ambil data dari kelompok dengan penugasan_id tertentu
+            $group = $data_final_proposal_ta[$penugasan_id];
+
+            // Ambil data reviewer pertama dan kedua dari kelompok
+            $reviewer_satu = $group->where('dosen', '1')->first();
+            $reviewer_dua = $group->where('dosen', '2')->first();
+
+            // Jika ada data reviewer pertama dan kedua, gabungkan dalam satu array
+            if ($reviewer_satu && $reviewer_dua) {
+                $merged_data[] = [
+                    'nama_mahasiswa' => $reviewer_satu->p_reviewProposal->proposal_ta->r_mahasiswa->nama,
+                    'nim_mahasiswa' => $reviewer_satu->p_reviewProposal->proposal_ta->r_mahasiswa->nim,
+                    'judul' => $reviewer_satu->p_reviewProposal->proposal_ta->judul,
+                    'pembimbing_satu' => $reviewer_satu->p_reviewProposal->proposal_ta->r_pembimbing_satu->nama_dosen,
+                    'pembimbing_dua' => $reviewer_satu->p_reviewProposal->proposal_ta->r_pembimbing_dua->nama_dosen,
+                    'reviewer_satu' => $reviewer_satu->p_reviewProposal->reviewer_satu_dosen->r_dosen->nama_dosen,
+                    'reviewer_dua' => $reviewer_dua->p_reviewProposal->reviewer_dua_dosen->r_dosen->nama_dosen,
+                    'status_final_proposal' => $reviewer_satu->p_reviewProposal->status_final_proposal == 0 ? 'Belum Final' : 'Final',
+                ];
+            }
+        }
+
+        return collect($merged_data);
     }
 
-    /**
-     * @return array
-     */
     public function headings(): array
     {
         return [
-            'nama_mahasiswa',
-            'nim',
-            'judul',
-            'pembimbing_1',
-            'pembimbing_2',
-            'status_final',
-            'reviewer_1',
-            'reviewer_2'
+            'Nama Mahasiswa',
+            'NIM Mahasiswa',
+            'Judul',
+            'Pembimbing Satu',
+            'Pembimbing Dua',
+            'Reviewer Satu',
+            'Reviewer Dua',
+            'Status Final Proposal'
         ];
     }
 }

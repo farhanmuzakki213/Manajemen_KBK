@@ -102,7 +102,7 @@
                                                             <a href="{{ asset('storage/uploads/rps/repositori_files/' . $data_rep['file']) }}"
                                                                 class="btn btn-primary mb-2 d-flex align-items-center"
                                                                 target="_blank">
-                                                                <i class="bi bi-file-earmark-arrow-down"></i> Fileuas
+                                                                <i class="bi bi-file-earmark-arrow-down"></i>FileRPS
                                                             </a>
                                                         </div>
                                                     @else
