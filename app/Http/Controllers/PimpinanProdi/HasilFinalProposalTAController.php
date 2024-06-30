@@ -150,13 +150,12 @@ class HAsilFinalProposalTAController extends Controller
     public function export_excel()
     {
         $kaprodi = $this->getDosen();
-       
         // Ambil semua data review proposal
         $data_review_proposal_ta = ReviewProposalTAModel::orderByDesc('id_penugasan')
             ->where('pimpinan_prodi_id',$kaprodi->id_pimpinan_prodi)
             ->where('status_final_proposal','=','3')
             ->get();
-
+        //dd($data_review_proposal_ta);
         // Cek apakah ada data dengan status_final_proposal = 1
         if ($data_review_proposal_ta->isNotEmpty()) {
             // Jika ada data final, unduh file Excel

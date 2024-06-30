@@ -15,39 +15,39 @@ class ExportHasil_final_proposal implements FromCollection, WithHeadings
      * @return \Illuminate\Support\Collection
      */
 
-     public function getDosen()
-     {
-         $user = Auth::user()->name;
-         $user_email = Auth::user()->email;
-         $kaprodi = PimpinanProdi::whereHas('r_dosen', function ($query) use ($user, $user_email) {
-             $query->where('nama_dosen', $user)
-                 ->where('email', $user_email);
-         })->first();
-         return $kaprodi;
-     }
+    public function getDosen()
+    {
+        $user = Auth::user()->name;
+        $user_email = Auth::user()->email;
+        $kaprodi = PimpinanProdi::whereHas('r_dosen', function ($query) use ($user, $user_email) {
+            $query->where('nama_dosen', $user)
+                ->where('email', $user_email);
+        })->first();
+        return $kaprodi;
+    }
 
-     
+
     public function collection()
     {
         $kaprodi = $this->getDosen();
         // Mengambil data dengan join
         $data_final_proposal_ta = ReviewProposalTaDetailPivot::with([
-            'p_reviewProposal.proposal_ta.r_mahasiswa', 
-            'p_reviewProposal.proposal_ta.r_pembimbing_satu', 
+            'p_reviewProposal.proposal_ta.r_mahasiswa',
+            'p_reviewProposal.proposal_ta.r_pembimbing_satu',
             'p_reviewProposal.proposal_ta.r_pembimbing_dua',
             'p_reviewProposal.reviewer_satu_dosen.r_dosen',
             'p_reviewProposal.reviewer_dua_dosen.r_dosen'
         ])
-        ->whereHas('p_reviewProposal', function($query) use($kaprodi){
-            $query->where('pimpinan_prodi_id',$kaprodi->id_pimpinan_prodi);
-        })
-        ->whereHas('p_reviewProposal', function($query) {
-            $query->where('status_final_proposal', '=', '3');
-        })
-        ->orderByDesc('penugasan_id')
-        ->get()
-        ->groupBy('penugasan_id');
-
+            ->whereHas('p_reviewProposal', function ($query) use ($kaprodi) {
+                $query->where('pimpinan_prodi_id', $kaprodi->id_pimpinan_prodi);
+            })
+            ->whereHas('p_reviewProposal', function ($query) {
+                $query->where('status_final_proposal', '=', '3');
+            })
+            ->orderByDesc('penugasan_id')
+            ->get()
+            ->groupBy('penugasan_id');
+            //dd($data_final_proposal_ta);
         // Ambil dua penugasan_id pertama
         $two_penugasan_ids = $data_final_proposal_ta->keys()->take(2);
 
@@ -72,7 +72,7 @@ class ExportHasil_final_proposal implements FromCollection, WithHeadings
                     'pembimbing_dua' => $reviewer_satu->p_reviewProposal->proposal_ta->r_pembimbing_dua->nama_dosen,
                     'reviewer_satu' => $reviewer_satu->p_reviewProposal->reviewer_satu_dosen->r_dosen->nama_dosen,
                     'reviewer_dua' => $reviewer_dua->p_reviewProposal->reviewer_dua_dosen->r_dosen->nama_dosen,
-                    'status_final_proposal' => $reviewer_satu->p_reviewProposal->status_final_proposal == 0 ? 'Belum Final' : 'Final',
+                    'status_final_proposal' => $reviewer_satu->p_reviewProposal->status_final_proposal == 3 ? 'Diterima' : '',
                 ];
             }
         }
