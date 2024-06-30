@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('review_proposal_ta_detail_pivot', function (Blueprint $table) {
             $table->bigInteger('penugasan_id');
             $table->enum('dosen', ['1','2'])->comment('1: Reviewer Satu, 2: Reviewer Dua');
-            $table->enum('status_review_proposal', ['0', '1', '2', '3'])->default('0')->comment('0: Di Ajukan, 1: Di Tolak, 2: Di Revisi, 3: Di Terima');
+            $table->enum('status_review_proposal',  ['0', '1', '2', '3'])->default('0')->comment('0: Diajukan, 1: Ditolak, 2: Direvisi, 3: Diterima');
             $table->text('catatan');
             $table->timestamp('tanggal_review');
             $table->unique(['penugasan_id', 'dosen']);

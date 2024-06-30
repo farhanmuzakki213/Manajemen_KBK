@@ -42,7 +42,7 @@ class ExportHasil_final_proposal implements FromCollection, WithHeadings
             $query->where('pimpinan_prodi_id',$kaprodi->id_pimpinan_prodi);
         })
         ->whereHas('p_reviewProposal', function($query) {
-            $query->where('status_final_proposal', '=', '1');
+            $query->where('status_final_proposal', '=', '3');
         })
         ->orderByDesc('penugasan_id')
         ->get()

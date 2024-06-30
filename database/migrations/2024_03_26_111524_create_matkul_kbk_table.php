@@ -15,16 +15,19 @@ return new class extends Migration
             $table->bigInteger('id_matkul_kbk')->primary();
             $table->bigInteger('matkul_id');
             $table->bigInteger('jenis_kbk_id');
+            $table->bigInteger('prodi_id');
             $table->bigInteger('kurikulum_id');
         });
 
         Schema::table('matkul_kbk', function (Blueprint $table) {
             $table->foreign('matkul_id')->references('id_matkul')->on('matkul')
-                    ->onUpdate('cascade')->onDelete('cascade');
+                ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('prodi_id')->references('id_prodi')->on('prodi')
+                ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('jenis_kbk_id')->references('id_jenis_kbk')->on('jenis_kbk')
-                    ->onUpdate('cascade')->onDelete('cascade');
+                ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('kurikulum_id')->references('id_kurikulum')->on('kurikulum')
-                    ->onUpdate('cascade')->onDelete('cascade');
+                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

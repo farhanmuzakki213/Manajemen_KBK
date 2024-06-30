@@ -95,9 +95,13 @@
                                                 </th>
                                                 <th>
                                                     @if ($data['status_final_proposal'] == 0)
-                                                        Belum Final
+                                                        Di Ajukan
+                                                    @elseif ($data['status_final_proposal'] == 1)
+                                                        Di Tolak
+                                                    @elseif ($data['status_final_proposal'] == 2)
+                                                        Di Revisi
                                                     @else
-                                                        Final
+                                                        Di Terima
                                                     @endif
                                                 </th>
                                                 <th style="width: 14%;">
@@ -132,42 +136,36 @@
                                                                     class="form-label">Nama_mahasiswa</label>
                                                                 <input type="text" class="form-control"
                                                                     id="nama_mahasiswa"
-                                                                    value="{{ $data['nama_mahasiswa'] }}"
-                                                                    readonly>
+                                                                    value="{{ $data['nama_mahasiswa'] }}" readonly>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="nim" class="form-label">NIM</label>
                                                                 <input type="text" class="form-control" id="nim"
-                                                                    value="{{ $data['nim_mahasiswa'] }}"
-                                                                    readonly>
+                                                                    value="{{ $data['nim_mahasiswa'] }}" readonly>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="nama_dosen" class="form-label">pembimbing
                                                                     1:</label>
                                                                 <input type="text" class="form-control" id="nama_dosen"
-                                                                    value="{{ $data['pembimbing_satu'] }}"
-                                                                    readonly>
+                                                                    value="{{ $data['pembimbing_satu'] }}" readonly>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="nama_dosen" class="form-label">pembimbing
                                                                     2:</label>
                                                                 <input type="text" class="form-control" id="nama_dosen"
-                                                                    value="{{ $data['pembimbing_dua'] }}"
-                                                                    readonly>
+                                                                    value="{{ $data['pembimbing_dua'] }}" readonly>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="nama_dosen" class="form-label">Reviewer
                                                                     1:</label>
                                                                 <input type="text" class="form-control" id="nama_dosen"
-                                                                    value="{{ $data['reviewer_satu'] }}"
-                                                                    readonly>
+                                                                    value="{{ $data['reviewer_satu'] }}" readonly>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="nama_dosen" class="form-label">Reviewer
                                                                     2:</label>
                                                                 <input type="text" class="form-control" id="nama_dosen"
-                                                                    value="{{ $data['reviewer_dua'] }}"
-                                                                    readonly>
+                                                                    value="{{ $data['reviewer_dua'] }}" readonly>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="Judul" class="form-label">Judul</label>
@@ -221,17 +219,34 @@
                                                                         class="form-label">Status</label><br>
                                                                     <div class="form-check form-check-inline">
                                                                         <input class="form-check-input" type="radio"
-                                                                            name="status" id="aktif" value="0"
+                                                                            name="status" id="diajukan"
+                                                                            value="0"
                                                                             {{ $data['status_final_proposal'] == 0 ? 'checked' : '' }}>
-                                                                        <label class="form-check-label" for="aktif">
-                                                                            Belum Final</label>
+                                                                        <label class="form-check-label"
+                                                                            for="aktif">Diajukan</label>
                                                                     </div>
                                                                     <div class="form-check form-check-inline">
                                                                         <input class="form-check-input" type="radio"
-                                                                            name="status" id="aktif" value="1"
+                                                                            name="status" id="ditolak"
+                                                                            value="1"
                                                                             {{ $data['status_final_proposal'] == 1 ? 'checked' : '' }}>
-                                                                        <label class="form-check-label" for="aktif">
-                                                                            Final</label>
+                                                                        <label class="form-check-label"
+                                                                            for="aktif">DiTolak</label>
+                                                                    </div>
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input class="form-check-input" type="radio"
+                                                                            name="status" id="direvisi"
+                                                                            value="2"
+                                                                            {{ $data['status_final_proposal'] == 2 ? 'checked' : '' }}>
+                                                                        <label class="form-check-label"
+                                                                            for="tidak_aktif">DiRevisi</label>
+                                                                    </div>
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input class="form-check-input" type="radio"
+                                                                            name="status" id="diterima"
+                                                                            value="3" {{ $data['status_final_proposal'] == 3 ? 'checked' : '' }}>
+                                                                        <label class="form-check-label"
+                                                                            for="tidak_aktif">DiTerima</label>
                                                                     </div>
                                                                 </div>
 

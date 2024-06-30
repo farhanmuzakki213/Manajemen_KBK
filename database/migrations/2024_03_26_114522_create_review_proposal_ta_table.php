@@ -17,7 +17,7 @@ return new class extends Migration
             $table->bigInteger('reviewer_satu');
             $table->bigInteger('reviewer_dua');
             $table->bigInteger('pimpinan_prodi_id');
-            $table->enum('status_final_proposal', ['0', '1'])->default('0')->comment('0: Belum Final, 1: Final');
+            $table->enum('status_final_proposal',  ['0', '1', '2', '3'])->default('0')->comment('0: Diajukan, 1: Ditolak, 2: Direvisi, 3: Diterima');
             $table->timestamp('tanggal_penugasan');
         });
 

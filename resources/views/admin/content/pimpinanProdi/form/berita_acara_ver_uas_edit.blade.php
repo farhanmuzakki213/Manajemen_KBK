@@ -23,7 +23,7 @@
                                 <input type="hidden" class="form-control" id="id_berita_acara" name="id_berita_acara"
                                     value="{{ $beritaAcara->id_berita_acara }}" readonly>
                                     <input type="hidden" class="form-control" id="Status_dari_kaprodi" name="Status_dari_kaprodi"
-                                    value="1" readonly>
+                                    value="3" readonly>
                                 <div class="mb-3">
                                     <label for="file_berita_acara" class="form-label">Upload File Berita Acara Uas</label>
                                     <input type="file" class="form-control" id="file_berita_acara"

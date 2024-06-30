@@ -154,7 +154,7 @@ class HAsilFinalProposalTAController extends Controller
         // Ambil semua data review proposal
         $data_review_proposal_ta = ReviewProposalTAModel::orderByDesc('id_penugasan')
             ->where('pimpinan_prodi_id',$kaprodi->id_pimpinan_prodi)
-            ->where('status_final_proposal','=','1')
+            ->where('status_final_proposal','=','3')
             ->get();
 
         // Cek apakah ada data dengan status_final_proposal = 1
@@ -163,7 +163,7 @@ class HAsilFinalProposalTAController extends Controller
             return Excel::download(new ExportHasil_final_proposal($data_review_proposal_ta), "hasil_final_proposal.xlsx");
         } else {
             // Jika tidak ada data final, redirect dengan pesan kesalahan
-            return redirect()->route('hasil_review_proposal_ta')->with('error', 'Data final belum ada.');
+            return redirect()->route('hasil_review_proposal_ta')->with('error', 'Data final/diterima belum ada.');
         }
         
     }
