@@ -67,13 +67,13 @@
                                                 <th>{{ optional($data->reviewer_dua_dosen)->r_dosen->nama_dosen }}</th>
                                                 <th>
                                                     @if ($data->status_review_proposal == 0)
-                                                        Di Ajukan
+                                                        Diajukan
                                                     @elseif ($data->status_review_proposal == 1)
-                                                        Di Tolak
+                                                        Ditolak
                                                     @elseif ($data->status_review_proposal == 2)
-                                                        Di Revisi
+                                                        Direvisi
                                                     @else
-                                                        Di Terima
+                                                        Diterima
                                                     @endif
                                                 </th>
                                                 <th style="width: 10%;">

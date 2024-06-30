@@ -88,9 +88,15 @@
         var banyakVerifikasiUas = @json($banyak_verifikasi_uas);
         var jumlahProposal = @json($jumlah_proposal);
         var jumlahReviewProposal = @json($jumlah_review_proposal);
+        var percentVerifiedRPS = @json($percentVerifiedRPS);
+        var percentUploadedRPS = @json($percentUploadedRPS);
+        var percentVerifiedUAS = @json($percentVerifiedUAS);
+        var percentUploadedUAS = @json($percentUploadedUAS);
+        var percentProposalTA = @json($percentProposalTA);
+        var percentReviewProposalTA = @json($percentReviewProposalTA);
 
         // Common chart options to ensure consistent appearance
-        var commonOptions = {
+        var commonOptionsRPS = {
             chart: {
                 type: 'donut',
                 height: 300,
@@ -104,9 +110,9 @@
                             show: true,
                             total: {
                                 show: true,
-                                label: 'Total',
+                                label: 'Verifikasi',
                                 formatter: function (w) {
-                                    return w.globals.seriesTotals.reduce((a, b) => a + b, 0);
+                                    return banyakVerifikasiRPS;
                                 }
                             }
                         }
@@ -115,7 +121,13 @@
             },
             tooltip: {
                 y: {
-                    formatter: function (value) {
+                    formatter: function (value, { seriesIndex }) {
+                // Custom tooltip text based on the series index
+                        if (seriesIndex === 0) {
+                            return banyakPengunggahanRPS + ' data';
+                        } else if (seriesIndex === 1) {
+                            return banyakVerifikasiRPS + ' data';
+                        }
                         return value + ' data';
                     }
                 }
@@ -128,8 +140,8 @@
 
         // Options for RPS Chart
         var optionsRPS = {
-            ...commonOptions,
-            series: [banyakPengunggahanRPS, banyakVerifikasiRPS],
+            ...commonOptionsRPS,
+            series: [percentUploadedRPS, percentVerifiedRPS],
             labels: ['Unggahan', 'Verifikasi']
         };
 
@@ -138,9 +150,51 @@
         chartRPS.render();
 
         // Options for UAS Chart
+        var commonOptionsUAS = {
+            chart: {
+                type: 'donut',
+                height: 300,
+                width: '100%'
+            },
+            plotOptions: {
+                pie: {
+                    donut: {
+                        size: '65%',
+                        labels: {
+                            show: true,
+                            total: {
+                                show: true,
+                                label: 'Verifikasi',
+                                formatter: function (w) {
+                                    return banyakVerifikasiUas;
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            tooltip: {
+                y: {
+                    formatter: function (value, { seriesIndex }) {
+                // Custom tooltip text based on the series index
+                        if (seriesIndex === 0) {
+                            return banyakPengunggahanUas + ' data';
+                        } else if (seriesIndex === 1) {
+                            return banyakVerifikasiUas + ' data';
+                        }
+                        return value + ' data';
+                    }
+                }
+            },
+            legend: {
+                position: 'bottom'
+            },
+            colors: ['#008FFB', '#00E396']
+        };
+
         var optionsUAS = {
-            ...commonOptions,
-            series: [banyakPengunggahanUas, banyakVerifikasiUas],
+            ...commonOptionsUAS,
+            series: [percentUploadedUAS, percentVerifiedUAS],
             labels: ['Unggahan', 'Verifikasi']
         };
 
@@ -149,9 +203,51 @@
         chartUAS.render();
 
         // Options for Proposal TA Chart
+        var commonOptionsTA = {
+            chart: {
+                type: 'donut',
+                height: 300,
+                width: '100%'
+            },
+            plotOptions: {
+                pie: {
+                    donut: {
+                        size: '65%',
+                        labels: {
+                            show: true,
+                            total: {
+                                show: true,
+                                label: 'Review',
+                                formatter: function (w) {
+                                    return jumlahReviewProposal;
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            tooltip: {
+                y: {
+                    formatter: function (value, { seriesIndex }) {
+                // Custom tooltip text based on the series index
+                        if (seriesIndex === 0) {
+                            return jumlahProposal + ' data';
+                        } else if (seriesIndex === 1) {
+                            return jumlahReviewProposal + ' data';
+                        }
+                        return value + ' data';
+                    }
+                }
+            },
+            legend: {
+                position: 'bottom'
+            },
+            colors: ['#008FFB', '#00E396']
+        };
+
         var optionsTA = {
-            ...commonOptions,
-            series: [jumlahProposal, jumlahReviewProposal],
+            ...commonOptionsTA,
+            series: [percentProposalTA, percentReviewProposalTA],
             labels: ['Proposal', 'Review']
         };
 

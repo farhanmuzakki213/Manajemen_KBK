@@ -38,10 +38,10 @@
                                     <thead>
                                         <tr class="table-info">
                                             <th>#</th>
-                                            <th>Nim</th>
-                                            <th>Name</th>
+                                            <th>NIM</th>
+                                            <th>Nama</th>
                                             <th>Jurusan</th>
-                                            <th>prodi</th>
+                                            <th>Prodi</th>
                                             <th>Jenis Kelamin</th>
                                             <th>Status</th>
                                         </tr>
@@ -49,10 +49,10 @@
                                     <tfoot>
                                         <tr class="table-info">
                                             <th>#</th>
-                                            <th>Nim</th>
-                                            <th>Name</th>
+                                            <th>NIM</th>
+                                            <th>Nama</th>
                                             <th>Jurusan</th>
-                                            <th>prodi</th>
+                                            <th>Prodi</th>
                                             <th>Jenis Kelamin</th>
                                             <th>Status</th>
                                         </tr>

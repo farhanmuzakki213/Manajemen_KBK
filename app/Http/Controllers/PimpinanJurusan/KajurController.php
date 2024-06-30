@@ -122,13 +122,25 @@ class KajurController extends Controller
         $total_ta = $total_jumlah_proposal + $total_jumlah_review_proposal;
 
         // Calculate percentages
-        $percentUploadedRPS = $total_rps > 0 ? ($total_banyak_pengunggahan_rps / $total_rps) * 100 : 0;
-        $percentVerifiedRPS = $total_rps > 0 ? ($total_banyak_verifikasi_rps / $total_rps) * 100 : 0;
-        $percentUploadedUAS = $total_uas > 0 ? ($total_banyak_pengunggahan_uas / $total_uas) * 100 : 0;
-        $percentVerifiedUAS = $total_uas > 0 ? ($total_banyak_verifikasi_uas / $total_uas) * 100 : 0;
-        $percentProposalTA = $total_ta > 0 ? ($total_jumlah_proposal / $total_ta) * 100 : 0;
-        $percentReviewProposalTA = $total_ta > 0 ? ($total_jumlah_review_proposal / $total_ta) * 100 : 0;
+        // $percentUploadedRPS = $total_rps > 0 ? ($total_banyak_pengunggahan_rps / $total_rps) * 100 : 0;
+        // $percentVerifiedRPS = $total_rps > 0 ? ($total_banyak_verifikasi_rps / $total_rps) * 100 : 0;
+        // $percentUploadedUAS = $total_uas > 0 ? ($total_banyak_pengunggahan_uas / $total_uas) * 100 : 0;
+        // $percentVerifiedUAS = $total_uas > 0 ? ($total_banyak_verifikasi_uas / $total_uas) * 100 : 0;
+        // $percentProposalTA = $total_ta > 0 ? ($total_jumlah_proposal / $total_ta) * 100 : 0;
+        // $percentReviewProposalTA = $total_ta > 0 ? ($total_jumlah_review_proposal / $total_ta) * 100 : 0;
 
+        $percentVerifiedRPS = $total_banyak_pengunggahan_rps > 0 ? ($total_banyak_verifikasi_rps / $total_banyak_pengunggahan_rps) * 100 : 0;
+        $percentUploadedRPS = 100 - $percentVerifiedRPS;
+        $percentVerifiedUAS = $total_banyak_pengunggahan_uas > 0 ? ($total_banyak_verifikasi_uas / $total_banyak_pengunggahan_uas) * 100 : 0;
+        $percentUploadedUAS = 100 - $percentVerifiedUAS;
+        $percentReviewProposalTA = $total_jumlah_proposal > 0 ? ($total_jumlah_review_proposal / $total_jumlah_proposal) * 100 : 0;
+        $percentProposalTA = 100 - $percentReviewProposalTA;
+        debug($percentVerifiedUAS);
+        debug($percentUploadedUAS);
+        debug($percentVerifiedRPS);
+        debug($percentUploadedRPS);
+        debug($percentReviewProposalTA);
+        debug($percentProposalTA);
         // Return view with data
         return view('admin.content.PimpinanJurusan.dashboard_pimpinan', compact(
             'percentUploadedRPS',

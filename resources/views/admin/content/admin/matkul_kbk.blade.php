@@ -31,7 +31,7 @@
                             <div class="d-grid gap-2 d-md-block">
                                 <a href="{{ route('matkul_kbk.create') }}" class="btn btn-primary me-md-3"><i
                                         class="bi bi-file-earmark-plus"></i> New</a>
-                                <a href="{{-- {{ route('matkul_kbk.export') }} --}}" class="btn btn-primary me-md-3"><i
+                                <a href="{{ route('matkul_kbk.export') }}" class="btn btn-primary me-md-3"><i
                                         class="bi bi-box-arrow-in-up"></i> Export</a>
                                 <a data-bs-toggle="modal" data-bs-target="#import{{-- {{ $data->id_jenis_kbk }} --}}" class="btn btn-primary"><i class="bi bi-box-arrow-in-down"></i> Import</a>
                             </div>

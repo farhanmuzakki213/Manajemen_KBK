@@ -71,7 +71,7 @@ class ProdiController extends Controller
                 $differencesArray = collect($dataAPI_prodi)->reject(function ($item) use ($dataBase_prodi) {
                     return in_array($item['kode_prodi'], $dataBase_prodi);
                 })->all();
-                dd($differencesArray);
+                // dd($differencesArray);
                 debug($dataBase_prodi);
                 debug($dataAPI_prodi);
                 debug($differencesArray);

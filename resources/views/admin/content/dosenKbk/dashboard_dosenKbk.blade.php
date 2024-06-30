@@ -37,6 +37,8 @@
         // Data from Blade variables
         var jumlahProposal = @json($jumlah_proposal); // Correct variable name
         var jumlahReviewProposal = @json($jumlah_review_proposal); // Correct variable name
+        var percentProposalTA = @json($percentProposalTA);
+        var percentReviewProposalTA = @json($percentReviewProposalTA);
 
         // Common chart options to ensure consistent appearance
         var commonOptions = {
@@ -53,9 +55,9 @@
                             show: true,
                             total: {
                                 show: true,
-                                label: 'Total',
+                                label: 'Penugasan',
                                 formatter: function (w) {
-                                    return w.globals.seriesTotals.reduce((a, b) => a + b, 0);
+                                    return jumlahReviewProposal;
                                 }
                             }
                         }
@@ -64,7 +66,13 @@
             },
             tooltip: {
                 y: {
-                    formatter: function (value) {
+                    formatter: function (value, { seriesIndex }) {
+                // Custom tooltip text based on the series index
+                        if (seriesIndex === 0) {
+                            return jumlahProposal + ' data';
+                        } else if (seriesIndex === 1) {
+                            return jumlahReviewProposal + ' data';
+                        }
                         return value + ' data';
                     }
                 }
@@ -78,27 +86,8 @@
         // Options for Proposal TA Chart
         var optionsTA = {
             ...commonOptions,
-            series: [jumlahProposal, jumlahReviewProposal],
-            labels: ['Proposal', 'Review'],
-            plotOptions: {
-                pie: {
-                    donut: {
-                        size: '65%',
-                        labels: {
-                            show: true,
-                            total: {
-                                show: true,
-                                label: 'Total',
-                                formatter: function (w) {
-                                    return w.globals.seriesTotals.reduce((a, b) => a + b, 0);
-                                }
-                            }
-                        },
-                        minAngleToShowLabel: 0, // Ensure small slices are visible
-                        expandOnClick: true // Allow slices to expand on click for better visibility
-                    }
-                }
-            }
+            series: [percentProposalTA, percentReviewProposalTA],
+            labels: ['Penugasan', 'Review']
         };
 
         // Render Proposal TA Chart

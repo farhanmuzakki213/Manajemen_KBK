@@ -4,7 +4,7 @@
         <div class="card">
             <div class="card-body">
                 <!-- Page Heading -->
-                <h5 class="card-title fw-semibold mb-4">Repositori Proposal TA Jurusan</h5>
+                <h5 class="card-title fw-semibold mb-4">Repositori Proposal TA</h5>
                 @if (Session::has('success'))
                     <div id="delay" class="alert alert-success" role="alert">
                         {{ Session::get('success') }}
@@ -39,7 +39,7 @@
                                         <tr class="table-info">
                                             <th>#</th>
                                             <th>Nama Mahasiswa</th>
-                                            <th>nim</th>
+                                            <th>NIM</th>
                                             <th>Prodi</th>
                                             <th>Jurusan</th>
                                             <th>Status Proposal</th>
@@ -50,7 +50,7 @@
                                         <tr class="table-info">
                                             <th>#</th>
                                             <th>Nama Mahasiswa</th>
-                                            <th>nim</th>
+                                            <th>NIM</th>
                                             <th>Prodi</th>
                                             <th>Jurusan</th>
                                             <th>Status Proposal</th>
@@ -67,13 +67,13 @@
                                                 <th>{{ optional($data->r_mahasiswa)->r_jurusan->jurusan }}</th>
                                                 <th>
                                                     @if ($data->status_proposal_ta == 0)
-                                                        Di Ajukan
+                                                        Diajukan
                                                     @elseif ($data->status_proposal_ta == 1)
-                                                        Di Tolak
+                                                        Ditolak
                                                     @elseif ($data->status_proposal_ta == 2)
-                                                        Di Revisi
+                                                        Direvisi
                                                     @else
-                                                        Di Terima
+                                                        Diterima
                                                     @endif
                                                 </th>
                                                 <th style="width: 14%;">

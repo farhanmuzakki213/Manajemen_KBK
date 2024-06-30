@@ -38,7 +38,7 @@
                                     <thead>
                                         <tr class="table-info">
                                             <th>#</th>
-                                            <th>Kode_Prodi</th>
+                                            <th>Kode Prodi</th>
                                             <th>Prodi</th>
                                             <th>Jurusan</th>
                                             <th>Jenjang</th>
@@ -47,7 +47,7 @@
                                     <tfoot>
                                         <tr class="table-info">
                                             <th>#</th>
-                                            <th>Kode_Prodi</th>
+                                            <th>Kode Prodi</th>
                                             <th>Prodi</th>
                                             <th>Jurusan</th>
                                             <th>Jenjang</th>

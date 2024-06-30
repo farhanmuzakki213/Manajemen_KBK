@@ -72,7 +72,7 @@
                                         <tr class="table-info">
                                             <th>#</th>
                                             <th>Nama</th>
-                                            <th>Jenis_KBK</th>
+                                            <th>Jenis KBK</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -80,7 +80,7 @@
                                         <tr class="table-info">
                                             <th>#</th>
                                             <th>Nama</th>
-                                            <th>Jenis_KBK</th>
+                                            <th>Jenis KBK</th>
                                             <th>Action</th>
                                         </tr>
                                     </tfoot>

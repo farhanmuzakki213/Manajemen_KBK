@@ -4,7 +4,7 @@
         <div class="card">
             <div class="card-body">
                 <!-- Page Heading -->
-                <h5 class="card-title fw-semibold mb-4">Tambah Role </h5>
+                <h5 class="card-title fw-semibold mb-4">Edit User</h5>
                 @if (Session::has('success'))
                     <div id="delay" class="alert alert-success" role="alert">
                         {{ Session::get('success') }}

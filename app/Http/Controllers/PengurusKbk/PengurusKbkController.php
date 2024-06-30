@@ -79,9 +79,9 @@ class PengurusKbkController extends Controller
             ->count();
 
         $data_proposal_ta = ProposalTAModel::with('r_jenis_kbk')
-            ->whereHas('r_jenis_kbk', function ($query) use ($pengurus) {
-                $query->where('jenis_kbk_id', $pengurus->jenis_kbk);
-            })
+            // ->whereHas('r_jenis_kbk', function ($query) use ($pengurus) {
+            //     $query->where('jenis_kbk_id', $pengurus->jenis_kbk);
+            // })
             ->orderBy('proposal_ta.id_proposal_ta', 'desc')
             ->get();
 
@@ -107,12 +107,26 @@ class PengurusKbkController extends Controller
         $total_uas = $banyak_pengunggahan_uas + $banyak_verifikasi_uas;
         $total_ta = $jumlah_proposal + $jumlah_review_proposal;
 
-        $percentUploadedRPS = $total_rps > 0 ? ($banyak_pengunggahan_rps / $total_rps) * 100 : 0;
-        $percentVerifiedRPS = $total_rps > 0 ? ($banyak_verifikasi_rps / $total_rps) * 100 : 0;
-        $percentUploadedUAS = $total_uas > 0 ? ($banyak_pengunggahan_uas / $total_uas) * 100 : 0;
-        $percentVerifiedUAS = $total_uas > 0 ? ($banyak_verifikasi_uas / $total_uas) * 100 : 0;
-        $percentProposalTA = $total_ta > 0 ? ($jumlah_proposal / $total_ta) * 100 : 0;
-        $percentReviewProposalTA = $total_ta > 0 ? ($jumlah_review_proposal / $total_ta) * 100 : 0;
+        // $percentUploadedRPS = $total_rps > 0 ? ($banyak_pengunggahan_rps / $total_rps) * 100 : 0;
+        // $percentVerifiedRPS = $total_rps > 0 ? ($banyak_verifikasi_rps / $total_rps) * 100 : 0;
+        // $percentUploadedUAS = $total_uas > 0 ? ($banyak_pengunggahan_uas / $total_uas) * 100 : 0;
+        // $percentVerifiedUAS = $total_uas > 0 ? ($banyak_verifikasi_uas / $total_uas) * 100 : 0;
+        // $percentProposalTA = $total_ta > 0 ? ($jumlah_proposal / $total_ta) * 100 : 0;
+        // $percentReviewProposalTA = $total_ta > 0 ? ($jumlah_review_proposal / $total_ta) * 100 : 0;
+
+        $percentVerifiedRPS = $banyak_pengunggahan_rps > 0 ? ($banyak_verifikasi_rps / $banyak_pengunggahan_rps) * 100 : 0;
+        $percentUploadedRPS = 100 - $percentVerifiedRPS;
+        $percentVerifiedUAS = $banyak_pengunggahan_uas > 0 ? ($banyak_verifikasi_uas / $banyak_pengunggahan_uas) * 100 : 0;
+        $percentUploadedUAS = 100 - $percentVerifiedUAS;
+        $percentReviewProposalTA = $jumlah_proposal > 0 ? ($jumlah_review_proposal / $jumlah_proposal) * 100 : 0;
+        $percentProposalTA = 100 - $percentReviewProposalTA;
+
+        debug($percentVerifiedRPS);
+        debug($percentUploadedRPS);
+        debug($percentVerifiedUAS);
+        debug($percentUploadedUAS);
+        debug($percentProposalTA);
+        debug($percentReviewProposalTA);
 
         return view('admin.content.PengurusKbk.dashboard_pengurus', compact(
             'percentUploadedRPS',

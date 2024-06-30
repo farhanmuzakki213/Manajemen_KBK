@@ -36,7 +36,7 @@
                                         <tr class="table-info">
                                             <th>#</th>
                                             <th>Nama Mahasiswa</th>
-                                            <th>nim</th>
+                                            <th>NIM</th>
                                             <th>Prodi</th>
                                             <th>Jurusan</th>
                                             <th>Status Proposal</th>
@@ -48,7 +48,7 @@
                                         <tr class="table-info">
                                             <th>#</th>
                                             <th>Nama Mahasiswa</th>
-                                            <th>nim</th>
+                                            <th>NIM</th>
                                             <th>Prodi</th>
                                             <th>Jurusan</th>
                                             <th>Status Proposal</th>
@@ -66,13 +66,13 @@
                                                 <th>{{ optional($data->proposal_ta)->r_mahasiswa->r_jurusan->jurusan }}</th>
                                                 <th>
                                                     @if ($data->status_review_proposal == 0)
-                                                        Di Ajukan
+                                                        Diajukan
                                                     @elseif ($data->status_review_proposal == 1)
-                                                        Di Tolak
+                                                        Ditolak
                                                     @elseif ($data->status_review_proposal == 2)
-                                                        Di Revisi
+                                                        Direvisi
                                                     @else
-                                                        Di Terima
+                                                        Diterima
                                                     @endif
                                                 </th>
                                                 <th>

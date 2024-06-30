@@ -87,7 +87,7 @@
                                                                     class="bi bi-three-dots-vertical"></i>Detail</a>
                                                         </div>
                                                     @else
-                                                        Data Sudah DiReview
+                                                        Data Sudah Direview
                                                     @endif
                                                 </th>
                                             </tr>
@@ -213,13 +213,13 @@
                                                     <td>{{ $data->tanggal_review }}</td>
                                                     <td>
                                                         @if ($data->status_review_proposal == 0)
-                                                            DiAjukan
+                                                            Diajukan
                                                         @elseif ($data->status_review_proposal == 1)
-                                                            DiTolak
+                                                            Ditolak
                                                         @elseif ($data->status_review_proposal == 2)
-                                                            DiRevisi
+                                                            Direvisi
                                                         @else
-                                                            DiTerima
+                                                            Diterima
                                                         @endif
                                                     </td>
                                                     <td>{{ $data->catatan }}</td>

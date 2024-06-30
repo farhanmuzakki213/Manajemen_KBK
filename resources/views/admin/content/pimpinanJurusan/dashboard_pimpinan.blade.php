@@ -143,7 +143,7 @@
             };
 
             // Common chart options
-            var commonOptions = {
+            var commonOptionsRPS = {
                 chart: {
                     type: 'donut',
                     height: 300,
@@ -157,9 +157,10 @@
                                 show: true,
                                 total: {
                                     show: true,
-                                    label: 'Total',
+                                    label: 'Verifikasi',
                                     formatter: function(w) {
-                                        return w.globals.seriesTotals.reduce((a, b) => a + b, 0);
+                                        // Mengembalikan jumlah verifikasi RPS
+                                        return initialData.total_banyak_verifikasi_rps;
                                     }
                                 }
                             }
@@ -181,7 +182,7 @@
 
             // Options for RPS Chart
             var optionsRPS = {
-                ...commonOptions,
+                ...commonOptionsRPS,
                 series: [initialData.total_banyak_pengunggahan_rps, initialData.total_banyak_verifikasi_rps],
                 labels: ['Unggahan', 'Verifikasi']
             };
@@ -190,9 +191,46 @@
             var chartRPS = new ApexCharts(document.querySelector("#chartRPS"), optionsRPS);
             chartRPS.render();
 
+            var commonOptionsUAS = {
+                chart: {
+                    type: 'donut',
+                    height: 300,
+                    width: '100%'
+                },
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            size: '65%',
+                            labels: {
+                                show: true,
+                                total: {
+                                    show: true,
+                                    label: 'Verifikasi',
+                                    formatter: function(w) {
+                                        // Mengembalikan jumlah verifikasi RPS
+                                        return initialData.total_banyak_verifikasi_uas;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                tooltip: {
+                    y: {
+                        formatter: function(value) {
+                            return value + ' data';
+                        }
+                    }
+                },
+                legend: {
+                    position: 'bottom'
+                },
+                colors: ['#008FFB', '#00E396']
+            };
+
             // Options for UAS Chart
             var optionsUAS = {
-                ...commonOptions,
+                ...commonOptionsUAS,
                 series: [initialData.total_banyak_pengunggahan_uas, initialData.total_banyak_verifikasi_uas],
                 labels: ['Unggahan', 'Verifikasi']
             };
@@ -202,8 +240,46 @@
             chartUAS.render();
 
             // Options for Proposal TA Chart
+
+            var commonOptionsTA = {
+                chart: {
+                    type: 'donut',
+                    height: 300,
+                    width: '100%'
+                },
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            size: '65%',
+                            labels: {
+                                show: true,
+                                total: {
+                                    show: true,
+                                    label: 'Review',
+                                    formatter: function(w) {
+                                        // Mengembalikan jumlah verifikasi RPS
+                                        return initialData.total_jumlah_review_proposal;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                tooltip: {
+                    y: {
+                        formatter: function(value) {
+                            return value + ' data';
+                        }
+                    }
+                },
+                legend: {
+                    position: 'bottom'
+                },
+                colors: ['#008FFB', '#00E396']
+            };
+
             var optionsTA = {
-                ...commonOptions,
+                ...commonOptionsTA,
                 series: [initialData.total_jumlah_proposal, initialData.total_jumlah_review_proposal],
                 labels: ['Proposal', 'Review']
             };

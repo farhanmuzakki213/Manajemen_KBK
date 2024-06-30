@@ -14,9 +14,11 @@ class ExportDosenPengampuMatkul implements FromCollection, WithHeadings
     public function collection()
     {
         $data_dosen_pengampu = DB::table('dosen_matkul')
+            ->join('dosen_matkul_detail_pivot', 'dosen_matkul_detail_pivot.dosen_matkul_id', '=', 'dosen_matkul.id_dosen_matkul')
             ->join('dosen', 'dosen_matkul.dosen_id', '=', 'dosen.id_dosen')
-            ->join('matkul', 'dosen_matkul.matkul_id', '=', 'matkul.id_matkul')
-            ->join('kelas', 'dosen_matkul.kelas_id', '=', 'kelas.id_kelas')
+            ->join('matkul_kbk', 'dosen_matkul_detail_pivot.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
+            ->join('matkul', 'matkul_kbk.matkul_id', '=', 'matkul.id_matkul')
+            ->join('kelas', 'dosen_matkul_detail_pivot.kelas_id', '=', 'kelas.id_kelas')
             ->join('smt_thnakd', 'dosen_matkul.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
             ->select(
                 'dosen.nama_dosen', 

@@ -71,37 +71,37 @@
                                                 </th>
                                                 <th>
                                                     @if ($data['status_satu'] == 0)
-                                                        Di Ajukan
+                                                        Diajukan
                                                     @elseif ($data['status_satu'] == 1)
-                                                        Di Tolak
+                                                        Ditolak
                                                     @elseif ($data['status_satu'] == 2)
-                                                        Di Revisi
+                                                        Direvisi
                                                     @else
-                                                        Di Terima
+                                                        Diterima
                                                     @endif
                                                 </th>
                                                 <th>{{ $data['reviewer_dua'] }}
                                                 </th>
                                                 <th>
                                                     @if ($data['status_dua'] == 0)
-                                                        Di Ajukan
+                                                        Diajukan
                                                     @elseif ($data['status_dua'] == 1)
-                                                        Di Tolak
+                                                        Ditolak
                                                     @elseif ($data['status_dua'] == 2)
-                                                        Di Revisi
+                                                        Direvisi
                                                     @else
-                                                        Di Terima
+                                                        Diterima
                                                     @endif
                                                 </th>
                                                 <th>
                                                     @if ($data['status_final_proposal'] == 0)
-                                                        Di Ajukan
+                                                        Diajukan
                                                     @elseif ($data['status_final_proposal'] == 1)
-                                                        Di Tolak
+                                                        Ditolak
                                                     @elseif ($data['status_final_proposal'] == 2)
-                                                        Di Revisi
+                                                        Direvisi
                                                     @else
-                                                        Di Terima
+                                                        Diterima
                                                     @endif
                                                 </th>
                                                 <th style="width: 14%;">

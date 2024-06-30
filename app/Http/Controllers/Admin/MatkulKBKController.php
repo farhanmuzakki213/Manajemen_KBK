@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Kurikulum;
 use App\Models\Matkul;
+use App\Models\JenisKbk;
+use App\Models\Kurikulum;
 use App\Models\MatkulKBK;
 use Illuminate\Http\Request;
 use App\Exports\ExportMatkul;
-use App\Http\Controllers\Controller;
 use App\Imports\ImportMatkul;
-use App\Models\JenisKbk;
 use Illuminate\Support\Facades\DB;
+use App\Exports\ExportMatakuliahKBK;
+use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 
@@ -137,5 +138,9 @@ class MatkulKBKController extends Controller
         return redirect()->route('matkul_kbk');
 
         //dd($data_matkul);
+    }
+
+    public function export_excel(){
+        return Excel::download(new ExportMatakuliahKBK, "Matakuliah KBK.xlsx");
     }
 }
