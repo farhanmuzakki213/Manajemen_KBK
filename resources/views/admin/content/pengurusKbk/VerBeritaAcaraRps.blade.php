@@ -69,6 +69,8 @@
                                 class="btn btn-primary mb-2 d-flex align-items-center">
                                 <i class="ti ti-upload"></i> Upload Berita Acara
                             </a>
+                            <a href="{{ route('cetak_rps_berita_acara.download') }}" target="_blank" class="btn btn-primary me-md-3"><i
+                                class="bi bi-box-arrow-in-up"></i>Cetak</a>
                             <button id="toggleTableBtn" class="btn btn-primary" onclick="toggleTable()">Tutup Tabel</button>
                         </div>
                         <div class="card-body" id="tableContent" style="display: block;">

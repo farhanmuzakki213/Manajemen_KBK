@@ -189,10 +189,11 @@
                                                     <a href="{{ route('ver_rps.edit', ['id' => $data_ver->id_ver_rps_uas]) }}"
                                                         class="btn btn-primary mb-2 d-flex align-items-center"><i
                                                             class="bi bi-pencil-square"></i>Revisi</a>
-                                                    <a href="{{ asset('storage/uploads/rps/repositori_files/' . $data_ver->file) }}"
+                                                    <a href="{{ asset('storage/uploads/rps/repositori_files/' . $data_ver->r_rep_rps_uas->file) }}"
                                                         class="btn btn-primary mb-2 d-flex align-items-center"
                                                         target="_blank"><i
                                                             class="bi bi-file-earmark-arrow-down"></i>FileRPS</a>
+                                                            
                                                     <a data-bs-toggle="modal"
                                                         data-bs-target="#detail{{ $data_ver->id_ver_rps_uas }}"
                                                         class="btn btn-primary mb-2 d-flex align-items-center"><i

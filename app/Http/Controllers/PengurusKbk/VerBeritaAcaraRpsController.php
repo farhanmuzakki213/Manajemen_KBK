@@ -13,6 +13,7 @@ use App\Models\VerRpsUas;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class VerBeritaAcaraRpsController extends Controller
 {
@@ -68,6 +69,47 @@ class VerBeritaAcaraRpsController extends Controller
         debug($data_berita_acara->toArray());
         return view('admin.content.pengurusKbk.VerBeritaAcaraRps', compact('data_ver_rps', 'data_berita_acara'));
     }
+
+
+    public function download_pdf()
+    {
+        $pengurus_kbk = $this->getDosen();
+
+        $data_ver_rps = VerRpsUas::with([
+            'r_pengurus',
+            'r_pengurus.r_dosen',
+            'r_rep_rps_uas',
+            'r_rep_rps_uas.r_smt_thnakd',
+            'r_rep_rps_uas.r_matkulKbk'
+        ])
+            ->whereHas('r_rep_rps_uas', function ($query) use ($pengurus_kbk) {
+                $query->whereHas('r_matkulKbk', function ($nestedQuery) use ($pengurus_kbk) {
+                    $nestedQuery->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id);
+                })
+                    ->whereHas('r_smt_thnakd', function ($nestedQuery) {
+                        $nestedQuery->where('status_smt_thnakd', '=', '1');
+                    })
+                    ->where('type', '=', '0');
+            })
+            ->orderByDesc('id_ver_rps_uas')
+            ->get();
+
+        // Ensure data is valid
+        // if ($data_ver_rps->isEmpty()) {
+        //     return response()->json(['message' => 'No data found'], 404);
+        // }
+
+        // Render PDF
+        $pdf = Pdf::loadView('admin.content.pengurusKbk.pdf.berita_acara_rps', ['data_ver_rps' => $data_ver_rps]);
+
+        // Return PDF as a stream
+        return $pdf->stream('Berita_Acara_RPS.pdf');
+        // return $pdf->download('Berita_Acara_RPS.pdf');
+    }
+
+
+
+
     public function create()
     {
         $pengurus_kbk = $this->getDosen();

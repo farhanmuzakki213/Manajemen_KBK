@@ -408,6 +408,7 @@ Route::group(['middleware' => ['role:pengurus-kbk']], function () {
         Route::patch('/upload_rps_berita_acara/update/{beritaAcara}', [VerBeritaAcaraRpsController::class, 'update'])->middleware(['auth', 'verified'])->name('upload_rps_berita_acara.update');
         Route::get('/upload_rps_berita_acara/show/{id}', [VerBeritaAcaraRpsController::class, 'show'])->middleware(['auth', 'verified'])->name('upload_rps_berita_acara.show');
         Route::delete('/upload_rps_berita_acara/delete/{id}', [VerBeritaAcaraRpsController::class, 'delete'])->middleware(['auth', 'verified'])->name('upload_rps_berita_acara.delete');
+        Route::get('/cetak_rps_berita_acara/download/pdf', [VerBeritaAcaraRpsController::class, 'download_pdf'])->middleware(['auth', 'verified'])->name('cetak_rps_berita_acara.download');
     });
 
     // Verifikasi Berita Acara Soal_UAS
