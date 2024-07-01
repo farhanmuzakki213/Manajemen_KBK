@@ -33,9 +33,17 @@ class ProdiController extends Controller
     {
         DB::beginTransaction();
         try {
-            $differences = json_decode($request->differences, true);
-            //dd($differences);
-            foreach ($differences as $data) {
+            $differences_api = json_decode($request->differences_api, true);
+            $differences_db = json_decode($request->differences_db, true);
+            //dd($differences_api, $differences_db);
+            foreach ($differences_db as $data) {
+                $data_prodi = Prodi::where('id_prodi', $data['id_prodi'])->first();
+                //dd($data_dosen);
+                if ($data_prodi) {
+                    Prodi::where('id_prodi', $data['id_prodi'])->delete();
+                }
+            }
+            foreach ($differences_api as $data) {
                 $data_create =[
                     'id_prodi' => $data['id_prodi'],
                     'kode_prodi' => $data['kode_prodi'],
@@ -49,9 +57,9 @@ class ProdiController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menambahkan data: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyinkronkan data: ' . $e->getMessage());
         }
-        return redirect()->route('prodi')->with('success', 'Data berhasil ditambahkan.');
+        return redirect()->route('prodi')->with('success', 'Data berhasil disinkronkan.');
     }
 
     /**
@@ -63,20 +71,36 @@ class ProdiController extends Controller
             $response = Http::get('https://umkm-pnp.com/heni/index.php?folder=jurusan&file=prodi');
 
             if ($response->successful()) {
-                // Mengambil data dari database berdasarkan urutan descending id_kurikulum
+                // Mengambil data dari database berdasarkan urutan descending id_prodi
                 $dataBase_prodi = Prodi::orderByDesc('id_prodi')->pluck('kode_prodi')->toArray();
-                //dd($dataBase_matkul);
+                
+                // Mengambil data dari respons API
                 $data = $response->json();
                 $dataAPI_prodi = $data['list'];
+
+                // Mencari data yang ada di API tapi tidak ada di database
                 $differencesArray = collect($dataAPI_prodi)->reject(function ($item) use ($dataBase_prodi) {
                     return in_array($item['kode_prodi'], $dataBase_prodi);
                 })->all();
-                // dd($differencesArray);
+
+                // Mencari data yang ada di database tapi tidak ada di API
+                $differencesArrayDatabase = collect($dataBase_prodi)->reject(function ($kode_prodi) use ($dataAPI_prodi) {
+                    return in_array($kode_prodi, array_column($dataAPI_prodi, 'kode_prodi'));
+                })->all();
+
+                // Data yang berbeda dari database dalam format array asosiatif
+                $differencesArrayDatabaseFormatted = Prodi::with('r_jurusan')->whereIn('kode_prodi', $differencesArrayDatabase)->get()->toArray();
+
                 debug($dataBase_prodi);
                 debug($dataAPI_prodi);
                 debug($differencesArray);
+                debug($differencesArrayDatabaseFormatted);
 
-                return view('admin.content.admin.DataAPI.prodiAPI', ['data_prodi' => $dataAPI_prodi, 'differences' => $differencesArray]);
+                return view('admin.content.admin.DataAPI.prodiAPI', [
+                    'data_prodi' => $dataAPI_prodi,
+                    'differences_api' => $differencesArray,
+                    'differences_db' => $differencesArrayDatabaseFormatted
+                ]);
             } else {
                 Log::error('Request failed', ['status' => $response->status(), 'body' => $response->body()]);
                 return view('admin.content.admin.DataAPI.prodiAPI')->with('error', 'Failed to fetch data');

@@ -34,7 +34,7 @@ class DosenPengampuMatkulController extends Controller
         $data_dosen = Dosen::all();
         $data_smt = ThnAkademik::all();
 
-        return view('admin.content.admin.form.dosenMatkul_form', compact('data_dosen', 'data_smt'));
+        return view('admin.content.admin.form.DosenPengampuMatkul_form', compact('data_dosen', 'data_smt'));
     }
 
     public function export_excel(){

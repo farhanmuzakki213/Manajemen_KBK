@@ -15,41 +15,7 @@
                         {{ Session::get('error') }}
                     </div>
                 @endif
-                <script>
-                    setTimeout(function() {
-                        var element = document.getElementById('delay');
-                        if (element) {
-                            element.parentNode.removeChild(element);
-                        }
-                    }, 5000); // 5000 milliseconds = 5 detik
 
-                    function toggleTable_matkul() {
-                        var tableContent = document.getElementById('tabel_matkul');
-                        if (tableContent.style.display === 'none') {
-                            tableContent.style.display = 'block';
-                        } else {
-                            tableContent.style.display = 'none';
-                        }
-                    }
-
-                    function toggleTable_rps() {
-                        var tableContent = document.getElementById('tabel_rps');
-                        if (tableContent.style.display === 'none') {
-                            tableContent.style.display = 'block';
-                        } else {
-                            tableContent.style.display = 'none';
-                        }
-                    }
-
-                    function toggleTable_uas() {
-                        var tableContent = document.getElementById('tabel_uas');
-                        if (tableContent.style.display === 'none') {
-                            tableContent.style.display = 'block';
-                        } else {
-                            tableContent.style.display = 'none';
-                        }
-                    }
-                </script>
                 <div class="container-fluid">
                     <!-- DataDosen -->
                     <div class="card shadow mb-4">
@@ -323,8 +289,45 @@
                                 </table>
                             </div>
                         </div>
-                        </RpsUas </div>
                     </div>
                 </div>
             </div>
-        @endsection
+        </div>
+    @endsection
+    @section('scripts')
+        <script>
+            setTimeout(function() {
+                var element = document.getElementById('delay');
+                if (element) {
+                    element.parentNode.removeChild(element);
+                }
+            }, 5000); // 5000 milliseconds = 5 detik
+
+            function toggleTable_matkul() {
+                var tableContent = document.getElementById('tabel_matkul');
+                if (tableContent.style.display === 'none') {
+                    tableContent.style.display = 'block';
+                } else {
+                    tableContent.style.display = 'none';
+                }
+            }
+
+            function toggleTable_rps() {
+                var tableContent = document.getElementById('tabel_rps');
+                if (tableContent.style.display === 'none') {
+                    tableContent.style.display = 'block';
+                } else {
+                    tableContent.style.display = 'none';
+                }
+            }
+
+            function toggleTable_uas() {
+                var tableContent = document.getElementById('tabel_uas');
+                if (tableContent.style.display === 'none') {
+                    tableContent.style.display = 'block';
+                } else {
+                    tableContent.style.display = 'none';
+                }
+            }
+        </script>
+    @endsection

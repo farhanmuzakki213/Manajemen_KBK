@@ -37,9 +37,17 @@ class KurikulumController extends Controller
     {
         DB::beginTransaction();
         try {
-            $differences = json_decode($request->differences, true);
-            //dd($differences);
-            foreach ($differences as $data) {
+            $differences_api = json_decode($request->differences_api, true);
+            $differences_db = json_decode($request->differences_db, true);
+            //dd($differences_api, $differences_db);
+            foreach ($differences_db as $data) {
+                $data_kurikulum = Kurikulum::where('id_kurikulum', $data['id_kurikulum'])->first();
+                //dd($data_kurikulum);
+                if ($data_kurikulum) {
+                    Kurikulum::where('id_kurikulum', $data['id_kurikulum'])->delete();
+                }
+            }
+            foreach ($differences_api as $data) {
                 // Simpan data ke dalam tabel 'kurikulums'
                 $data_create =[
                     'id_kurikulum' => $data['id_kurikulum'],
@@ -55,9 +63,9 @@ class KurikulumController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menambahkan data: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyinkronkan data: ' . $e->getMessage());
         }
-        return redirect()->route('kurikulum')->with('success', 'Data berhasil ditambahkan.');
+        return redirect()->route('kurikulum')->with('success', 'Data berhasil disinkronkan.');
     }
 
     /**
@@ -71,18 +79,34 @@ class KurikulumController extends Controller
             if ($response->successful()) {
                 // Mengambil data dari database berdasarkan urutan descending id_kurikulum
                 $dataBase_kurikulum = Kurikulum::orderByDesc('id_kurikulum')->pluck('kode_kurikulum')->toArray();
+                
                 // Mengambil data dari respons API
                 $data = $response->json();
                 $dataAPI_kurikulum = $data['list'];
-                // Memfilter data API yang tidak ada di database
+
+                // Mencari data yang ada di API tapi tidak ada di database
                 $differencesArray = collect($dataAPI_kurikulum)->reject(function ($item) use ($dataBase_kurikulum) {
                     return in_array($item['kode_kurikulum'], $dataBase_kurikulum);
                 })->all();
+
+                // Mencari data yang ada di database tapi tidak ada di API
+                $differencesArrayDatabase = collect($dataBase_kurikulum)->reject(function ($kode_kurikulum) use ($dataAPI_kurikulum) {
+                    return in_array($kode_kurikulum, array_column($dataAPI_kurikulum, 'kode_kurikulum'));
+                })->all();
+
+                // Data yang berbeda dari database dalam format array asosiatif
+                $differencesArrayDatabaseFormatted = Kurikulum::whereIn('kode_kurikulum', $differencesArrayDatabase)->get()->toArray();
+
                 debug($dataBase_kurikulum);
                 debug($dataAPI_kurikulum);
-                //debug($differencesArray);
+                debug($differencesArray);
+                debug($differencesArrayDatabaseFormatted);
 
-                return view('admin.content.admin.DataAPI.kurikulumAPI', ['data_kurikulum' => $dataAPI_kurikulum, 'differences' => $differencesArray]);
+                return view('admin.content.admin.DataAPI.kurikulumAPI', [
+                    'data_kurikulum' => $dataAPI_kurikulum,
+                    'differences_api' => $differencesArray,
+                    'differences_db' => $differencesArrayDatabaseFormatted
+                ]);
             } else {
                 Log::error('Request failed', ['status' => $response->status(), 'body' => $response->body()]);
                 return view('admin.content.admin.DataAPI.kurikulumAPI')->with('error', 'Failed to fetch data');

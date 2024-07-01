@@ -15,56 +15,51 @@
                         {{ Session::get('error') }}
                     </div>
                 @endif
-                <script>
-                    setTimeout(function() {
-                        var element = document.getElementById('delay');
-                        if (element) {
-                            element.parentNode.removeChild(element);
-                        }
-                    }, 5000); // 5000 milliseconds = 5 detik
-                </script>
                 <div class="container-fluid">
                     <!-- DataPengurus KBK -->
                     <div class="card shadow mb-4">
 
                         <div class="card-header py-3">
                             <div class="d-grid gap-2 d-md-block">
-                            <a href="{{ route('dosen_kbk.create') }}" class="btn btn-primary me-md-3"><i
+                                <a href="{{ route('dosen_kbk.create') }}" class="btn btn-primary me-md-3"><i
                                         class="bi bi-file-earmark-plus"></i> New</a>
-                            <a href="{{ route('dosen_kbk.export') }}" class="btn btn-primary me-md-3"><i class="bi bi-box-arrow-in-up"></i> Export</a>
-                            <a data-bs-toggle="modal" data-bs-target="#import{{-- {{ $data->id_jenis_kbk }} --}}" class="btn btn-primary"><i class="bi bi-box-arrow-in-down"></i> Import</a>
-                        </div>
+                                <a href="{{ route('dosen_kbk.export') }}" class="btn btn-primary me-md-3"><i
+                                        class="bi bi-box-arrow-in-up"></i> Export</a>
+                                <a data-bs-toggle="modal" data-bs-target="#import{{-- {{ $data->id_jenis_kbk }} --}}"
+                                    class="btn btn-primary"><i class="bi bi-box-arrow-in-down"></i> Import</a>
+                            </div>
                         </div>
 
-                         {{-- Modal Import --}}
-                    <div class="modal fade" id="import" tabindex="-1" aria-labelledby="importLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="importlabel">New message
-                                </h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
+                        {{-- Modal Import --}}
+                        <div class="modal fade" id="import" tabindex="-1" aria-labelledby="importLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="importlabel">New message
+                                        </h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="post" action="{{ route('dosen_kbk.import') }}"
+                                            enctype="multipart/form-data">
+                                            @csrf
+                                            <div class="mb-3">
+                                                <label for="file" class="col-form-label">Import File</label>
+                                                <input type="file" class="form-control" name="file" id="file">
+                                                @error('file')
+                                                    <small>{{ $message }}</small>
+                                                @enderror
+                                            </div>
+                                            <div class="mb-3">
+                                                <button type="submit" class="btn btn-primary">Upload</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="modal-body">
-                                <form method="post" action="{{ route('dosen_kbk.import') }}" enctype="multipart/form-data">
-                                    @csrf
-                                    <div class="mb-3">
-                                        <label for="file" class="col-form-label">Import File</label>
-                                        <input type="file" class="form-control" name="file" id="file">
-                                        @error('file')
-                                              <small>{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                    <div class="mb-3">
-                                        <button type="submit" class="btn btn-primary">Upload</button>
-                                    </div>
-                                </form>
-                            </div>                                   
                         </div>
-                    </div>
-                </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -136,34 +131,37 @@
                                             </div>
 
                                             {{-- Modal Detail Tabel --}}
-                                            <div class="modal fade" id="detail" tabindex="-1" aria-labelledby="detailLabel" aria-hidden="true">
+                                            <div class="modal fade" id="detail" tabindex="-1"
+                                                aria-labelledby="detailLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title" id="detailLabel">Detail Dosen KBK</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="mb-3">
-                                                                <label for="nama_dosen" class="form-label">Nama Dosen:</label>
-                                                                <input type="text" class="form-control" id="nama_dosen" readonly>
+                                                                <label for="nama_dosen" class="form-label">Nama
+                                                                    Dosen:</label>
+                                                                <input type="text" class="form-control"
+                                                                    id="nama_dosen" readonly>
                                                             </div>
                                                             <div class="mb-3">
-                                                                <label for="jenis_kbk" class="form-label">Jenis KBK:</label>
-                                                                <input type="text" class="form-control" id="jenis_kbk" readonly>
+                                                                <label for="jenis_kbk" class="form-label">Jenis
+                                                                    KBK:</label>
+                                                                <input type="text" class="form-control" id="jenis_kbk"
+                                                                    readonly>
                                                             </div>
                                                             <!-- tambahkan input untuk atribut lainnya jika diperlukan -->
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            
-                                            
-                                            
-                                            
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -174,4 +172,14 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+<script>
+    setTimeout(function() {
+        var element = document.getElementById('delay');
+        if (element) {
+            element.parentNode.removeChild(element);
+        }
+    }, 5000); // 5000 milliseconds = 5 detik
+</script>
 @endsection

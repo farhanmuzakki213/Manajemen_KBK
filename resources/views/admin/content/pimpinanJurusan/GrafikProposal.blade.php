@@ -73,69 +73,72 @@
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <script type="text/javascript">
-        var review = <?php echo json_encode($review); ?>;
-        var statuses = <?php echo json_encode($statuses); ?>;
-        var bulan = <?php echo json_encode($bulan); ?>;
-        var colors = ['#008FFB', '#FF4560', '#FEB019', '#00E396']; // Tambahkan warna sesuai dengan jumlah status
+    
+@endsection
+@section('scripts')
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script type="text/javascript">
+    var review = <?php echo json_encode($review); ?>;
+    var statuses = <?php echo json_encode($statuses); ?>;
+    var bulan = <?php echo json_encode($bulan); ?>;
+    var colors = ['#008FFB', '#FF4560', '#FEB019', '#00E396']; // Tambahkan warna sesuai dengan jumlah status
 
-        var series = statuses.map((status, index) => ({
-            name: status,
-            data: review.map(monthlyData => monthlyData[status] ?? 0),
-            color: colors[index] // 
-        }));
+    var series = statuses.map((status, index) => ({
+        name: status,
+        data: review.map(monthlyData => monthlyData[status] ?? 0),
+        color: colors[index] // 
+    }));
 
-        var options = {
-            series: series,
-            chart: {
-                type: 'bar',
-                height: 350
+    var options = {
+        series: series,
+        chart: {
+            type: 'bar',
+            height: 350
+        },
+        plotOptions: {
+            bar: {
+                horizontal: false,
+                columnWidth: '15%',
+                endingShape: 'rounded'
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        stroke: {
+            show: true,
+            width: 2,
+            colors: ['transparent']
+        },
+        xaxis: {
+            categories: bulan,
+        },
+        yaxis: {
+            title: {
+                text: 'Jumlah'
             },
-            plotOptions: {
-                bar: {
-                    horizontal: false,
-                    columnWidth: '15%',
-                    endingShape: 'rounded'
-                }
-            },
-            dataLabels: {
-                enabled: false
-            },
-            stroke: {
-                show: true,
-                width: 2,
-                colors: ['transparent']
-            },
-            xaxis: {
-                categories: bulan,
-            },
-            yaxis: {
-                title: {
-                    text: 'Jumlah'
-                },
-                labels: {
-                    formatter: function (value) {
-                        if (Number.isInteger(value)) {
-                            return value;
-                        }
-                        return '';
+            labels: {
+                formatter: function (value) {
+                    if (Number.isInteger(value)) {
+                        return value;
                     }
-                }
-            },
-            fill: {
-                opacity: 1
-            },
-            tooltip: {
-                y: {
-                    formatter: function (val) {
-                        return parseInt(val) + " Proposal";
-                    }
+                    return '';
                 }
             }
-        };
+        },
+        fill: {
+            opacity: 1
+        },
+        tooltip: {
+            y: {
+                formatter: function (val) {
+                    return parseInt(val) + " Proposal";
+                }
+            }
+        }
+    };
 
-        var chart = new ApexCharts(document.querySelector("#chart"), options);
-        chart.render();
-    </script>
+    var chart = new ApexCharts(document.querySelector("#chart"), options);
+    chart.render();
+</script>
 @endsection

@@ -1,5 +1,39 @@
 @extends('admin.admin_master')
+@section('styles')
+<style>
+    .charts-row {
+        display: flex;
+        justify-content: space-around; /* Distribute charts evenly */
+        align-items: flex-start;
+        gap: 20px; /* Space between charts */
+        flex-wrap: wrap; /* Ensure charts remain neat on small screens */
+    }
 
+    .chart-container {
+        flex: 1 1 30%; /* Each chart uses around 30% of the container's width */
+        min-width: 300px; /* Minimum width to prevent charts from being too small */
+        margin: 0 auto; /* Center align the chart container */
+    }
+
+    .chart-container h3 {
+        margin-bottom: 20px; /* Space between heading and chart */
+    }
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100px; /* Ensure cards have consistent height */
+        margin: 0 auto; /* Center align the card */
+    }
+
+    #chartRPS, #chartUAS, #chartTA {
+        width: 100%;
+        height: 300px; /* Adequate height for charts */
+    }
+</style>
+@endsection
 @section('admin')
 <div class="container py-5">
     <div class="charts-row py-5">
@@ -76,8 +110,9 @@
         </div>
     </div>
 </div>
-
-<!-- Load ApexCharts Library -->
+@endsection
+@section('scripts')
+    <!-- Load ApexCharts Library -->
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function () {
@@ -257,37 +292,4 @@
     });
 </script>
 
-<style>
-    .charts-row {
-        display: flex;
-        justify-content: space-around; /* Distribute charts evenly */
-        align-items: flex-start;
-        gap: 20px; /* Space between charts */
-        flex-wrap: wrap; /* Ensure charts remain neat on small screens */
-    }
-
-    .chart-container {
-        flex: 1 1 30%; /* Each chart uses around 30% of the container's width */
-        min-width: 300px; /* Minimum width to prevent charts from being too small */
-        margin: 0 auto; /* Center align the chart container */
-    }
-
-    .chart-container h3 {
-        margin-bottom: 20px; /* Space between heading and chart */
-    }
-
-    .card {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        min-height: 100px; /* Ensure cards have consistent height */
-        margin: 0 auto; /* Center align the card */
-    }
-
-    #chartRPS, #chartUAS, #chartTA {
-        width: 100%;
-        height: 300px; /* Adequate height for charts */
-    }
-</style>
 @endsection

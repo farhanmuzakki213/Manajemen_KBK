@@ -15,14 +15,6 @@
                         {{ Session::get('error') }}
                     </div>
                 @endif
-                <script>
-                    setTimeout(function() {
-                        var element = document.getElementById('delay');
-                        if (element) {
-                            element.parentNode.removeChild(element);
-                        }
-                    }, 5000); // 5000 milliseconds = 5 detik
-                </script>
                 <div class="container-fluid">
                     <!-- DataDosen -->
                     <div class="card shadow mb-4">
@@ -30,8 +22,8 @@
                             <div class="d-grid gap-2 d-md-block">
                                 <a href="{{ route('dosen.show') }}" class="btn btn-primary me-md-3">
                                     <i class="ti ti-upload"></i> Ambil Data API</a>
-                                <a href="{{ route('dosen.create') }}" class="btn btn-primary me-md-3"><i
-                                    class="bi bi-file-earmark-plus"></i> New</a>
+                                    {{-- <a href="{{ route('dosen.create') }}" class="btn btn-primary me-md-3"><i
+                                        class="bi bi-file-earmark-plus"></i> New</a> --}}
                             </div>
                         </div>
                         {{-- <div class="card-header py-3">
@@ -96,11 +88,11 @@
                                                 @endif
                                             </th>
                                             <th>
-                                                <a href="{{ route('dosen.edit', ['id' => $data->id_dosen]) }}"
+                                                {{-- <a href="{{ route('dosen.edit', ['id' => $data->id_dosen]) }}"
                                                     class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
                                                 <a data-bs-toggle="modal"
                                                     data-bs-target="#staticBackdrop{{ $data->id_dosen }}"
-                                                    class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                                                    class="btn btn-danger"><i class="bi bi-trash"></i></a> --}}
                                                 <a data-bs-toggle="modal" data-bs-target="#detail{{ $data->id_dosen }}" class="btn btn-secondary"><i class="bi bi-three-dots-vertical"></i></a>
                                             </th>
                                         </tr>
@@ -183,4 +175,14 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+<script>
+    setTimeout(function() {
+        var element = document.getElementById('delay');
+        if (element) {
+            element.parentNode.removeChild(element);
+        }
+    }, 5000); // 5000 milliseconds = 5 detik
+</script>
 @endsection

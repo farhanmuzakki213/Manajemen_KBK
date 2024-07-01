@@ -170,9 +170,17 @@ class MatkulController extends Controller
     {
         DB::beginTransaction();
         try {
-            $differences = json_decode($request->differences, true);
-            //dd($differences);
-            foreach ($differences as $data) {
+            $differences_api = json_decode($request->differences_api, true);
+            $differences_db = json_decode($request->differences_db, true);
+            dd($differences_api, $differences_db);
+            foreach ($differences_db as $data) {
+                $data_matkul = Matkul::where('id_matkul', $data['id_matkul'])->first();
+                //dd($data_kurikulum);
+                if ($data_matkul) {
+                    Matkul::where('id_matkul', $data['id_matkul'])->delete();
+                }
+            }
+            foreach ($differences_api as $data) {
                 $data_create =[
                     'id_matkul' => $data['id_matakuliah'],
                     'kode_matkul' => $data['kode_matakuliah'],
@@ -193,9 +201,9 @@ class MatkulController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menambahkan data: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyinkronkan data: ' . $e->getMessage());
         }
-        return redirect()->route('matkul')->with('success', 'Data berhasil ditambahkan.');
+        return redirect()->route('matkul')->with('success', 'Data berhasil disinkronkan.');
     }
 
     /**
@@ -207,20 +215,36 @@ class MatkulController extends Controller
             $response = Http::get('https://umkm-pnp.com/heni/index.php?folder=matakuliah&file=index');
 
             if ($response->successful()) {
-                // Mengambil data dari database berdasarkan urutan descending id_kurikulum
+                // Mengambil data dari database berdasarkan urutan descending id_matkul
                 $dataBase_matkul = Matkul::orderByDesc('id_matkul')->pluck('kode_matkul')->toArray();
-                //dd($dataBase_matkul);
+                
+                // Mengambil data dari respons API
                 $data = $response->json();
                 $dataAPI_matkul = $data['list'];
+
+                // Mencari data yang ada di API tapi tidak ada di database
                 $differencesArray = collect($dataAPI_matkul)->reject(function ($item) use ($dataBase_matkul) {
                     return in_array($item['kode_matakuliah'], $dataBase_matkul);
                 })->all();
-                //dd($differencesArray);
+
+                // Mencari data yang ada di database tapi tidak ada di API
+                $differencesArrayDatabase = collect($dataBase_matkul)->reject(function ($kode_matkul) use ($dataAPI_matkul) {
+                    return in_array($kode_matkul, array_column($dataAPI_matkul, 'kode_matkul'));
+                })->all();
+
+                // Data yang berbeda dari database dalam format array asosiatif
+                $differencesArrayDatabaseFormatted = Matkul::with('r_kurikulum')->whereIn('kode_matkul', $differencesArrayDatabase)->get()->toArray();
+
                 debug($dataBase_matkul);
                 debug($dataAPI_matkul);
                 debug($differencesArray);
+                debug($differencesArrayDatabaseFormatted);
 
-                return view('admin.content.admin.DataAPI.matkulAPI', ['data_matkul' => $dataAPI_matkul, 'differences' => $differencesArray]);
+                return view('admin.content.admin.DataAPI.matkulAPI', [
+                    'data_matkul' => $dataAPI_matkul,
+                    'differences_api' => $differencesArray,
+                    'differences_db' => $differencesArrayDatabaseFormatted
+                ]);
             } else {
                 Log::error('Request failed', ['status' => $response->status(), 'body' => $response->body()]);
                 return view('admin.content.admin.DataAPI.matkulAPI')->with('error', 'Failed to fetch data');

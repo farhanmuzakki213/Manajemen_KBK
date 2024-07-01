@@ -28,10 +28,18 @@ class PimpinanProdiController extends Controller
     {
         DB::beginTransaction();
         try {
-            $differences = json_decode($request->differences, true);
-            //dd($differences);
+            $differences_api = json_decode($request->differences_api, true);
+            $differences_db = json_decode($request->differences_db, true);
+            //dd($differences_api, $differences_db);
+            foreach ($differences_db as $data) {
+                $data_pimpinanprodi = PimpinanProdi::where('id_pimpinan_prodi', $data['id_pimpinan_prodi'])->first();
+                //dd($data_kurikulum);
+                if ($data_pimpinanprodi) {
+                    PimpinanProdi::where('id_pimpinan_prodi', $data['id_pimpinan_prodi'])->delete();
+                }
+            }
             $jabatan_pimpinan_id = 3;
-            foreach ($differences as $data) {
+            foreach ($differences_api as $data) {
                 $nextNumber = $this->getCariNomor();
                 $data_prodi = Prodi::where('kode_prodi', $data['kode_prodi'])->pluck('id_prodi')->first();
                 debug($data_prodi);
@@ -51,9 +59,9 @@ class PimpinanProdiController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menambahkan data: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyinkronkan data: ' . $e->getMessage());
         }
-        return redirect()->route('pimpinanprodi')->with('success', 'Data berhasil ditambahkan.');
+        return redirect()->route('pimpinanprodi')->with('success', 'Data berhasil disinkronkan.');
     }
 
     function getCariNomor()
@@ -80,20 +88,39 @@ class PimpinanProdiController extends Controller
             $response = Http::get('https://umkm-pnp.com/heni/index.php?folder=jurusan&file=kaprodi');
 
             if ($response->successful()) {
-                // Mengambil data dari database berdasarkan urutan descending id_kurikulum
+                // Mengambil data dari database berdasarkan urutan descending id_pimpinanprodi
                 $dataBase_pimpinanprodi = PimpinanProdi::with('r_dosen')->get()->pluck('r_dosen.nidn')->toArray();
                 //dd($dataBase_pimpinanprodi);
+                // Mengambil data dari respons API
                 $data = $response->json();
                 $dataAPI_pimpinanprodi = $data['list'];
+
+                // Mencari data yang ada di API tapi tidak ada di database
                 $differencesArray = collect($dataAPI_pimpinanprodi)->reject(function ($item) use ($dataBase_pimpinanprodi) {
                     return in_array($item['nidn'], $dataBase_pimpinanprodi);
                 })->all();
-                //dd($dataBase_pimpinanprodi);
+
+                // Mencari data yang ada di database tapi tidak ada di API
+                $differencesArrayDatabase = collect($dataBase_pimpinanprodi)->reject(function ($nidn) use ($dataAPI_pimpinanprodi) {
+                    return in_array($nidn, array_column($dataAPI_pimpinanprodi, 'nidn'));
+                })->all();
+
+                // Data yang berbeda dari database dalam format array asosiatif
+                $differencesArrayDatabaseFormatted = PimpinanProdi::whereHas('r_dosen', function($query) use ($differencesArrayDatabase) {
+                    $query->whereIn('nidn', $differencesArrayDatabase);
+                })->with('r_dosen', 'r_prodi')->get()->toArray();
+                
+
                 debug($dataBase_pimpinanprodi);
                 debug($dataAPI_pimpinanprodi);
                 debug($differencesArray);
+                debug($differencesArrayDatabaseFormatted);
 
-                return view('admin.content.admin.DataAPI.pimpinanprodiAPI', ['data_pimpinanprodi' => $dataAPI_pimpinanprodi, 'differences' => $differencesArray]);
+                return view('admin.content.admin.DataAPI.pimpinanprodiAPI', [
+                    'data_pimpinanprodi' => $dataAPI_pimpinanprodi,
+                    'differences_api' => $differencesArray,
+                    'differences_db' => $differencesArrayDatabaseFormatted
+                ]);
             } else {
                 Log::error('Request failed', ['status' => $response->status(), 'body' => $response->body()]);
                 return view('admin.content.admin.DataAPI.pimpinanprodiAPI')->with('error', 'Failed to fetch data');

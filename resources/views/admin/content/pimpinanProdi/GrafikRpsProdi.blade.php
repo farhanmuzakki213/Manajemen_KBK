@@ -71,76 +71,79 @@
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <script type="text/javascript">
-        var pengunggahan = <?php echo json_encode($banyak_pengunggahan); ?>;
-        var verifikasi = <?php echo json_encode($banyak_verifikasi); ?>;
-        var berita = <?php echo json_encode($banyak_berita); ?>;
-        var semester = <?php echo json_encode($semester); ?>;
-    
-        var options = {
-            series: [
-                {
-                    name: 'Banyak Pengunggahan',
-                    data: Object.values(pengunggahan)
-                },
-                {
-                    name: 'Banyak Verifikasi',
-                    data: Object.values(verifikasi)
-                },
-                {
-                    name: 'Banyak Berita Acara',
-                    data: Object.values(berita)
+        
+@endsection
+@section('scripts')
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script type="text/javascript">
+    var pengunggahan = <?php echo json_encode($banyak_pengunggahan); ?>;
+    var verifikasi = <?php echo json_encode($banyak_verifikasi); ?>;
+    var berita = <?php echo json_encode($banyak_berita); ?>;
+    var semester = <?php echo json_encode($semester); ?>;
+
+    var options = {
+        series: [
+            {
+                name: 'Banyak Pengunggahan',
+                data: Object.values(pengunggahan)
+            },
+            {
+                name: 'Banyak Verifikasi',
+                data: Object.values(verifikasi)
+            },
+            {
+                name: 'Banyak Berita Acara',
+                data: Object.values(berita)
+            }
+        ],
+        chart: {
+            type: 'bar',
+            height: 350
+        },
+        plotOptions: {
+            bar: {
+                horizontal: false,
+                columnWidth: '15%',
+                endingShape: 'rounded'
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        stroke: {
+            show: true,
+            width: 2,
+            colors: ['transparent']
+        },
+        xaxis: {
+            categories: Object.values(semester),
+        },  
+        yaxis: {
+            title: {
+                text: 'Jumlah'
+            },
+            labels: {
+            formatter: function (value) {
+                if (Number.isInteger(value)) {
+                    return value;
                 }
-            ],
-            chart: {
-                type: 'bar',
-                height: 350
-            },
-            plotOptions: {
-                bar: {
-                    horizontal: false,
-                    columnWidth: '15%',
-                    endingShape: 'rounded'
-                }
-            },
-            dataLabels: {
-                enabled: false
-            },
-            stroke: {
-                show: true,
-                width: 2,
-                colors: ['transparent']
-            },
-            xaxis: {
-                categories: Object.values(semester),
-            },  
-            yaxis: {
-                title: {
-                    text: 'Jumlah'
-                },
-                labels: {
-                formatter: function (value) {
-                    if (Number.isInteger(value)) {
-                        return value;
-                    }
-                    return '';
+                return '';
+            }
+        }
+        },
+        fill: {
+            opacity: 1
+        },
+        tooltip: {
+            y: {
+                formatter: function (val) {
+                    return parseInt(val) + " RPS";
                 }
             }
-            },
-            fill: {
-                opacity: 1
-            },
-            tooltip: {
-                y: {
-                    formatter: function (val) {
-                        return parseInt(val) + " RPS";
-                    }
-                }
-            }
-        };
-    
-        var chart = new ApexCharts(document.querySelector("#chart"), options);
-        chart.render();
-    </script>    
+        }
+    };
+
+    var chart = new ApexCharts(document.querySelector("#chart"), options);
+    chart.render();
+</script>
 @endsection

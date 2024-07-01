@@ -1,5 +1,28 @@
 @extends('admin.admin_master')
-
+@section('styles')
+<style>
+    .charts-row {
+        display: flex;
+        justify-content: center; /* Center align the charts */
+        align-items: flex-start;
+        gap: 20px; /* Space between charts */
+        flex-wrap: wrap; /* Ensure charts remain neat on small screens */
+    }
+    .chart-container {
+        flex: 1 1 45%; /* Each chart uses around 45% of the container's width */
+        min-width: 300px; /* Minimum width to prevent charts from being too small */
+        margin: 0 auto; /* Center align the chart container */
+    }
+    #chartTA {
+        width: 100%;
+        height: 300px; /* Adequate height for charts */
+    }
+    .card {
+        min-height: 100px; /* Minimum height for card consistency */
+        margin: 0 auto; /* Center align the card */
+    }
+</style>
+@endsection
 @section('admin')
 <div class="container py-5">
     <div class="charts-row py-5">
@@ -29,8 +52,9 @@
         </div>
     </div>
 </div>
-
-<!-- Load ApexCharts Library -->
+@endsection
+@section('scripts')
+    <!-- Load ApexCharts Library -->
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function () {
@@ -95,27 +119,4 @@
         chartTA.render();
     });
 </script>
-
-<style>
-    .charts-row {
-        display: flex;
-        justify-content: center; /* Center align the charts */
-        align-items: flex-start;
-        gap: 20px; /* Space between charts */
-        flex-wrap: wrap; /* Ensure charts remain neat on small screens */
-    }
-    .chart-container {
-        flex: 1 1 45%; /* Each chart uses around 45% of the container's width */
-        min-width: 300px; /* Minimum width to prevent charts from being too small */
-        margin: 0 auto; /* Center align the chart container */
-    }
-    #chartTA {
-        width: 100%;
-        height: 300px; /* Adequate height for charts */
-    }
-    .card {
-        min-height: 100px; /* Minimum height for card consistency */
-        margin: 0 auto; /* Center align the card */
-    }
-</style>
 @endsection

@@ -15,23 +15,7 @@
                         {{ Session::get('error') }}
                     </div>
                 @endif
-                <script>
-                    setTimeout(function() {
-                        var element = document.getElementById('delay');
-                        if (element) {
-                            element.parentNode.removeChild(element);
-                        }
-                    }, 5000); // 5000 milliseconds = 5 detik
-
-                    function toggleTable() {
-                        var tableContent = document.getElementById('tableContent');
-                        if (tableContent.style.display === 'none') {
-                            tableContent.style.display = 'block';
-                        } else {
-                            tableContent.style.display = 'none';
-                        }
-                    }
-                </script>
+                
 
                 <div class="container-fluid">
                     <!-- Data Proposal TA -->
@@ -337,4 +321,23 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+<script>
+    setTimeout(function() {
+        var element = document.getElementById('delay');
+        if (element) {
+            element.parentNode.removeChild(element);
+        }
+    }, 5000); // 5000 milliseconds = 5 detik
+
+    function toggleTable() {
+        var tableContent = document.getElementById('tableContent');
+        if (tableContent.style.display === 'none') {
+            tableContent.style.display = 'block';
+        } else {
+            tableContent.style.display = 'none';
+        }
+    }
+</script>
 @endsection

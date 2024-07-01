@@ -35,11 +35,19 @@ class JurusanController extends Controller
     {
         DB::beginTransaction();
         try {
-            $differences = json_decode($request->differences, true);
-            //dd($differences);
-            foreach ($differences as $data) {
+            $differences_api = json_decode($request->differences_api, true);
+            $differences_db = json_decode($request->differences_db, true);
+            //dd($differences_api, $differences_db);
+            foreach ($differences_db as $data) {
+                $data_jurusan = Jurusan::where('id_jurusan', $data['id_jurusan'])->first();
+                //dd($data_dosen);
+                if ($data_jurusan) {
+                    Jurusan::where('id_jurusan', $data['id_jurusan'])->delete();
+                }
+            }
+            foreach ($differences_api as $data) {
                 // Simpan data ke dalam tabel 'jurusans'
-                $data_create =[
+                $data_create = [
                     'id_jurusan' => $data['id_jurusan'],
                     'kode_jurusan' => $data['kode_jurusan'],
                     'jurusan' => $data['jurusan'],
@@ -50,9 +58,9 @@ class JurusanController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menambahkan data: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyinkronkan data: ' . $e->getMessage());
         }
-        return redirect()->route('jurusan')->with('success', 'Data berhasil ditambahkan.');
+        return redirect()->route('jurusan')->with('success', 'Data berhasil disinkronkan.');
     }
 
     /**
@@ -62,25 +70,37 @@ class JurusanController extends Controller
     {
         try {
             $response = Http::get('https://umkm-pnp.com/heni/index.php?folder=jurusan&file=jurusan');
-
             if ($response->successful()) {
                 // Mengambil data dari database berdasarkan urutan descending id_jurusan
                 $dataBase_jurusan = Jurusan::orderByDesc('id_jurusan')->pluck('kode_jurusan')->toArray();
-
+                
                 // Mengambil data dari respons API
                 $data = $response->json();
                 $dataAPI_jurusan = $data['list'];
 
-                // Memfilter data API yang tidak ada di database
+                // Mencari data yang ada di API tapi tidak ada di database
                 $differencesArray = collect($dataAPI_jurusan)->reject(function ($item) use ($dataBase_jurusan) {
                     return in_array($item['kode_jurusan'], $dataBase_jurusan);
                 })->all();
 
+                // Mencari data yang ada di database tapi tidak ada di API
+                $differencesArrayDatabase = collect($dataBase_jurusan)->reject(function ($kode_jurusan) use ($dataAPI_jurusan) {
+                    return in_array($kode_jurusan, array_column($dataAPI_jurusan, 'kode_jurusan'));
+                })->all();
+
+                // Data yang berbeda dari database dalam format array asosiatif
+                $differencesArrayDatabaseFormatted = Jurusan::whereIn('kode_jurusan', $differencesArrayDatabase)->get()->toArray();
+
                 debug($dataBase_jurusan);
                 debug($dataAPI_jurusan);
                 debug($differencesArray);
+                debug($differencesArrayDatabaseFormatted);
 
-                return view('admin.content.admin.DataAPI.jurusanAPI', ['data_jurusan' => $dataAPI_jurusan, 'differences' => $differencesArray]);
+                return view('admin.content.admin.DataAPI.jurusanAPI', [
+                    'data_jurusan' => $dataAPI_jurusan,
+                    'differences_api' => $differencesArray,
+                    'differences_db' => $differencesArrayDatabaseFormatted
+                ]);
             } else {
                 Log::error('Request failed', ['status' => $response->status(), 'body' => $response->body()]);
                 return view('admin.content.admin.DataAPI.jurusanAPI')->with('error', 'Failed to fetch data');

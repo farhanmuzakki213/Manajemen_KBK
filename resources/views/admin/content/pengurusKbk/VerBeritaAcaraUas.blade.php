@@ -39,27 +39,7 @@
                         {{ Session::get('error') }}
                     </div>
                 @endif
-                <script>
-                    setTimeout(function() {
-                        var element = document.getElementById('delay');
-                        if (element) {
-                            element.parentNode.removeChild(element);
-                        }
-                    }, 5000); // 5000 milliseconds = 5 detik
-
-                    function toggleTable() {
-                        var tableContent = document.getElementById('tableContent');
-                        var toggleTableBtn = document.getElementById('toggleTableBtn');
-
-                        if (tableContent.style.display === 'none') {
-                            tableContent.style.display = 'block';
-                            toggleTableBtn.textContent = 'Tutup Tabel';
-                        } else {
-                            tableContent.style.display = 'none';
-                            toggleTableBtn.textContent = 'Buka Tabel';
-                        }
-                    }
-                </script>
+                
 
                 <div class="container-fluid">
                     <!-- Data Verifikasi RPS -->
@@ -430,4 +410,25 @@
     <script src="{{ asset('backend/assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('backend/assets/js/multi-dropdown.js') }}"></script>
     <script src="{{ asset('backend/assets/js/sidebarmenu.js') }}"></script>
+    <script>
+        setTimeout(function() {
+            var element = document.getElementById('delay');
+            if (element) {
+                element.parentNode.removeChild(element);
+            }
+        }, 5000); // 5000 milliseconds = 5 detik
+
+        function toggleTable() {
+            var tableContent = document.getElementById('tableContent');
+            var toggleTableBtn = document.getElementById('toggleTableBtn');
+
+            if (tableContent.style.display === 'none') {
+                tableContent.style.display = 'block';
+                toggleTableBtn.textContent = 'Tutup Tabel';
+            } else {
+                tableContent.style.display = 'none';
+                toggleTableBtn.textContent = 'Buka Tabel';
+            }
+        }
+    </script>
 @endsection

@@ -183,6 +183,15 @@
                                         <span class="hide-menu">Repositori Proposal TA</span>
                                     </a>
                                 </li>
+
+                                <li class="sidebar-item">
+                                    <a href="{{ route('dosen') }}" class="sidebar-link dropdown-item-custom">
+                                        <div class="round-16 d-flex align-items-center justify-content-center">
+                                            <i class="ti ti-circle"></i>
+                                        </div>
+                                        <span class="hide-menu">Dosen</span>
+                                    </a>
+                                </li>
                            
                                 <li class="sidebar-item">
                                 <a href="{{ route('mahasiswa') }}" class="sidebar-link dropdown-item-custom">
@@ -266,16 +275,7 @@
                                 </span>
                                 <span class="hide-menu">Input Data</span>
                             </a>
-                            <ul aria-expanded="false" class="collapse first-level">
-                                    <li class="sidebar-item">
-                                        <a href="{{ route('dosen') }}" class="sidebar-link dropdown-item-custom">
-                                            <div class="round-16 d-flex align-items-center justify-content-center">
-                                                <i class="ti ti-circle"></i>
-                                            </div>
-                                            <span class="hide-menu">Dosen</span>
-                                        </a>
-                                    </li>
-                               
+                            <ul aria-expanded="false" class="collapse first-level">                               
                                     <li class="sidebar-item">
                                     <a href="{{ route('DosenPengampuMatkul') }}" class="sidebar-link dropdown-item-custom">
                                         <div class="round-16 d-flex align-items-center justify-content-center">

@@ -15,24 +15,16 @@
                         {{ Session::get('error') }}
                     </div>
                 @endif
-                <script>
-                    setTimeout(function() {
-                        var element = document.getElementById('delay');
-                        if (element) {
-                            element.parentNode.removeChild(element);
-                        }
-                    }, 5000); // 5000 milliseconds = 5 detik
-                </script>
                 <div class="container-fluid">
                     <!-- Data Mata Kuliah -->
                     <div class="card shadow mb-4">
 
                         <div class="card-header py-2">
                             <div class="d-grid gap-2 d-md-block">
-                                <a href="{{ route('matkul.create') }}" class="btn btn-primary me-md-3"><i
+                                {{-- <a href="{{ route('matkul.create') }}" class="btn btn-primary me-md-3"><i
                                         class="bi bi-file-earmark-plus"></i> New</a>
                                 <a href="{{ route('matkul.export') }}" class="btn btn-primary me-md-3"><i
-                                        class="bi bi-box-arrow-in-up"></i> Export</a>
+                                        class="bi bi-box-arrow-in-up"></i> Export</a> --}}
                                 <a href="{{ route('matkul.show') }}"
                                     class="btn btn-primary me-md-3">
                                     <i class="ti ti-upload"></i> Ambil Data API
@@ -107,18 +99,18 @@
                                                 <th>{{ $data->r_kurikulum->nama_kurikulum }}</th>
                                                 {{-- <th>{{ $data->smt_thnakd }}</th> --}}
                                                 <th>
-                                                    <a href="{{ route('matkul.edit', ['id' => $data->id_matkul]) }}"
+                                                    {{-- <a href="{{ route('matkul.edit', ['id' => $data->id_matkul]) }}"
                                                         class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
                                                     <a data-bs-toggle="modal"
                                                         data-bs-target="#staticBackdrop{{ $data->id_matkul }}"
-                                                        class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                                                        class="btn btn-danger"><i class="bi bi-trash"></i></a> --}}
                                                     <a data-bs-toggle="modal"
                                                         data-bs-target="#detail{{ $data->id_matkul }}"
                                                         class="btn btn-secondary"><i
                                                             class="bi bi-three-dots-vertical"></i></a>
                                                 </th>
-                                            </tr>
-                                            {{-- Modal Konfirmasi hapus data --}}
+                                            </tr>{{-- 
+                                            Modal Konfirmasi hapus data
                                             <div class="modal fade" id="staticBackdrop{{ $data->id_matkul }}"
                                                 data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                                                 aria-labelledby="staticBackdropLabel" aria-hidden="true">>
@@ -149,7 +141,7 @@
                                                             </form>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> --}}
                                             </div>
 
                                             {{-- Modal Detail Tabel --}}
@@ -253,4 +245,14 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+<script>
+    setTimeout(function() {
+        var element = document.getElementById('delay');
+        if (element) {
+            element.parentNode.removeChild(element);
+        }
+    }, 5000); // 5000 milliseconds = 5 detik
+</script>
 @endsection

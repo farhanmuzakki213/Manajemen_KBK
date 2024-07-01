@@ -143,15 +143,23 @@ class DosenController extends Controller
     {
         DB::beginTransaction();
         try {
-            $differences = json_decode($request->differences, true);
-            //dd($differences);
-            foreach ($differences as $data) {
+            $differences_api = json_decode($request->differences_api, true);
+            $differences_db = json_decode($request->differences_db, true);
+            //dd($differences_api, $differences_db);
+            foreach ($differences_db as $data) {
+                $data_dosen = Dosen::where('id_dosen', $data['id_dosen'])->first();
+                //dd($data_dosen);
+                if ($data_dosen) {
+                    Dosen::where('id_dosen', $data['id_dosen'])->delete();
+                }
+            }
+            foreach ($differences_api as $data) {
                 $nextNumber = $this->getCariNomor();
                 $data_jurusan = Jurusan::where('kode_jurusan', $data['kode_jurusan'])->pluck('id_jurusan')->first();
                 debug($data_jurusan);
                 $data_prodi = Prodi::where('kode_prodi', $data['kode_prodi'])->pluck('id_prodi')->first();
                 debug($data_prodi);
-                $data_create =[
+                $data_create = [
                     'id_dosen' => $nextNumber,
                     'nama_dosen' => $data['nama'],
                     'nidn' => $data['nidn'],
@@ -168,10 +176,11 @@ class DosenController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menambahkan data: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyinkronkan data: ' . $e->getMessage());
         }
-        return redirect()->route('dosen')->with('success', 'Data berhasil ditambahkan.');
+        return redirect()->route('dosen')->with('success', 'Data berhasil disinkronkan.');
     }
+
     function getCariNomor()
     {
         // Mendapatkan semua ID dari tabel rep_rps
@@ -193,22 +202,35 @@ class DosenController extends Controller
     {
         try {
             $response = Http::get('https://umkm-pnp.com/heni/index.php?folder=dosen&file=index');
-
             if ($response->successful()) {
-                // Mengambil data dari database berdasarkan urutan descending id_kurikulum
+                // Mengambil data dari database berdasarkan urutan descending id_dosen
                 $dataBase_dosen = Dosen::orderByDesc('id_dosen')->pluck('nidn')->toArray();
-                //dd($dataBase_matkul);
                 $data = $response->json();
                 $dataAPI_dosen = $data['list'];
+
+                // Mencari data yang ada di API tapi tidak ada di database
                 $differencesArray = collect($dataAPI_dosen)->reject(function ($item) use ($dataBase_dosen) {
                     return in_array($item['nidn'], $dataBase_dosen);
                 })->all();
-                //dd($differencesArray);
+
+                // Mencari data yang ada di database tapi tidak ada di API
+                $differencesArrayDatabase = collect($dataBase_dosen)->reject(function ($nidn) use ($dataAPI_dosen) {
+                    return in_array($nidn, array_column($dataAPI_dosen, 'nidn'));
+                })->all();
+
+                // Data yang berbeda dari database dalam format array asosiatif
+                $differencesArrayDatabaseFormatted = Dosen::with('r_jurusan', 'r_prodi')->whereIn('nidn', $differencesArrayDatabase)->get()->toArray();
+
                 debug($dataBase_dosen);
                 debug($dataAPI_dosen);
                 debug($differencesArray);
+                debug($differencesArrayDatabaseFormatted);
 
-                return view('admin.content.admin.DataAPI.dosenAPI', ['data_dosen' => $dataAPI_dosen, 'differences' => $differencesArray]);
+                return view('admin.content.admin.DataAPI.dosenAPI', [
+                    'data_dosen' => $dataAPI_dosen,
+                    'differences_api' => $differencesArray,
+                    'differences_db' => $differencesArrayDatabaseFormatted
+                ]);
             } else {
                 Log::error('Request failed', ['status' => $response->status(), 'body' => $response->body()]);
                 return view('admin.content.admin.DataAPI.dosenAPI')->with('error', 'Failed to fetch data');

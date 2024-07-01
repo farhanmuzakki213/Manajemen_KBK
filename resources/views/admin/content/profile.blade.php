@@ -195,8 +195,6 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="{{ asset('backend/assets/js/sidebarmenu.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/side-drop.js') }}"></script>
     <script>
         document.getElementById('reset-button').addEventListener('click', function() {
             fetch('{{ route('profile.reset') }}', {
