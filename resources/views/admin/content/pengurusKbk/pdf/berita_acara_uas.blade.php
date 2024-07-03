@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Berita Acara RPS</title>
+    <title>Berita Acara UAS</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
     <style>
@@ -190,7 +190,7 @@
                 <td class="header-content" colspan="2">
                     <center>
                         <strong>
-                            <font style="font-size: 15px;">VERIFIKASI RENCANA PEMBELAJARAN SEMESTER</font>
+                            <font style="font-size: 15px;">VERIFIKASI SOAL UJIAN AKHIR SEMESTER {{strtoupper($semester->smt_thnakd)}}</font>
                         </strong><br>
                         <strong>
                             <font style="font-size: 15px;">
@@ -207,7 +207,7 @@
 
     <div class="badan">
         <div class="details">
-            <p>Telah dilaksanakan rapat Peninjauan materi RPS bersama KBK dan Kaprodi yang dilaksanakan pada:</p>
+            <p>Telah dilaksanakan rapat verifikasi dan validasi soal ujian Akhir Semester bersama KBK dan Kaprodi yang dilaksanakan pada:</p>
             <p id="hari-tanggal" style="padding-left: 50px;">
                 Hari / Tanggal : {{ \Carbon\Carbon::now()->isoFormat('dddd, D MMMM Y') }}
             </p>

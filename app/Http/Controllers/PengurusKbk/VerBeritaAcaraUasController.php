@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Auth\BeritaAcara\beritaAcaraCreate;
 use App\Http\Requests\Auth\BeritaAcara\beritaAcaraUpdate;
+use App\Models\ThnAkademik;
 
 class VerBeritaAcaraUasController extends Controller
 {
@@ -94,6 +95,8 @@ class VerBeritaAcaraUasController extends Controller
         $selectedProdi = Prodi::find($selectedProdiId);
 
         $kaprodi = PimpinanProdi::where('prodi_id', $selectedProdiId)->first();
+
+        $semester = ThnAkademik::where('status_smt_thnakd', '=', '1')->first();
     
         $data_ver_rps = VerRpsUas::with([
             'r_pengurus',
@@ -118,16 +121,18 @@ class VerBeritaAcaraUasController extends Controller
         if ($data_ver_rps->isEmpty()) {
             return redirect()->route('upload_uas_berita_acara')->with('error', 'Data verifikasi uas pada prodi ini tidak ada');
         }
+
     
         $pdf = Pdf::loadView('admin.content.pengurusKbk.pdf.berita_acara_uas', [
             'data_ver_rps' => $data_ver_rps,
             'selectedProdi' => $selectedProdi,
             'prodiList' => $prodiList,
             'kaprodi' => $kaprodi,
+            'semester' => $semester,
         ]);
     
-        // return $pdf->stream('Berita_Acara_UAS.pdf');
-        return $pdf->download('Berita_Acara_UAS.pdf');
+        return $pdf->stream('Berita_Acara_UAS.pdf');
+        // return $pdf->download('Berita_Acara_UAS.pdf');
     }
 
 
