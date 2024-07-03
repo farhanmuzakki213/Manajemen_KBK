@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers\PengurusKbk;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\BeritaAcara\beritaAcaraCreate;
-use App\Http\Requests\Auth\BeritaAcara\beritaAcaraUpdate;
+use App\Models\Prodi;
+use App\Models\VerRpsUas;
 use App\Models\Pengurus_kbk;
-use App\Models\PimpinanJurusan;
+use Illuminate\Http\Request;
 use App\Models\PimpinanProdi;
 use App\Models\VerBeritaAcara;
-use App\Models\VerRpsUas;
-use Illuminate\Support\Facades\Auth;
+use App\Models\PimpinanJurusan;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\Auth\BeritaAcara\beritaAcaraCreate;
+use App\Http\Requests\Auth\BeritaAcara\beritaAcaraUpdate;
 
 class VerBeritaAcaraUasController extends Controller
 {
@@ -27,10 +30,17 @@ class VerBeritaAcaraUasController extends Controller
         return $pengurus_kbk;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $pengurus_kbk = $this->getDosen();
-        debug($pengurus_kbk->toArray());
+
+        // Retrieve selected prodi ID from request
+        $selectedProdiId = $request->input('prodi_id');
+
+        // Get all Prodi for the dropdown
+        $prodiList = Prodi::where('jurusan_id', 7)->get();
+
+        // Filtered VerRpsUas data
         $data_ver_rps = VerRpsUas::with([
             'r_pengurus',
             'r_pengurus.r_dosen',
@@ -38,21 +48,22 @@ class VerBeritaAcaraUasController extends Controller
             'r_rep_rps_uas.r_smt_thnakd',
             'r_rep_rps_uas.r_matkulKbk'
         ])
-            ->where(function ($query) use ($pengurus_kbk) {
-                $query->whereHas('r_rep_rps_uas', function ($subQuery) use ($pengurus_kbk) {
-                    $subQuery->whereHas('r_matkulKbk', function ($nestedQuery) use ($pengurus_kbk) {
-                        $nestedQuery->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id);
+            ->whereHas('r_rep_rps_uas', function ($query) use ($pengurus_kbk, $selectedProdiId) {
+                $query->whereHas('r_matkulKbk', function ($nestedQuery) use ($pengurus_kbk, $selectedProdiId) {
+                    $nestedQuery->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id);
+
+                    if ($selectedProdiId) {
+                        $nestedQuery->where('prodi_id', $selectedProdiId); // Filter by prodi
+                    }
+                })
+                    ->whereHas('r_smt_thnakd', function ($nestedQuery) {
+                        $nestedQuery->where('status_smt_thnakd', '=', '1');
                     })
-                        ->whereHas('r_smt_thnakd', function ($nestedQuery) {
-                            $nestedQuery->where('status_smt_thnakd', '=', '1');
-                        })
-                        ->where('type', '=', '1');
-                });
+                    ->where('type', '=', '1');
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
 
-        debug($data_ver_rps);
         $data_berita_acara = VerBeritaAcara::whereHas('p_ver_rps_uas', function ($query) use ($pengurus_kbk) {
             $query->where('pengurus_id', $pengurus_kbk->id_pengurus);
         })->with([
@@ -66,8 +77,60 @@ class VerBeritaAcaraUasController extends Controller
             ->get();
 
         debug($data_berita_acara->toArray());
-        return view('admin.content.pengurusKbk.VerBeritaAcaraUas', compact('data_ver_rps', 'data_berita_acara'));
+        return view('admin.content.pengurusKbk.VerBeritaAcaraUas', compact('data_ver_rps', 'data_berita_acara', 'prodiList', 'selectedProdiId'));
     }
+
+    public function download_pdf(Request $request)
+    {
+        $pengurus_kbk = $this->getDosen();
+        $prodiList = Prodi::where('jurusan_id', 7)->get();
+    
+        $selectedProdiId = $request->input('prodi_id');
+    
+        if (!$selectedProdiId) {
+            return redirect()->route('upload_uas_berita_acara')->with('error', 'Silahkan pilih prodi yang ingin di cetak');
+        }
+    
+        $selectedProdi = Prodi::find($selectedProdiId);
+
+        $kaprodi = PimpinanProdi::where('prodi_id', $selectedProdiId)->first();
+    
+        $data_ver_rps = VerRpsUas::with([
+            'r_pengurus',
+            'r_pengurus.r_dosen',
+            'r_rep_rps_uas',
+            'r_rep_rps_uas.r_smt_thnakd',
+            'r_rep_rps_uas.r_matkulKbk'
+        ])
+        ->whereHas('r_rep_rps_uas', function ($query) use ($pengurus_kbk, $selectedProdiId) {
+            $query->whereHas('r_matkulKbk', function ($nestedQuery) use ($pengurus_kbk, $selectedProdiId) {
+                $nestedQuery->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id)
+                            ->where('prodi_id', $selectedProdiId);
+            })
+            ->whereHas('r_smt_thnakd', function ($nestedQuery) {
+                $nestedQuery->where('status_smt_thnakd', '=', '1');
+            })
+            ->where('type', '=', '1');
+        })
+        ->orderByDesc('id_ver_rps_uas')
+        ->get();
+    
+        if ($data_ver_rps->isEmpty()) {
+            return redirect()->route('upload_uas_berita_acara')->with('error', 'Data verifikasi uas pada prodi ini tidak ada');
+        }
+    
+        $pdf = Pdf::loadView('admin.content.pengurusKbk.pdf.berita_acara_uas', [
+            'data_ver_rps' => $data_ver_rps,
+            'selectedProdi' => $selectedProdi,
+            'prodiList' => $prodiList,
+            'kaprodi' => $kaprodi,
+        ]);
+    
+        // return $pdf->stream('Berita_Acara_UAS.pdf');
+        return $pdf->download('Berita_Acara_UAS.pdf');
+    }
+
+
     public function create()
     {
         $pengurus_kbk = $this->getDosen();

@@ -220,7 +220,7 @@
                     <th>No</th>
                     <th>Semester</th>
                     <th>Nama Matkul</th>
-                    <th>Evaluasi</th>
+                    <th>Validitas Isi</th>
                 </tr>
             </thead>
             <tbody>

@@ -3,25 +3,29 @@
     <link rel="stylesheet" href="{{ asset('backend/assets/css/multi-dropdown.css') }}" />
     <style>
         .dropdown-item {
-            width: auto; /* Lebar menyesuaikan dengan konten */
-            white-space: nowrap; /* Konten tidak akan melintasi baris */
+            width: auto;
+            /* Lebar menyesuaikan dengan konten */
+            white-space: nowrap;
+            /* Konten tidak akan melintasi baris */
         }
-        
+
         .dropdown-item .row {
-            display: flex; /* Menggunakan flexbox untuk mengatur kolom */
-            flex-wrap: nowrap; /* Konten tidak akan melintasi baris */
+            display: flex;
+            /* Menggunakan flexbox untuk mengatur kolom */
+            flex-wrap: nowrap;
+            /* Konten tidak akan melintasi baris */
         }
-    
+
         .dropdown-item .col-lg-3 {
-            flex: 1; /* Kolom kode_matkul mengambil 1 bagian */
+            flex: 1;
+            /* Kolom kode_matkul mengambil 1 bagian */
         }
-    
+
         .dropdown-item .col-lg-4 {
-            flex: 3; /* Kolom nama_matkul mengambil 3 bagian */
+            flex: 3;
+            /* Kolom nama_matkul mengambil 3 bagian */
         }
     </style>
-    
-    
 @endsection
 @section('admin')
     <div class="container-fluid">
@@ -39,18 +43,39 @@
                         {{ Session::get('error') }}
                     </div>
                 @endif
-                
+
 
                 <div class="container-fluid">
                     <!-- Data Verifikasi RPS -->
-                    <div class="card shadow mb-4">
+                    <div class="card shadow mb-4 py-2">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                            <a href="{{ route('upload_rps_berita_acara.create') }}"
-                                class="btn btn-primary mb-2 d-flex align-items-center">
-                                <i class="ti ti-upload"></i> Upload Berita Acara
-                            </a>
-                            <a href="{{ route('cetak_rps_berita_acara.download') }}" target="_blank" class="btn btn-primary me-md-3"><i
-                                class="bi bi-box-arrow-in-up"></i>Cetak</a>
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <!-- Dropdown for selecting Prodi -->
+                                <select id="prodiSelect" class="form-select me-2" onchange="filterByProdi()"
+                                    style="width: auto;">
+                                    <option value="">Pilih Prodi</option>
+                                    @foreach ($prodiList as $prodi)
+                                        <option value="{{ $prodi->id_prodi }}"
+                                            {{ request('prodi_id') == $prodi->id_prodi ? 'selected' : '' }}>
+                                            {{ $prodi->prodi }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                <!-- Print Button -->
+                                <a href="{{ route('cetak_rps_berita_acara.download', ['prodi_id' => $selectedProdiId]) }}"
+                                    class="btn btn-primary d-flex align-items-center">
+                                    <i class="bi bi-box-arrow-in-up me-2"></i>Cetak
+                                </a>
+
+                                <!-- Upload Button -->
+                                <a href="{{ route('upload_rps_berita_acara.create') }}"
+                                    class="btn btn-primary d-flex align-items-center">
+                                    <i class="ti ti-upload me-2"></i>Upload Berita
+                                </a>
+
+                            </div>
+
                             <button id="toggleTableBtn" class="btn btn-primary" onclick="toggleTable()">Tutup Tabel</button>
                         </div>
                         <div class="card-body" id="tableContent" style="display: block;">
@@ -114,7 +139,7 @@
                                                 <th>{{ $data_ver->saran }}</th>
                                                 <th style="width: 10%;">
                                                     <div class="row">
-                                                        <a href="{{ asset('storage/uploads/rps/repositori_files/' . $data_ver->file) }}"
+                                                        <a href="{{ asset('storage/uploads/rps/repositori_files/' . $data_ver->r_rep_rps_uas->file) }}"
                                                             class="btn btn-primary mb-2 d-flex align-items-center"
                                                             target="_blank"><i
                                                                 class="bi bi-file-earmark-arrow-down"></i>FileRPS</a>
@@ -408,10 +433,6 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="{{ asset('backend/assets/js/jquery3-1-1.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/multi-dropdown.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/sidebarmenu.js') }}"></script>
     <script>
         setTimeout(function() {
             var element = document.getElementById('delay');
@@ -431,6 +452,12 @@
                 tableContent.style.display = 'none';
                 toggleTableBtn.textContent = 'Buka Tabel';
             }
+        }
+    </script>
+    <script>
+        function filterByProdi() {
+            const selectedProdi = document.getElementById('prodiSelect').value;
+            window.location.href = `{{ route('upload_rps_berita_acara') }}?prodi_id=${selectedProdi}`;
         }
     </script>
 @endsection

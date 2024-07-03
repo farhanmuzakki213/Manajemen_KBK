@@ -420,6 +420,7 @@ Route::group(['middleware' => ['role:pengurus-kbk']], function () {
         Route::patch('/upload_uas_berita_acara/update/{beritaAcara}', [VerBeritaAcaraUasController::class, 'update'])->middleware(['auth', 'verified'])->name('upload_uas_berita_acara.update');
         Route::get('/upload_uas_berita_acara/show/{id}', [VerBeritaAcaraUasController::class, 'show'])->middleware(['auth', 'verified'])->name('upload_uas_berita_acara.show');
         Route::delete('/upload_uas_berita_acara/delete/{id}', [VerBeritaAcaraUasController::class, 'delete'])->middleware(['auth', 'verified'])->name('upload_uas_berita_acara.delete');
+        Route::get('/cetak_uas_berita_acara/download/pdf', [VerBeritaAcaraUasController::class, 'download_pdf'])->middleware(['auth', 'verified'])->name('cetak_uas_berita_acara.download');
     });
 });
 
