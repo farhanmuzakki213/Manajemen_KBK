@@ -10,8 +10,6 @@ use App\Models\ProposalTAModel;
 use App\Models\ReviewProposalTAModel;
 use App\Models\User;
 use App\Notifications\PenugasanDosen;
-use App\Notifications\PenugasanDosenDua;
-use App\Notifications\PenugasanDosenSatu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -43,6 +41,7 @@ class PenugasanReviewController extends Controller
         $data_proposal_ta = ProposalTAModel::orderByDesc('id_proposal_ta')->get();
 
         $data_review_proposal_ta = ReviewProposalTAModel::with('proposal_ta', 'reviewer_satu_dosen', 'reviewer_dua_dosen', 'p_reviewDetail')
+            ->where('pengurus_id', $pengurus_kbk->id_pengurus)
             ->orderByDesc('review_proposal_ta.id_penugasan')
             ->get();
 
@@ -77,7 +76,8 @@ class PenugasanReviewController extends Controller
             'data_pimpinan_prodi',
             'data_dosen_kbk',
             'nextNumber',
-            'selected_proposal_ta'
+            'selected_proposal_ta',
+            'pengurus_kbk'
         ));
     }
 
@@ -89,9 +89,10 @@ class PenugasanReviewController extends Controller
         $validator = Validator::make($request->all(), [
             'id_penugasan' => 'required',
             'proposal_ta_id' => 'required',
+            'pengurus_id' => 'required',
             'reviewer_satu' => 'required',
             'reviewer_dua' => 'required',
-            'pimpinan_prodi' => 'required', // Pastikan ini sesuai dengan name pada form
+            'pimpinan_prodi' => 'required',
             'date' => 'required|date_format:Y-m-d H:i:s',
         ]);
 
@@ -118,6 +119,7 @@ class PenugasanReviewController extends Controller
         $data = [
             'id_penugasan' => $request->id_penugasan ?: $this->generateIdPenugasan(), // Auto-generate jika tidak diberikan
             'proposal_ta_id' => $request->proposal_ta_id,
+            'pengurus_id' => $request->pengurus_id,
             'reviewer_satu' => $request->reviewer_satu,
             'reviewer_dua' => $request->reviewer_dua,
             'pimpinan_prodi_id' => $request->pimpinan_prodi, // Pastikan ini sesuai dengan name pada form
@@ -136,8 +138,10 @@ class PenugasanReviewController extends Controller
             $dosenKbkDua = User::where('name', $dosenReviewDua->r_dosen->nama_dosen)
                 ->where('email', $dosenReviewDua->r_dosen->email)->first();
             if ($dosenKbkSatu && $dosenKbkDua) {
-                Notification::send([$dosenKbkSatu, $dosenKbkDua], new PenugasanDosen($proposal_ta, $pengurus_kbk, $id_penugasan));
+                Notification::send($dosenKbkSatu, new PenugasanDosen($proposal_ta, $pengurus_kbk, $id_penugasan, 1));
+                Notification::send($dosenKbkDua, new PenugasanDosen($proposal_ta, $pengurus_kbk, $id_penugasan, 2));
             }
+
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollback();
@@ -219,14 +223,16 @@ class PenugasanReviewController extends Controller
             $dosenKbkDua = User::where('name', $dosenReviewDua->r_dosen->nama_dosen)
                 ->where('email', $dosenReviewDua->r_dosen->email)->first();
             if ($dosenKbkSatu && $dosenKbkDua) {
-                Notification::send([$dosenKbkSatu, $dosenKbkDua], new PenugasanDosen($proposal_ta, $pengurus_kbk, $id_penugasan));
+                DB::table('notifications')->where('penugasan_id', $request->id_penugasan)->delete();
+                Notification::send($dosenKbkSatu, new PenugasanDosen($proposal_ta, $pengurus_kbk, $id_penugasan, 1));
+                Notification::send($dosenKbkDua, new PenugasanDosen($proposal_ta, $pengurus_kbk, $id_penugasan, 2));
             }
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollback();
             return redirect()->route('PenugasanReview')->with('error', 'Gagal menyimpan data penugasan.');
         }
-        
+
         Session::flash('success', 'Data berhasil di Edit');
         return redirect()->route('PenugasanReview');
         //dd($request->all());
@@ -240,6 +246,7 @@ class PenugasanReviewController extends Controller
         $penugasan = ReviewProposalTAModel::find($id);
 
         if ($penugasan) {
+            DB::table('notifications')->where('penugasan_id', $id)->delete();
             $penugasan->delete();
             Session::flash('success', 'Data berhasil dihapus');
         }
@@ -250,7 +257,9 @@ class PenugasanReviewController extends Controller
 
     public function hasil()
     {
+        $pengurus_kbk = $this->getDosen();
         $data_review_proposal_ta = ReviewProposalTAModel::with('proposal_ta', 'reviewer_satu_dosen', 'reviewer_dua_dosen', 'p_reviewDetail')
+            ->where('pengurus_id', $pengurus_kbk->id_pengurus)
             ->orderByDesc('review_proposal_ta.id_penugasan')
             ->get();
 

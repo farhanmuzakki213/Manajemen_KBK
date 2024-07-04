@@ -181,7 +181,7 @@ class Ver_Soal_UASController extends Controller
             'id_rep_uas' => 'required',
             'id_pengurus_kbk' => 'required',
             'rekomendasi' => 'required',
-            'saran' => 'nullable',
+            'evaluasi' => 'required',
             'date' => 'required|date_format:Y-m-d H:i:s',
         ]);
 
@@ -194,7 +194,7 @@ class Ver_Soal_UASController extends Controller
             'rep_rps_uas_id' => $request->id_rep_uas,
             'pengurus_id' => $request->id_pengurus_kbk,
             'rekomendasi' => $request->rekomendasi,
-            'saran' => $request->filled('saran') ? $request->saran : 'Tidak ada',
+            'saran' => $request->evaluasi,
             'tanggal_diverifikasi' => $request->date,
         ];
         DB::beginTransaction();
@@ -243,7 +243,7 @@ class Ver_Soal_UASController extends Controller
             'id_ver_uas' => 'required',
             'rep_rps_uas_id' => 'required',
             'rekomendasi' => 'required',
-            'saran' => 'nullable',
+            'evaluasi' => 'required',
             'date' => 'required|date_format:Y-m-d H:i:s',
         ]);
 
@@ -254,7 +254,7 @@ class Ver_Soal_UASController extends Controller
             'id_ver_rps_uas' => $request->id_ver_uas,
             'rep_rps_uas_id' => $request->rep_rps_uas_id,
             'rekomendasi' => $request->rekomendasi,
-            'saran' => $request->filled('saran') ? $request->saran : 'Tidak ada',
+            'saran' => $request->evaluasi,
             'tanggal_diverifikasi' => $request->date,
         ];
         DB::beginTransaction();

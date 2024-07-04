@@ -224,7 +224,7 @@ class ReviewProposalTAController extends Controller
             'penugasan_id' => 'required',
             'reviewer' => 'required',
             'status' => 'required',
-            'catatan' => 'nullable',
+            'catatan' => 'required',
             'date' => 'required|date_format:Y-m-d H:i:s',
         ]);
 

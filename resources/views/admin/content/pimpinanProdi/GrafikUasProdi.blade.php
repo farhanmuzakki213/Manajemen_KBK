@@ -44,23 +44,28 @@
                                             <th>Tanggal Verifikasi</th>
                                         </tr>
                                     </tfoot>
-                                    <tbody>                                        
+                                    <tbody>
                                         @foreach ($data_ver_uas as $data_ver)
-                                        <tr class="table-Light">
-                                            <th>{{ $loop->iteration }}</th>
-                                            <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->nama_matkul }}</th>
-                                            <th>{{ optional($data_ver->r_pengurus)->r_dosen->nama_dosen }}</th>
-                                            <th>{{ optional($data_ver->r_rep_rps_uas)->r_smt_thnakd->smt_thnakd }}</th>
-                                            <th>{{ \Carbon\Carbon::parse($data_ver->created_at)->format('d-m-Y') }}</th>
-                                            <th>
-                                                @if ($data_ver->status_ver_uas == 0)
-                                                    Tidak Diverifikasi
-                                                @else
-                                                    Diverifikasi
-                                                @endif
-                                            </th>
-                                            <th>{{$data_ver->tanggal_diverifikasi}}</th>
-                                        </tr>
+                                            <tr class="table-Light">
+                                                <th>{{ $loop->iteration }}</th>
+                                                <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->nama_matkul }}
+                                                </th>
+                                                <th>{{ optional($data_ver->r_pengurus)->r_dosen->nama_dosen }}</th>
+                                                <th>{{ optional($data_ver->r_rep_rps_uas)->r_smt_thnakd->smt_thnakd }}</th>
+                                                <th>{{ \Carbon\Carbon::parse($data_ver->created_at)->format('d-m-Y') }}</th>
+                                                <th>
+                                                    @if ($data_ver->rekomendasi == 0)
+                                                        Belum Diverifikasi
+                                                    @elseif ($data_ver->rekomendasi == 1)
+                                                        Tidak Layak Pakai
+                                                    @elseif ($data_ver->rekomendasi == 2)
+                                                        Butuh Revisi
+                                                    @else
+                                                        Layak Pakai
+                                                    @endif
+                                                </th>
+                                                <th>{{ $data_ver->tanggal_diverifikasi }}</th>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -73,76 +78,75 @@
     </div>
 @endsection
 @section('scripts')
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script type="text/javascript">
-    var pengunggahan = <?php echo json_encode($banyak_pengunggahan); ?>;
-    var verifikasi = <?php echo json_encode($banyak_verifikasi); ?>;
-    var berita = <?php echo json_encode($banyak_berita); ?>;
-    var semester = <?php echo json_encode($semester); ?>;
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script type="text/javascript">
+        var pengunggahan = <?php echo json_encode($banyak_pengunggahan); ?>;
+        var verifikasi = <?php echo json_encode($banyak_verifikasi); ?>;
+        var berita = <?php echo json_encode($banyak_berita); ?>;
+        var semester = <?php echo json_encode($semester); ?>;
 
-    var options = {
-        series: [
-            {
-                name: 'Banyak Pengunggahan',
-                data: Object.values(pengunggahan)
-            },
-            {
-                name: 'Banyak Verifikasi',
-                data: Object.values(verifikasi)
-            },
-            {
-                name: 'Banyak Berita Acara',
-                data: Object.values(berita)
-            }
-        ],
-        chart: {
-            type: 'bar',
-            height: 350
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                columnWidth: '5%',
-                endingShape: 'rounded'
-            }
-        },
-        dataLabels: {
-            enabled: false
-        },
-        stroke: {
-            show: true,
-            width: 2,
-            colors: ['transparent']
-        },
-        xaxis: {
-            categories: Object.values(semester),
-        },  
-        yaxis: {
-            title: {
-                text: 'Jumlah'
-            },
-            labels: {
-            formatter: function (value) {
-                if (Number.isInteger(value)) {
-                    return value;
+        var options = {
+            series: [{
+                    name: 'Banyak Pengunggahan',
+                    data: Object.values(pengunggahan)
+                },
+                {
+                    name: 'Banyak Verifikasi',
+                    data: Object.values(verifikasi)
+                },
+                {
+                    name: 'Banyak Berita Acara',
+                    data: Object.values(berita)
                 }
-                return '';
-            }
-        }
-        },
-        fill: {
-            opacity: 1
-        },
-        tooltip: {
-            y: {
-                formatter: function (val) {
-                    return parseInt(val) + " RPS";
+            ],
+            chart: {
+                type: 'bar',
+                height: 350
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '5%',
+                    endingShape: 'rounded'
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                show: true,
+                width: 2,
+                colors: ['transparent']
+            },
+            xaxis: {
+                categories: Object.values(semester),
+            },
+            yaxis: {
+                title: {
+                    text: 'Jumlah'
+                },
+                labels: {
+                    formatter: function(value) {
+                        if (Number.isInteger(value)) {
+                            return value;
+                        }
+                        return '';
+                    }
+                }
+            },
+            fill: {
+                opacity: 1
+            },
+            tooltip: {
+                y: {
+                    formatter: function(val) {
+                        return parseInt(val) + " RPS";
+                    }
                 }
             }
-        }
-    };
+        };
 
-    var chart = new ApexCharts(document.querySelector("#chart"), options);
-    chart.render();
-</script>
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+    </script>
 @endsection

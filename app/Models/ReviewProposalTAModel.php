@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ReviewProposalTAModel extends Model
 {
     use HasFactory;
-    protected $fillable = ['id_penugasan','proposal_ta_id', 'reviewer_satu', 'reviewer_dua', 'pimpinan_prodi_id', 'status_final_proposal', 'tanggal_penugasan'];
+    protected $fillable = ['id_penugasan', 'pengurus_id', 'proposal_ta_id', 'reviewer_satu', 'reviewer_dua', 'pimpinan_prodi_id', 'status_final_proposal', 'tanggal_penugasan'];
     protected $table = 'review_proposal_ta';
     public $timestamps = false;
 
@@ -27,6 +27,10 @@ class ReviewProposalTAModel extends Model
     public function reviewer_dua_dosen()
     {
         return $this->belongsTo(DosenKBK::class, 'reviewer_dua', 'id_dosen_kbk');
+    }
+
+    public function r_pengurus(){
+        return $this->belongsTo(Pengurus_kbk::class, 'pengurus_id','id_pengurus');
     }
     
     public function pimpinan_prodi_dosen()

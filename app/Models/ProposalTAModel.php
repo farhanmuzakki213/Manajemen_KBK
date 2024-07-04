@@ -29,11 +29,6 @@ class ProposalTAModel extends Model
         return $this->belongsTo(Dosen::class, 'pembimbing_dua', 'id_dosen');
     }
 
-    public function r_jenis_kbk()
-    {
-        return $this->belongsTo(JenisKbk::class, 'jenis_kbk_id', 'id_jenis_kbk');
-    }
-
     public function review_proposal_ta()
     {
         return $this->hasOne(ReviewProposalTAModel::class, 'proposal_ta_id', 'id_proposal_ta');

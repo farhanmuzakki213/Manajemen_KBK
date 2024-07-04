@@ -176,7 +176,7 @@ class PengurusKbkController extends Controller
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('semester');
 
-        $data_ver_rps = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas')
+        $data_ver_rps = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_dosen_matkul.r_dosen')
             ->whereHas('r_rep_rps_uas', function ($query) {
                 $query->where('type', '=', '0'); 
             })
@@ -220,7 +220,7 @@ class PengurusKbkController extends Controller
         
             // dd($banyak_pengunggahan);
 
-        $data_ver_uas = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas')
+        $data_ver_uas = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_dosen_matkul.r_dosen')
             ->whereHas('r_rep_rps_uas', function ($query) {
                 $query->where('type', '=', '1'); 
             })

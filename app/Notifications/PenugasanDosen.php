@@ -17,11 +17,13 @@ class PenugasanDosen extends Notification
     protected $proposal_ta;
     protected $pengurus_kbk;
     protected $id_penugasan;
-    public function __construct($proposal_ta, $pengurus_kbk, $id_penugasan)
+    protected $dosen_review;
+    public function __construct($proposal_ta, $pengurus_kbk, $id_penugasan, $dosen_review)
     {
         $this->proposal_ta = $proposal_ta;
         $this->pengurus_kbk = $pengurus_kbk;
         $this->id_penugasan = $id_penugasan;
+        $this->dosen_review = $dosen_review;
     }
 
     /**
@@ -58,7 +60,7 @@ class PenugasanDosen extends Notification
             'nim_mahasiswa' => $this->proposal_ta->r_mahasiswa->nim,
             'id_penugasan' => $this->id_penugasan,
             'pesan' => "Anda Mendapatkan Penugasan Review",
-            'url' => route('dosen_kbk_notifikasi.show', ['id_penugasan' => $this->id_penugasan]),
+            'url' => route('review_proposal_ta.create', ['id' => $this->id_penugasan, 'dosen' => $this->dosen_review]),
         ];
     }
 }

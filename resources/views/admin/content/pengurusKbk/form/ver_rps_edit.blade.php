@@ -41,9 +41,9 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="saran" class="form-label">Catatan</label>
-                                    <textarea class="form-control" id="saran" name="saran" rows="3">{{ $data_ver_rps->saran }}</textarea>
-                                    @error('saran')
+                                    <label for="evaluasi" class="form-label">Evaluasi</label>
+                                    <textarea class="form-control" id="evaluasi" name="evaluasi" rows="3">{{ $data_ver_rps->saran }}</textarea>
+                                    @error('evaluasi')
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>

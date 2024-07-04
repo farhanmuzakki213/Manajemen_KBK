@@ -59,7 +59,7 @@
                                                 <th>{{ $no++ }}</th>
                                                 <th>{{ $data['nama_mahasiswa'] }}
                                                 </th>
-                                                <th>{{ $data['reviewer_satu'] }}
+                                                <th>{{ $data['reviewer_satu'] ?? ($data_review_proposal_ta->firstWhere('penugasan_id', $data['penugasan_id'])->p_reviewProposal['reviewer_satu_dosen']['r_dosen']['nama_dosen'] ?? 'null') }}
                                                 </th>
                                                 <th>
                                                     @if ($data['status_satu'] == 0)
@@ -72,7 +72,7 @@
                                                         Diterima
                                                     @endif
                                                 </th>
-                                                <th>{{ $data['reviewer_dua'] }}
+                                                <th>{{ $data['reviewer_dua'] ?? ($data_review_proposal_ta->firstWhere('penugasan_id', $data['penugasan_id'])->p_reviewProposal['reviewer_dua_dosen']['r_dosen']['nama_dosen'] ?? 'null') }}
                                                 </th>
                                                 <th>
                                                     @if ($data['status_dua'] == 0)

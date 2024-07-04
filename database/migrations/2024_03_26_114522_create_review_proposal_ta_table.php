@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('review_proposal_ta', function (Blueprint $table) {
             $table->bigInteger('id_penugasan')->primary();
             $table->bigInteger('proposal_ta_id');
+            $table->bigInteger('pengurus_id');
             $table->bigInteger('reviewer_satu');
             $table->bigInteger('reviewer_dua');
             $table->bigInteger('pimpinan_prodi_id');
@@ -29,6 +30,8 @@ return new class extends Migration
             $table->foreign('reviewer_dua')->references('id_dosen_kbk')->on('dosen_kbk')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('pimpinan_prodi_id')->references('id_pimpinan_prodi')->on('pimpinan_prodi')
+                ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('pengurus_id')->references('id_pengurus')->on('pengurus_kbk')
                 ->onUpdate('cascade')->onDelete('cascade');
         });
     }

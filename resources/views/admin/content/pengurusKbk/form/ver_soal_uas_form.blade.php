@@ -26,17 +26,17 @@
                                 <label for="rekomendasi" class="form-label">Rekomendasi</label><br>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="rekomendasi"
-                                        id="belum_diverifikasi" value="2">
+                                        id="belum_diverifikasi" value="2" {{ old('rekomendasi') == 2 ? 'checked' : '' }}>
                                     <label class="form-check-label" for="aktif">Butuh Revisi</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="rekomendasi"
-                                        id="tidak_layak_pakai" value="1">
+                                        id="tidak_layak_pakai" value="1" {{ old('rekomendasi') == 1 ? 'checked' : '' }}>
                                     <label class="form-check-label" for="tidak_aktif">Tidak layak Pakai</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="rekomendasi" id="layak_pakai"
-                                        value="3">
+                                        value="3" {{ old('rekomendasi') == 3 ? 'checked' : '' }}>
                                     <label class="form-check-label" for="tidak_aktif">layak Pakai</label>
                                 </div>
                                 @error('rekomendasi')
@@ -44,9 +44,9 @@
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="saran" class="form-label">Saran (optional)</label>
-                                <textarea class="form-control" id="saran" name="saran" rows="3"></textarea>
-                                @error('saran')
+                                <label for="evaluasi" class="form-label">Evaluasi</label>
+                                <textarea class="form-control" id="evaluasi" name="evaluasi" rows="3">{{old('evaluasi')}}</textarea>
+                                @error('evaluasi')
                                     <small>{{ $message }}</small>
                                 @enderror
                             </div>

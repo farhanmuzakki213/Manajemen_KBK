@@ -197,9 +197,12 @@
                                         </tr>
                                     </tfoot>
                                     <tbody>
+                                        @php
+                                            $no = 1;
+                                        @endphp
                                         @foreach ($data_review_proposal_ta as $data)
                                             <tr class="table-Light">
-                                                <th>{{ $data->id_penugasan }}</th>
+                                                <th>{{ $no++ }}</th>
                                                 <th>{{ optional($data->proposal_ta)->r_mahasiswa->nama }}</th>
                                                 <th>{{ optional($data->reviewer_satu_dosen)->r_dosen->nama_dosen }}</th>
                                                 <th>{{ optional($data->reviewer_dua_dosen)->r_dosen->nama_dosen }}</th>

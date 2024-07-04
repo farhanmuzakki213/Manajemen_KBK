@@ -42,6 +42,7 @@
                                     <input type="text" class="form-control" id="proposal_ta_id" name="proposal_ta_id" value="{{ $selected_proposal_ta->r_mahasiswa->nim }} | {{ $selected_proposal_ta->r_mahasiswa->nama }}" readonly>
                                     <input type="hidden" name="proposal_ta_id" value="{{ $selected_proposal_ta->id_proposal_ta }}">
                                     <input type="hidden" name="pimpinan_prodi" value="{{ $data_pimpinan_prodi->id_pimpinan_prodi }}">
+                                    <input type="hidden" name="pengurus_id" value="{{ $pengurus_kbk->id_pengurus }}">
                                     @error('proposal_ta_id')
                                         <small>{{ $message }}</small>
                                     @enderror
@@ -53,13 +54,16 @@
                                     <select class="form-select" aria-label="Default select example" name="reviewer_satu" id="reviewer_satu" required>
                                         <option selected disabled>Pilih Nama Reviewer 1</option>
                                         @foreach ($data_dosen_kbk as $dosen_kbk)
-                                            <option value="{{ $dosen_kbk->id_dosen_kbk }}">{{ $dosen_kbk->r_dosen->nama_dosen }}</option>
+                                            <option value="{{ $dosen_kbk->id_dosen_kbk }}" {{ old('reviewer_satu') == $dosen_kbk->id_dosen_kbk ? 'selected' : '' }}>
+                                                {{ $dosen_kbk->r_dosen->nama_dosen }}
+                                            </option>
                                         @endforeach
                                     </select>
                                     @error('reviewer_satu')
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>
+                                
                             
                                 <div class="mb-3">
                                     <label for="reviewer_dua" class="form-label">Nama Reviewer 2</label>

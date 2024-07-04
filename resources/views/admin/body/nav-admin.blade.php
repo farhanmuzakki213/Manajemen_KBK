@@ -31,7 +31,7 @@
                                 <div class="simplebar-content" style="padding: 0px;">
                                     @foreach (auth()->user()->unreadNotifications as $notification)
                                         @if (isset($notification->data['id_ver_rps_uas']))
-                                            <a href="{{ url($notification->data['url']) }}"
+                                            <a href="#"
                                                 class="py-6 px-7 d-flex align-items-center dropdown-item">
                                                 <span class="me-3">
                                                     <img src="{{ asset('backend/assets/images/profile/user-1.jpg') }}"
@@ -41,7 +41,7 @@
                                                     <h6 class="mb-1 fw-semibold lh-base">
                                                         {{ $notification->data['pengurus_kbk'] }}</h6>
                                                     <p class="fs-2 d-block text-body-secondary">
-                                                        {{ ucwords($notification->data['rekomendasi']) }}</p>
+                                                        {{ ucwords($notification->data['rekomendasi']) }}<br>Mata Kuliah : {{ $notification->data['matkul'] }}</p>
                                                     <small>{{ $notification->created_at->diffForHumans() }}</small>
                                                 </div>
                                             </a>
@@ -64,9 +64,8 @@
                                                     <h6 class="mb-1 fw-semibold lh-base">
                                                         {{ $notification->data['pengurus_kbk'] }}</h6>
                                                     <p class="fs-2 d-block text-body-secondary">
-                                                        {{ $notification->data['pesan'] }}</p>
+                                                        {{ $notification->data['pesan'] }}<br>Nama Mahasiswa : {{ $notification->data['nama_mahasiswa'] }}</p>
                                                     <small>{{ $notification->created_at->diffForHumans() }}</small>
-
                                                 </div>
                                             </a>
                                         @endif
