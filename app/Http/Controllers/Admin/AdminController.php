@@ -35,7 +35,7 @@ class AdminController extends Controller
 
     public function RepProposalTA()
     {
-        $data_rep_proposal = ProposalTAModel::with('r_mahasiswa', 'r_pembimbing_satu', 'r_pembimbing_dua', 'r_jenis_kbk')
+        $data_rep_proposal = ProposalTAModel::with('r_mahasiswa', 'r_pembimbing_satu', 'r_pembimbing_dua'   )
             ->orderByDesc('id_proposal_ta')
             ->get();
 

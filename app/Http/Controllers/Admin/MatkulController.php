@@ -234,7 +234,7 @@ class MatkulController extends Controller
 
                 // Mencari data yang ada di database tapi tidak ada di API
                 $differencesArrayDatabase = collect($dataBase_matkul)->reject(function ($kode_matkul) use ($dataAPI_matkul) {
-                    return in_array($kode_matkul, array_column($dataAPI_matkul, 'kode_matkul'));
+                    return in_array($kode_matkul, array_column($dataAPI_matkul, 'kode_matakuliah'));
                 })->all();
 
                 // Data yang berbeda dari database dalam format array asosiatif

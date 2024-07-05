@@ -126,6 +126,8 @@ Route::group(['middleware' => ['role:admin']], function () {
     // Tahun Akademik
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/thnakademik', [ThnAkademikController::class, 'index'])->middleware(['auth', 'verified'])->name('thnakademik');
+        Route::get('/thnakademik/dataAPI', [ThnAkademikController::class, 'show'])->middleware(['auth', 'verified'])->name('thnakademik.show');
+        Route::post('/thnakademik/storeAPI', [ThnAkademikController::class, 'store'])->middleware(['auth', 'verified'])->name('thnakademik.store');
     });
 
     // Dosen

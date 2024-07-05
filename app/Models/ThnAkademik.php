@@ -10,8 +10,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class ThnAkademik extends Model
 {
     use HasFactory, LogsActivity;
-    protected $fillabel = ['id_smt_thnakd ', 'kode_smt_thnakd ', 'smt_thnakd', 'status_smt_thnakd'];
+    protected $fillable = ['id_smt_thnakd', 'kode_smt_thnakd', 'smt_thnakd', 'status_smt_thnakd'];
     protected $table = 'smt_thnakd';
+    public $timestamps = false;
     protected $primaryKey = 'id_smt_thnakd';
 
     public function getActivitylogOptions(): LogOptions
