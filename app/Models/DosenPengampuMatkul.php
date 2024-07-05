@@ -6,6 +6,7 @@ use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class DosenPengampuMatkul extends Model
 {
@@ -24,14 +25,24 @@ class DosenPengampuMatkul extends Model
             ->dontSubmitEmptyLogs();
     }
 
-    public function p_matkulKbk()
+    public function p_matkulKbk(): BelongsToMany
     {
-        return $this->belongsToMany(MatkulKBK::class, 'dosen_matkul_detail_pivot', 'dosen_matkul_id', 'matkul_kbk_id');
+        return $this->belongsToMany(
+            MatkulKBK::class,
+            'dosen_matkul_detail_pivot',
+            'dosen_matkul_id',
+            'matkul_kbk_id'
+        )->withPivot('kelas_id');
     }
 
-    public function p_kelas()
+    public function p_kelas(): BelongsToMany
     {
-        return $this->belongsToMany(Kelas::class, 'dosen_matkul_detail_pivot', 'dosen_matkul_id', 'kelas_id');
+        return $this->belongsToMany(
+            Kelas::class,
+            'dosen_matkul_detail_pivot',
+            'dosen_matkul_id',
+            'kelas_id'
+        );
     }
 
     public function r_dosen(){

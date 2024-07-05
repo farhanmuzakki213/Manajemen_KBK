@@ -20,6 +20,10 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-2">
                             <div class="d-grid gap-2 d-md-block">
+                                <a href="{{ route('DosenPengampuMatkul.show') }}"
+                                class="btn btn-primary me-md-3">
+                                <i class="ti ti-upload"></i> Ambil Data API
+                            </a>
                                 <a href="{{ route('DosenPengampuMatkul.create') }}" class="btn btn-primary me-md-3"><i
                                     class="bi bi-file-earmark-plus"></i> New</a>
                                 <a href="{{ route('DosenPengampuMatkul.export') }}" class="btn btn-primary me-md-3"><i
