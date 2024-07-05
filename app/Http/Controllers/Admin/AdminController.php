@@ -53,7 +53,7 @@ class AdminController extends Controller
                 $data_proposalTA = ProposalTAModel::where('id_proposal_ta', $data['id_proposal_ta'])->first();
                 //dd($data_kurikulum);
                 if ($data_proposalTA) {
-                    ProposalTAModel::where('id_proposal_ta', $data['id_proposal_ta'])->delete();
+                    $data_proposalTA->delete();
                 }
             }
             $file_default = 'none';

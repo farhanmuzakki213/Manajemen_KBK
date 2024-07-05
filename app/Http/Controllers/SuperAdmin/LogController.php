@@ -4,11 +4,7 @@ namespace App\Http\Controllers\SuperAdmin;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Spatie\Activitylog\Models\Activity;
 
 class LogController extends Controller
@@ -16,11 +12,12 @@ class LogController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(  )
     {
         $logs = Activity::get();
-        return view('admin.content.superadmin.log', [
-            'logs' => $logs
+        debug($logs->toArray());
+        return view('admin.content.superadmin.dashboard_super_admin', [
+            'logs' => $logs,
         ]);
     }
 

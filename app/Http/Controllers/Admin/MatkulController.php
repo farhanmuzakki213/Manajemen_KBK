@@ -28,11 +28,13 @@ class MatkulController extends Controller
         return view('admin.content.admin.Matkul', compact('data_matkul'));
     }
 
-    public function export_excel(){
+    public function export_excel()
+    {
         return Excel::download(new ExportMatkul, "Matkul.xlsx");
     }
 
-    public function import(Request $request){
+    public function import(Request $request)
+    {
         Excel::import(new ImportMatkul, $request->file('file'));
         return redirect('matkul');
     }
@@ -147,7 +149,10 @@ class MatkulController extends Controller
             'kurikulum_id' => $request->kurikulum,
             // 'smt_thnakd_id' => $request->smt_thnakd,
         ];
-        Matkul::where('id_matkul', $id)->update($data);
+        $Matkul = Matkul::find($id);
+        if ($Matkul) {
+            $Matkul->update($data);
+        }
         return redirect()->route('matkul');
         //dd($request->all());
     }
@@ -160,7 +165,7 @@ class MatkulController extends Controller
         $data_matkul = Matkul::where('id_matkul', $id)->first();
 
         if ($data_matkul) {
-            Matkul::where('id_matkul', $id)->delete();
+            $data_matkul->delete();
         }
         return redirect()->route('matkul');
 
@@ -177,11 +182,11 @@ class MatkulController extends Controller
                 $data_matkul = Matkul::where('id_matkul', $data['id_matkul'])->first();
                 //dd($data_kurikulum);
                 if ($data_matkul) {
-                    Matkul::where('id_matkul', $data['id_matkul'])->delete();
+                    $data_matkul->delete();
                 }
             }
             foreach ($differences_api as $data) {
-                $data_create =[
+                $data_create = [
                     'id_matkul' => $data['id_matakuliah'],
                     'kode_matkul' => $data['kode_matakuliah'],
                     'nama_matkul' => $data['nama_matakuliah'],
@@ -217,7 +222,7 @@ class MatkulController extends Controller
             if ($response->successful()) {
                 // Mengambil data dari database berdasarkan urutan descending id_matkul
                 $dataBase_matkul = Matkul::orderByDesc('id_matkul')->pluck('kode_matkul')->toArray();
-                
+
                 // Mengambil data dari respons API
                 $data = $response->json();
                 $dataAPI_matkul = $data['list'];
@@ -255,5 +260,3 @@ class MatkulController extends Controller
         }
     }
 }
-
-    

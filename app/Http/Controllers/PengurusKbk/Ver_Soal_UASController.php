@@ -198,18 +198,18 @@ class Ver_Soal_UASController extends Controller
             'tanggal_diverifikasi' => $request->date,
         ];
         DB::beginTransaction();
-        try{
+        try {
             VerRpsUas::create($data);
             $repRpsUas = RepRpsUas::with('r_dosen_matkul.r_dosen', 'r_dosen_matkul.p_matkulKbk')->where('id_rep_rps_uas', $request->id_rep_uas)->first();
             $verRpsUas = VerRpsUas::with('r_pengurus.r_dosen')->where('id_ver_rps_uas', $request->id_ver_uas)->first();
             $dosenMatkul = User::where('name', $repRpsUas->r_dosen_matkul->r_dosen->nama_dosen)
-            ->where('email', $repRpsUas->r_dosen_matkul->r_dosen->email)->first();
+                ->where('email', $repRpsUas->r_dosen_matkul->r_dosen->email)->first();
 
             if ($dosenMatkul) {
                 Notification::send($dosenMatkul, new VerifikasiUas($repRpsUas, $verRpsUas));
             }
             DB::commit();
-        } catch (\Throwable){
+        } catch (\Throwable) {
             DB::rollback();
             return redirect()->route('ver_soal_uas')->with('error', 'Gagal menyimpan data verifikasi.');
         }
@@ -217,7 +217,7 @@ class Ver_Soal_UASController extends Controller
         return redirect()->route('ver_soal_uas')->with('success', 'Data berhasil disimpan.');
         //dd($request->all());
     }
-    
+
 
     /**
      * Display the specified resource.
@@ -233,7 +233,7 @@ class Ver_Soal_UASController extends Controller
     public function edit(string $id)
     {
         $data_ver_soal_uas = VerRpsUas::where('id_ver_rps_uas', $id)->first();
-            debug(compact( 'data_ver_soal_uas'));
+        debug(compact('data_ver_soal_uas'));
         return view('admin.content.pengurusKbk.form.ver_soal_uas_edit', compact('data_ver_soal_uas'));
     }
 
@@ -258,18 +258,22 @@ class Ver_Soal_UASController extends Controller
             'tanggal_diverifikasi' => $request->date,
         ];
         DB::beginTransaction();
-        try{
-            VerRpsUas::where('id_ver_rps_uas', $id)->update($data);
+        try {
+            $VerRpsUas = VerRpsUas::find($id);
+
+            if ($VerRpsUas) {
+                $VerRpsUas->update($data);
+            }
             $repRpsUas = RepRpsUas::with('r_dosen_matkul.r_dosen', 'r_dosen_matkul.p_matkulKbk')->where('id_rep_rps_uas', $request->rep_rps_uas_id)->first();
             $verRpsUas = VerRpsUas::with('r_pengurus.r_dosen')->where('id_ver_rps_uas', $request->id_ver_uas)->first();
             $dosenMatkul = User::where('name', $repRpsUas->r_dosen_matkul->r_dosen->nama_dosen)
-            ->where('email', $repRpsUas->r_dosen_matkul->r_dosen->email)->first();
+                ->where('email', $repRpsUas->r_dosen_matkul->r_dosen->email)->first();
 
             if ($dosenMatkul) {
                 Notification::send($dosenMatkul, new VerifikasiUas($repRpsUas, $verRpsUas));
             }
             DB::commit();
-        } catch (\Throwable){
+        } catch (\Throwable) {
             DB::rollback();
             return redirect()->route('ver_soal_uas')->with('error', 'Gagal menyimpan data verifikasi.');
         }

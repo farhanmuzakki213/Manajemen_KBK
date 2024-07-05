@@ -42,7 +42,7 @@ class JurusanController extends Controller
                 $data_jurusan = Jurusan::where('id_jurusan', $data['id_jurusan'])->first();
                 //dd($data_dosen);
                 if ($data_jurusan) {
-                    Jurusan::where('id_jurusan', $data['id_jurusan'])->delete();
+                    $data_jurusan->delete();
                 }
             }
             foreach ($differences_api as $data) {

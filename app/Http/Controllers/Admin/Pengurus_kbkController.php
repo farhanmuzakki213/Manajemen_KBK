@@ -134,7 +134,11 @@ class Pengurus_kbkController extends Controller
             'jabatan_kbk_id' => $request->jabatan,
             'status_pengurus_kbk' => $request->status,
         ];
-        pengurus_kbk::where('id_pengurus', $id)->update($data);
+        $pengurus_kbk = pengurus_kbk::find($id);
+
+        if ($pengurus_kbk) {
+            $pengurus_kbk->update($data);
+        }
         return redirect()->route('pengurus_kbk');
     }
 
@@ -146,7 +150,7 @@ class Pengurus_kbkController extends Controller
         $data_pengurus_kbk = pengurus_kbk::where('id_pengurus', $id)->first();
 
         if ($data_pengurus_kbk) {
-            pengurus_kbk::where('id_pengurus', $id)->delete();
+            $data_pengurus_kbk->delete();
         }
         return redirect()->route('pengurus_kbk');
 

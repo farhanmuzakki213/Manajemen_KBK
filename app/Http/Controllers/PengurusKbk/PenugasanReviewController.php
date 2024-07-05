@@ -212,7 +212,11 @@ class PenugasanReviewController extends Controller
         ];
         DB::beginTransaction();
         try {
-            ReviewProposalTAModel::where('id_penugasan', $id)->update($data);
+            $ReviewProposalTAModel = ReviewProposalTAModel::find($id);
+
+            if ($ReviewProposalTAModel) {
+                $ReviewProposalTAModel->update($data);
+            }
             $pengurus_kbk = $this->getDosen();
             $id_penugasan = $request->id_penugasan;
             $proposal_ta = ProposalTAModel::with('r_mahasiswa')->where('id_proposal_ta', $request->proposal_ta_id)->first();

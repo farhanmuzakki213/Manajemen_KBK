@@ -35,7 +35,7 @@ class PimpinanProdiController extends Controller
                 $data_pimpinanprodi = PimpinanProdi::where('id_pimpinan_prodi', $data['id_pimpinan_prodi'])->first();
                 //dd($data_kurikulum);
                 if ($data_pimpinanprodi) {
-                    PimpinanProdi::where('id_pimpinan_prodi', $data['id_pimpinan_prodi'])->delete();
+                    $data_pimpinanprodi->delete();
                 }
             }
             $jabatan_pimpinan_id = 3;

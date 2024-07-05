@@ -46,7 +46,7 @@
                                         <label for="file" class="col-form-label">Import File</label>
                                         <input type="file" class="form-control" name="file" id="file">
                                         @error('file')
-                                              <small>{{ $message }}</small>
+                                            <small>{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="mb-3">

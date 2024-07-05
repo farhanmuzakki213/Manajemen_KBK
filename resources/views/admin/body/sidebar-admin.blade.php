@@ -42,7 +42,7 @@
                             <ul aria-expanded="false" class="collapse first-level">
                                 @hasrole('super-admin')
                                     <li class="sidebar-item">
-                                        <a href="#" class="sidebar-link dropdown-item-custom">
+                                        <a href="{{url('logs')}}" class="sidebar-link dropdown-item-custom">
                                             <div class="round-16 d-flex align-items-center justify-content-center">
                                                 <i class="ti ti-circle"></i>
                                             </div>
@@ -126,9 +126,6 @@
                             </ul>
                         </li>
                     @endhasanyrole
-
-                  
-
                     @hasrole('super-admin')
                         <li class="nav-small-cap">
                             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
@@ -156,14 +153,6 @@
                                     <i class="ti ti-aperture"></i>
                                 </span>
                                 <span class="hide-menu">User</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ url('logs') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Log Activity</span>
                             </a>
                         </li>
                     @endhasrole

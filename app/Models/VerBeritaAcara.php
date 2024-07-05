@@ -33,8 +33,10 @@ class VerBeritaAcara extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->logUnguarded();
-        // Chain fluent methods for configuration options
+            ->logAll()
+            ->logOnlyDirty()
+            ->useLogName('VerBeritaAcara')
+            ->dontSubmitEmptyLogs();
     }
 
     public function p_ver_rps_uas(): BelongsToMany

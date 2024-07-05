@@ -44,7 +44,7 @@ class KurikulumController extends Controller
                 $data_kurikulum = Kurikulum::where('id_kurikulum', $data['id_kurikulum'])->first();
                 //dd($data_kurikulum);
                 if ($data_kurikulum) {
-                    Kurikulum::where('id_kurikulum', $data['id_kurikulum'])->delete();
+                    $data_kurikulum->delete();
                 }
             }
             foreach ($differences_api as $data) {

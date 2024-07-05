@@ -20,8 +20,10 @@ class ProposalTAModel extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->logUnguarded();
-        // Chain fluent methods for configuration options
+            ->logAll()
+            ->logOnlyDirty()
+            ->useLogName('ProposalTAModel')
+            ->dontSubmitEmptyLogs();
     }
 
     public function r_mahasiswa(){

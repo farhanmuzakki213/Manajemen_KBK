@@ -40,7 +40,7 @@ class ProdiController extends Controller
                 $data_prodi = Prodi::where('id_prodi', $data['id_prodi'])->first();
                 //dd($data_dosen);
                 if ($data_prodi) {
-                    Prodi::where('id_prodi', $data['id_prodi'])->delete();
+                    $data_prodi->delete();
                 }
             }
             foreach ($differences_api as $data) {

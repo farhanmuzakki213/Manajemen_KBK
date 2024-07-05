@@ -121,7 +121,10 @@ class DosenKBKController extends Controller
             'jenis_kbk_id' => $request->jenis_kbk,
             'dosen_id' => $request->nama_dosen
         ];
-        DosenKBK::where('id_dosen_kbk', $id)->update($data);
+        $DosenKBK = DosenKBK::where('id_dosen_kbk', $id)->first();
+        if($DosenKBK){
+            $DosenKBK->update($data);
+        }
         return redirect()->route('dosen_kbk');
     }
 
@@ -133,7 +136,7 @@ class DosenKBKController extends Controller
         $data_dosen_kbk = DosenKBK::where('id_dosen_kbk', $id)->first();
 
         if ($data_dosen_kbk) {
-            DosenKBK::where('id_dosen_kbk', $id)->delete();
+            $data_dosen_kbk->delete();
         }
         return redirect()->route('dosen_kbk');
 

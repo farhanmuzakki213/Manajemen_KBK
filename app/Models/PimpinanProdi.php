@@ -19,8 +19,10 @@ class PimpinanProdi extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->logUnguarded();
-        // Chain fluent methods for configuration options
+            ->logAll()
+            ->logOnlyDirty()
+            ->useLogName('PimpinanProdi')
+            ->dontSubmitEmptyLogs();
     }
 
     public function r_jabatan_pimpinan(){

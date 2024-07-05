@@ -361,7 +361,11 @@ class DosenMatkulController extends Controller
         }
 
         //dd($request->all());
-        RepRpsUas::where('id_rep_rps_uas', $id)->update($data);
+        $RepRpsUas = RepRpsUas::find($id);
+
+        if ($RepRpsUas) {
+            $RepRpsUas->update($data);
+        }
         return redirect()->route('dosen_matkul')->with('success', 'Data berhasil diperbarui.');
     }
 
@@ -379,7 +383,7 @@ class DosenMatkulController extends Controller
 
         // Menghapus data dari basis data
         if ($data_rep_rps) {
-            RepRpsUas::where('id_rep_rps_uas', $id)->delete();
+            $data_rep_rps->delete();
         }
 
         return redirect()->route('dosen_matkul')->with('success', 'Data berhasil dihapus.');
@@ -496,7 +500,11 @@ class DosenMatkulController extends Controller
         }
 
         //dd($request->all());
-        RepRpsUas::where('id_rep_rps_uas', $id)->update($data);
+        $RepRpsUas = RepRpsUas::find($id);
+
+        if ($RepRpsUas) {
+            $RepRpsUas->update($data);
+        }
         return redirect()->route('dosen_matkul')->with('success', 'Data berhasil diperbarui.');
     }
 
@@ -514,7 +522,7 @@ class DosenMatkulController extends Controller
 
         // Menghapus data dari basis data
         if ($data_rep_uas) {
-            RepRpsUas::where('id_rep_rps_uas', $id)->delete();
+            $data_rep_uas->delete();
         }
 
         return redirect()->route('dosen_matkul')->with('success', 'Data berhasil dihapus.');

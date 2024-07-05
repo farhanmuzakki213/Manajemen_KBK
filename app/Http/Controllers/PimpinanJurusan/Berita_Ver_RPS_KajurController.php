@@ -66,7 +66,8 @@ class Berita_Ver_RPS_KajurController extends Controller
             'tanggal_diketahui_kajur' => $request->tanggal_diketahui_kajur,
         ];
 
-        $oldData = VerBeritaAcara::where('id_berita_acara', $id)->first();;
+        $oldData = VerBeritaAcara::where('id_berita_acara', $id)->first();
+
         //debug($oldData->file);
         // Memeriksa apakah ada file lama
         if ($oldData->file !== null && $request->hasFile('file_berita_acara')) {
@@ -87,7 +88,11 @@ class Berita_Ver_RPS_KajurController extends Controller
         }
 
         //dd($request->all());
-        VerBeritaAcara::where('id_berita_acara', $id)->update($data);
+        $VerBeritaAcara = VerBeritaAcara::find($id);
+
+        if ($VerBeritaAcara) {
+            $VerBeritaAcara->update($data);
+        }
         return redirect()->route('kajur_berita_ver_rps')->with('success', 'Data berhasil diperbarui.');
     }
 }

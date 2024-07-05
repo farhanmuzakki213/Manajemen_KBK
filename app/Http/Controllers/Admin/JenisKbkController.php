@@ -22,11 +22,13 @@ class JenisKbkController extends Controller
         return view('admin.content.admin.jenis_kbk', compact('data_jenis_kbk'));
     }
 
-    public function export_excel(){
+    public function export_excel()
+    {
         return Excel::download(new ExportJenisKbk, "Datakbk.xlsx");
     }
 
-    public function import(Request $request){
+    public function import(Request $request)
+    {
         Excel::import(new ImportJenisKbk, $request->file('file'));
         return redirect('data_kbk');
     }
@@ -99,9 +101,12 @@ class JenisKbkController extends Controller
             'jenis_kbk' => $request->jenis_kbk,
             'deskripsi' => $request->deskripsi,
         ];
-        JenisKbk::where('id_jenis_kbk', $id)->update($data);
+        $jenisKbk = JenisKbk::find($id);
+
+        if ($jenisKbk) {
+            $jenisKbk->update($data);
+        }
         return redirect()->route('jenis_kbk');
-        //dd($request->all());
     }
 
     /**
@@ -112,7 +117,7 @@ class JenisKbkController extends Controller
         $data_jenis_kbk = JenisKbk::where('id_jenis_kbk', $id)->first();
 
         if ($data_jenis_kbk) {
-            JenisKbk::where('id_jenis_kbk', $id)->delete();
+            $data_jenis_kbk->delete();
         }
         return redirect()->route('jenis_kbk');
 

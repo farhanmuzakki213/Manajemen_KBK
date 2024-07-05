@@ -109,7 +109,10 @@ class DosenPengampuMatkulController extends Controller
             'dosen_id' => $request->nama_dosen,
             'smt_thnakd_id' => $request->smt_thnakd,
         ];
-        DosenPengampuMatkul::where('id_dosen_matkul', $id)->update($data);
+        $DosenPengampuMatkul = DosenPengampuMatkul::where('id_dosen_matkul', $id)->first();
+        if($DosenPengampuMatkul){
+            $DosenPengampuMatkul->update($data);
+        }
         return redirect()->route('DosenPengampuMatkul');
     }
 
@@ -121,7 +124,7 @@ class DosenPengampuMatkulController extends Controller
         $data_dosen_pengampu = DosenPengampuMatkul::where('id_dosen_matkul', $id)->first();
 
         if ($data_dosen_pengampu) {
-            DosenPengampuMatkul::where('id_dosen_matkul', $id)->delete();
+            $data_dosen_pengampu->delete();
         }
         return redirect()->route('DosenPengampuMatkul');
     }

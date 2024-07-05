@@ -21,8 +21,10 @@ class RepRpsUas extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->logUnguarded();
-        // Chain fluent methods for configuration options
+            ->logAll()
+            ->logOnlyDirty()
+            ->useLogName('RepRpsUas')
+            ->dontSubmitEmptyLogs();
     }
 
     public function r_dosen_matkul(){

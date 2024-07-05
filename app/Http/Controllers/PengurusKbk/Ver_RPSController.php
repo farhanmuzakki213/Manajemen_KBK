@@ -263,7 +263,11 @@ class Ver_RPSController extends Controller
         ];
         DB::beginTransaction();
         try {
-            VerRpsUas::where('id_ver_rps_uas', $id)->update($data);
+            $VerRpsUas = VerRpsUas::find($id);
+
+            if ($VerRpsUas) {
+                $VerRpsUas->update($data);
+            }
             $repRpsUas = RepRpsUas::with('r_dosen_matkul.r_dosen', 'r_dosen_matkul.p_matkulKbk')->where('id_rep_rps_uas', $request->rep_rps_uas_id)->first();
             $verRpsUas = VerRpsUas::with('r_pengurus.r_dosen')->where('id_ver_rps_uas', $request->id_ver_rps)->first();
             $dosenMatkul = User::where('name', $repRpsUas->r_dosen_matkul->r_dosen->nama_dosen)

@@ -30,8 +30,10 @@ class VerRpsUas extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->logUnguarded();
-        // Chain fluent methods for configuration options
+            ->logAll()
+            ->logOnlyDirty()
+            ->useLogName('VerRpsUas')
+            ->dontSubmitEmptyLogs();
     }
 
     public function r_pengurus(){

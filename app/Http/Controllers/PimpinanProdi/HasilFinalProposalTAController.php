@@ -148,7 +148,11 @@ class HAsilFinalProposalTAController extends Controller
                 'status_final_proposal' => $request->status,
             ];
             //dd($request->all());
-            ReviewProposalTAModel::where('id_penugasan', $id)->update($data);
+            $ReviewProposalTAModel = ReviewProposalTAModel::find($id);
+
+            if ($ReviewProposalTAModel) {
+                $ReviewProposalTAModel->update($data);
+            }
             return redirect()->route('hasil_review_proposal_ta')->with('success', 'Data berhasil diperbarui.');
         }
     }

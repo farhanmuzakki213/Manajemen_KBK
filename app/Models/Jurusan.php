@@ -18,7 +18,9 @@ class Jurusan extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->logUnguarded();
-        // Chain fluent methods for configuration options
+            ->logAll()
+            ->logOnlyDirty()
+            ->useLogName('Jurusan')
+            ->dontSubmitEmptyLogs();
     }
 }
