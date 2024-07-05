@@ -105,7 +105,7 @@ class kaprodiController extends Controller
         // Debugging untuk memeriksa data proposal TA
         debug($data_proposal_ta->toArray());
         $jumlah_proposal = $data_proposal_ta->count();
-        
+
         // Ambil data review proposal TA dengan filter berdasarkan prodi
         $data_review_proposal_ta = ReviewProposalTaDetailPivot::with('p_reviewProposal', 'p_reviewProposal.proposal_ta.r_mahasiswa.r_prodi')
             ->whereHas('p_reviewProposal.proposal_ta.r_mahasiswa.r_prodi', function ($query) use ($kaprodi) {
@@ -113,7 +113,7 @@ class kaprodiController extends Controller
             })
             ->orderBy('review_proposal_ta_detail_pivot.penugasan_id', 'desc')
             ->get();
-            $jumlah_review_proposal = $data_review_proposal_ta->count();
+        $jumlah_review_proposal = $data_review_proposal_ta->count();
         // Debugging untuk memeriksa data review proposal TA
         debug($data_review_proposal_ta->toArray());
 
@@ -134,7 +134,7 @@ class kaprodiController extends Controller
         //     $reviewer_satu = $group->where('dosen', '1')->first();
         //     $reviewer_dua = $group->where('dosen', '2')->first();
 
-            // Jika ada data reviewer pertama dan kedua, gabungkan dalam satu array
+        // Jika ada data reviewer pertama dan kedua, gabungkan dalam satu array
         //     if ($reviewer_satu && $reviewer_dua) {
         //         $merged_data[] = [
         //             'penugasan_id' => $penugasan_id,
@@ -359,9 +359,9 @@ class kaprodiController extends Controller
         $data_ver_rps = VerRpsUas::with('r_pengurus.r_dosen', 'r_rep_rps_uas')
             ->whereHas('r_rep_rps_uas', function ($query) use ($kaprodi) {
                 $query->where('type', '=', '0')
-                      ->whereHas('r_matkulKbk.r_matkul.r_kurikulum.r_prodi', function ($query) use ($kaprodi) {
-                          $query->where('id_prodi', '=', $kaprodi->prodi_id);
-                      });
+                    ->whereHas('r_matkulKbk.r_matkul.r_kurikulum.r_prodi', function ($query) use ($kaprodi) {
+                        $query->where('prodi_id', '=', $kaprodi->prodi_id);
+                    });
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
@@ -495,9 +495,9 @@ class kaprodiController extends Controller
         $data_ver_rps = VerRpsUas::with('r_pengurus.r_dosen', 'r_rep_rps_uas')
             ->whereHas('r_rep_rps_uas', function ($query) use ($kaprodi) {
                 $query->where('type', '=', '1')
-                      ->whereHas('r_matkulKbk.r_matkul.r_kurikulum.r_prodi', function ($query) use ($kaprodi) {
-                          $query->where('id_prodi', '=', $kaprodi->prodi_id);
-                      });
+                    ->whereHas('r_matkulKbk.r_matkul.r_kurikulum.r_prodi', function ($query) use ($kaprodi) {
+                        $query->where('prodi_id', '=', $kaprodi->prodi_id);
+                    });
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
@@ -513,7 +513,7 @@ class kaprodiController extends Controller
             'kbk' => $kbk,
             'data_ver_rps' => $data_ver_rps,
         ];
-        
+
         return view('admin.content.pimpinanProdi.GrafikUasProdi', compact('data'));
     }
 }

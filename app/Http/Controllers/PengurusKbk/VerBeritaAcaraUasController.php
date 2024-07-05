@@ -51,16 +51,19 @@ class VerBeritaAcaraUasController extends Controller
         ])
             ->whereHas('r_rep_rps_uas', function ($query) use ($pengurus_kbk, $selectedProdiId) {
                 $query->whereHas('r_matkulKbk', function ($nestedQuery) use ($pengurus_kbk, $selectedProdiId) {
-                    $nestedQuery->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id);
-
-                    if ($selectedProdiId) {
-                        $nestedQuery->where('prodi_id', $selectedProdiId); // Filter by prodi
-                    }
+                    $nestedQuery->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id)
+                    ->whereHas('r_matkul.r_kurikulum.r_prodi', function ($subnestedQuery) use ($selectedProdiId) {
+                        if ($selectedProdiId) {
+                            $subnestedQuery->where('prodi_id', $selectedProdiId); // Filter by prodi
+                        }
+                    });
+                    
                 })
+                
                     ->whereHas('r_smt_thnakd', function ($nestedQuery) {
                         $nestedQuery->where('status_smt_thnakd', '=', '1');
                     })
-                    ->where('type', '=', '1');
+                    ->where('type', '=', '1'); // Filter by type here
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
@@ -84,7 +87,7 @@ class VerBeritaAcaraUasController extends Controller
     public function download_pdf(Request $request)
     {
         $pengurus_kbk = $this->getDosen();
-        $prodiList = Prodi::where('jurusan_id', 7)->get();
+        $prodiList = Prodi::where('jurusan_id', $pengurus_kbk->r_dosen->jurusan_id)->get();
     
         $selectedProdiId = $request->input('prodi_id');
     
@@ -93,7 +96,7 @@ class VerBeritaAcaraUasController extends Controller
         }
     
         $selectedProdi = Prodi::find($selectedProdiId);
-
+        $kajur = PimpinanJurusan::where('jurusan_id', $pengurus_kbk->r_dosen->jurusan_id)->first();
         $kaprodi = PimpinanProdi::where('prodi_id', $selectedProdiId)->first();
 
         $semester = ThnAkademik::where('status_smt_thnakd', '=', '1')->first();
@@ -105,18 +108,20 @@ class VerBeritaAcaraUasController extends Controller
             'r_rep_rps_uas.r_smt_thnakd',
             'r_rep_rps_uas.r_matkulKbk'
         ])
-        ->whereHas('r_rep_rps_uas', function ($query) use ($pengurus_kbk, $selectedProdiId) {
-            $query->whereHas('r_matkulKbk', function ($nestedQuery) use ($pengurus_kbk, $selectedProdiId) {
-                $nestedQuery->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id)
-                            ->where('prodi_id', $selectedProdiId);
+            ->whereHas('r_rep_rps_uas', function ($query) use ($pengurus_kbk, $selectedProdiId) {
+                $query->whereHas('r_matkulKbk', function ($nestedQuery) use ($pengurus_kbk) {
+                    $nestedQuery->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id);
+                })
+                    ->whereHas('r_matkulKbk.r_matkul.r_kurikulum.r_prodi', function ($query) use ($selectedProdiId) {
+                        $query->where('prodi_id', '=', $selectedProdiId);
+                    })
+                    ->whereHas('r_smt_thnakd', function ($nestedQuery) {
+                        $nestedQuery->where('status_smt_thnakd', '=', '1');
+                    })
+                    ->where('type', '=', '1');
             })
-            ->whereHas('r_smt_thnakd', function ($nestedQuery) {
-                $nestedQuery->where('status_smt_thnakd', '=', '1');
-            })
-            ->where('type', '=', '1');
-        })
-        ->orderByDesc('id_ver_rps_uas')
-        ->get();
+            ->orderByDesc('id_ver_rps_uas')
+            ->get();
     
         if ($data_ver_rps->isEmpty()) {
             return redirect()->route('upload_uas_berita_acara')->with('error', 'Data verifikasi uas pada prodi ini tidak ada');
@@ -129,6 +134,8 @@ class VerBeritaAcaraUasController extends Controller
             'prodiList' => $prodiList,
             'kaprodi' => $kaprodi,
             'semester' => $semester,
+            'kajur' => $kajur,
+            'pengurus_kbk' => $pengurus_kbk,
         ]);
     
         return $pdf->stream('Berita_Acara_UAS.pdf');

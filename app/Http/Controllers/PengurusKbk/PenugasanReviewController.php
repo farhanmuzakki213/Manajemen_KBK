@@ -269,7 +269,7 @@ class PenugasanReviewController extends Controller
             })
             ->orderByDesc('review_proposal_ta_detail_pivot.penugasan_id')
             ->get();
-            debug($data_review_proposal_ta->toArray(), $pengurus_kbk->toArray());
+
         $grouped_data = $data_review_proposal_ta->groupBy('penugasan_id');
 
         // Ambil dua penugasan_id pertama
@@ -303,7 +303,7 @@ class PenugasanReviewController extends Controller
             if ($reviewer_dua) {
                 $data_reviewer_dua = [
                     'reviewer_dua' => $reviewer_dua->p_reviewProposal->reviewer_dua_dosen->r_dosen->nama_dosen,
-                    'pembimbing_dua' => $reviewer_dua->p_reviewProposal->proposal_ta->r_pembimbing_satu->nama_dosen,
+                    'pembimbing_dua' => $reviewer_dua->p_reviewProposal->proposal_ta->r_pembimbing_dua->nama_dosen,
                     'status_dua' => $reviewer_dua->status_review_proposal,
                     'status_final_proposal' => $reviewer_dua->p_reviewProposal->status_final_proposal,
                 ];
@@ -315,8 +315,8 @@ class PenugasanReviewController extends Controller
                 'nama_mahasiswa' => $reviewer_satu ? $reviewer_satu->p_reviewProposal->proposal_ta->r_mahasiswa->nama : null,
                 'nim_mahasiswa' => $reviewer_satu ? $reviewer_satu->p_reviewProposal->proposal_ta->r_mahasiswa->nim : null,
                 'judul' => $reviewer_satu ? $reviewer_satu->p_reviewProposal->proposal_ta->judul : null,
-                'prodi_1' => $reviewer_satu ? $reviewer_satu->p_reviewProposal->proposal_ta->r_mahasiwa->r_prodi->prodi : null,
-                'prodi_2' => $reviewer_dua ? $reviewer_dua->p_reviewProposal->proposal_ta->r_mahasiwa->r_prodi->prodi : null,
+                'prodi_1' => $reviewer_satu ? $reviewer_satu->p_reviewProposal->proposal_ta->r_mahasiswa->r_prodi->prodi : null,
+                'prodi_2' => $reviewer_dua ? $reviewer_dua->p_reviewProposal->proposal_ta->r_mahasiswa->r_prodi->prodi : null,
                 'reviewer_satu' => $data_reviewer_satu ? $data_reviewer_satu['reviewer_satu'] : null,
                 'pembimbing_satu' => $data_reviewer_satu ? $data_reviewer_satu['pembimbing_satu'] : null,
                 'reviewer_dua' => $data_reviewer_dua ? $data_reviewer_dua['reviewer_dua'] : null,
@@ -328,6 +328,7 @@ class PenugasanReviewController extends Controller
         }
 
         debug($merged_data);
+
         return view('admin.content.pengurusKbk.Hasil_Review', compact('merged_data', 'data_review_proposal_ta'));
     }
 

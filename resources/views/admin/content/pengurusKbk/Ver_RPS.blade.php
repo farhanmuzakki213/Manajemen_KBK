@@ -122,7 +122,7 @@
                                         <th>Tahun Akademik</th>
                                         <th>Dosen Verifikasi</th>
                                         <th>Rekomendasi</th>
-                                        <th>Saran</th>
+                                        <th>Evaluasi</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -136,7 +136,7 @@
                                         <th>Tahun Akademik</th>
                                         <th>Dosen Verifikasi</th>
                                         <th>Rekomendasi</th>
-                                        <th>Saran</th>
+                                        <th>Evaluasi</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </tfoot>
@@ -311,7 +311,7 @@
                                                                     </div>
                                                                     <div class="col">
                                                                         <label for="saran"
-                                                                            class="form-label">Saran</label>
+                                                                            class="form-label">Evaluasi</label>
                                                                         <input type="text" class="form-control"
                                                                             id="saran"value="{{ $data_ver->saran }}"
                                                                             readonly>

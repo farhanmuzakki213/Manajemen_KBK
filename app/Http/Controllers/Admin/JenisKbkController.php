@@ -115,12 +115,10 @@ class JenisKbkController extends Controller
     public function delete(string $id)
     {
         $data_jenis_kbk = JenisKbk::where('id_jenis_kbk', $id)->first();
-
         if ($data_jenis_kbk) {
             $data_jenis_kbk->delete();
         }
         return redirect()->route('jenis_kbk');
-
         //dd($data_jenis_kbk);
     }
 }

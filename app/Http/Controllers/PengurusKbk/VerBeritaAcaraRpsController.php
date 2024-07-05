@@ -51,12 +51,15 @@ class VerBeritaAcaraRpsController extends Controller
         ])
             ->whereHas('r_rep_rps_uas', function ($query) use ($pengurus_kbk, $selectedProdiId) {
                 $query->whereHas('r_matkulKbk', function ($nestedQuery) use ($pengurus_kbk, $selectedProdiId) {
-                    $nestedQuery->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id);
-
-                    if ($selectedProdiId) {
-                        $nestedQuery->where('prodi_id', $selectedProdiId); // Filter by prodi
-                    }
+                    $nestedQuery->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id)
+                    ->whereHas('r_matkul.r_kurikulum.r_prodi', function ($subnestedQuery) use ($selectedProdiId) {
+                        if ($selectedProdiId) {
+                            $subnestedQuery->where('prodi_id', $selectedProdiId); // Filter by prodi
+                        }
+                    });
+                    
                 })
+                
                     ->whereHas('r_smt_thnakd', function ($nestedQuery) {
                         $nestedQuery->where('status_smt_thnakd', '=', '1');
                     })
@@ -85,18 +88,20 @@ class VerBeritaAcaraRpsController extends Controller
     public function download_pdf(Request $request)
     {
         $pengurus_kbk = $this->getDosen();
-        $prodiList = Prodi::where('jurusan_id', 7)->get();
-    
+        $prodiList = Prodi::where('jurusan_id', $pengurus_kbk->r_dosen->jurusan_id)->get();
+        debug($prodiList);
         $selectedProdiId = $request->input('prodi_id');
-    
+
         if (!$selectedProdiId) {
             return redirect()->route('upload_rps_berita_acara')->with('error', 'Silahkan pilih prodi yang ingin di cetak');
         }
-    
+
         $selectedProdi = Prodi::find($selectedProdiId);
 
+        $kajur = PimpinanJurusan::where('jurusan_id', $pengurus_kbk->r_dosen->jurusan_id)->first();
+        debug($kajur);
         $kaprodi = PimpinanProdi::where('prodi_id', $selectedProdiId)->first();
-    
+
         $data_ver_rps = VerRpsUas::with([
             'r_pengurus',
             'r_pengurus.r_dosen',
@@ -104,34 +109,38 @@ class VerBeritaAcaraRpsController extends Controller
             'r_rep_rps_uas.r_smt_thnakd',
             'r_rep_rps_uas.r_matkulKbk'
         ])
-        ->whereHas('r_rep_rps_uas', function ($query) use ($pengurus_kbk, $selectedProdiId) {
-            $query->whereHas('r_matkulKbk', function ($nestedQuery) use ($pengurus_kbk, $selectedProdiId) {
-                $nestedQuery->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id)
-                            ->where('prodi_id', $selectedProdiId);
+            ->whereHas('r_rep_rps_uas', function ($query) use ($pengurus_kbk, $selectedProdiId) {
+                $query->whereHas('r_matkulKbk', function ($nestedQuery) use ($pengurus_kbk) {
+                    $nestedQuery->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id);
+                })
+                    ->whereHas('r_matkulKbk.r_matkul.r_kurikulum.r_prodi', function ($query) use ($selectedProdiId) {
+                        $query->where('prodi_id', '=', $selectedProdiId);
+                    })
+                    ->whereHas('r_smt_thnakd', function ($nestedQuery) {
+                        $nestedQuery->where('status_smt_thnakd', '=', '1');
+                    })
+                    ->where('type', '=', '0');
             })
-            ->whereHas('r_smt_thnakd', function ($nestedQuery) {
-                $nestedQuery->where('status_smt_thnakd', '=', '1');
-            })
-            ->where('type', '=', '0');
-        })
-        ->orderByDesc('id_ver_rps_uas')
-        ->get();
-    
+            ->orderByDesc('id_ver_rps_uas')
+            ->get();
+
         if ($data_ver_rps->isEmpty()) {
             return redirect()->route('upload_rps_berita_acara')->with('error', 'Data verifikasi rps pada prodi ini tidak ada');
         }
-    
+
         $pdf = Pdf::loadView('admin.content.pengurusKbk.pdf.berita_acara_rps', [
             'data_ver_rps' => $data_ver_rps,
             'selectedProdi' => $selectedProdi,
             'prodiList' => $prodiList,
             'kaprodi' => $kaprodi,
+            'kajur' => $kajur,
+            'pengurus_kbk' => $pengurus_kbk,
         ]);
-    
+
         // return $pdf->stream('Berita_Acara_RPS.pdf');
         return $pdf->download('Berita_Acara_RPS.pdf');
     }
-    
+
 
 
 

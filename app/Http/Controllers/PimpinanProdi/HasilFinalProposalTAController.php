@@ -139,6 +139,11 @@ class HAsilFinalProposalTAController extends Controller
                 'id_penugasan' => 'required',
                 'status' => 'required',
             ]);
+            $detailProposalTa = ReviewProposalTaDetailPivot::where('penugasan_id', $id)->get();
+            if ($detailProposalTa->count() < 2) {
+                Session::flash('error', 'Proposal belum di review');
+                return redirect()->route('hasil_review_proposal_ta');
+            }
 
             if ($validator->fails()) {
                 return redirect()->back()->withInput()->withErrors($validator);
