@@ -77,6 +77,8 @@ Route::group(['middleware' => ['role:super-admin']], function () {
 
     Route::resource('users', App\Http\Controllers\SuperAdmin\UserController::class);
     Route::delete('users/{userId}/delete', [App\Http\Controllers\SuperAdmin\UserController::class, 'destroy']);
+
+    Route::resource('logs', App\Http\Controllers\SuperAdmin\LogController::class);
 });
 
 Route::get('/', [LandingPageController::class, 'index']);

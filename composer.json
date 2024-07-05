@@ -19,6 +19,7 @@
         "phpoffice/phpspreadsheet": "*",
         "predis/predis": "^2.2",
         "ramsey/uuid": "^4.7",
+        "spatie/laravel-activitylog": "^4.8",
         "spatie/laravel-permission": "^6.9"
     },
     "require-dev": {

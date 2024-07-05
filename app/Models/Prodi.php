@@ -2,16 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Prodi extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
     protected $fillable = ['id_prodi','kode_prodi', 'prodi', 'jurusan_id', 'jenjang'];
     protected $table = 'prodi';
     protected $primaryKey = 'id_prodi';
     public $timestamps = false;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+        ->logUnguarded();
+        // Chain fluent methods for configuration options
+    }
 
     public function r_jurusan(){
         return $this->belongsTo(Jurusan::class, 'jurusan_id','id_jurusan');

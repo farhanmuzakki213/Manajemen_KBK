@@ -2,16 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class MatkulKBK extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
     protected $fillable = ['id_matkul_kbk','matkul_id','jenis_kbk_id', 'prodi_id', 'kurikulum_id'];
     protected $table = 'matkul_kbk';
     public $timestamps = false;
     protected $primaryKey = 'id_matkul_kbk';
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+        ->logUnguarded();
+        // Chain fluent methods for configuration options
+    }
 
     public function r_kurikulum(){
         return $this->belongsTo(Kurikulum::class, 'kurikulum_id','id_kurikulum');

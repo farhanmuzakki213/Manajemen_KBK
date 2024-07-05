@@ -2,16 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Pengurus_kbk extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
     protected $fillable = ['id_pengurus','jenis_kbk_id', 'dosen_id', 'jabatan_kbk_id','status_pengurus_kbk'];
     protected $table = 'pengurus_kbk';
     public $timestamps = false;
     protected $primaryKey = 'id_pengurus';
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+        ->logUnguarded();
+        // Chain fluent methods for configuration options
+    }
 
     public function r_dosen(){
         return $this->belongsTo(Dosen::class, 'dosen_id','id_dosen');

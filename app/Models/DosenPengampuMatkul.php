@@ -2,15 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DosenPengampuMatkul extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
     protected $fillabel=['dosen_id', 'smt_thnakd_id'];
     protected $table = 'dosen_matkul';
     protected $primaryKey = 'id_dosen_matkul';
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+        ->logUnguarded();
+        // Chain fluent methods for configuration options
+    }
 
     public function p_matkulKbk()
     {

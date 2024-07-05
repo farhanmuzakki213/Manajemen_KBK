@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Ramsey\Uuid\Uuid;
+use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
-use Ramsey\Uuid\Uuid;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class VerRpsUas extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
     protected $fillable = [
         'id_ver_rps_uas',
         'rep_rps_uas_id',
@@ -24,6 +26,13 @@ class VerRpsUas extends Model
 
     protected $primaryKey = 'id_ver_rps_uas';
     public $incrementing = false;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+        ->logUnguarded();
+        // Chain fluent methods for configuration options
+    }
 
     public function r_pengurus(){
         return $this->belongsTo(Pengurus_kbk::class, 'pengurus_id','id_pengurus');

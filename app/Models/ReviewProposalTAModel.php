@@ -2,18 +2,27 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ReviewProposalTAModel extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
     protected $fillable = ['id_penugasan', 'pengurus_id', 'proposal_ta_id', 'reviewer_satu', 'reviewer_dua', 'pimpinan_prodi_id', 'status_final_proposal', 'tanggal_penugasan'];
     protected $table = 'review_proposal_ta';
     public $timestamps = false;
 
     protected $primaryKey = 'id_penugasan';
     public $incrementing = false;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+        ->logUnguarded();
+        // Chain fluent methods for configuration options
+    }
 
     public function proposal_ta(){
         return $this->belongsTo(ProposalTAModel::class, 'proposal_ta_id','id_proposal_ta');

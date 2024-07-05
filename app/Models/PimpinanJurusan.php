@@ -2,16 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PimpinanJurusan extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
     protected $fillable = ['id_pimpinan_jurusan','jabatan_pimpinan_id','jurusan_id','dosen_id','periode', 'status_pimpinan_jurusan'];
     protected $table = 'pimpinan_jurusan';
     public $timestamps = false;
     protected $primaryKey = 'id_pimpinan_jurusan';
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+        ->logUnguarded();
+        // Chain fluent methods for configuration options
+    }
 
     public function r_dosen(){
         return $this->belongsTo(Dosen::class, 'dosen_id','id_dosen');

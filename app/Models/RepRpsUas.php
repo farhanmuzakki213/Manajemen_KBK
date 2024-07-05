@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class RepRpsUas extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
     protected $fillable = ['id_rep_rps_uas', 'smt_thnakd_id', 'dosen_matkul_id', 'matkul_kbk_id', 'type', 'file'];
 
 
@@ -15,6 +17,13 @@ class RepRpsUas extends Model
     public $incrementing = false;
     protected $primaryKey = 'id_ver_rps_uas';
     public $timestamps = true;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+        ->logUnguarded();
+        // Chain fluent methods for configuration options
+    }
 
     public function r_dosen_matkul(){
         return $this->belongsTo(DosenPengampuMatkul::class, 'dosen_matkul_id','id_dosen_matkul');

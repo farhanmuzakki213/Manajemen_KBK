@@ -158,6 +158,14 @@
                                 <span class="hide-menu">User</span>
                             </a>
                         </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="{{ url('logs') }}" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-aperture"></i>
+                                </span>
+                                <span class="hide-menu">Log Activity</span>
+                            </a>
+                        </li>
                     @endhasrole
 
 

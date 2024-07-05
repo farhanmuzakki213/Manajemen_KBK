@@ -271,20 +271,20 @@ class KajurController extends Controller
 
     public function grafik_rps()
     {
-        $banyak_pengunggahan = RepRpsUas::join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
+        $banyak_pengunggahan_smt = RepRpsUas::join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
             ->select(DB::raw("smt_thnakd.smt_thnakd, COUNT(rep_rps_uas.id_rep_rps_uas) as banyak_pengunggahan"))
             ->where('type', '=', '0')
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('banyak_pengunggahan', 'smt_thnakd.smt_thnakd');
 
-        $banyak_verifikasi = VerRpsUas::join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')
+        $banyak_verifikasi_smt = VerRpsUas::join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')
             ->join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
             ->select(DB::raw("smt_thnakd.smt_thnakd, COUNT(ver_rps_uas.id_ver_rps_uas) as banyak_verifikasi"))
             ->where('type', '=', '0')
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('banyak_verifikasi', 'smt_thnakd.smt_thnakd');
 
-        $banyak_berita = DB::table('ver_rps_uas')
+        $banyak_berita_smt = DB::table('ver_rps_uas')
             ->join('ver_berita_acara_detail_pivot', 'ver_rps_uas.id_ver_rps_uas', '=', 'ver_berita_acara_detail_pivot.ver_rps_uas_id')
             ->join('ver_berita_acara', 'ver_berita_acara.id_berita_acara', '=', 'ver_berita_acara_detail_pivot.berita_acara_id')
             ->join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')
@@ -301,33 +301,121 @@ class KajurController extends Controller
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('semester');
 
+        $banyak_pengunggahan_prodi = RepRpsUas::join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
+            ->join('kurikulum', 'matkul_kbk.kurikulum_id', '=', 'kurikulum.id_kurikulum')
+            ->join('prodi', 'kurikulum.prodi_id', '=', 'prodi.id_prodi')
+            ->select(DB::raw("prodi.prodi, COUNT(rep_rps_uas.id_rep_rps_uas) as banyak_pengunggahan"))
+            ->where('type', '=', '0')
+            ->groupBy('prodi.prodi')
+            ->pluck('banyak_pengunggahan', 'prodi.prodi');
+
+        $banyak_verifikasi_prodi = VerRpsUas::join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')
+            ->join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
+            ->join('kurikulum', 'matkul_kbk.kurikulum_id', '=', 'kurikulum.id_kurikulum')
+            ->join('prodi', 'kurikulum.prodi_id', '=', 'prodi.id_prodi')
+            ->select(DB::raw("prodi.prodi, COUNT(ver_rps_uas.id_ver_rps_uas) as banyak_verifikasi"))
+            ->where('type', '=', '0')
+            ->groupBy('prodi.prodi')
+            ->pluck('banyak_verifikasi', 'prodi.prodi');
+
+        $banyak_berita_prodi = DB::table('ver_rps_uas')
+            ->join('ver_berita_acara_detail_pivot', 'ver_rps_uas.id_ver_rps_uas', '=', 'ver_berita_acara_detail_pivot.ver_rps_uas_id')
+            ->join('ver_berita_acara', 'ver_berita_acara.id_berita_acara', '=', 'ver_berita_acara_detail_pivot.berita_acara_id')
+            ->join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')
+            ->join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
+            ->join('kurikulum', 'matkul_kbk.kurikulum_id', '=', 'kurikulum.id_kurikulum')
+            ->join('prodi', 'kurikulum.prodi_id', '=', 'prodi.id_prodi')
+            ->select(DB::raw("prodi.prodi, COUNT(ver_berita_acara.id_berita_acara) as banyak_berita"))
+            ->where('ver_berita_acara.type', '=', '0')
+            ->groupBy('prodi.prodi')
+            ->pluck('banyak_berita', 'prodi.prodi');
+        // dd($banyak_berita);
+
+        $prodi = RepRpsUas::join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
+            ->join('kurikulum', 'matkul_kbk.kurikulum_id', '=', 'kurikulum.id_kurikulum')
+            ->join('prodi', 'kurikulum.prodi_id', '=', 'prodi.id_prodi')
+            ->select(DB::raw("prodi.prodi as prodi"))
+            ->where('type', '=', '0')
+            ->groupBy('prodi.prodi')
+            ->pluck('prodi');
+
+        $banyak_pengunggahan_kbk = RepRpsUas::join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
+            ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
+            ->select(DB::raw("jenis_kbk.jenis_kbk, COUNT(rep_rps_uas.id_rep_rps_uas) as banyak_pengunggahan"))
+            ->where('type', '=', '0')
+            ->groupBy('jenis_kbk.jenis_kbk')
+            ->pluck('banyak_pengunggahan', 'jenis_kbk.jenis_kbk');
+
+        $banyak_verifikasi_kbk = VerRpsUas::join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')
+            ->join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
+            ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
+            ->select(DB::raw("jenis_kbk.jenis_kbk, COUNT(ver_rps_uas.id_ver_rps_uas) as banyak_verifikasi"))
+            ->where('type', '=', '0')
+            ->groupBy('jenis_kbk.jenis_kbk')
+            ->pluck('banyak_verifikasi', 'jenis_kbk.jenis_kbk');
+
+        $banyak_berita_kbk = DB::table('ver_rps_uas')
+            ->join('ver_berita_acara_detail_pivot', 'ver_rps_uas.id_ver_rps_uas', '=', 'ver_berita_acara_detail_pivot.ver_rps_uas_id')
+            ->join('ver_berita_acara', 'ver_berita_acara.id_berita_acara', '=', 'ver_berita_acara_detail_pivot.berita_acara_id')
+            ->join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')
+            ->join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
+            ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
+            ->select(DB::raw("jenis_kbk.jenis_kbk, COUNT(ver_berita_acara.id_berita_acara) as banyak_berita"))
+            ->where('ver_berita_acara.type', '=', '0')
+            ->groupBy('jenis_kbk.jenis_kbk')
+            ->pluck('banyak_berita', 'jenis_kbk.jenis_kbk');
+        // dd($banyak_berita);
+
+        $kbk = RepRpsUas::join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
+        ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
+            ->select(DB::raw("jenis_kbk.jenis_kbk as jenis_kbk"))
+            ->where('type', '=', '0')
+            ->groupBy('jenis_kbk.jenis_kbk')
+            ->pluck('jenis_kbk');
+
         $data_ver_rps = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas')
             ->whereHas('r_rep_rps_uas', function ($query) {
                 $query->where('type', '=', '0'); 
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
-            debug($data_ver_rps);
-        return view('admin.content.pimpinanJurusan.GrafikRPS', compact('banyak_pengunggahan', 'banyak_verifikasi', 'semester', 'data_ver_rps', 'banyak_berita'));
+
+            $data = [
+                'banyak_pengunggahan_smt' => $banyak_pengunggahan_smt,
+                'banyak_verifikasi_smt' => $banyak_verifikasi_smt,
+                'banyak_berita_smt' => $banyak_berita_smt,
+                'semester' => $semester,
+                'banyak_pengunggahan_prodi' => $banyak_pengunggahan_prodi,
+                'banyak_verifikasi_prodi' => $banyak_verifikasi_prodi,
+                'banyak_berita_prodi' => $banyak_berita_prodi,
+                'prodi' => $prodi,
+                'banyak_pengunggahan_kbk' => $banyak_pengunggahan_kbk,
+                'banyak_verifikasi_kbk' => $banyak_verifikasi_kbk,
+                'banyak_berita_kbk' => $banyak_berita_kbk,
+                'kbk' => $kbk,
+                'data_ver_rps' => $data_ver_rps,
+            ];
+        
+            return view('admin.content.pimpinanJurusan.GrafikRPS', compact('data'));
     }
 
 
     public function grafik_uas()
     {
-        $banyak_pengunggahan = RepRpsUas::join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
+        $banyak_pengunggahan_smt = RepRpsUas::join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
             ->select(DB::raw("smt_thnakd.smt_thnakd, COUNT(rep_rps_uas.id_rep_rps_uas) as banyak_pengunggahan"))
             ->where('type', '=', '1')
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('banyak_pengunggahan', 'smt_thnakd.smt_thnakd');
 
-        $banyak_verifikasi = VerRpsUas::join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')
+        $banyak_verifikasi_smt = VerRpsUas::join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')
             ->join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
             ->select(DB::raw("smt_thnakd.smt_thnakd, COUNT(ver_rps_uas.id_ver_rps_uas) as banyak_verifikasi"))
             ->where('type', '=', '1')
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('banyak_verifikasi', 'smt_thnakd.smt_thnakd');
 
-        $banyak_berita = DB::table('ver_rps_uas')
+        $banyak_berita_smt = DB::table('ver_rps_uas')
             ->join('ver_berita_acara_detail_pivot', 'ver_rps_uas.id_ver_rps_uas', '=', 'ver_berita_acara_detail_pivot.ver_rps_uas_id')
             ->join('ver_berita_acara', 'ver_berita_acara.id_berita_acara', '=', 'ver_berita_acara_detail_pivot.berita_acara_id')
             ->join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')
@@ -336,6 +424,7 @@ class KajurController extends Controller
             ->where('ver_berita_acara.type', '=', '1')
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('banyak_berita', 'smt_thnakd.smt_thnakd');
+        // dd($banyak_berita);
 
         $semester = RepRpsUas::join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
             ->select(DB::raw("smt_thnakd.smt_thnakd as semester"))
@@ -343,14 +432,102 @@ class KajurController extends Controller
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('semester');
 
-        $data_ver_uas = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas')
+        $banyak_pengunggahan_prodi = RepRpsUas::join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
+            ->join('kurikulum', 'matkul_kbk.kurikulum_id', '=', 'kurikulum.id_kurikulum')
+            ->join('prodi', 'kurikulum.prodi_id', '=', 'prodi.id_prodi')
+            ->select(DB::raw("prodi.prodi, COUNT(rep_rps_uas.id_rep_rps_uas) as banyak_pengunggahan"))
+            ->where('type', '=', '1')
+            ->groupBy('prodi.prodi')
+            ->pluck('banyak_pengunggahan', 'prodi.prodi');
+
+        $banyak_verifikasi_prodi = VerRpsUas::join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')
+            ->join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
+            ->join('kurikulum', 'matkul_kbk.kurikulum_id', '=', 'kurikulum.id_kurikulum')
+            ->join('prodi', 'kurikulum.prodi_id', '=', 'prodi.id_prodi')
+            ->select(DB::raw("prodi.prodi, COUNT(ver_rps_uas.id_ver_rps_uas) as banyak_verifikasi"))
+            ->where('type', '=', '1')
+            ->groupBy('prodi.prodi')
+            ->pluck('banyak_verifikasi', 'prodi.prodi');
+
+        $banyak_berita_prodi = DB::table('ver_rps_uas')
+            ->join('ver_berita_acara_detail_pivot', 'ver_rps_uas.id_ver_rps_uas', '=', 'ver_berita_acara_detail_pivot.ver_rps_uas_id')
+            ->join('ver_berita_acara', 'ver_berita_acara.id_berita_acara', '=', 'ver_berita_acara_detail_pivot.berita_acara_id')
+            ->join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')
+            ->join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
+            ->join('kurikulum', 'matkul_kbk.kurikulum_id', '=', 'kurikulum.id_kurikulum')
+            ->join('prodi', 'kurikulum.prodi_id', '=', 'prodi.id_prodi')
+            ->select(DB::raw("prodi.prodi, COUNT(ver_berita_acara.id_berita_acara) as banyak_berita"))
+            ->where('ver_berita_acara.type', '=', '1')
+            ->groupBy('prodi.prodi')
+            ->pluck('banyak_berita', 'prodi.prodi');
+        // dd($banyak_berita);
+
+        $prodi = RepRpsUas::join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
+            ->join('kurikulum', 'matkul_kbk.kurikulum_id', '=', 'kurikulum.id_kurikulum')
+            ->join('prodi', 'kurikulum.prodi_id', '=', 'prodi.id_prodi')
+            ->select(DB::raw("prodi.prodi as prodi"))
+            ->where('type', '=', '1')
+            ->groupBy('prodi.prodi')
+            ->pluck('prodi');
+
+        $banyak_pengunggahan_kbk = RepRpsUas::join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
+            ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
+            ->select(DB::raw("jenis_kbk.jenis_kbk, COUNT(rep_rps_uas.id_rep_rps_uas) as banyak_pengunggahan"))
+            ->where('type', '=', '1')
+            ->groupBy('jenis_kbk.jenis_kbk')
+            ->pluck('banyak_pengunggahan', 'jenis_kbk.jenis_kbk');
+
+        $banyak_verifikasi_kbk = VerRpsUas::join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')
+            ->join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
+            ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
+            ->select(DB::raw("jenis_kbk.jenis_kbk, COUNT(ver_rps_uas.id_ver_rps_uas) as banyak_verifikasi"))
+            ->where('type', '=', '1')
+            ->groupBy('jenis_kbk.jenis_kbk')
+            ->pluck('banyak_verifikasi', 'jenis_kbk.jenis_kbk');
+
+        $banyak_berita_kbk = DB::table('ver_rps_uas')
+            ->join('ver_berita_acara_detail_pivot', 'ver_rps_uas.id_ver_rps_uas', '=', 'ver_berita_acara_detail_pivot.ver_rps_uas_id')
+            ->join('ver_berita_acara', 'ver_berita_acara.id_berita_acara', '=', 'ver_berita_acara_detail_pivot.berita_acara_id')
+            ->join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')
+            ->join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
+            ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
+            ->select(DB::raw("jenis_kbk.jenis_kbk, COUNT(ver_berita_acara.id_berita_acara) as banyak_berita"))
+            ->where('ver_berita_acara.type', '=', '1')
+            ->groupBy('jenis_kbk.jenis_kbk')
+            ->pluck('banyak_berita', 'jenis_kbk.jenis_kbk');
+        // dd($banyak_berita);
+
+        $kbk = RepRpsUas::join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
+        ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
+            ->select(DB::raw("jenis_kbk.jenis_kbk as jenis_kbk"))
+            ->where('type', '=', '1')
+            ->groupBy('jenis_kbk.jenis_kbk')
+            ->pluck('jenis_kbk');
+
+        $data_ver_rps = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas')
             ->whereHas('r_rep_rps_uas', function ($query) {
                 $query->where('type', '=', '1'); 
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
 
-        return view('admin.content.pimpinanJurusan.GrafikUAS', compact('banyak_pengunggahan', 'banyak_verifikasi', 'banyak_berita', 'semester', 'data_ver_uas'));
+            $data = [
+                'banyak_pengunggahan_smt' => $banyak_pengunggahan_smt,
+                'banyak_verifikasi_smt' => $banyak_verifikasi_smt,
+                'banyak_berita_smt' => $banyak_berita_smt,
+                'semester' => $semester,
+                'banyak_pengunggahan_prodi' => $banyak_pengunggahan_prodi,
+                'banyak_verifikasi_prodi' => $banyak_verifikasi_prodi,
+                'banyak_berita_prodi' => $banyak_berita_prodi,
+                'prodi' => $prodi,
+                'banyak_pengunggahan_kbk' => $banyak_pengunggahan_kbk,
+                'banyak_verifikasi_kbk' => $banyak_verifikasi_kbk,
+                'banyak_berita_kbk' => $banyak_berita_kbk,
+                'kbk' => $kbk,
+                'data_ver_rps' => $data_ver_rps,
+            ];
+            
+        return view('admin.content.pimpinanJurusan.GrafikUAS', compact('data'));
     }
 
     public function grafik_proposal()
