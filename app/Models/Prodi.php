@@ -18,8 +18,10 @@ class Prodi extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->logUnguarded();
-        // Chain fluent methods for configuration options
+            ->logAll()
+            ->logOnlyDirty()
+            ->useLogName('Prodi')
+            ->dontSubmitEmptyLogs();
     }
 
     public function r_jurusan(){

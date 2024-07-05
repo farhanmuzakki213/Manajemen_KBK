@@ -122,7 +122,10 @@ class DosenController extends Controller
             'image' => $request->image,
             'status_dosen' => $request->status_dosen,
         ];
-        Dosen::where('id_dosen', $id)->update($data);
+        $dosen = Dosen::where('id_dosen', $id)->first();
+        if($dosen){
+            $dosen->update($data);
+        }
         return redirect()->route('dosen');
     }
 
@@ -134,7 +137,7 @@ class DosenController extends Controller
         $data_dosen = Dosen::where('id_dosen', $id)->first();
 
         if ($data_dosen) {
-            Dosen::where('id_dosen', $id)->delete();
+            $data_dosen->delete();
         }
         return redirect()->route('dosen');
     }
@@ -150,7 +153,7 @@ class DosenController extends Controller
                 $data_dosen = Dosen::where('id_dosen', $data['id_dosen'])->first();
                 //dd($data_dosen);
                 if ($data_dosen) {
-                    Dosen::where('id_dosen', $data['id_dosen'])->delete();
+                    $data_dosen->delete();
                 }
             }
             foreach ($differences_api as $data) {

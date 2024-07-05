@@ -123,7 +123,11 @@ class MatkulKBKController extends Controller
             'jenis_kbk_id' => $request->jenis_kbk,
             'kurikulum_id' => $request->kurikulum,
         ];
-        MatkulKBK::where('id_matkul_kbk', $id)->update($data);
+        $MatkulKBK = MatkulKBK::find($id);
+
+        if ($MatkulKBK) {
+            $MatkulKBK->update($data);
+        }
         return redirect()->route('matkul_kbk');
         //dd($request->all());
     }
@@ -136,7 +140,7 @@ class MatkulKBKController extends Controller
         $data_matkul = MatkulKBK::where('id_matkul_kbk', $id)->first();
 
         if ($data_matkul) {
-            MatkulKBK::where('id_matkul_kbk', $id)->delete();
+            $data_matkul->delete();
         }
         return redirect()->route('matkul_kbk');
 

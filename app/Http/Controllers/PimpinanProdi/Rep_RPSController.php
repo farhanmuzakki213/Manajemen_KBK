@@ -22,7 +22,7 @@ class Rep_RPSController extends Controller
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
-            //dd($data_rep_rps);
+            debug($data_rep_rps);
         return view('admin.content.pimpinanProdi.Rep_RPS', compact('data_rep_rps'));
     }
 

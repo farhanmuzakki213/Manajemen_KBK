@@ -35,7 +35,7 @@ class AdminController extends Controller
 
     public function RepProposalTA()
     {
-        $data_rep_proposal = ProposalTAModel::with('r_mahasiswa', 'r_pembimbing_satu', 'r_pembimbing_dua', 'r_jenis_kbk')
+        $data_rep_proposal = ProposalTAModel::with('r_mahasiswa', 'r_pembimbing_satu', 'r_pembimbing_dua'   )
             ->orderByDesc('id_proposal_ta')
             ->get();
 
@@ -53,7 +53,7 @@ class AdminController extends Controller
                 $data_proposalTA = ProposalTAModel::where('id_proposal_ta', $data['id_proposal_ta'])->first();
                 //dd($data_kurikulum);
                 if ($data_proposalTA) {
-                    ProposalTAModel::where('id_proposal_ta', $data['id_proposal_ta'])->delete();
+                    $data_proposalTA->delete();
                 }
             }
             $file_default = 'none';

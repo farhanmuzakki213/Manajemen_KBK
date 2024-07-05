@@ -124,24 +124,6 @@
                                                                 <label for="judul" class="form-label">Judul</label>
                                                                 <textarea class="form-control" rows="3" readonly>{{ $data->judul }}</textarea>
                                                             </div>
-                                                            <div class="mb-3">
-                                                                <label for="jenis_kbk" class="form-label">Jenis
-                                                                    KBK</label>
-                                                                <input type="text" class="form-control"
-                                                                    value="{{ $data->jenis_kbk_id }}" readonly>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label for="reviewer_satu" class="form-label">Reviewer
-                                                                    1</label>
-                                                                <input type="text" class="form-control"
-                                                                    value="{{ $data->reviewer_satu }}" readonly>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label for="reviewer_dua" class="form-label">Reviewer
-                                                                    2</label>
-                                                                <input type="text" class="form-control"
-                                                                    value="{{ $data->reviewer_dua }}" readonly>
-                                                            </div>
                                                             <!-- tambahkan input untuk atribut lainnya jika diperlukan -->
                                                         </div>
                                                         <div class="modal-footer">

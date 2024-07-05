@@ -122,7 +122,7 @@
                                         <th>Tahun Akademik</th>
                                         <th>Dosen Verifikasi</th>
                                         <th>Rekomendasi</th>
-                                        <th>Saran</th>
+                                        <th>Evaluasi</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -136,7 +136,7 @@
                                         <th>Tahun Akademik</th>
                                         <th>Dosen Verifikasi</th>
                                         <th>Rekomendasi</th>
-                                        <th>Saran</th>
+                                        <th>Evaluasi</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </tfoot>
@@ -325,7 +325,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="mb-3">
-                                                                <label for="catatan" class="form-label">Catatan</label>
+                                                                <label for="catatan" class="form-label">Evaluasi</label>
                                                                 <textarea class="form-control" id="catatan" name="catatan" rows="3" readonly>{{ $data_ver->saran }}</textarea>
                                                             </div>
 

@@ -86,7 +86,11 @@ class Berita_Ver_UASController extends Controller
         }
 
         //dd($request->all());
-        VerBeritaAcara::where('id_berita_acara', $id)->update($data);
+        $VerBeritaAcara = VerBeritaAcara::find($id);
+
+        if ($VerBeritaAcara) {
+            $VerBeritaAcara->update($data);
+        }
         return redirect()->route('berita_ver_uas')->with('success', 'Data berhasil diperbarui.');
     }
 }

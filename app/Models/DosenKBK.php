@@ -18,8 +18,10 @@ class DosenKBK extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->logUnguarded();
-        // Chain fluent methods for configuration options
+            ->logAll()
+            ->logOnlyDirty()
+            ->useLogName('DosenKBK')
+            ->dontSubmitEmptyLogs();
     }
 
     public function r_jenis_kbk(){

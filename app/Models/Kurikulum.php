@@ -20,8 +20,10 @@ class Kurikulum extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->logUnguarded();
-        // Chain fluent methods for configuration options
+            ->logAll()
+            ->logOnlyDirty()
+            ->useLogName('Kurikulum')
+            ->dontSubmitEmptyLogs();
     }
 
     public function r_prodi(){

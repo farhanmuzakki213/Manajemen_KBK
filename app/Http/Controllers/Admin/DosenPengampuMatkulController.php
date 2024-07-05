@@ -121,21 +121,18 @@ class DosenPengampuMatkulController extends Controller
         return redirect()->back()->withInput()->withErrors($validator);
     }
 
-    $data = [
-        'id_dosen_matkul' => $request->id_dosen_matkul,
-        'dosen_id' => $request->nama_dosen,
-        'smt_thnakd_id' => $request->smt_thnakd,
-    ];
+        $data = [
+            'id_dosen_matkul' => $request->id_dosen_matkul,
+            'dosen_id' => $request->nama_dosen,
+            'smt_thnakd_id' => $request->smt_thnakd,
+        ];
 
-    // Pastikan menggunakan kolom kunci utama yang benar
-    DosenPengampuMatkul::where('id_dosen_matkul', $id)->update($data);
-
-    return redirect()->route('DosenPengampuMatkul');
-}
-
-    
-
-    
+        $DosenPengampuMatkul = DosenPengampuMatkul::where('id_dosen_matkul', $id)->first();
+        if($DosenPengampuMatkul){
+            $DosenPengampuMatkul->update($data);
+        }
+        return redirect()->route('DosenPengampuMatkul');
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -145,7 +142,7 @@ class DosenPengampuMatkulController extends Controller
         $data_dosen_pengampu = DosenPengampuMatkul::where('id_dosen_matkul', $id)->first();
 
         if ($data_dosen_pengampu) {
-            DosenPengampuMatkul::where('id_dosen_matkul', $id)->delete();
+            $data_dosen_pengampu->delete();
         }
         return redirect()->route('DosenPengampuMatkul');
     }

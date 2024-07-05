@@ -1,15 +1,8 @@
 <?php
 
 /* Admin */
-
-use App\Models\User;
-use App\Models\Dosen;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ExampleController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\DashboardController;
-use Illuminate\Routing\Route as RoutingRoute;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\DosenController;
 use App\Http\Controllers\Admin\ProdiController;
@@ -78,7 +71,7 @@ Route::group(['middleware' => ['role:super-admin']], function () {
     Route::resource('users', App\Http\Controllers\SuperAdmin\UserController::class);
     Route::delete('users/{userId}/delete', [App\Http\Controllers\SuperAdmin\UserController::class, 'destroy']);
 
-    Route::resource('logs', App\Http\Controllers\SuperAdmin\LogController::class);
+    Route::resource('logs/', App\Http\Controllers\SuperAdmin\LogController::class);
 });
 
 Route::get('/', [LandingPageController::class, 'index']);
@@ -133,6 +126,8 @@ Route::group(['middleware' => ['role:admin']], function () {
     // Tahun Akademik
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/thnakademik', [ThnAkademikController::class, 'index'])->middleware(['auth', 'verified'])->name('thnakademik');
+        Route::get('/thnakademik/dataAPI', [ThnAkademikController::class, 'show'])->middleware(['auth', 'verified'])->name('thnakademik.show');
+        Route::post('/thnakademik/storeAPI', [ThnAkademikController::class, 'store'])->middleware(['auth', 'verified'])->name('thnakademik.store');
     });
 
     // Dosen

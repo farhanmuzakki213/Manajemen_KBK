@@ -35,7 +35,7 @@ class MahasiswaController extends Controller
                 $data_mahasiswa = Mahasiswa::where('id_mahasiswa', $data['id_mahasiswa'])->first();
                 //dd($data_kurikulum);
                 if ($data_mahasiswa) {
-                    Mahasiswa::where('id_mahasiswa', $data['id_mahasiswa'])->delete();
+                    $data_mahasiswa->delete();
                 }
             }
             $gender_default = 'gender';

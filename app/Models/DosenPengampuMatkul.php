@@ -18,8 +18,10 @@ class DosenPengampuMatkul extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->logUnguarded();
-        // Chain fluent methods for configuration options
+            ->logAll()
+            ->logOnlyDirty()
+            ->useLogName('DosenPengampuMatkul')
+            ->dontSubmitEmptyLogs();
     }
 
     public function p_matkulKbk()

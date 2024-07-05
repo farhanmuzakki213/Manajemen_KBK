@@ -18,8 +18,10 @@ class Pengurus_kbk extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->logUnguarded();
-        // Chain fluent methods for configuration options
+            ->logAll()
+            ->logOnlyDirty()
+            ->useLogName('Pengurus_kbk')
+            ->dontSubmitEmptyLogs();
     }
 
     public function r_dosen(){

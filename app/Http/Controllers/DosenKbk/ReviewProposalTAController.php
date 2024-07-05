@@ -239,7 +239,11 @@ class ReviewProposalTAController extends Controller
             'tanggal_review' => $request->date,
         ];
         //dd($request->all());
-        ReviewProposalTaDetailPivot::where('penugasan_id', $id)->where('dosen', $request->reviewer)->update($data);
+        $reviewData = ReviewProposalTaDetailPivot::where('penugasan_id', $id)->where('dosen', $request->reviewer)->first();
+
+        if ($reviewData) {
+            $reviewData->update($data);
+        }
         return redirect()->route('review_proposal_ta')->with('success', 'Data berhasil diperbarui.');
     }
 

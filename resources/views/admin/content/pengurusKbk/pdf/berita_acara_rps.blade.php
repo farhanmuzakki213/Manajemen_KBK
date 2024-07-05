@@ -270,9 +270,9 @@
                     </td>
                     <td class="right" style="padding-left: 100px">
                         <p>Ketua KBK</p>
-                        <p style="font-style: italic;">Center of Software Technology and Management</p>
+                        <p style="font-style: italic;">{{$pengurus_kbk->r_jenis_kbk->deskripsi}}</p>
                         <br><br><br><br>
-                        <p>Yulherniwati, S.Kom., M.T</p>
+                        <p>{{$pengurus_kbk->r_dosen->nama_dosen}}</p>
                     </td>
 
                 </tr>
@@ -283,7 +283,7 @@
             <div class="center">
                 <p>Mengetahui</p>
                 <br><br><br><br>
-                <p>Ronal Hadi, S.T., M.Kom</p>
+                <p>{{$kajur->r_dosen->nama_dosen}}</p>
             </div>
         </div>
     </div>

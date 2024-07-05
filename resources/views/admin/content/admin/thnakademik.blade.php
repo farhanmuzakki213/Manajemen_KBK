@@ -19,8 +19,11 @@
                 <div class="container-fluid">
                     <!-- Data Tahun Akademik -->
                     <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Aksi</h6>
+                        <div class="card-header py-2">
+                            <a href="{{ route('thnakademik.show') }}" 
+                                    class="btn btn-primary me-md-3">
+                                    <i class="ti ti-upload"></i> Ambil Data API
+                                </a>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">

@@ -36,7 +36,7 @@ class PimpinanJurusanController extends Controller
                 $data_pimpinanjurusan = PimpinanJurusan::where('id_pimpinan_jurusan', $data['id_pimpinan_jurusan'])->first();
                 //dd($data_kurikulum);
                 if ($data_pimpinanjurusan) {
-                    PimpinanJurusan::where('id_pimpinan_jurusan', $data['id_pimpinan_jurusan'])->delete();
+                    $data_pimpinanjurusan->delete();
                 }
             }
             foreach ($differences_api as $data) {

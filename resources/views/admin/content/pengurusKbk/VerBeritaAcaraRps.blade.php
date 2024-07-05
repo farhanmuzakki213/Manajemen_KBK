@@ -91,7 +91,7 @@
                                             <th>Tahun Akademik</th>
                                             <th>Dosen Verifikasi</th>
                                             <th>Rekomendasi</th>
-                                            <th>Saran</th>
+                                            <th>Evaluasi</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -105,7 +105,7 @@
                                             <th>Tahun Akademik</th>
                                             <th>Dosen Verifikasi</th>
                                             <th>Rekomendasi</th>
-                                            <th>Saran</th>
+                                            <th>Evaluasi</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </tfoot>
@@ -272,7 +272,7 @@
                                                                         </div>
                                                                         <div class="col">
                                                                             <label for="saran"
-                                                                                class="form-label">Saran</label>
+                                                                                class="form-label">Evaluasi</label>
                                                                             <input type="text" class="form-control"
                                                                                 id="saran"value="{{ $data_ver->saran }}"
                                                                                 readonly>
@@ -378,9 +378,9 @@
                                                             class="btn btn-primary mb-2 d-flex align-items-center"><i
                                                                 class="bi bi-pencil-square"></i>Revisi</a>
                                                         <a href="{{ asset('storage/uploads/rps/berita_acara/' . $data->file_berita_acara) }}"
-                                                            class="btn btn-primary mb-2 d-flex align-items-center"
+                                                            class="btn btn-success mb-2 d-flex align-items-center"
                                                             target="_blank"><i
-                                                                class="bi bi-file-earmark-arrow-down"></i>File</a>
+                                                                class="bi bi-file-earmark-arrow-down"></i>Download</a>
                                                         <a data-bs-toggle="modal"
                                                             data-bs-target="#staticBackdrop{{ $data->id_berita_acara }}"
                                                             class="btn btn-danger mb-2 d-flex align-items-center"><i

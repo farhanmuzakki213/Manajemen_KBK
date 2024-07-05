@@ -88,7 +88,11 @@ class Berita_Ver_UAS_KajurController extends Controller
         }
 
         //dd($request->all());
-        VerBeritaAcara::where('id_berita_acara', $id)->update($data);
+        $VerBeritaAcara = VerBeritaAcara::find($id);
+
+        if ($VerBeritaAcara) {
+            $VerBeritaAcara->update($data);
+        }
         return redirect()->route('kajur_berita_ver_uas')->with('success', 'Data berhasil diperbarui.');
     }
 }
