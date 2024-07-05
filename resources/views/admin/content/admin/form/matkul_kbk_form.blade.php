@@ -17,13 +17,44 @@
                             <form method="post" action="{{ route('matkul_kbk.store') }}">
                                 @csrf
                                 <div class="mb-3">
+                                    @if ($errors->has('nama_matkul'))
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ $errors->first('nama_matkul') }}
+                                        </div>
+                                    @endif
+                                </div>
+                                {{-- <div class="mb-3">
                                     <label for="id_matkul_kbk" class="form-label">ID Matkul KBK</label>
                                     <input type="number" class="form-control" id="id_matkul_kbk" name="id_matkul_kbk">
                                     @error('id_matkul_kbk')
                                         <small>{{ $message }}</small>
                                     @enderror
-                                </div>
+                                </div> --}}
+
                                 <div class="mb-3">
+                                    <input type="hidden" class="form-control" id="id_matkul_kbk" name="id_matkul_kbk"
+                                value="{{ $nextNumber }}"readonly>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="nama_matkul" class="form-label">Nama Matkul</label>
+                                    <select class="form-select" aria-label="Default select example" name="nama_matkul" id="nama_matkul" required>
+                                        <option selected disabled>Pilih nama matkul</option>
+                                        @foreach ($data_matkul as $matkul)
+                                            @php
+                                                $isDisabled = \App\Models\MatkulKBK::where('matkul_id', $matkul->id_matkul)->exists();
+                                            @endphp
+                                            @unless ($isDisabled)
+                                                <option value="{{ $matkul->id_matkul }}">{{ $matkul->nama_matkul }}</option>
+                                            @endunless
+                                        @endforeach
+                                    </select>
+                                    @error('nama_matkul')
+                                        <small>{{ $message }}</small>
+                                    @enderror
+                                </div>
+
+                                {{-- <div class="mb-3">
                                     <label for="nama_matkul" class="form-label">Nama matkul</label>
                                     <select class="form-select" aria-label="Default select example" name="nama_matkul"
                                         id="nama_matkul" required>
@@ -35,7 +66,7 @@
                                     @error('nama_matkul')
                                         <small>{{ $message}}</small>
                                     @enderror
-                                </div>
+                                </div> --}}
                                 <div class="mb-3">
                                     <label for="jenis_kbk" class="form-label">Jenis KBK</label>
                                     <select class="form-select" aria-label="Default select example" name="jenis_kbk"

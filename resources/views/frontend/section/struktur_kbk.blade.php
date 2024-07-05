@@ -1,6 +1,6 @@
 <section class="page-section bg-light" id="struktural">
-    <h1 class="text-center ">Struktural</h1>
-    <div class="container-main">
+    <h1 class="text-center wow fadeInUp" data-wow-delay="0.2s">Struktural</h1>
+    <div class="container-main wow fadeInUp" data-wow-delay="0.3s">
         <div class="card__container swiper">
             <div class="card__content">
                 <div class="swiper-wrapper">
@@ -20,7 +20,6 @@
                             <p class="card__description">
                                 Bidang : {{ $data->r_jenis_kbk->jenis_kbk }}
                             </p>
-
                             {{-- <a href="#" class="card__button">View More</a> --}}
                         </div>
                     </article>

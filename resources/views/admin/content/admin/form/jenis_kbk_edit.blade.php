@@ -18,8 +18,22 @@
                                 @csrf
                                 @method('PUT')
                                 <div class="mb-3">
+                                    @if ($errors->has('jenis_kbk'))
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ $errors->first('jenis_kbk') }}
+                                        </div>
+                                    @endif
+                                </div>
+                                {{-- <div class="mb-3">
                                     <label for="id_jenis_kbk" class="form-label">ID Jenis KBK</label>
                                     <input type="number" class="form-control" id="id_jenis_kbk" name="id_jenis_kbk" value="{{$data_jenis_kbk->id_jenis_kbk}}">
+                                    @error('id_jenis_kbk')
+                                        <small>{{ $message }}</small>
+                                    @enderror
+                                </div> --}}
+
+                                <div class="mb-3">
+                                    <input type="hidden" class="form-control" id="id_jenis_kbk" name="id_jenis_kbk" value="{{ $data_jenis_kbk->id_jenis_kbk }}" readonly>
                                     @error('id_jenis_kbk')
                                         <small>{{ $message }}</small>
                                     @enderror

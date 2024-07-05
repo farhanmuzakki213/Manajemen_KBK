@@ -18,13 +18,55 @@
                                 @csrf
                                 @method('PUT')
                                 <div class="mb-3">
+                                    @if ($errors->has('nama_dosen'))
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ $errors->first('nama_dosen') }}
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="mb-3">
+                                    @if ($errors->has('jabatan'))
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ $errors->first('jabatan') }}
+                                        </div>
+                                    @endif
+                                </div>
+                                {{-- <div class="mb-3">
                                     <label for="id_pengurus" class="form-label">ID Pengurus</label>
                                     <input type="number" class="form-control" id="id_pengurus" name="id_pengurus" value="{{$data_pengurus_kbk->id_pengurus}}">
                                     @error('id_pengurus')
                                         <small>{{ $message }}</small>
                                     @enderror
-                                </div>
+                                </div> --}}
+
                                 <div class="mb-3">
+                                    <input type="hidden" class="form-control" id="id_pengurus" name="id_pengurus" value="{{ $data_pengurus_kbk->id_pengurus }}" readonly>
+                                    @error('id_pengurus')
+                                        <small>{{ $message }}</small>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="nama_dosen" class="form-label">Nama Dosen</label>
+                                    <select class="form-select" aria-label="Default select example" name="nama_dosen" id="nama_dosen" required>
+                                        <option disabled>Pilih Nama Dosen</option>
+                                        @foreach ($data_dosen as $dosen)
+                                            @php
+                                                $isDisabled = \App\Models\Pengurus_kbk::where('dosen_id', $dosen->id_dosen)->exists();
+                                                $isSelected = ($dosen->id_dosen == $data_pengurus_kbk->dosen_id) ? 'selected' : '';
+                                            @endphp
+                                            @unless ($isDisabled && $dosen->id_dosen != $data_pengurus_kbk->dosen_id)
+                                                <option value="{{ $dosen->id_dosen }}" {{ $isSelected }}>{{ $dosen->nama_dosen }}</option>
+                                            @endunless
+                                        @endforeach
+                                    </select>
+                                    @error('nama_dosen')
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                                {{-- <div class="mb-3">
                                     <label for="nama_dosen" class="form-label">Nama Dosen</label>
                                     <select class="form-select" aria-label="Default select example" name="nama_dosen"
                                         id="nama_dosen" required>
@@ -39,7 +81,7 @@
                                     @error('nama_dosen')
                                         <small>{{ $message }}</small>
                                     @enderror
-                                </div>
+                                </div> --}}
                                 <div class="mb-3">
                                     <label for="jenis_kbk" class="form-label">Jenis KBK</label>
                                     <select class="form-select" aria-label="Default select example" name="jenis_kbk"

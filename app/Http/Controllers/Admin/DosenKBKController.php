@@ -42,8 +42,9 @@ class DosenKBKController extends Controller
     {
         $data_dosen = Dosen::all();
         $data_jenis_kbk = JenisKbk::all();
+        $nextNumber = $this->getCariNomor();
 
-        return view('admin.content.admin.form.dosen_kbk_form', compact('data_dosen', 'data_jenis_kbk'));
+        return view('admin.content.admin.form.dosen_kbk_form', compact('data_dosen', 'data_jenis_kbk', 'nextNumber'));
 
     }
 
@@ -55,8 +56,9 @@ class DosenKBKController extends Controller
         $validator = Validator::make($request->all(), [
             'id_dosen_kbk' => 'required',
             'jenis_kbk' => 'required',
-            'nama_dosen' => 'required'
-
+            'nama_dosen' => 'required|unique:dosen_kbk,dosen_id'
+        ], [
+            'nama_dosen.unique' => 'Nama dosen sudah ada di dalam tabel.',
         ]);
 
         if ($validator->fails()) return redirect()->back()->withInput()->withErrors($validator);
@@ -90,6 +92,7 @@ class DosenKBKController extends Controller
      */
     public function edit(Request $request, string $id)
     {
+        
         $data_dosen = Dosen::all();
         $data_jenis_kbk = JenisKbk::all();
 
@@ -110,8 +113,9 @@ class DosenKBKController extends Controller
         $validator = Validator::make($request->all(), [
             'id_dosen_kbk' => 'required',
             'jenis_kbk' => 'required',
-            'nama_dosen' => 'required'
-
+            'nama_dosen' => 'required|unique:dosen_kbk,dosen_id,'. $id .',id_dosen_kbk',
+        ], [
+            'nama_dosen.unique' => 'Nama dosen sudah ada di dalam tabel.',
         ]);
 
         if ($validator->fails()) return redirect()->back()->withInput()->withErrors($validator);
@@ -139,4 +143,21 @@ class DosenKBKController extends Controller
 
         //dd($data_pengurus_kbk);
     }
+
+    function getCariNomor()
+    {
+        // Mendapatkan semua ID dari tabel rep_rps
+        $id_dosen_kbk = DosenKbk::pluck('id_dosen_kbk')->toArray();
+
+        // Loop untuk memeriksa nomor dari 1 sampai takhingga
+        for ($i = 1;; $i++) {
+            // Jika $i tidak ditemukan di dalam array $id_rep_rps, kembalikan nilai $i
+            if (!in_array($i, $id_dosen_kbk)) {
+                return $i;
+                break;
+            }
+        }
+        return $i;
+    }
+
 }

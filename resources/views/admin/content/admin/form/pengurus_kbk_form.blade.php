@@ -17,13 +17,46 @@
                             <form method="post" action="{{ route('pengurus_kbk.store') }}">
                                 @csrf
                                 <div class="mb-3">
+                                    @if ($errors->has('nama_dosen'))
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ $errors->first('nama_dosen') }}
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="mb-3">
+                                    @if ($errors->has('jabatan'))
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ $errors->first('jabatan') }}
+                                        </div>
+                                    @endif
+                                </div>
+                                {{-- <div class="mb-3">
                                     <label for="id_pengurus" class="form-label">ID Pengurus</label>
                                     <input type="number" class="form-control" id="id_pengurus" name="id_pengurus">
                                     @error('id_pengurus')
                                         <small>{{ $message }}</small>
                                     @enderror
-                                </div>
+                                </div> --}}
+                                <input type="hidden" class="form-control" id="id_pengurus" name="id_pengurus"
+                                value="{{ $nextNumber }}"readonly>
                                 <div class="mb-3">
+                                    <label for="nama_dosen" class="form-label">Nama Dosen</label>
+                                    <select class="form-select" aria-label="Default select example" name="nama_dosen" id="nama_dosen" required>
+                                        <option selected disabled>Pilih Nama Dosen</option>
+                                        @foreach ($data_dosen as $dosen)
+                                            @php
+                                                $isDisabled = \App\Models\Pengurus_kbk::where('dosen_id', $dosen->id_dosen)->exists();
+                                            @endphp
+                                            @unless ($isDisabled)
+                                                <option value="{{ $dosen->id_dosen }}">{{ $dosen->nama_dosen }}</option>
+                                            @endunless
+                                        @endforeach
+                                    </select>
+                                    @error('nama_dosen')
+                                        <small>{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                {{-- <div class="mb-3">
                                     <label for="nama_dosen" class="form-label">Nama Dosen</label>
                                     <select class="form-select" aria-label="Default select example" name="nama_dosen"
                                         id="nama_dosen" required>
@@ -35,7 +68,7 @@
                                     @error('nama_dosen')
                                         <small>{{ $message}}</small>
                                     @enderror
-                                </div>
+                                </div> --}}
                                 <div class="mb-3">
                                     <label for="jenis_kbk" class="form-label">Jenis KBK</label>
                                     <select class="form-select" aria-label="Default select example" name="jenis_kbk"

@@ -1,6 +1,6 @@
 <div class="container-fluid_2 py-5" id="deskripsi">
-    <div class="container_2 pt-5">
-        <div class="row_2" >
+    <div class="container_2 pt-5" >
+        <div class="row_2 wow fadeInUp" data-wow-delay="0.4s">
             <div class="col-lg-6" style="min-height: 500px;">
                 <div class="position-relative-2 h-100">
                     <img class="position-absolute-2 w-100 h-100" src="frontend/landing-page/assets/img/about/bingung1.svg"

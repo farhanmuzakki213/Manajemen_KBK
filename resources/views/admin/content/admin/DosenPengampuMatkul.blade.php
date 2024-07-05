@@ -73,6 +73,39 @@
                                                     class="btn btn-danger"><i class="bi bi-trash"></i></a>
                                             </th>
                                         </tr>
+
+                                        <div class="modal fade" id="staticBackdrop{{ $data->id_dosen_matkul }}"
+                                            data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                            aria-labelledby="staticBackdropLabel" aria-hidden="true">>
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title fs-5" id="staticBackdropLabel">Konfirmasi
+                                                            Hapus Data</h4>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Apakah kamu yakin ingin menghapus data user
+                                                            <b>{{ $data->r_dosen->nama_dosen }}</b>
+                                                        </p>
+                                                    </div>
+                                                    <div class="modal-footer justify-content-between">
+
+                                                        <form
+                                                            action="{{ route('DosenPengampuMatkul.delete', ['id' => $data->id_dosen_matkul]) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="button" class="btn btn-default"
+                                                                data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary">Ya,
+                                                                Hapus</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         @endforeach
                                     </tbody>
                                 </table>

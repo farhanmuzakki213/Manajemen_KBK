@@ -44,10 +44,11 @@ class Pengurus_kbkController extends Controller
         $data_dosen = Dosen::all();
         $data_jabatan_kbk = JabatanKbk::all();
         $data_jenis_kbk = JenisKbk::all();
+        $nextNumber = $this->getCariNomor();
 
         //dd(compact('data_dosen', 'data_jabatan_kbk', 'data_jenis_kbk'));
 
-        return view('admin.content.admin.form.pengurus_kbk_form', compact('data_dosen', 'data_jabatan_kbk', 'data_jenis_kbk'));
+        return view('admin.content.admin.form.pengurus_kbk_form', compact('data_dosen', 'data_jabatan_kbk', 'data_jenis_kbk', 'nextNumber'));
     }
 
     /**
@@ -58,14 +59,36 @@ class Pengurus_kbkController extends Controller
         $validator = Validator::make($request->all(), [
             'id_pengurus' => 'required',
             'jenis_kbk' => 'required',
-            'nama_dosen' => 'required',
+            'nama_dosen' => 'required|unique:pengurus_kbk,dosen_id',
             'jabatan' => 'required',
             'status' => 'required',
-
+        ], [
+            'nama_dosen.unique' => 'Nama dosen sudah ada di dalam tabel.',
         ]);
-
-        if ($validator->fails()) return redirect()->back()->withInput()->withErrors($validator);
-
+        
+        
+        $validator->after(function ($validator) use ($request) {
+       
+            $jenis_kbk = $request->jenis_kbk;
+            $jabatan = $request->jabatan;
+            
+           
+            $existingRecord = pengurus_kbk::where('jenis_kbk_id', $jenis_kbk)
+                                           ->where('jabatan_kbk_id', $jabatan)
+                                           ->exists();
+    
+          
+            if ($existingRecord) {
+                $validator->errors()->add('jabatan', 'Jabatan KBK pada jenis KBK yang dipilih sudah ada.');
+            }
+        });
+        
+      
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator);
+        }
+        
+        
         $data = [
             'id_pengurus' => $request->id_pengurus,
             'jenis_kbk_id' => $request->jenis_kbk,
@@ -73,10 +96,13 @@ class Pengurus_kbkController extends Controller
             'jabatan_kbk_id' => $request->jabatan,
             'status_pengurus_kbk' => $request->status,
         ];
+        
         pengurus_kbk::create($data);
+        
+      
         return redirect()->route('pengurus_kbk');
-        //dd($request->all());
     }
+    
 
     /**
      * Display the specified resource.
@@ -119,14 +145,36 @@ class Pengurus_kbkController extends Controller
         $validator = Validator::make($request->all(), [
             'id_pengurus' => 'required',
             'jenis_kbk' => 'required',
-            'nama_dosen' => 'required',
+            'nama_dosen' => 'required|unique:pengurus_kbk,dosen_id,'. $id .',id_pengurus',
             'jabatan' => 'required',
             'status' => 'required',
-
+        ], [
+            'nama_dosen.unique' => 'Nama dosen sudah ada di dalam tabel.',
         ]);
-
-        if ($validator->fails()) return redirect()->back()->withInput()->withErrors($validator);
-
+        
+        $validator->after(function ($validator) use ($request, $id) {
+            $jenis_kbk = $request->jenis_kbk;
+            $jabatan = $request->jabatan;
+        
+           
+            $pengurus = pengurus_kbk::findOrFail($id);
+        
+            
+            if ($jenis_kbk != $pengurus->jenis_kbk_id || $jabatan != $pengurus->jabatan_kbk_id) {
+                $existingRecord = pengurus_kbk::where('jenis_kbk_id', $jenis_kbk)
+                                               ->where('jabatan_kbk_id', $jabatan)
+                                               ->exists();
+        
+                if ($existingRecord) {
+                    $validator->errors()->add('jabatan', 'Jabatan KBK pada jenis KBK yang dipilih sudah ada.');
+                }
+            }
+        });
+        
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator);
+        }
+        
         $data = [
             'id_pengurus' => $request->id_pengurus,
             'jenis_kbk_id' => $request->jenis_kbk,
@@ -136,6 +184,8 @@ class Pengurus_kbkController extends Controller
         ];
         pengurus_kbk::where('id_pengurus', $id)->update($data);
         return redirect()->route('pengurus_kbk');
+        
+        
     }
 
     /**
@@ -151,5 +201,22 @@ class Pengurus_kbkController extends Controller
         return redirect()->route('pengurus_kbk');
 
         //dd($data_pengurus_kbk);
+    }
+
+
+    function getCariNomor()
+    {
+        // Mendapatkan semua ID dari tabel rep_rps
+        $id_pengurus = pengurus_kbk::pluck('id_pengurus')->toArray();
+
+        // Loop untuk memeriksa nomor dari 1 sampai takhingga
+        for ($i = 1;; $i++) {
+            // Jika $i tidak ditemukan di dalam array $id_rep_rps, kembalikan nilai $i
+            if (!in_array($i, $id_pengurus)) {
+                return $i;
+                break;
+            }
+        }
+        return $i;
     }
 }

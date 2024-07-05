@@ -29,28 +29,28 @@
 
 
 
-<div class="container-prodi">
+<div class="container-prodi animated zoomIn" >
   <div class="shadow_prodi p-3 mb-5 bg-body rounded">
     <div class="swiper-container swiper-container-prodi">
     <div class="swiper-wrapper swiper-wrapper-prodi">
     <div class="swiper-slide swiper-slide-prodi">
-      <img class="img-fluid d-block mx-auto" src="frontend/landing-page/assets/img/prodi/animasi2.png" aria-label="TRPL Logo" />
+      <img class="img-fluid d-block mx-auto" src="frontend/landing-page/assets/img/kbk/cait.png" aria-label="TRPL Logo" />
     </div>
     <div class="swiper-slide swiper-slide-prodi">
-      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/prodi/trpl2.png" aria-label="ANIMASI Logo" />
+      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/kbk/softam.png" aria-label="ANIMASI Logo" />
     </div>
     <div class="swiper-slide swiper-slide-prodi">
-      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/prodi/mi2.png" aria-label="MI Logo" />
+      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/kbk/it_infrastruktur.png" aria-label="MI Logo" />
     </div>
     <div class="swiper-slide swiper-slide-prodi">
-      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/prodi/tk2.png" aria-label="TKOM Logo" />
+      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/kbk/programming.png" aria-label="TKOM Logo" />
     </div>
     <div class="swiper-slide swiper-slide-prodi">
-      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/prodi/si2.png" aria-label="SI Logo" />
+      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/kbk/ncs.png" aria-label="SI Logo" />
     </div>
-    <div class="swiper-slide swiper-slide-prodi">
+    {{-- <div class="swiper-slide swiper-slide-prodi">
       <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/prodi/ajk2.png" aria-label="ADM JARINGAN Logo" />
-    </div>
+    </div> --}}
   </div>
   </div>
   </div>

@@ -1,7 +1,7 @@
 <section class="page-section bg-white" id="berita">
     <div class="container-berita py-5">
-        <h1 class="text-center mb-5 text-3xl font-bold">Berita</h1>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
+        <h1 class="text-center mb-5 text-3xl font-bold wow fadeInUp" data-wow-delay="0.1s">Berita</h1>
+        <div class="row row-cols-1 row-cols-md-3 g-4 wow fadeInUp" data-wow-delay="0.3s">
             @foreach ($data_berita as $index => $data)
             <div class="col-berita {{ $index >= 3 ? 'hidden' : '' }}">
                 <div class="card h-100 border-0">
@@ -56,7 +56,7 @@
             
             @endforeach
         </div>
-        <div class="text-center mt-4">
+        <div class="text-center mt-4 wow fadeInUp" data-wow-delay="0.4s">
             <button id="loadMore" class="btn_detail p-0">
                 <img src="{{asset('frontend/landing-page/assets/img/icon/down-arrow2.svg')}}" alt="Tampilkan Lebih Banyak" width="30" height="30">
             </button>

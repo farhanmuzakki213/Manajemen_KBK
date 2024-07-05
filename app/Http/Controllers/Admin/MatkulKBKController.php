@@ -39,10 +39,11 @@ class MatkulKBKController extends Controller
         $data_kurikulum = Kurikulum::all();
         $data_matkul = Matkul::all();
         $data_jenis_kbk = JenisKbk::all();
+        $nextNumber = $this->getCariNomor();
 
         //dd(compact('data_kurikulum', 'data_matkul', 'data_jenis_kbk'));
 
-        return view('admin.content.admin.form.matkul_kbk_form', compact('data_kurikulum', 'data_matkul', 'data_jenis_kbk'));
+        return view('admin.content.admin.form.matkul_kbk_form', compact('data_kurikulum', 'data_matkul', 'data_jenis_kbk', 'nextNumber'));
     }
 
     /**
@@ -52,10 +53,11 @@ class MatkulKBKController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id_matkul_kbk' => 'required',
-            'nama_matkul' => 'required',
+            'nama_matkul' => 'required|unique:matkul_kbk,matkul_id',
             'jenis_kbk' => 'required',
             'kurikulum' => 'required',
-
+        ], [
+            'nama_matkul.unique' => 'Matkul sudah ada di dalam tabel.',
         ]);
 
         if ($validator->fails()) return redirect()->back()->withInput()->withErrors($validator);
@@ -106,10 +108,11 @@ class MatkulKBKController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id_matkul_kbk' => 'required',
-            'nama_matkul' => 'required',
+            'nama_matkul' => 'required|unique:matkul_kbk,matkul_id,'. $id .',id_matkul_kbk',
             'jenis_kbk' => 'required',
             'kurikulum' => 'required',
-
+        ], [
+            'nama_matkul.unique' => 'Matkul sudah ada di dalam tabel.',
         ]);
 
         if ($validator->fails()) return redirect()->back()->withInput()->withErrors($validator);
@@ -143,4 +146,21 @@ class MatkulKBKController extends Controller
     public function export_excel(){
         return Excel::download(new ExportMatakuliahKBK, "Matakuliah KBK.xlsx");
     }
+
+    function getCariNomor()
+    {
+        // Mendapatkan semua ID dari tabel rep_rps
+        $id_matkul_kbk = MatkulKBK::pluck('id_matkul_kbk')->toArray();
+
+        // Loop untuk memeriksa nomor dari 1 sampai takhingga
+        for ($i = 1;; $i++) {
+            // Jika $i tidak ditemukan di dalam array $id_rep_rps, kembalikan nilai $i
+            if (!in_array($i, $id_matkul_kbk)) {
+                return $i;
+                break;
+            }
+        }
+        return $i;
+    }
+
 }

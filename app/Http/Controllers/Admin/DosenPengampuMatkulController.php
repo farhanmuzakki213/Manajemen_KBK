@@ -29,18 +29,25 @@ class DosenPengampuMatkulController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+
+
+     public function export_excel(){
+        return Excel::download(new ExportDosenPengampuMatkul, "Matkul_Ampu.xlsx");
+    }
+
+
     public function create()
     {
         $data_dosen = Dosen::all();
         $data_smt = ThnAkademik::all();
+        $nextNumber = $this->getCariNomor();
 
-        return view('admin.content.admin.form.DosenPengampuMatkul_form', compact('data_dosen', 'data_smt'));
+        // debug($nextNumber);
+
+        return view('admin.content.admin.form.DosenPengampuMatkul_form', compact('data_dosen', 'data_smt', 'nextNumber'));
     }
 
-    public function export_excel(){
-        return Excel::download(new ExportDosenPengampuMatkul, "Matkul_Ampu.xlsx");
-    }
-
+    
     /**
      * Store a newly created resource in storage.
      */
@@ -48,19 +55,26 @@ class DosenPengampuMatkulController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id_dosen_matkul' => 'required',
-            'dosen_id' => 'required',
-            'smt_thnakd_id' => 'required',
+            'nama_dosen' => 'required|unique:dosen_matkul,dosen_id',
+            'smt_thnakd' => 'required',
+        ], [
+            'nama_dosen.unique' => 'Nama dosen sudah ada di dalam tabel.',
         ]);
-
-        if ($validator->fails()) return redirect()->back()->withInput()->withErrors($validator);
-
+        
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator);
+        }
+        
         $data = [
             'id_dosen_matkul' => $request->id_dosen_matkul,
             'dosen_id' => $request->nama_dosen,
             'smt_thnakd_id' => $request->smt_thnakd,
         ];
+        
         DosenPengampuMatkul::create($data);
+        
         return redirect()->route('DosenPengampuMatkul');
+        
         //dd($request->all());
     }
 
@@ -93,30 +107,40 @@ class DosenPengampuMatkulController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        $validator = Validator::make($request->all(), [
-            'id_dosen_matkul' => 'required',
-            'dosen_id' => 'required',
-            'smt_thnakd_id' => 'required',
+    public function update(Request $request, $id)
+{
+    $validator = Validator::make($request->all(), [
+        'id_dosen_matkul' => 'required',
+        'nama_dosen' => 'required|unique:dosen_matkul,dosen_id,' . $id . ',id_dosen_matkul',
+        'smt_thnakd' => 'required',
+    ], [
+        'nama_dosen.unique' => 'Nama dosen sudah ada di dalam tabel.',
+    ]);
 
-        ]);
-
-        if ($validator->fails()) return redirect()->back()->withInput()->withErrors($validator);
-
-        $data = [
-            'id_dosen_matkul' => $request->id_dosen_matkul,
-            'dosen_id' => $request->nama_dosen,
-            'smt_thnakd_id' => $request->smt_thnakd,
-        ];
-        DosenPengampuMatkul::where('id_dosen_matkul', $id)->update($data);
-        return redirect()->route('DosenPengampuMatkul');
+    if ($validator->fails()) {
+        return redirect()->back()->withInput()->withErrors($validator);
     }
+
+    $data = [
+        'id_dosen_matkul' => $request->id_dosen_matkul,
+        'dosen_id' => $request->nama_dosen,
+        'smt_thnakd_id' => $request->smt_thnakd,
+    ];
+
+    // Pastikan menggunakan kolom kunci utama yang benar
+    DosenPengampuMatkul::where('id_dosen_matkul', $id)->update($data);
+
+    return redirect()->route('DosenPengampuMatkul');
+}
+
+    
+
+    
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function delete(string $id)
     {
         $data_dosen_pengampu = DosenPengampuMatkul::where('id_dosen_matkul', $id)->first();
 
@@ -124,5 +148,21 @@ class DosenPengampuMatkulController extends Controller
             DosenPengampuMatkul::where('id_dosen_matkul', $id)->delete();
         }
         return redirect()->route('DosenPengampuMatkul');
+    }
+
+    function getCariNomor()
+    {
+        // Mendapatkan semua ID dari tabel rep_rps
+        $id_dosen_matkul = DosenPengampuMatkul::pluck('id_dosen_matkul')->toArray();
+
+        // Loop untuk memeriksa nomor dari 1 sampai takhingga
+        for ($i = 1;; $i++) {
+            // Jika $i tidak ditemukan di dalam array $id_rep_rps, kembalikan nilai $i
+            if (!in_array($i, $id_dosen_matkul)) {
+                return $i;
+                break;
+            }
+        }
+        return $i;
     }
 }

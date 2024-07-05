@@ -10,8 +10,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class DosenPengampuMatkul extends Model
 {
     use HasFactory, LogsActivity;
-    protected $fillabel=['dosen_id', 'smt_thnakd_id'];
+    protected $fillable= ['id_dosen_matkul','dosen_id','smt_thnakd_id'];
     protected $table = 'dosen_matkul';
+    public $timestamps = false;
     protected $primaryKey = 'id_dosen_matkul';
 
     public function getActivitylogOptions(): LogOptions
