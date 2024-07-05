@@ -15,7 +15,7 @@ class RepRpsUas extends Model
 
     protected $table = 'rep_rps_uas';
     public $incrementing = false;
-    protected $primaryKey = 'id_ver_rps_uas';
+    protected $primaryKey = 'id_rep_rps_uas';
     public $timestamps = true;
 
     public function getActivitylogOptions(): LogOptions

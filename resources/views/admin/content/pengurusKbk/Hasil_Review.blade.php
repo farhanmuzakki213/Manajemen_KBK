@@ -33,8 +33,7 @@
                                             <th>#</th>
                                             <th>Nama Mahasiswa</th>
                                             <th>Prodi</th>
-                                            <th>Nama Reviewer 1</th>
-                                            <th>Nama Reviewer 2</th>
+                                            <th>Nama Reviewer</th>
                                             <th>Status Proposal</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -44,8 +43,7 @@
                                             <th>#</th>
                                             <th>Nama Mahasiswa</th>
                                             <th>Prodi</th>
-                                            <th>Nama Reviewer 1</th>
-                                            <th>Nama Reviewer 2</th>
+                                            <th>Nama Reviewer</th>
                                             <th>Status Proposal</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -54,19 +52,18 @@
                                         @php
                                             $no = 1;
                                         @endphp
-                                        @foreach ($data_review_proposal_ta as $data)
+                                        @foreach ($merged_data as $data)
                                             <tr class="table-Light">
                                                 <th>{{ $no++ }}</th>
-                                                <th>{{ optional($data->proposal_ta)->r_mahasiswa->nama }}</th>
-                                                <th>{{ optional($data->proposal_ta)->r_mahasiswa->r_prodi->prodi }}</th>
-                                                <th>{{ optional($data->reviewer_satu_dosen)->r_dosen->nama_dosen }}</th>
-                                                <th>{{ optional($data->reviewer_dua_dosen)->r_dosen->nama_dosen }}</th>
+                                                <th>{{ $data['nama_mahasiswa'] }}</th>
+                                                <th>{{ $data['prodi'] }}</th>
+                                                <th>{{ $data['reviewer_satu'] ?? $data_review_proposal_ta->firstWhere('penugasan_id', $data['penugasan_id'])->p_reviewProposal->reviewer_satu_dosen->r_dosen->nama_dosen ? : $data['reviewer_dua'] ?? $data_review_proposal_ta->firstWhere('penugasan_id', $data['penugasan_id'])->p_reviewProposal->reviewer_dua_dosen->r_dosen->nama_dosen }}</th>
                                                 <th>
-                                                    @if ($data->status_review_proposal == 0)
+                                                    @if ($data['status_satu'] == 0 || $data['status_dua'] == 0)
                                                         Diajukan
-                                                    @elseif ($data->status_review_proposal == 1)
+                                                    @elseif ($data['status_satu'] == 1 || $data['status_dua'] == 1)
                                                         Ditolak
-                                                    @elseif ($data->status_review_proposal == 2)
+                                                    @elseif ($data['status_satu'] == 2 || $data['status_dua'] == 2)
                                                         Direvisi
                                                     @else
                                                         Diterima
@@ -75,7 +72,7 @@
                                                 <th style="width: 10%;">
                                                     <div class="row">                                                        
                                                         <a data-bs-toggle="modal"
-                                                            data-bs-target="#detail{{ $data->id_penugasan }}"
+                                                            data-bs-target="#detail{{ $data['penugasan_id'] }}"
                                                             class="btn btn-primary d-flex align-items-center"><i
                                                                 class="bi bi-three-dots-vertical"></i>Detail</a>
                                                     </div>
@@ -83,7 +80,7 @@
                                             </tr>
 
                                             {{-- Modal Detail Tabel --}}
-                                            <div class="modal fade" id="detail{{ $data->id_penugasan }}" tabindex="-1"
+                                            <div class="modal fade" id="detail{{ $data['penugasan_id'] }}" tabindex="-1"
                                                 aria-labelledby="detailLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">

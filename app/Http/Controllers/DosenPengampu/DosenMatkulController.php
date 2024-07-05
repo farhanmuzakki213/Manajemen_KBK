@@ -513,7 +513,7 @@ class DosenMatkulController extends Controller
      */
     public function delete_uas(string $id)
     {
-        $data_rep_uas = RepRpsUas::where('id_rep_rps_uas', $id)->first();
+        $data_rep_uas = RepRpsUas::find($id);
 
         // Menghapus file terkait jika ada
         if ($data_rep_uas && $data_rep_uas->file) {
