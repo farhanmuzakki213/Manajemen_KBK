@@ -34,21 +34,27 @@ class MatkulController extends Controller
         return Excel::download(new ExportMatkul, "Matkul.xlsx");
     }
 
+
+
     public function import(Request $request)
     {
         try {
             Excel::import(new ImportMatkul, $request->file('file'));
             return redirect('matkul')->with('success', 'Data berhasil diimpor.');
         } catch (ValidationException $e) {
-            $errors = $e->validator->getMessageBag()->all();
-            return redirect()->back()->withErrors($errors);
+            $errorMessages = $e->errors()['duplicate_data'] ?? [];
+            return redirect()->back()->withErrors(['error' => $errorMessages]);
         } catch (\Exception $e) {
             Log::error('General Exception: ' . $e->getMessage());
             Log::error('Trace: ' . $e->getTraceAsString());
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat impor data.');
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat import data.');
         }
     }
-    
+
+
+
+
+
 
 
     /**

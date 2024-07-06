@@ -222,12 +222,10 @@ class DosenPengampuMatkulController extends Controller
 
     function getCariNomor()
     {
-        // Mendapatkan semua ID dari tabel rep_rps
         $id_dosen_matkul = DosenPengampuMatkul::pluck('id_dosen_matkul')->toArray();
-
-        // Loop untuk memeriksa nomor dari 1 sampai takhingga
+    
         for ($i = 1;; $i++) {
-            // Jika $i tidak ditemukan di dalam array $id_rep_rps, kembalikan nilai $i
+            
             if (!in_array($i, $id_dosen_matkul)) {
                 return $i;
                 break;
@@ -235,6 +233,7 @@ class DosenPengampuMatkulController extends Controller
         }
         return $i;
     }
+    
 
     public function storeAPI(Request $request)
     {

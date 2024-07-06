@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Exports\ExportDosenKBK;
-use App\Http\Controllers\Controller;
-use App\Imports\ImportDosenKBK;
-use App\Models\DosenKBK;
 use App\Models\Dosen;
+use App\Models\DosenKBK;
 use App\Models\JenisKbk;
 use Illuminate\Http\Request;
+use App\Exports\ExportDosenKBK;
+use App\Imports\ImportDosenKBK;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class DosenKBKController extends Controller
 {
@@ -30,9 +32,21 @@ class DosenKBKController extends Controller
         return Excel::download(new ExportDosenKBK, "Dosen KBK.xlsx");
     }
 
-    public function import(Request $request){
-        Excel::import(new ImportDosenKBK, $request->file('file'));
-        return redirect('dosen_kbk');
+  
+
+    public function import(Request $request)
+    {
+        try {
+            Excel::import(new ImportDosenKBK, $request->file('file'));
+            return redirect('dosen_kbk')->with('success', 'Data berhasil diimpor.');
+        } catch (ValidationException $e) {
+            $errorMessages = $e->errors()['duplicate_data'] ?? [];
+            return redirect()->back()->withErrors(['error' => $errorMessages]);
+        } catch (\Exception $e) {
+            Log::error('General Exception: ' . $e->getMessage());
+            Log::error('Trace: ' . $e->getTraceAsString());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat import data.');
+        }
     }
 
     /**

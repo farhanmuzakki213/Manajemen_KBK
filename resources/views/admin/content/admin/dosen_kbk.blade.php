@@ -5,6 +5,13 @@
             <div class="card-body">
                 <!-- Page Heading -->
                 <h5 class="card-title fw-semibold mb-4">Data Dosen KBK</h5>
+                @if ($errors->any())
+                    <div id="delay" class="alert alert-danger" role="alert">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                    </div>
+                @endif
                 @if (Session::has('success'))
                     <div id="delay" class="alert alert-success" role="alert">
                         {{ Session::get('success') }}
@@ -25,7 +32,7 @@
                                         class="bi bi-file-earmark-plus"></i> New</a>
                                 <a href="{{ route('dosen_kbk.export') }}" class="btn btn-primary me-md-3"><i
                                         class="bi bi-box-arrow-in-up"></i> Export</a>
-                                <a data-bs-toggle="modal" data-bs-target="#import{{-- {{ $data->id_jenis_kbk }} --}}"
+                                <a data-bs-toggle="modal" data-bs-target="#import"
                                     class="btn btn-primary"><i class="bi bi-box-arrow-in-down"></i> Import</a>
                             </div>
                         </div>
