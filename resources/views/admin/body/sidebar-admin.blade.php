@@ -115,14 +115,16 @@
                                 @endhasrole
 
                                 @hasrole('dosen-kbk')
-                                    <li class="sidebar-item dropdown-item-custom">
-                                        <a href="{{ route('dashboard_dosenKbk') }}" class="sidebar-link dropdown-item-custom">
-                                            <div class="round-16 d-flex align-items-center justify-content-center">
-                                                <i class="ti ti-circle"></i>
-                                            </div>
-                                            <span class="hide-menu">Dosen KBK</span>
-                                        </a>
-                                    </li>
+                                    @can('dosenKbk-dashboard')
+                                        <li class="sidebar-item dropdown-item-custom">
+                                            <a href="{{ route('dashboard_dosenKbk') }}" class="sidebar-link dropdown-item-custom">
+                                                <div class="round-16 d-flex align-items-center justify-content-center">
+                                                    <i class="ti ti-circle"></i>
+                                                </div>
+                                                <span class="hide-menu">Dosen KBK</span>
+                                            </a>
+                                        </li>
+                                    @endcan
                                 @endhasrole
                             </ul>
                         </li>
@@ -887,14 +889,16 @@
                             <span class="hide-menu">Dashboard Dosen KBK</span>
                         </a>
                     </li> --}}
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('review_proposal_ta') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Review Proposal TA</span>
-                            </a>
-                        </li>
+                        @can('dosenKbk-view ReviewProposalTA')
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('review_proposal_ta') }}" aria-expanded="false">
+                                    <span>
+                                        <i class="ti ti-aperture"></i>
+                                    </span>
+                                    <span class="hide-menu">Review Proposal TA</span>
+                                </a>
+                            </li>
+                        @endcan
                     @endhasrole
                 @endhasanyrole
             </ul>

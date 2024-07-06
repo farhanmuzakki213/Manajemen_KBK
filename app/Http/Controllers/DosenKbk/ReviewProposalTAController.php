@@ -19,6 +19,12 @@ use Illuminate\Support\Facades\Validator;
 
 class ReviewProposalTAController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:dosenKbk-view ReviewProposalTA', ['only' => ['index', 'getDosen']]);
+        $this->middleware('permission:dosenKbk-create ReviewProposalTA', ['only' => ['create', 'store', 'getCariNomor', 'getDosen']]);
+        $this->middleware('permission:dosenKbk-update ReviewProposalTA', ['only' => ['edit', 'update', 'getDosen']]);
+        $this->middleware('permission:dosenKbk-delete ReviewProposalTA', ['only' => ['delete']]);
+    }
     /**
      * Display a listing of the resource.
      */
