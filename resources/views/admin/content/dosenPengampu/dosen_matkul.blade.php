@@ -74,14 +74,18 @@
                                                             File sudah diunggah
                                                         @else
                                                             @if (!$cek_data_rep_rps)
-                                                                <a href="{{ route('upload_rps.create', ['id_matkul' => $id_matkul_kbk]) }}"
-                                                                    class="btn btn-primary me-md-3"><i
-                                                                        class="bi bi-file-earmark-plus"></i> Upload RPS</a>
+                                                                @can('dosenMatkul-create RepRps')
+                                                                    <a href="{{ route('upload_rps.create', ['id_matkul' => $id_matkul_kbk]) }}"
+                                                                        class="btn btn-primary me-md-3"><i
+                                                                            class="bi bi-file-earmark-plus"></i> Upload RPS</a>
+                                                                @endcan
                                                             @endif
                                                             @if (!$cek_data_rep_uas)
-                                                                <a href="{{ route('upload_soal_uas.create', ['id_matkul' => $id_matkul_kbk]) }}"
-                                                                    class="btn btn-primary me-md-3"><i
-                                                                        class="bi bi-file-earmark-plus"></i> Upload UAS</a>
+                                                                @can('dosenMatkul-create RepUas')
+                                                                    <a href="{{ route('upload_soal_uas.create', ['id_matkul' => $id_matkul_kbk]) }}"
+                                                                        class="btn btn-primary me-md-3"><i
+                                                                            class="bi bi-file-earmark-plus"></i> Upload UAS</a>
+                                                                @endcan
                                                             @endif
                                                         @endif
                                                     </th>
@@ -143,13 +147,19 @@
                                                 </th>
                                                 <th style="width: 10%;">
                                                     <div class="row">
-                                                        <a href="{{ route('upload_rps.edit', ['id' => $data->id_rep_rps_uas]) }}"
-                                                            class="btn btn-primary mb-2 d-flex align-items-center"><i
-                                                                class="bi bi-pencil-square"></i>Revisi</a>
-                                                        <a data-bs-toggle="modal"
-                                                            data-bs-target="#staticBackdrop{{ $data->id_rep_rps_uas }}"
-                                                            class="btn btn-danger mb-2 d-flex align-items-center"><i
-                                                                class="bi bi-trash"></i>Hapus</a>
+                                                        @can('dosenMatkul-update RepRps')
+                                                            <a href="{{ route('upload_rps.edit', ['id' => $data->id_rep_rps_uas]) }}"
+                                                                class="btn btn-primary mb-2 d-flex align-items-center"><i
+                                                                    class="bi bi-pencil-square"></i>Revisi</a>
+                                                        @endcan
+                                                        @can('dosenMatkul-delete RepRps')
+                                                            <a data-bs-toggle="modal"
+                                                                data-bs-target="#staticBackdrop{{ $data->id_rep_rps_uas }}"
+                                                                class="btn btn-danger mb-2 d-flex align-items-center"><i
+                                                                    class="bi bi-trash"></i>Hapus</a>
+                                                        @endcan
+
+
                                                     </div>
                                                 </th>
                                             </tr>
@@ -240,13 +250,17 @@
                                                         target="_blank">{{ $data->file }}</a></th>
                                                 <th style="width: 10%;">
                                                     <div class="row">
-                                                        <a href="{{ route('upload_soal_uas.edit', ['id' => $data->id_rep_rps_uas]) }}"
-                                                            class="btn btn-primary mb-2 d-flex align-items-center"><i
-                                                                class="bi bi-pencil-square"></i>Revisi</a>
-                                                        <a data-bs-toggle="modal"
-                                                            data-bs-target="#staticBackdrop{{ $data->id_rep_rps_uas }}"
-                                                            class="btn btn-danger mb-2 d-flex align-items-center"><i
-                                                                class="bi bi-trash"></i>Hapus</a>
+                                                        @can('dosenMatkul-update RepUas')
+                                                            <a href="{{ route('upload_soal_uas.edit', ['id' => $data->id_rep_rps_uas]) }}"
+                                                                class="btn btn-primary mb-2 d-flex align-items-center"><i
+                                                                    class="bi bi-pencil-square"></i>Revisi</a>
+                                                        @endcan
+                                                        @can('dosenMatkul-delete RepUas')
+                                                            <a data-bs-toggle="modal"
+                                                                data-bs-target="#staticBackdrop{{ $data->id_rep_rps_uas }}"
+                                                                class="btn btn-danger mb-2 d-flex align-items-center"><i
+                                                                    class="bi bi-trash"></i>Hapus</a>
+                                                        @endcan
                                                     </div>
                                                 </th>
                                             </tr>

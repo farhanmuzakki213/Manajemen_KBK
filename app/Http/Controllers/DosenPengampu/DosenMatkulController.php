@@ -16,6 +16,16 @@ use Illuminate\Support\Facades\Validator;
 
 class DosenMatkulController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:dosenMatkul-dashboard', ['only' => ['dashboard_pengampu', 'getDosen']]);
+        $this->middleware('permission:dosenMatkul-view DosenMatkul', ['only' => ['index', 'getDosen']]);
+        $this->middleware('permission:dosenMatkul-create RepRps', ['only' => ['create_rps', 'store_rps', 'getCariNomor', 'getDosen']]);
+        $this->middleware('permission:dosenMatkul-update RepRps', ['only' => ['edit_rps', 'update_rps']]);
+        $this->middleware('permission:dosenMatkul-delete RepRps', ['only' => ['delete_rps']]);
+        $this->middleware('permission:dosenMatkul-create RepUas', ['only' => ['create_uas', 'store_uas', 'getCariNomor', 'getDosen']]);
+        $this->middleware('permission:dosenMatkul-update RepUas', ['only' => ['edit_uas', 'update_uas']]);
+        $this->middleware('permission:dosenMatkul-delete RepUas', ['only' => ['delete_uas']]);
+    }
     /**
      * Display a listing of the resource.
      */

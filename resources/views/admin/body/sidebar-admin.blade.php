@@ -93,14 +93,16 @@
                                     </li>
                                 @endhasrole
                                 @hasrole('dosen-pengampu')
-                                    <li class="sidebar-item dropdown-item-custom">
-                                        <a href="{{ route('dashboard_pengampu') }}" class="sidebar-link dropdown-item-custom">
-                                            <div class="round-16 d-flex align-items-center justify-content-center">
-                                                <i class="ti ti-circle"></i>
-                                            </div>
-                                            <span class="hide-menu">Dosen Pengampu</span>
-                                        </a>
-                                    </li>
+                                    @can('dosenMatkul-dashboard')
+                                        <li class="sidebar-item dropdown-item-custom">
+                                            <a href="{{ route('dashboard_pengampu') }}" class="sidebar-link dropdown-item-custom">
+                                                <div class="round-16 d-flex align-items-center justify-content-center">
+                                                    <i class="ti ti-circle"></i>
+                                                </div>
+                                                <span class="hide-menu">Dosen Pengampu</span>
+                                            </a>
+                                        </li>
+                                    @endcan
                                 @endhasrole
 
                                 @hasrole('pengurus-kbk')
@@ -867,14 +869,16 @@
                             <span class="hide-menu">Dashboard Pengampu</span>
                         </a>
                     </li> --}}
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('dosen_matkul') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Mata Kuliah</span>
-                            </a>
-                        </li>
+                        @can('dosenMatkul-view DosenMatkul')
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('dosen_matkul') }}" aria-expanded="false">
+                                    <span>
+                                        <i class="ti ti-aperture"></i>
+                                    </span>
+                                    <span class="hide-menu">Dosen Mata Kuliah</span>
+                                </a>
+                            </li>
+                        @endcan
                     @endhasrole
                     @hasrole('dosen-kbk')
                         <li class="nav-small-cap">
