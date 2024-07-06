@@ -158,6 +158,8 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::get('/DosenPengampuMatkul/edit/{id}', [DosenPengampuMatkulController::class, 'edit'])->middleware(['auth', 'verified'])->name('DosenPengampuMatkul.edit');
         Route::put('/DosenPengampuMatkul/update/{id}', [DosenPengampuMatkulController::class, 'update'])->middleware(['auth', 'verified'])->name('DosenPengampuMatkul.update');
         Route::delete('/DosenPengampuMatkul/delete/{id}', [DosenPengampuMatkulController::class, 'delete'])->middleware(['auth', 'verified'])->name('DosenPengampuMatkul.delete');
+        Route::get('/DosenPengampuMatkul/dataAPI', [DosenPengampuMatkulController::class, 'show'])->middleware(['auth', 'verified'])->name('DosenPengampuMatkul.show');
+        Route::post('/DosenPengampuMatkul/storeAPI', [DosenPengampuMatkulController::class, 'storeAPI'])->middleware(['auth', 'verified'])->name('DosenPengampuMatkul.storeAPI');
     });
 
     // Pimpinan Jurusan

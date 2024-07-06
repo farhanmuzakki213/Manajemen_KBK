@@ -25,14 +25,7 @@ class DosenPengampuMatkul extends Model
             ->dontSubmitEmptyLogs();
     }
 
-
-    public function p_dosen_pengampu()
-    {
-        return $this->belongsToMany(Kelas::class, 'dosen_matkul_detail_pivot', 'dosen_matkul_id');
-    }
-
-    
-    public function p_matkulKbk(): BelongsToMany
+    public function p_matkulKbk()
     {
         return $this->belongsToMany(
             MatkulKBK::class,
