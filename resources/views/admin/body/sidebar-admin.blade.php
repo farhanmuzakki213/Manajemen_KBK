@@ -85,14 +85,16 @@
                                     @endcan
                                 @endhasrole
                                 @hasrole('pimpinanProdi')
-                                    <li class="sidebar-item dropdown-item-custom">
-                                        <a href="{{ route('dashboard_kaprodi') }}" class="sidebar-link dropdown-item-custom">
-                                            <div class="round-16 d-flex align-items-center justify-content-center">
-                                                <i class="ti ti-circle"></i>
-                                            </div>
-                                            <span class="hide-menu">Pimpinan Prodi</span>
-                                        </a>
-                                    </li>
+                                    @can('pimpinanProdi-dashboard')
+                                        <li class="sidebar-item dropdown-item-custom">
+                                            <a href="{{ route('dashboard_kaprodi') }}" class="sidebar-link dropdown-item-custom">
+                                                <div class="round-16 d-flex align-items-center justify-content-center">
+                                                    <i class="ti ti-circle"></i>
+                                                </div>
+                                                <span class="hide-menu">Pimpinan Prodi</span>
+                                            </a>
+                                        </li>
+                                    @endcan
                                 @endhasrole
                                 @hasrole('dosenMatkul')
                                     @can('dosenMatkul-dashboard')
@@ -567,30 +569,39 @@
                                 <span class="hide-menu">Data RPS</span>
                             </a>
                             <ul aria-expanded="false" class="collapse first-level">
-                                <li class="sidebar-item">
-                                    <a href="{{ route('rep_rps') }}" class="sidebar-link dropdown-item-custom">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <i class="ti ti-circle"></i>
-                                        </div>
-                                        <span class="hide-menu">Repositori RPS</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="{{ route('berita_ver_rps') }}" class="sidebar-link dropdown-item-custom">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <i class="ti ti-circle"></i>
-                                        </div>
-                                        <span class="hide-menu">Verifikasi Berita Acara RPS</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="{{ route('grafik_rps_prodi') }}" class="sidebar-link dropdown-item-custom">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <i class="ti ti-circle"></i>
-                                        </div>
-                                        <span class="hide-menu">Tabel & Grafik RPS</span>
-                                    </a>
-                                </li>
+                                @can('pimpinanProdi-view RepRpsProdi')
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('rep_rps') }}" class="sidebar-link dropdown-item-custom">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <i class="ti ti-circle"></i>
+                                            </div>
+                                            <span class="hide-menu">Repositori RPS</span>
+                                        </a>
+                                    </li>
+                                @endcan
+
+                                @can('pimpinanProdi-view BeritaAcaraRpsProdi')
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('berita_ver_rps') }}" class="sidebar-link dropdown-item-custom">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <i class="ti ti-circle"></i>
+                                            </div>
+                                            <span class="hide-menu">Verifikasi Berita Acara RPS</span>
+                                        </a>
+                                    </li>
+                                @endcan
+
+                                @can('pimpinanProdi-view grafikRps')
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('grafik_rps_prodi') }}" class="sidebar-link dropdown-item-custom">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <i class="ti ti-circle"></i>
+                                            </div>
+                                            <span class="hide-menu">Tabel & Grafik RPS</span>
+                                        </a>
+                                    </li>
+                                @endcan
+
                             </ul>
                         </li>
 
@@ -602,30 +613,39 @@
                                 <span class="hide-menu">Data UAS</span>
                             </a>
                             <ul aria-expanded="false" class="collapse first-level">
-                                <li class="sidebar-item">
-                                    <a href="{{ route('rep_soal_uas') }}" class="sidebar-link dropdown-item-custom">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <i class="ti ti-circle"></i>
-                                        </div>
-                                        <span class="hide-menu">Repositori Soal UAS</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="{{ route('berita_ver_uas') }}" class="sidebar-link dropdown-item-custom">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <i class="ti ti-circle"></i>
-                                        </div>
-                                        <span class="hide-menu">Verifikasi Berita Acara UAS</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="{{ route('grafik_uas_prodi') }}" class="sidebar-link dropdown-item-custom">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <i class="ti ti-circle"></i>
-                                        </div>
-                                        <span class="hide-menu">Tabel & Grafik UAS</span>
-                                    </a>
-                                </li>
+                                @can('pimpinanProdi-view RepUasProdi')
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('rep_soal_uas') }}" class="sidebar-link dropdown-item-custom">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <i class="ti ti-circle"></i>
+                                            </div>
+                                            <span class="hide-menu">Repositori Soal UAS</span>
+                                        </a>
+                                    </li>
+                                @endcan
+
+                                @can('pimpinanProdi-view BeritaAcaraUasProdi')
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('berita_ver_uas') }}" class="sidebar-link dropdown-item-custom">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <i class="ti ti-circle"></i>
+                                            </div>
+                                            <span class="hide-menu">Verifikasi Berita Acara UAS</span>
+                                        </a>
+                                    </li>
+                                @endcan
+
+                                @can('pimpinanProdi-view grafikUas')
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('grafik_uas_prodi') }}" class="sidebar-link dropdown-item-custom">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <i class="ti ti-circle"></i>
+                                            </div>
+                                            <span class="hide-menu">Tabel & Grafik UAS</span>
+                                        </a>
+                                    </li>
+                                @endcan
+
                             </ul>
                         </li>
 
@@ -637,15 +657,18 @@
                                 <span class="hide-menu">Data TA</span>
                             </a>
                             <ul aria-expanded="false" class="collapse first-level">
-                                <li class="sidebar-item">
-                                    <a href="{{ route('hasil_review_proposal_ta') }}"
-                                        class="sidebar-link dropdown-item-custom">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <i class="ti ti-circle"></i>
-                                        </div>
-                                        <span class="hide-menu">Hasil Review Proposal TA</span>
-                                    </a>
-                                </li>
+                                @can('pimpinanProdi-view ProposalTaFinal')
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('hasil_review_proposal_ta') }}"
+                                            class="sidebar-link dropdown-item-custom">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <i class="ti ti-circle"></i>
+                                            </div>
+                                            <span class="hide-menu">Hasil Review Proposal TA</span>
+                                        </a>
+                                    </li>
+                                @endcan
+
                             </ul>
                         </li>
 

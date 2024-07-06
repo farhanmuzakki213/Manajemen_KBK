@@ -15,6 +15,11 @@ use App\Models\ReviewProposalTaDetailPivot;
 
 class HAsilFinalProposalTAController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:pimpinanProdi-view ProposalTaFinal', ['only' => ['index', 'getDosen']]);
+        $this->middleware('permission:pimpinanProdi-update ProposalTaFinal', ['only' => ['edit', 'update', 'getDosen']]);
+        $this->middleware('permission:pimpinanProdi-export ProposalTaFinal', ['only' => ['export_excel', 'getDosen']]);
+    }
 
     public function getDosen()
     {

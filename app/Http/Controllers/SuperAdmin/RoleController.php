@@ -104,12 +104,6 @@ class RoleController extends Controller
             $item['name'] = str_replace('admin-', '', $item['name']);
             $item['name_real'] = 'admin-' . $item['name'];
         }
-
-        $permissionsSuperAdmin = Permission::where('name', 'like', 'superAdmin%')->get();
-        foreach ($permissionsSuperAdmin as &$item) {
-            $item['name'] = str_replace('superAdmin-', '', $item['name']);
-            $item['name_real'] = 'superAdmin-' . $item['name'];
-        }
         $permissionsPengurusKbk = Permission::where('name', 'like', 'pengurusKbk%')->get();
         foreach ($permissionsPengurusKbk as &$item) {
             $item['name'] = str_replace('pengurusKbk-', '', $item['name']);
@@ -145,7 +139,6 @@ class RoleController extends Controller
         return view('admin.content.superadmin.role.add-permission', [
             'role' => $role,
             'permissionsAdmin' => $permissionsAdmin,
-            'permissionsSuperAdmin' => $permissionsSuperAdmin,
             'permissionsPengurusKbk' => $permissionsPengurusKbk,
             'permissionsDosenKbk' => $permissionsDosenKbk,
             'permissionsDosenMatkul' => $permissionsDosenMatkul,

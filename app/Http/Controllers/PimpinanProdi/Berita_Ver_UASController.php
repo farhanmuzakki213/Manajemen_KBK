@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Validator;
 
 class Berita_Ver_UASController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:pimpinanProdi-view BeritaAcaraUasProdi', ['only' => ['index', 'getDosen']]);
+        $this->middleware('permission:pimpinanProdi-update BeritaAcaraUasProdi', ['only' => ['edit', 'update', 'getDosen']]);
+    }
     public function getDosen()
     {
         $user = Auth::user()->name;

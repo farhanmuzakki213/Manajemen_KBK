@@ -7,12 +7,29 @@ use App\Models\VerRpsUas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\PimpinanProdi;
+use Illuminate\Support\Facades\Auth;
 
 class Rep_Soal_UASController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    public function __construct() {
+        $this->middleware('permission:pimpinanProdi-view RepUasProdi', ['only' => ['index', 'getDosen']]);
+    }
+
+    public function getDosen()
+    {
+        $user = Auth::user()->name;
+        $user_email = Auth::user()->email;
+        $kaprodi = PimpinanProdi::whereHas('r_dosen', function ($query) use ($user, $user_email) {
+            $query->where('nama_dosen', $user)
+                ->where('email', $user_email);
+        })->first();
+        return $kaprodi;
+    }
+    
     public function index()
     {
         $data_rep_soal_uas = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_smt_thnakd')

@@ -22,6 +22,12 @@ class kaprodiController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        $this->middleware('permission:pimpinanProdi-dashboard', ['only' => ['dashboard_kaprodi', 'getDosen']]);
+        $this->middleware('permission:pimpinanProdi-view grafikRps', ['only' => ['grafik_rps', 'getDosen']]);
+        $this->middleware('permission:pimpinanProdi-view grafikUas', ['only' => ['grafik_uas', 'getDosen']]);
+    }
 
 
     public function getDosen()
@@ -285,6 +291,21 @@ class kaprodiController extends Controller
             ->join('matkul', 'matkul_kbk.matkul_id', '=', 'matkul.id_matkul')
             ->join('kurikulum', 'matkul.kurikulum_id', '=', 'kurikulum.id_kurikulum')
             ->join('prodi', 'kurikulum.prodi_id', '=', 'prodi.id_prodi')
+            ->select(DB::raw("smt_thnakd.smt_thnakd, COUNT(DISTINCT ver_berita_acara.id_berita_acara) as banyak_berita"))
+            ->where('ver_berita_acara.type', '=', '0')
+            ->where('prodi.id_prodi', '=', $kaprodi->prodi_id)
+            ->groupBy('smt_thnakd.smt_thnakd')
+            ->pluck('banyak_berita', 'smt_thnakd.smt_thnakd');
+
+        $banyak_berita_ver_smt = DB::table('ver_rps_uas')
+            ->join('ver_berita_acara_detail_pivot', 'ver_rps_uas.id_ver_rps_uas', '=', 'ver_berita_acara_detail_pivot.ver_rps_uas_id')
+            ->join('ver_berita_acara', 'ver_berita_acara.id_berita_acara', '=', 'ver_berita_acara_detail_pivot.berita_acara_id')
+            ->join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')
+            ->join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
+            ->join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
+            ->join('matkul', 'matkul_kbk.matkul_id', '=', 'matkul.id_matkul')
+            ->join('kurikulum', 'matkul.kurikulum_id', '=', 'kurikulum.id_kurikulum')
+            ->join('prodi', 'kurikulum.prodi_id', '=', 'prodi.id_prodi')
             ->select(DB::raw("smt_thnakd.smt_thnakd, COUNT(ver_berita_acara.id_berita_acara) as banyak_berita"))
             ->where('ver_berita_acara.type', '=', '0')
             ->where('prodi.id_prodi', '=', $kaprodi->prodi_id)
@@ -338,6 +359,22 @@ class kaprodiController extends Controller
             ->join('kurikulum', 'matkul.kurikulum_id', '=', 'kurikulum.id_kurikulum')
             ->join('prodi', 'kurikulum.prodi_id', '=', 'prodi.id_prodi')
             ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
+            ->select(DB::raw("jenis_kbk.jenis_kbk, COUNT(DISTINCT ver_berita_acara.id_berita_acara) as banyak_berita"))
+            ->where('ver_berita_acara.type', '=', '0')
+            ->where('prodi.id_prodi', '=', $kaprodi->prodi_id)
+            ->groupBy('jenis_kbk.jenis_kbk')
+            ->pluck('banyak_berita', 'jenis_kbk.jenis_kbk');
+
+        $banyak_berita_ver_kbk = DB::table('ver_rps_uas')
+            ->join('ver_berita_acara_detail_pivot', 'ver_rps_uas.id_ver_rps_uas', '=', 'ver_berita_acara_detail_pivot.ver_rps_uas_id')
+            ->join('ver_berita_acara', 'ver_berita_acara.id_berita_acara', '=', 'ver_berita_acara_detail_pivot.berita_acara_id')
+            ->join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')
+            ->join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
+            ->join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
+            ->join('matkul', 'matkul_kbk.matkul_id', '=', 'matkul.id_matkul')
+            ->join('kurikulum', 'matkul.kurikulum_id', '=', 'kurikulum.id_kurikulum')
+            ->join('prodi', 'kurikulum.prodi_id', '=', 'prodi.id_prodi')
+            ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
             ->select(DB::raw("jenis_kbk.jenis_kbk, COUNT(ver_berita_acara.id_berita_acara) as banyak_berita"))
             ->where('ver_berita_acara.type', '=', '0')
             ->where('prodi.id_prodi', '=', $kaprodi->prodi_id)
@@ -370,10 +407,12 @@ class kaprodiController extends Controller
             'banyak_pengunggahan_smt' => $banyak_pengunggahan_smt,
             'banyak_verifikasi_smt' => $banyak_verifikasi_smt,
             'banyak_berita_smt' => $banyak_berita_smt,
+            'banyak_berita_ver_smt' => $banyak_berita_ver_smt,
             'semester' => $semester,
             'banyak_pengunggahan_kbk' => $banyak_pengunggahan_kbk,
             'banyak_verifikasi_kbk' => $banyak_verifikasi_kbk,
             'banyak_berita_kbk' => $banyak_berita_kbk,
+            'banyak_berita_ver_kbk' => $banyak_berita_ver_kbk,
             'kbk' => $kbk,
             'data_ver_rps' => $data_ver_rps,
         ];
@@ -421,6 +460,21 @@ class kaprodiController extends Controller
             ->join('matkul', 'matkul_kbk.matkul_id', '=', 'matkul.id_matkul')
             ->join('kurikulum', 'matkul.kurikulum_id', '=', 'kurikulum.id_kurikulum')
             ->join('prodi', 'kurikulum.prodi_id', '=', 'prodi.id_prodi')
+            ->select(DB::raw("smt_thnakd.smt_thnakd, COUNT(DISTINCT ver_berita_acara.id_berita_acara) as banyak_berita"))
+            ->where('ver_berita_acara.type', '=', '1')
+            ->where('prodi.id_prodi', '=', $kaprodi->prodi_id)
+            ->groupBy('smt_thnakd.smt_thnakd')
+            ->pluck('banyak_berita', 'smt_thnakd.smt_thnakd');
+
+        $banyak_berita_ver_smt = DB::table('ver_rps_uas')
+            ->join('ver_berita_acara_detail_pivot', 'ver_rps_uas.id_ver_rps_uas', '=', 'ver_berita_acara_detail_pivot.ver_rps_uas_id')
+            ->join('ver_berita_acara', 'ver_berita_acara.id_berita_acara', '=', 'ver_berita_acara_detail_pivot.berita_acara_id')
+            ->join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')
+            ->join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
+            ->join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
+            ->join('matkul', 'matkul_kbk.matkul_id', '=', 'matkul.id_matkul')
+            ->join('kurikulum', 'matkul.kurikulum_id', '=', 'kurikulum.id_kurikulum')
+            ->join('prodi', 'kurikulum.prodi_id', '=', 'prodi.id_prodi')
             ->select(DB::raw("smt_thnakd.smt_thnakd, COUNT(ver_berita_acara.id_berita_acara) as banyak_berita"))
             ->where('ver_berita_acara.type', '=', '1')
             ->where('prodi.id_prodi', '=', $kaprodi->prodi_id)
@@ -474,6 +528,22 @@ class kaprodiController extends Controller
             ->join('kurikulum', 'matkul.kurikulum_id', '=', 'kurikulum.id_kurikulum')
             ->join('prodi', 'kurikulum.prodi_id', '=', 'prodi.id_prodi')
             ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
+            ->select(DB::raw("jenis_kbk.jenis_kbk, COUNT(DISTINCT ver_berita_acara.id_berita_acara) as banyak_berita"))
+            ->where('ver_berita_acara.type', '=', '1')
+            ->where('prodi.id_prodi', '=', $kaprodi->prodi_id)
+            ->groupBy('jenis_kbk.jenis_kbk')
+            ->pluck('banyak_berita', 'jenis_kbk.jenis_kbk');
+
+        $banyak_berita_ver_kbk = DB::table('ver_rps_uas')
+            ->join('ver_berita_acara_detail_pivot', 'ver_rps_uas.id_ver_rps_uas', '=', 'ver_berita_acara_detail_pivot.ver_rps_uas_id')
+            ->join('ver_berita_acara', 'ver_berita_acara.id_berita_acara', '=', 'ver_berita_acara_detail_pivot.berita_acara_id')
+            ->join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')
+            ->join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
+            ->join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
+            ->join('matkul', 'matkul_kbk.matkul_id', '=', 'matkul.id_matkul')
+            ->join('kurikulum', 'matkul.kurikulum_id', '=', 'kurikulum.id_kurikulum')
+            ->join('prodi', 'kurikulum.prodi_id', '=', 'prodi.id_prodi')
+            ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
             ->select(DB::raw("jenis_kbk.jenis_kbk, COUNT(ver_berita_acara.id_berita_acara) as banyak_berita"))
             ->where('ver_berita_acara.type', '=', '1')
             ->where('prodi.id_prodi', '=', $kaprodi->prodi_id)
@@ -506,10 +576,12 @@ class kaprodiController extends Controller
             'banyak_pengunggahan_smt' => $banyak_pengunggahan_smt,
             'banyak_verifikasi_smt' => $banyak_verifikasi_smt,
             'banyak_berita_smt' => $banyak_berita_smt,
+            'banyak_berita_ver_smt' => $banyak_berita_ver_smt,
             'semester' => $semester,
             'banyak_pengunggahan_kbk' => $banyak_pengunggahan_kbk,
             'banyak_verifikasi_kbk' => $banyak_verifikasi_kbk,
             'banyak_berita_kbk' => $banyak_berita_kbk,
+            'banyak_berita_ver_kbk' => $banyak_berita_ver_kbk,
             'kbk' => $kbk,
             'data_ver_rps' => $data_ver_rps,
         ];

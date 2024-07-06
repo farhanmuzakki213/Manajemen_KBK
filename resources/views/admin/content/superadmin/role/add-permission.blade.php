@@ -48,17 +48,6 @@
                                             </div>
                                         @endforeach
                                     </div>
-                                    <label for="" class="mt-2 fw-semibold">Permissions Super Admin</label>
-                                    <div class="row mt-2">
-                                        @foreach ($permissionsSuperAdmin as $permission)
-                                            <div class="col-lg-3">
-                                                <label>
-                                                    <input type="checkbox" class="ms-auto" name="permission[]"
-                                                        value="{{ $permission->name_real }}" {{in_array($permission->id, $rolePermissions) ? 'checked' : '' }}>  {{ $permission->name }}
-                                                </label>
-                                            </div>
-                                        @endforeach
-                                    </div>
                                     <label for="" class="mt-2 fw-semibold">Permissions Pengurus KBK</label>
                                     <div class="row mt-2">
                                         @foreach ($permissionsPengurusKbk as $permission)

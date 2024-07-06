@@ -5,12 +5,29 @@ namespace App\Http\Controllers\PimpinanProdi;
 use App\Models\VerRpsUas;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\PimpinanProdi;
+use Illuminate\Support\Facades\Auth;
 
 class Rep_RPSController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    public function __construct() {
+        $this->middleware('permission:pimpinanProdi-view RepRpsProdi', ['only' => ['index', 'getDosen']]);
+    }
+
+    public function getDosen()
+    {
+        $user = Auth::user()->name;
+        $user_email = Auth::user()->email;
+        $kaprodi = PimpinanProdi::whereHas('r_dosen', function ($query) use ($user, $user_email) {
+            $query->where('nama_dosen', $user)
+                ->where('email', $user_email);
+        })->first();
+        return $kaprodi;
+    }
+    
     public function index()
     {
         $data_rep_rps = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_smt_thnakd','r_rep_rps_uas.r_dosen_matkul.r_dosen')

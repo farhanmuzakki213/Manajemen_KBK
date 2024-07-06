@@ -102,17 +102,20 @@
             let pengunggahanData = [];
             let verifikasiData = [];
             let beritaData = [];
+            let beritaDataVer = [];
 
             if (type === 'smt') {
                 labels = Object.keys(data.banyak_pengunggahan_smt);
                 pengunggahanData = Object.values(data.banyak_pengunggahan_smt);
                 verifikasiData = Object.values(data.banyak_verifikasi_smt);
                 beritaData = Object.values(data.banyak_berita_smt);
+                beritaDataVer = Object.values(data.banyak_berita_ver_smt);
             } else if (type === 'kbk') {
                 labels = Object.keys(data.banyak_pengunggahan_kbk);
                 pengunggahanData = Object.values(data.banyak_pengunggahan_kbk);
                 verifikasiData = Object.values(data.banyak_verifikasi_kbk);
                 beritaData = Object.values(data.banyak_berita_kbk);
+                beritaDataVer = Object.values(data.banyak_berita_ver_kbk);
             }
 
             const options = {
@@ -126,9 +129,14 @@
                         data: verifikasiData
                     },
                     {
-                        name: 'Banyak Berita Acara',
+                        name: 'Banyak Verifikasi Uas di Berita Acara',
+                        data: beritaDataVer
+                    },
+                    {
+                        name: 'Banyak Pengunggahan Berita Acara',
                         data: beritaData
                     }
+                    
                 ],
                 chart: {
                     type: 'bar',
@@ -171,7 +179,7 @@
                 tooltip: {
                     y: {
                         formatter: function (val) {
-                            return parseInt(val) + " RPS";
+                            return parseInt(val) + " Uas";
                         }
                     }
                 }

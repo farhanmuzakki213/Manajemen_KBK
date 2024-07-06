@@ -242,6 +242,18 @@ class RolesAndUsersSeeder extends Seeder
             ['pimpinanJurusan-view grafikProposal', 'web'],
             ['pimpinanJurusan-view RepRPSJurusan', 'web'],
             ['pimpinanJurusan-view RepSoalUASJurusan', 'web'],
+            ['pimpinanProdi-view BeritaAcaraRpsProdi', 'web'],
+            ['pimpinanProdi-update BeritaAcaraRpsProdi', 'web'],
+            ['pimpinanProdi-view BeritaAcaraUasProdi', 'web'],
+            ['pimpinanProdi-update BeritaAcaraUasProdi', 'web'],
+            ['pimpinanProdi-view ProposalTaFinal', 'web'],
+            ['pimpinanProdi-update ProposalTaFinal', 'web'],
+            ['pimpinanProdi-export ProposalTaFinal', 'web'],
+            ['pimpinanProdi-dashboard', 'web'],
+            ['pimpinanProdi-view grafikRps', 'web'],
+            ['pimpinanProdi-view grafikUas', 'web'],
+            ['pimpinanProdi-view RepRpsProdi', 'web'],
+            ['pimpinanProdi-view RepUasProdi', 'web'],
         ];
         foreach ($DataPermission as $data) {
             DB::table('permissions')->insert([
