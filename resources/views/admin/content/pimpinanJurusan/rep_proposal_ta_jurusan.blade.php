@@ -31,7 +31,6 @@
                                             <th>NIM</th>
                                             <th>Prodi</th>
                                             <th>Jurusan</th>
-                                            <th>Status Proposal</th>
                                             <th>Status Final</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -43,7 +42,6 @@
                                             <th>NIM</th>
                                             <th>Prodi</th>
                                             <th>Jurusan</th>
-                                            <th>Status Proposal</th>
                                             <th>Status Final</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -57,21 +55,14 @@
                                                 <th>{{ optional($data->proposal_ta)->r_mahasiswa->r_prodi->prodi }}</th>
                                                 <th>{{ optional($data->proposal_ta)->r_mahasiswa->r_jurusan->jurusan }}</th>
                                                 <th>
-                                                    @if ($data->status_review_proposal == 0)
+                                                    @if ($data->status_final_proposal == 0)
                                                         Diajukan
-                                                    @elseif ($data->status_review_proposal == 1)
+                                                    @elseif ($data->status_final_proposal == 1)
                                                         Ditolak
-                                                    @elseif ($data->status_review_proposal == 2)
+                                                    @elseif ($data->status_final_proposal == 2)
                                                         Direvisi
                                                     @else
                                                         Diterima
-                                                    @endif
-                                                </th>
-                                                <th>
-                                                    @if ($data->status_final_proposal == 0)
-                                                        Belum Final
-                                                    @else
-                                                        Final
                                                     @endif
                                                 </th>
                                                 <th style="width: 14%;">

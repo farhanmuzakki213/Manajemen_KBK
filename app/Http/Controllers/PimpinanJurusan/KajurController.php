@@ -699,6 +699,48 @@ class KajurController extends Controller
 
         $data = DB::table('review_proposal_ta_detail_pivot')
             ->join('review_proposal_ta', 'review_proposal_ta_detail_pivot.penugasan_id', '=', 'review_proposal_ta.id_penugasan')
+            ->select(
+                DB::raw("COUNT(*) as count"),
+                DB::raw("MONTHNAME(tanggal_review) as month"),
+                'review_proposal_ta.status_final_proposal'
+            )
+            ->groupBy(DB::raw("MONTHNAME(tanggal_review)"), 'review_proposal_ta.status_final_proposal')
+            ->orderBy(DB::raw("MONTH(tanggal_review)"))
+            ->get();
+        //dd($data);
+        $review = [];
+        $bulan = [];
+
+        foreach ($data as $value) {
+            $month = $value->month;
+            $status = $status_mapping[$value->status_final_proposal];
+
+            if (!isset($review[$month])) {
+                $review[$month] = array_fill_keys($statuses, 0);
+                $bulan[] = $month;
+            }
+            $review[$month][$status] = $value->count;
+        }
+
+        // Ensure all months have all statuses even if they are zero
+        foreach ($bulan as $month) {
+            foreach ($statuses as $status) {
+                if (!isset($review[$month][$status])) {
+                    $review[$month][$status] = 0;
+                }
+            }
+        }
+
+        /* $statuses = ['Diajukan', 'Ditolak', 'Direvisi', 'Diterima'];
+        $status_mapping = [
+            0 => 'Diajukan',
+            1 => 'Ditolak',
+            2 => 'Direvisi',
+            3 => 'Diterima'
+        ];
+
+        $data = DB::table('review_proposal_ta_detail_pivot')
+            ->join('review_proposal_ta', 'review_proposal_ta_detail_pivot.penugasan_id', '=', 'review_proposal_ta.id_penugasan')
             ->join('proposal_ta', 'review_proposal_ta.proposal_ta_id', '=', 'proposal_ta.id_proposal_ta')
             ->select(
                 DB::raw("COUNT(*) as count"),
@@ -708,7 +750,7 @@ class KajurController extends Controller
             ->groupBy(DB::raw("MONTHNAME(tanggal_review)"), 'proposal_ta.status_proposal_ta')
             ->orderBy(DB::raw("MONTH(tanggal_review)"))
             ->get();
-        //dd($data);
+        dd($data);
         $review = [];
         $bulan = [];
 
@@ -730,7 +772,7 @@ class KajurController extends Controller
                     $review[$month][$status] = 0;
                 }
             }
-        }
+        } */
 
         $review = array_values($review);
 
