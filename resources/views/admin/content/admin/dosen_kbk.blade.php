@@ -5,6 +5,13 @@
             <div class="card-body">
                 <!-- Page Heading -->
                 <h5 class="card-title fw-semibold mb-4">Data Dosen KBK</h5>
+                @if ($errors->any())
+                    <div id="delay" class="alert alert-danger" role="alert">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                    </div>
+                @endif
                 @if (Session::has('success'))
                     <div id="delay" class="alert alert-success" role="alert">
                         {{ Session::get('success') }}
@@ -30,10 +37,9 @@
                                             class="bi bi-box-arrow-in-up"></i> Export</a>
                                 @endcan
                                 @can('admin-import DosenKbk')
-                                    <a data-bs-toggle="modal" data-bs-target="#import{{-- {{ $data->id_jenis_kbk }} --}}"
+                                    <a data-bs-toggle="modal" data-bs-target="#import"
                                         class="btn btn-primary"><i class="bi bi-box-arrow-in-down"></i> Import</a>
                                 @endcan
-
                             </div>
                         </div>
 

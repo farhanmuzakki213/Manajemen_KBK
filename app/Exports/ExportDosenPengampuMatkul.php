@@ -34,7 +34,6 @@ class ExportDosenPengampuMatkul implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'id_dosen_matkul',
             'nama_dosen',
             'nama_matkul',
             'nama_kelas',

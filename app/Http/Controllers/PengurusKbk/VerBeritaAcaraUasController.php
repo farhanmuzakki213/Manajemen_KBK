@@ -138,8 +138,8 @@ class VerBeritaAcaraUasController extends Controller
             'pengurus_kbk' => $pengurus_kbk,
         ]);
     
-        return $pdf->stream('Berita_Acara_UAS.pdf');
-        // return $pdf->download('Berita_Acara_UAS.pdf');
+        // return $pdf->stream('Berita_Acara_UAS.pdf');
+        return $pdf->download('Berita_Acara_UAS.pdf');
     }
 
 

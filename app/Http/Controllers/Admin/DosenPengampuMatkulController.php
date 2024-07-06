@@ -51,19 +51,52 @@ class DosenPengampuMatkulController extends Controller
 
     public function create()
     {
+        $data_kelas = Kelas::all();
+        $data_matkul_kbk = MatkulKBK::all();
         $data_dosen = Dosen::all();
         $data_smt = ThnAkademik::all();
+        $data_matkul = DosenPengampuMatkul::all();
         $nextNumber = $this->getCariNomor();
+
+        // debug($data_matkul->toArray());
 
         // debug($nextNumber);
 
-        return view('admin.content.admin.form.DosenPengampuMatkul_form', compact('data_dosen', 'data_smt', 'nextNumber'));
+        return view('admin.content.admin.form.DosenPengampuMatkul_form', compact('data_matkul', 'data_kelas', 'data_matkul_kbk', 'data_dosen', 'data_smt', 'nextNumber'));
     }
 
 
     /**
      * Store a newly created resource in storage.
      */
+    // public function store(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'id_dosen_matkul' => 'required',
+    //         'nama_dosen' => 'required|unique:dosen_matkul,dosen_id',
+    //         'smt_thnakd' => 'required',
+    //     ], [
+    //         'nama_dosen.unique' => 'Nama dosen sudah ada di dalam tabel.',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return redirect()->back()->withInput()->withErrors($validator);
+    //     }
+
+    //     $data = [
+    //         'id_dosen_matkul' => $request->id_dosen_matkul,
+    //         'dosen_id' => $request->nama_dosen,
+    //         'smt_thnakd_id' => $request->smt_thnakd,
+    //     ];
+
+    //     DosenPengampuMatkul::create($data);
+
+    //     return redirect()->route('DosenPengampuMatkul');
+
+    //     //dd($request->all());
+    // }
+
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -73,70 +106,113 @@ class DosenPengampuMatkulController extends Controller
         ], [
             'nama_dosen.unique' => 'Nama dosen sudah ada di dalam tabel.',
         ]);
-
+        
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
         }
-
+        
         $data = [
             'id_dosen_matkul' => $request->id_dosen_matkul,
             'dosen_id' => $request->nama_dosen,
             'smt_thnakd_id' => $request->smt_thnakd,
         ];
-
+        
         DosenPengampuMatkul::create($data);
-
+        
         return redirect()->route('DosenPengampuMatkul');
-
+        
         //dd($request->all());
     }
 
     /**
      * Display the specified resource.
      */
+    
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
+        $data_kelas = Kelas::all();
+        debug($data_kelas->toArray());
+        $data_matkul_kbk = MatkulKBK::all();
+        debug($data_matkul_kbk->toArray());
         $data_dosen = Dosen::all();
+        debug($data_dosen->toArray());
         $data_smt = ThnAkademik::all();
+        debug($data_smt->toArray());
+        $data_dosen_pengampu = DosenPengampuMatkul::with(['p_matkulKbk', 'p_kelas', 'r_dosen'])
+        ->orderByDesc('id_dosen_matkul')
+        ->get()
+    ->map(function ($item) {
+            return [
+                'nidn' => $item->r_dosen->nidn,
+                'kode_matakuliah' => $item->p_matkulKbk->first()->r_matkul->kode_matkul ?? null,
+                'kode_kelas' => $item->p_kelas->first()->kode_kelas ?? null
+            ];
+        })
+        ->toArray();
+        debug($data_dosen_pengampu);
+
 
         $data_dosen_pengampu = DosenPengampuMatkul::where('id_dosen_matkul', $id)->first();
         //dd(compact('data_kurikulum', 'data_matkul', 'data_jenis_kbk'));
 
-        return view('admin.content.admin.form.DosenPengampuMatkul_edit', compact('data_dosen', 'data_smt', 'data_dosen_pengampu'));
+        return view('admin.content.admin.form.DosenPengampuMatkul_edit', compact('data_dosen', 'data_smt', 'data_dosen_pengampu', 'data_kelas', 'data_matkul_kbk'));
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
-    {
-        $validator = Validator::make($request->all(), [
-            'id_dosen_matkul' => 'required',
-            'nama_dosen' => 'required|unique:dosen_matkul,dosen_id,' . $id . ',id_dosen_matkul',
-            'smt_thnakd' => 'required',
-        ], [
-            'nama_dosen.unique' => 'Nama dosen sudah ada di dalam tabel.',
-        ]);
+{
+    $validator = Validator::make($request->all(), [
+        'id_dosen_matkul' => 'required',
+        'nama_dosen' => 'required|unique:dosen_matkul,dosen_id,' . $id . ',id_dosen_matkul',
+        'smt_thnakd' => 'required',
+        'mata_kuliah_dosen' => 'required|array',
+        'kelas' => 'required|array',
+    ], [
+        'nama_dosen.unique' => 'Nama dosen sudah ada di dalam tabel.',
+    ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withInput()->withErrors($validator);
-        }
+    if ($validator->fails()) {
+        return redirect()->back()->withInput()->withErrors($validator);
+    }
 
+    DB::beginTransaction();
+    try {
+        // Update data dosen pengampu matkul
         $data = [
-            'id_dosen_matkul' => $request->id_dosen_matkul,
             'dosen_id' => $request->nama_dosen,
             'smt_thnakd_id' => $request->smt_thnakd,
         ];
 
-        $DosenPengampuMatkul = DosenPengampuMatkul::where('id_dosen_matkul', $id)->first();
-        if ($DosenPengampuMatkul) {
-            $DosenPengampuMatkul->update($data);
+        $dosenPengampu = DosenPengampuMatkul::findOrFail($id);
+        $dosenPengampu->update($data);
+
+        // Hapus data kelas yang terkait dengan dosen pengampu ini
+        $dosenPengampu->p_kelas()->detach();
+
+        // Tambahkan kembali data kelas yang baru dipilih
+        foreach ($request->mata_kuliah_dosen as $matkulKbk) {
+            foreach ($request->kelas as $kelas) {
+                DB::table('dosen_matkul_detail_pivot')->insert([
+                    'dosen_matkul_id' => $id, // Menggunakan $id yang diterima dari parameter
+                    'matkul_kbk_id' => $matkulKbk,
+                    'kelas_id' => $kelas
+                ]);
+            }
         }
-        return redirect()->route('DosenPengampuMatkul');
+
+        DB::commit();
+
+        return redirect()->route('DosenPengampuMatkul')->with('success', 'Data berhasil diupdate.');
+    } catch (\Throwable $e) {
+        DB::rollback();
+        return redirect()->route('DosenPengampuMatkul')->with('error', 'Gagal mengupdate data: ' . $e->getMessage());
+    }
     }
 
     /**
@@ -154,12 +230,10 @@ class DosenPengampuMatkulController extends Controller
 
     function getCariNomor()
     {
-        // Mendapatkan semua ID dari tabel rep_rps
         $id_dosen_matkul = DosenPengampuMatkul::pluck('id_dosen_matkul')->toArray();
-
-        // Loop untuk memeriksa nomor dari 1 sampai takhingga
+    
         for ($i = 1;; $i++) {
-            // Jika $i tidak ditemukan di dalam array $id_rep_rps, kembalikan nilai $i
+            
             if (!in_array($i, $id_dosen_matkul)) {
                 return $i;
                 break;
@@ -167,6 +241,7 @@ class DosenPengampuMatkulController extends Controller
         }
         return $i;
     }
+    
 
     public function storeAPI(Request $request)
     {

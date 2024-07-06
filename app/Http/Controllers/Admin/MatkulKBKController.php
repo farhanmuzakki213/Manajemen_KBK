@@ -8,12 +8,14 @@ use App\Models\Kurikulum;
 use App\Models\MatkulKBK;
 use Illuminate\Http\Request;
 use App\Exports\ExportMatkul;
-use App\Imports\ImportMatkul;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Exports\ExportMatakuliahKBK;
 use App\Http\Controllers\Controller;
+use App\Imports\ImportMatkulKBK;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 
 class MatkulKBKController extends Controller
@@ -34,7 +36,7 @@ class MatkulKBKController extends Controller
         $data_matkul_kbk = MatkulKBK::with('r_kurikulum', 'r_jenis_kbk', 'r_matkul', 'p_dosenPengampuMatkul')
             ->orderByDesc('id_matkul_kbk')
             ->get();
-            //dd($data_matkul_kbk);
+        //dd($data_matkul_kbk);
         return view('admin.content.admin.matkul_kbk', compact('data_matkul_kbk'));
     }
 
@@ -85,20 +87,21 @@ class MatkulKBKController extends Controller
      * Display the specified resource.
      */
     public function show(string $id)
-{
-    $data_matkul = MatkulKBK::findOrFail($id);
-    $data_kurikulum = Kurikulum::all();
+    {
+        $data_matkul = MatkulKBK::findOrFail($id);
+        $data_kurikulum = Kurikulum::all();
 
-    return view('admin.content.admin.Matkul', compact('data_matkul', 'data_kurikulum'));
-}
+        return view('admin.content.admin.Matkul', compact('data_matkul', 'data_kurikulum'));
+    }
 
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id){
+    public function edit(string $id)
+    {
 
-    
+
         $data_kurikulum = Kurikulum::all();
         $data_matkul = Matkul::all();
         $data_jenis_kbk = JenisKbk::all();
@@ -116,7 +119,7 @@ class MatkulKBKController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id_matkul_kbk' => 'required',
-            'nama_matkul' => 'required|unique:matkul_kbk,matkul_id,'. $id .',id_matkul_kbk',
+            'nama_matkul' => 'required|unique:matkul_kbk,matkul_id,' . $id . ',id_matkul_kbk',
             'jenis_kbk' => 'required',
             'kurikulum' => 'required',
         ], [
@@ -155,9 +158,28 @@ class MatkulKBKController extends Controller
         //dd($data_matkul);
     }
 
-    public function export_excel(){
+    public function export_excel()
+    {
         return Excel::download(new ExportMatakuliahKBK, "Matakuliah KBK.xlsx");
     }
+
+
+    public function import(Request $request)
+    {
+        try {
+            Excel::import(new ImportMatkulKBK, $request->file('file'));
+            return redirect('matkul-kbk')->with('success', 'Data berhasil diimpor.');
+        } catch (ValidationException $e) {
+            $errorMessages = $e->errors()['duplicate_data'] ?? [];
+            return redirect()->back()->withErrors(['error' => $errorMessages]);
+        } catch (\Exception $e) {
+            Log::error('General Exception: ' . $e->getMessage());
+            Log::error('Trace: ' . $e->getTraceAsString());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat import data.');
+        }
+    }
+
+
 
     function getCariNomor()
     {
@@ -174,5 +196,4 @@ class MatkulKBKController extends Controller
         }
         return $i;
     }
-
 }

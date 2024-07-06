@@ -5,6 +5,13 @@
             <div class="card-body">
                 <!-- Page Heading -->
                 <h5 class="card-title fw-semibold mb-4">Data Mata Kuliah KBK</h5>
+                @if ($errors->any())
+                    <div id="delay" class="alert alert-danger" role="alert">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                    </div>
+                @endif
                 @if (Session::has('success'))
                     <div id="delay" class="alert alert-success" role="alert">
                         {{ Session::get('success') }}
@@ -48,7 +55,7 @@
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form method="post" action="{{-- {{ route('matkul.import') }} --}}" enctype="multipart/form-data">
+                                        <form method="post" action="{{ route('matkul_kbk.import') }}" enctype="multipart/form-data">
                                             @csrf
                                             <div class="mb-3">
                                                 <label for="file" class="col-form-label">Import File</label>

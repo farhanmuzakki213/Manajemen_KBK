@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class DosenPengampuMatkul extends Model
 {
     use HasFactory, LogsActivity;
-    protected $fillable= ['id_dosen_matkul','dosen_id','smt_thnakd_id'];
+    protected $fillable = ['id_dosen_matkul', 'dosen_id', 'smt_thnakd_id'];
     protected $table = 'dosen_matkul';
     public $timestamps = false;
     protected $primaryKey = 'id_dosen_matkul';
@@ -25,7 +25,7 @@ class DosenPengampuMatkul extends Model
             ->dontSubmitEmptyLogs();
     }
 
-    public function p_matkulKbk(): BelongsToMany
+    public function p_matkulKbk()
     {
         return $this->belongsToMany(
             MatkulKBK::class,
@@ -45,11 +45,14 @@ class DosenPengampuMatkul extends Model
         );
     }
 
-    public function r_dosen(){
-        return $this->belongsTo(Dosen::class, 'dosen_id','id_dosen');
+
+    public function r_dosen()
+    {
+        return $this->belongsTo(Dosen::class, 'dosen_id', 'id_dosen');
     }
 
-    public function r_smt_thnakd(){
-        return $this->belongsTo(ThnAkademik::class, 'smt_thnakd_id','id_smt_thnakd');
+    public function r_smt_thnakd()
+    {
+        return $this->belongsTo(ThnAkademik::class, 'smt_thnakd_id', 'id_smt_thnakd');
     }
 }
