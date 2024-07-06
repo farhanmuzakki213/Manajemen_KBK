@@ -22,12 +22,14 @@
                         <!-- Data Proposal TA -->
                         <div class="card shadow mb-4">
                             <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                                <button type="button" class="btn btn-primary mb-2 d-flex align-items-center"
-                                    data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="ti ti-refresh"></i>
-                                    Sinkron</button>
-                                <div class="col-2-kembali">
-                                    <p><a href="{{ route('rep_proposal_ta') }}" class="btn btn-success"> Kembali</a></p>
-                                </div>
+                                @can('sinkronData RepProposalTA')
+                                    <button type="button" class="btn btn-primary mb-2 d-flex align-items-center"
+                                        data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="ti ti-refresh"></i>
+                                        Sinkron</button>
+                                    <div class="col-2-kembali">
+                                        <p><a href="{{ route('rep_proposal_ta') }}" class="btn btn-success"> Kembali</a></p>
+                                    </div>
+                                @endcan
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -54,7 +56,9 @@
                                         </tfoot>
                                         <tbody>
                                             <tr>
-                                                <td colspan="6" class="text-center text-muted">---------------------------// Data API \\---------------------------</td>
+                                                <td colspan="6" class="text-center text-muted">
+                                                    ---------------------------// Data API \\---------------------------
+                                                </td>
                                             </tr>
                                             @if (isset($differences_api) && !empty($differences_api))
                                                 @foreach ($differences_api as $data)
@@ -64,7 +68,7 @@
                                                         <td>{{ $data['nama'] }}</td>
                                                         <td>{{ $data['judul'] }}</td>
                                                         <td>{{ $data['pembimbing_satu_nama'] }}</td>
-                                                        <td>{{ $data['pembimbing_dua_nama']}}</td>
+                                                        <td>{{ $data['pembimbing_dua_nama'] }}</td>
                                                     </tr>
                                                 @endforeach
                                             @else
@@ -74,7 +78,9 @@
                                                 </tr>
                                             @endif
                                             <tr>
-                                                <td colspan="6" class="text-center text-muted">---------------------------// Data Tabel Proposal TA DB \\---------------------------</td>
+                                                <td colspan="6" class="text-center text-muted">
+                                                    ---------------------------// Data Tabel Proposal TA DB
+                                                    \\---------------------------</td>
                                             </tr>
                                             @if (isset($differences_db) && !empty($differences_db))
                                                 @foreach ($differences_db as $data)
@@ -84,7 +90,7 @@
                                                         <td>{{ $data['r_mahasiswa']['nama'] }}</td>
                                                         <td>{{ $data['judul'] }}</td>
                                                         <td>{{ $data['r_pembimbing_satu']['nama_dosen'] }}</td>
-                                                        <td>{{ $data['r_pembimbing_dua']['nama_dosen']}}</td>
+                                                        <td>{{ $data['r_pembimbing_dua']['nama_dosen'] }}</td>
                                                     </tr>
                                                 @endforeach
                                             @else
@@ -135,12 +141,12 @@
     </div>
 @endsection
 @section('scripts')
-<script>
-    setTimeout(function() {
-        var element = document.getElementById('delay');
-        if (element) {
-            element.parentNode.removeChild(element);
-        }
-    }, 5000); // 5000 milliseconds = 5 detik
-</script>
+    <script>
+        setTimeout(function() {
+            var element = document.getElementById('delay');
+            if (element) {
+                element.parentNode.removeChild(element);
+            }
+        }, 5000); // 5000 milliseconds = 5 detik
+    </script>
 @endsection

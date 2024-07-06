@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Log;
 
 class PimpinanProdiController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:admin-view PimpinanProdi', ['only' => ['index']]);
+        $this->middleware('permission:admin-sinkronData PimpinanProdi', ['only' => ['storeAPI', 'show', 'getCariNomor']]);
+    }
     /**
      * Display a listing of the resource.
      */

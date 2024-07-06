@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Log;
 
 class MahasiswaController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:admin-view Mahasiswa', ['only' => ['index']]);
+        $this->middleware('permission:admin-sinkronData Mahasiswa', ['only' => ['storeAPI', 'show', 'getCariNomor']]);
+    }
     /**
      * Display a listing of the resource.
      */

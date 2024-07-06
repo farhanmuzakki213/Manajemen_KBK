@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Log;
 
 class KurikulumController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:admin-view Kurikulum', ['only' => ['index']]);
+        $this->middleware('permission:admin-sinkronData Kurikulum', ['only' => ['store', 'show']]);
+    }
     /**
      * Display a listing of the resource.
      */

@@ -18,6 +18,12 @@ use App\Models\ReviewProposalTaDetailPivot;
 
 class AdminController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:admin-view RepProposalTA', ['only' => ['index']]);
+        $this->middleware('permission:admin-sinkronData RepProposalTA', ['only' => ['storeAPI', 'show', 'getCariNomor']]);
+        $this->middleware('permission:admin-dashboard', ['only' => ['dashboard_admin']]);
+    }
+
     public function destroy(Request $request)
     {
         Auth::guard('web')->logout();

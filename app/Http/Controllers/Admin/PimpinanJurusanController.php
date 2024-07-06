@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Log;
 
 class PimpinanJurusanController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:admin-view PimpinanJurusan', ['only' => ['index']]);
+        $this->middleware('permission:admin-sinkronData PimpinanJurusan', ['only' => ['storeAPI', 'show', 'getCariNomor']]);
+    }
     /**
      * Display a listing of the resource.
      */

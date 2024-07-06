@@ -15,18 +15,19 @@
                         {{ Session::get('error') }}
                     </div>
                 @endif
-                
+
                 <div class="container-fluid">
                     <!-- Data Kurikulum -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                            <a href="{{ route('kurikulum.show') }}"
-                                class="btn btn-primary mb-2 d-flex align-items-center">
-                                <i class="ti ti-upload"></i> Ambil Data API
-                            </a>
-                            <a href="delete-row" class="btn btn-danger mb-2 d-flex align-items-center">
+                            @can('admin-sinkronData Kurikulum')
+                                <a href="{{ route('kurikulum.show') }}" class="btn btn-primary mb-2 d-flex align-items-center">
+                                    <i class="ti ti-upload"></i> Ambil Data API
+                                </a>
+                            @endcan
+                            {{-- <a href="delete-row" class="btn btn-danger mb-2 d-flex align-items-center">
                                 <i class="bi bi-trash""></i> Hapus
-                            </a>
+                            </a> --}}
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -51,22 +52,22 @@
                                             <th>Status</th>
                                         </tr>
                                     </tfoot>
-                                    <tbody>                                        
+                                    <tbody>
                                         @foreach ($data_kurikulum as $data)
-                                        <tr class="table-Light">
-                                            <th>{{$data->id_kurikulum}}</th>
-                                            <th>{{$data->kode_kurikulum}}</th>
-                                            <th>{{$data->nama_kurikulum}}</th>
-                                            <th>{{$data->tahun}}</th>
-                                            <th>{{$data->r_prodi->prodi}}</th>
-                                            <th>
-                                                @if ($data->status_kurikulum == 0)
-                                                    Tidak Aktif
-                                                @else
-                                                    Aktif
-                                                @endif
-                                            </th>
-                                        </tr>
+                                            <tr class="table-Light">
+                                                <th>{{ $data->id_kurikulum }}</th>
+                                                <th>{{ $data->kode_kurikulum }}</th>
+                                                <th>{{ $data->nama_kurikulum }}</th>
+                                                <th>{{ $data->tahun }}</th>
+                                                <th>{{ $data->r_prodi->prodi }}</th>
+                                                <th>
+                                                    @if ($data->status_kurikulum == 0)
+                                                        Tidak Aktif
+                                                    @else
+                                                        Aktif
+                                                    @endif
+                                                </th>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -79,12 +80,12 @@
     </div>
 @endsection
 @section('scripts')
-<script>
-    setTimeout(function() {
-        var element = document.getElementById('delay');
-        if (element) {
-            element.parentNode.removeChild(element);
-        }
-    }, 5000); // 5000 milliseconds = 5 detik
-</script>
+    <script>
+        setTimeout(function() {
+            var element = document.getElementById('delay');
+            if (element) {
+                element.parentNode.removeChild(element);
+            }
+        }, 5000); // 5000 milliseconds = 5 detik
+    </script>
 @endsection

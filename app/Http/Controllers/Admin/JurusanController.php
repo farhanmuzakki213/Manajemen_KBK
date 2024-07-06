@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Log;
 
 class JurusanController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:admin-view Jurusan', ['only' => ['index']]);
+        $this->middleware('permission:admin-sinkronData Jurusan', ['only' => ['store', 'show']]);
+    }
     /**
      * Display a listing of the resource.
      */

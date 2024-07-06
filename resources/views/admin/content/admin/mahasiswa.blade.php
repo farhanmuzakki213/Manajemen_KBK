@@ -19,10 +19,12 @@
                     <!-- DataMahasiswa -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <a href="{{ route('mahasiswa.show') }}" 
-                                    class="btn btn-primary me-md-3">
+                            @can('admin-sinkronData Mahasiswa')
+                                <a href="{{ route('mahasiswa.show') }}" class="btn btn-primary me-md-3">
                                     <i class="ti ti-upload"></i> Ambil Data API
                                 </a>
+                            @endcan
+
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -50,7 +52,7 @@
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        @foreach ($data_mahasiswa as $data)                                        
+                                        @foreach ($data_mahasiswa as $data)
                                             <tr class="table-Light">
                                                 <th>{{ $data->id_mahasiswa }}</th>
                                                 <th>{{ $data->nim }}</th>
@@ -66,7 +68,7 @@
                                                     @endif
                                                 </th>
                                             </tr>
-                                        @endforeach    
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -78,12 +80,12 @@
     </div>
 @endsection
 @section('scripts')
-<script>
-    setTimeout(function() {
-        var element = document.getElementById('delay');
-        if (element) {
-            element.parentNode.removeChild(element);
-        }
-    }, 5000); // 5000 milliseconds = 5 detik
-</script>
+    <script>
+        setTimeout(function() {
+            var element = document.getElementById('delay');
+            if (element) {
+                element.parentNode.removeChild(element);
+            }
+        }, 5000); // 5000 milliseconds = 5 detik
+    </script>
 @endsection

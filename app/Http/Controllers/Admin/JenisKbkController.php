@@ -13,6 +13,14 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class JenisKbkController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:admin-view JenisKbk', ['only' => ['index']]);
+        $this->middleware('permission:admin-create JenisKbk', ['only' => ['create', 'store', 'getCariNomor']]);
+        $this->middleware('permission:admin-update JenisKbk', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:admin-delete JenisKbk', ['only' => ['delete']]);
+        $this->middleware('permission:admin-export JenisKbk', ['only' => ['export_excel']]);
+        $this->middleware('permission:admin-import JenisKbk', ['only' => ['import']]);
+    }
     /**
      * Display a listing of the resource.
      */

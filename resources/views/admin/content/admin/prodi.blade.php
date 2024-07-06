@@ -19,10 +19,12 @@
                     <!-- Data Prodi -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <a href="{{ route('prodi.show') }}"
-                                    class="btn btn-primary me-md-3">
+                            @can('admin-sinkronData Prodi')
+                                <a href="{{ route('prodi.show') }}" class="btn btn-primary me-md-3">
                                     <i class="ti ti-upload"></i> Ambil Data API
                                 </a>
+                            @endcan
+
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -45,15 +47,15 @@
                                             <th>Jenjang</th>
                                         </tr>
                                     </tfoot>
-                                    <tbody>                                        
+                                    <tbody>
                                         @foreach ($data_prodi as $data)
-                                        <tr class="table-Light">
-                                            <th>{{$data->id_prodi}}</th>
-                                            <th>{{$data->kode_prodi}}</th>
-                                            <th>{{$data->prodi}}</th>
-                                            <th>{{$data->r_jurusan->jurusan}}</th>
-                                            <th>{{$data->jenjang}}</th>
-                                        </tr>
+                                            <tr class="table-Light">
+                                                <th>{{ $data->id_prodi }}</th>
+                                                <th>{{ $data->kode_prodi }}</th>
+                                                <th>{{ $data->prodi }}</th>
+                                                <th>{{ $data->r_jurusan->jurusan }}</th>
+                                                <th>{{ $data->jenjang }}</th>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -66,12 +68,12 @@
     </div>
 @endsection
 @section('scripts')
-<script>
-    setTimeout(function() {
-        var element = document.getElementById('delay');
-        if (element) {
-            element.parentNode.removeChild(element);
-        }
-    }, 5000); // 5000 milliseconds = 5 detik
-</script>
+    <script>
+        setTimeout(function() {
+            var element = document.getElementById('delay');
+            if (element) {
+                element.parentNode.removeChild(element);
+            }
+        }, 5000); // 5000 milliseconds = 5 detik
+    </script>
 @endsection

@@ -19,10 +19,12 @@
                     <!-- Data Pimpinan Jurusan -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <a href="{{ route('pimpinanjurusan.show') }}"
-                                    class="btn btn-primary me-md-3">
+                            @can('admin-sinkronData PimpinanJurusan')
+                                <a href="{{ route('pimpinanjurusan.show') }}" class="btn btn-primary me-md-3">
                                     <i class="ti ti-upload"></i> Ambil Data API
                                 </a>
+                            @endcan
+
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -47,22 +49,22 @@
                                             <th>Status</th>
                                         </tr>
                                     </tfoot>
-                                    <tbody>                                        
+                                    <tbody>
                                         @foreach ($data_pimpinan_jurusan as $data)
-                                        <tr class="table-Light">
-                                            <th>{{$data->id_pimpinan_jurusan}}</th>
-                                            <th>{{$data->r_dosen->nama_dosen}}</th>
-                                            <th>{{$data->r_jabatan_pimpinan->jabatan_pimpinan}}</th>
-                                            <th>{{$data->r_jurusan->jurusan}}</th>
-                                            <th>{{$data->periode}}</th>
-                                            <th>
-                                                @if ($data->status_pimpinan_jurusan == 0)
-                                                    Tidak Aktif
-                                                @else
-                                                    Aktif
-                                                @endif
-                                            </th>
-                                        </tr>
+                                            <tr class="table-Light">
+                                                <th>{{ $data->id_pimpinan_jurusan }}</th>
+                                                <th>{{ $data->r_dosen->nama_dosen }}</th>
+                                                <th>{{ $data->r_jabatan_pimpinan->jabatan_pimpinan }}</th>
+                                                <th>{{ $data->r_jurusan->jurusan }}</th>
+                                                <th>{{ $data->periode }}</th>
+                                                <th>
+                                                    @if ($data->status_pimpinan_jurusan == 0)
+                                                        Tidak Aktif
+                                                    @else
+                                                        Aktif
+                                                    @endif
+                                                </th>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -75,12 +77,12 @@
     </div>
 @endsection
 @section('scripts')
-<script>
-    setTimeout(function() {
-        var element = document.getElementById('delay');
-        if (element) {
-            element.parentNode.removeChild(element);
-        }
-    }, 5000); // 5000 milliseconds = 5 detik
-</script>
+    <script>
+        setTimeout(function() {
+            var element = document.getElementById('delay');
+            if (element) {
+                element.parentNode.removeChild(element);
+            }
+        }, 5000); // 5000 milliseconds = 5 detik
+    </script>
 @endsection
