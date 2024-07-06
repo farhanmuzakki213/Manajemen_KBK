@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('matkul', function (Blueprint $table) {
-            $table->bigInteger('id_matkul')->primary();
+            $table->bigInteger('id_matkul')->autoIncrement();
+            // $table->bigInteger('id_matkul')->primary();
             $table->string('kode_matkul');
             $table->string('nama_matkul');
             $table->enum('TP', ['T', 'P', 'T/P']);

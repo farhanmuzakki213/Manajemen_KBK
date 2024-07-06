@@ -3,16 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Matkul;
+use App\Models\Kurikulum;
 use Illuminate\Http\Request;
 use App\Exports\ExportMatkul;
-use App\Http\Controllers\Controller;
 use App\Imports\ImportMatkul;
-use App\Models\Kurikulum;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 
 class MatkulController extends Controller
@@ -35,9 +36,19 @@ class MatkulController extends Controller
 
     public function import(Request $request)
     {
-        Excel::import(new ImportMatkul, $request->file('file'));
-        return redirect('matkul');
+        try {
+            Excel::import(new ImportMatkul, $request->file('file'));
+            return redirect('matkul')->with('success', 'Data berhasil diimpor.');
+        } catch (ValidationException $e) {
+            $errors = $e->validator->getMessageBag()->all();
+            return redirect()->back()->withErrors($errors);
+        } catch (\Exception $e) {
+            Log::error('General Exception: ' . $e->getMessage());
+            Log::error('Trace: ' . $e->getTraceAsString());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat impor data.');
+        }
     }
+    
 
 
     /**

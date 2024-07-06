@@ -1,4 +1,9 @@
 @extends('admin.admin_master')
+
+@section('styles')
+<link rel="stylesheet" href="{{ asset('backend/assets/css/multi-dropdown.css') }}" />
+@endsection
+
 @section('admin')
     <div class="container-fluid">
         <div class="card">
@@ -65,6 +70,36 @@
                                         <small>{{ $message}}</small>
                                     @enderror
                                 </div> --}}
+
+
+                                <div class="mb-3">
+                                    <label for="mata_kuliah_dosen[]" class="form-label">Mata Kuliah Dosen</label>
+                                    <select name="mata_kuliah_dosen[]" id="mata_kuliah_dosen" class="form-control selectpicker" multiple data-live-search="true">
+                                        <option value="" disabled selected>Pilih mata kuliah dosen</option>
+                                        @foreach ($data_matkul_kbk as $matkulKbk)
+                                            <option value="{{ $matkulKbk->id_matkul_kbk }}">{{ $matkulKbk->r_matkul->nama_matkul }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('mata_kuliah_dosen[]')
+                                        <small>{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            
+                                <div class="mb-3">
+                                    <label for="kelas[]" class="form-label">Kelas</label>
+                                    <select name="kelas[]" id="kelas" class="form-control selectpicker" multiple data-live-search="true">
+                                        <option value="" disabled selected>Pilih Kelas</option>
+                                        @foreach ($data_kelas as $kelas)
+                                            <option value="{{ $kelas->id_kelas }}">{{ $kelas->nama_kelas }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('kelas[]')
+                                        <small>{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                
+                                
+
                                 <div class="mb-3">
                                     <label for="smt_thnakd" class="form-label">Tahun Akademik</label>
                                     <select class="form-select" aria-label="Default select example" name="smt_thnakd"
@@ -86,4 +121,10 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script src="{{ asset('backend/assets/js/jquery3-1-1.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/multi-dropdown.js') }}"></script>
 @endsection
