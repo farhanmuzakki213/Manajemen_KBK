@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Validator;
 
 class Berita_Ver_UAS_KajurController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:pimpinanJurusan-view BeritaAcaraUasKajur', ['only' => ['index', 'getDosen']]);
+        $this->middleware('permission:pimpinanJurusan-update BeritaAcaraUasKajur', ['only' => ['edit', 'update', 'getDosen']]);
+    }
     public function getDosen()
     {
         $user = Auth::user()->name;

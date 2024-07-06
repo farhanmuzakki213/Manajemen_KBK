@@ -750,7 +750,8 @@ class ProposalTASeeder extends Seeder
                 'status_proposal_ta' => $data[3],
                 'file_proposal' => $data[4],
                 'pembimbing_satu' => $data[5],
-                'pembimbing_dua' => $data[6]
+                'pembimbing_dua' => $data[6],
+                'jenis_kbk_id' => rand(1,5)
             ]);
         }
     }

@@ -30,6 +30,11 @@ class ProposalTAModel extends Model
         return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id','id_mahasiswa');
     }
 
+    public function r_jenis_kbk()
+    {
+        return $this->belongsTo(JenisKbk::class, 'jenis_kbk_id', 'id_jenis_kbk');
+    }
+    
     public function r_pembimbing_satu()
     {
         return $this->belongsTo(Dosen::class, 'pembimbing_satu', 'id_dosen');

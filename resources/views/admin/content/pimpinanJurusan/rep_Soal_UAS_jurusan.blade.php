@@ -57,9 +57,9 @@
                                                 <th>{{ $data->id_ver_rps_uas }}</th>
                                                 <th>{{ optional($data->r_rep_rps_uas)->r_matkulKbk->r_matkul->nama_matkul }}</th>
                                                 <th>{{ optional($data->r_rep_rps_uas)->r_matkulKbk->r_matkul->semester }}</th>
-                                                <th>{{ optional($data->r_pengurus)->r_dosen->nama_dosen }}</th>
+                                                <th>{{ optional($data->r_rep_rps_uas)->r_dosen_matkul->r_dosen->nama_dosen }}</th>
                                                 <th>{{ optional($data->r_rep_rps_uas)->r_matkulKbk->r_kurikulum->r_prodi->prodi }}</th>
-                                                <th>{{ optional($data->r_dosen)->nama_dosen }}</th>
+                                                <th>{{ optional($data->r_pengurus)->r_dosen->nama_dosen }}</th>
                                                 <th>
                                                     @if ($data->status_verifikasi == 0)
                                                         Tidak Diverifikasi

@@ -20,6 +20,13 @@ use App\Http\Requests\Auth\BeritaAcara\beritaAcaraUpdate;
 
 class VerBeritaAcaraRpsController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:pengurusKbk-view BeritaAcaraRps', ['only' => ['index', 'getDosen']]);
+        $this->middleware('permission:pengurusKbk-download BeritaAcaraRps', ['only' => ['download_pdf', 'getDosen']]);
+        $this->middleware('permission:pengurusKbk-create BeritaAcaraRps', ['only' => ['create', 'store', 'getCariNomor', 'getDosen']]);
+        $this->middleware('permission:pengurusKbk-update BeritaAcaraRps', ['only' => ['edit', 'update', 'getDosen']]);
+        $this->middleware('permission:pengurusKbk-delete BeritaAcaraRps', ['only' => ['delete']]);
+    }
     public function getDosen()
     {
         $user = Auth::user()->name;

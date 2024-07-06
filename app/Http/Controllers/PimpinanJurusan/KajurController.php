@@ -18,6 +18,16 @@ use App\Models\ReviewProposalTaDetailPivot;
 
 class KajurController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:pimpinanJurusan-dashboard', ['only' => ['dashboard_pimpinan', 'getDosen']]);
+        $this->middleware('permission:pimpinanJurusan-view RepProposalTAJurusan', ['only' => ['RepProposalTAJurusan', 'getDosen']]);
+        $this->middleware('permission:pimpinanJurusan-view grafikRps', ['only' => ['grafik_rps', 'getDosen']]);
+        $this->middleware('permission:pimpinanJurusan-view grafikUas', ['only' => ['grafikUas', 'getDosen']]);
+        $this->middleware('permission:pimpinanJurusan-view grafikProposal', ['only' => ['grafik_proposal', 'getDosen']]);
+        $this->middleware('permission:pimpinanJurusan-view RepRPSJurusan', ['only' => ['RepRPSJurusan', 'getDosen']]);
+        $this->middleware('permission:pimpinanJurusan-view RepSoalUASJurusan', ['only' => ['RepSoalUASJurusan', 'getDosen']]);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -271,6 +281,7 @@ class KajurController extends Controller
 
     public function grafik_rps()
     {
+        $kajur = $this->getDosen();
         $banyak_pengunggahan_smt = RepRpsUas::join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
             ->select(DB::raw("smt_thnakd.smt_thnakd, COUNT(rep_rps_uas.id_rep_rps_uas) as banyak_pengunggahan"))
             ->where('type', '=', '0')
@@ -367,41 +378,42 @@ class KajurController extends Controller
         // dd($banyak_berita);
 
         $kbk = RepRpsUas::join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
-        ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
+            ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
             ->select(DB::raw("jenis_kbk.jenis_kbk as jenis_kbk"))
             ->where('type', '=', '0')
             ->groupBy('jenis_kbk.jenis_kbk')
             ->pluck('jenis_kbk');
 
-        $data_ver_rps = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas')
+        $data_ver_rps = VerRpsUas::with('r_pengurus.r_dosen', 'r_rep_rps_uas')
             ->whereHas('r_rep_rps_uas', function ($query) {
-                $query->where('type', '=', '0'); 
+                $query->where('type', '=', '0');
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
 
-            $data = [
-                'banyak_pengunggahan_smt' => $banyak_pengunggahan_smt,
-                'banyak_verifikasi_smt' => $banyak_verifikasi_smt,
-                'banyak_berita_smt' => $banyak_berita_smt,
-                'semester' => $semester,
-                'banyak_pengunggahan_prodi' => $banyak_pengunggahan_prodi,
-                'banyak_verifikasi_prodi' => $banyak_verifikasi_prodi,
-                'banyak_berita_prodi' => $banyak_berita_prodi,
-                'prodi' => $prodi,
-                'banyak_pengunggahan_kbk' => $banyak_pengunggahan_kbk,
-                'banyak_verifikasi_kbk' => $banyak_verifikasi_kbk,
-                'banyak_berita_kbk' => $banyak_berita_kbk,
-                'kbk' => $kbk,
-                'data_ver_rps' => $data_ver_rps,
-            ];
-        
-            return view('admin.content.pimpinanJurusan.GrafikRPS', compact('data'));
+        $data = [
+            'banyak_pengunggahan_smt' => $banyak_pengunggahan_smt,
+            'banyak_verifikasi_smt' => $banyak_verifikasi_smt,
+            'banyak_berita_smt' => $banyak_berita_smt,
+            'semester' => $semester,
+            'banyak_pengunggahan_prodi' => $banyak_pengunggahan_prodi,
+            'banyak_verifikasi_prodi' => $banyak_verifikasi_prodi,
+            'banyak_berita_prodi' => $banyak_berita_prodi,
+            'prodi' => $prodi,
+            'banyak_pengunggahan_kbk' => $banyak_pengunggahan_kbk,
+            'banyak_verifikasi_kbk' => $banyak_verifikasi_kbk,
+            'banyak_berita_kbk' => $banyak_berita_kbk,
+            'kbk' => $kbk,
+            'data_ver_rps' => $data_ver_rps,
+        ];
+
+        return view('admin.content.pimpinanJurusan.GrafikRPS', compact('data'));
     }
 
 
     public function grafik_uas()
     {
+        $kajur = $this->getDosen();
         $banyak_pengunggahan_smt = RepRpsUas::join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
             ->select(DB::raw("smt_thnakd.smt_thnakd, COUNT(rep_rps_uas.id_rep_rps_uas) as banyak_pengunggahan"))
             ->where('type', '=', '1')
@@ -498,35 +510,35 @@ class KajurController extends Controller
         // dd($banyak_berita);
 
         $kbk = RepRpsUas::join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
-        ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
+            ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
             ->select(DB::raw("jenis_kbk.jenis_kbk as jenis_kbk"))
             ->where('type', '=', '1')
             ->groupBy('jenis_kbk.jenis_kbk')
             ->pluck('jenis_kbk');
 
-        $data_ver_rps = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas')
+        $data_ver_rps = VerRpsUas::with('r_pengurus.r_dosen', 'r_rep_rps_uas')
             ->whereHas('r_rep_rps_uas', function ($query) {
-                $query->where('type', '=', '1'); 
+                $query->where('type', '=', '1');
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
 
-            $data = [
-                'banyak_pengunggahan_smt' => $banyak_pengunggahan_smt,
-                'banyak_verifikasi_smt' => $banyak_verifikasi_smt,
-                'banyak_berita_smt' => $banyak_berita_smt,
-                'semester' => $semester,
-                'banyak_pengunggahan_prodi' => $banyak_pengunggahan_prodi,
-                'banyak_verifikasi_prodi' => $banyak_verifikasi_prodi,
-                'banyak_berita_prodi' => $banyak_berita_prodi,
-                'prodi' => $prodi,
-                'banyak_pengunggahan_kbk' => $banyak_pengunggahan_kbk,
-                'banyak_verifikasi_kbk' => $banyak_verifikasi_kbk,
-                'banyak_berita_kbk' => $banyak_berita_kbk,
-                'kbk' => $kbk,
-                'data_ver_rps' => $data_ver_rps,
-            ];
-            
+        $data = [
+            'banyak_pengunggahan_smt' => $banyak_pengunggahan_smt,
+            'banyak_verifikasi_smt' => $banyak_verifikasi_smt,
+            'banyak_berita_smt' => $banyak_berita_smt,
+            'semester' => $semester,
+            'banyak_pengunggahan_prodi' => $banyak_pengunggahan_prodi,
+            'banyak_verifikasi_prodi' => $banyak_verifikasi_prodi,
+            'banyak_berita_prodi' => $banyak_berita_prodi,
+            'prodi' => $prodi,
+            'banyak_pengunggahan_kbk' => $banyak_pengunggahan_kbk,
+            'banyak_verifikasi_kbk' => $banyak_verifikasi_kbk,
+            'banyak_berita_kbk' => $banyak_berita_kbk,
+            'kbk' => $kbk,
+            'data_ver_rps' => $data_ver_rps,
+        ];
+
         return view('admin.content.pimpinanJurusan.GrafikUAS', compact('data'));
     }
 
@@ -586,24 +598,33 @@ class KajurController extends Controller
 
     public function RepRPSJurusan()
     {
+        $kajur = $this->getDosen();
         $data_rep_rps = VerRpsUas::with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_smt_thnakd')
             ->whereHas('r_rep_rps_uas.r_smt_thnakd', function ($query) {
                 $query->where('status_smt_thnakd', '=', '1');
+            })
+            ->whereHas('r_rep_rps_uas.r_matkulKbk.r_matkul.r_kurikulum.r_prodi', function ($query) use ($kajur) {
+                $query->where('jurusan_id', '=', $kajur->jurusan_id);
             })
             ->whereHas('r_rep_rps_uas', function ($query) {
                 $query->where('type', '=', '0');
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
+
         //dd($data_rep_rps);
         return view('admin.content.pimpinanJurusan.rep_RPS_jurusan', compact('data_rep_rps'));
     }
 
     public function RepSoalUASJurusan()
     {
+        $kajur = $this->getDosen();
         $data_rep_soal_uas = VerRpsUas::with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_smt_thnakd')
             ->whereHas('r_rep_rps_uas.r_smt_thnakd', function ($query) {
                 $query->where('status_smt_thnakd', '=', '1');
+            })
+            ->whereHas('r_rep_rps_uas.r_matkulKbk.r_matkul.r_kurikulum.r_prodi', function ($query) use ($kajur) {
+                $query->where('jurusan_id', '=', $kajur->jurusan_id);
             })
             ->whereHas('r_rep_rps_uas', function ($query) {
                 $query->where('type', '=', '1');

@@ -24,7 +24,12 @@ use App\Http\Requests\Auth\BeritaAcara\beritaAcaraCreate;
 
 class Ver_RPSController extends Controller
 {
-
+    public function __construct() {
+        $this->middleware('permission:pengurusKbk-view VerRps', ['only' => ['index', 'getDosen']]);
+        $this->middleware('permission:pengurusKbk-create VerRps', ['only' => ['create', 'store', 'getCariNomor', 'getDosen']]);
+        $this->middleware('permission:pengurusKbk-update VerRps', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:pengurusKbk-delete VerRps', ['only' => ['delete']]);
+    }
     public function getDosen()
     {
         $user = Auth::user()->name;

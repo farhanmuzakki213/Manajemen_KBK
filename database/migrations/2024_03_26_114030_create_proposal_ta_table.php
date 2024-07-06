@@ -19,15 +19,18 @@ return new class extends Migration
             $table->string('file_proposal');
             $table->bigInteger('pembimbing_satu');
             $table->bigInteger('pembimbing_dua');
+            $table->bigInteger('jenis_kbk_id');
         });
 
         Schema::table('proposal_ta', function (Blueprint $table) {
             $table->foreign('mahasiswa_id')->references('id_mahasiswa')->on('mahasiswa')
-                    ->onUpdate('cascade')->onDelete('cascade');
+                ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('jenis_kbk_id')->references('id_jenis_kbk')->on('jenis_kbk')
+                ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('pembimbing_satu')->references('id_dosen')->on('dosen')
-                    ->onUpdate('cascade')->onDelete('cascade');
+                ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('pembimbing_dua')->references('id_dosen')->on('dosen')
-                    ->onUpdate('cascade')->onDelete('cascade');
+                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

@@ -59,7 +59,7 @@ use App\Http\Controllers\UserProfileController;
 
 
 
-Route::group(['middleware' => ['role:super-admin']], function () {
+Route::group(['middleware' => ['role:superAdmin']], function () {
     Route::resource('permissions', App\Http\Controllers\SuperAdmin\PermissionController::class);
     Route::delete('permissions/{permissionId}/delete', [App\Http\Controllers\SuperAdmin\PermissionController::class, 'destroy']);
 
@@ -256,7 +256,7 @@ require __DIR__ . '/auth.php';
 
 
 /* ---Kepala Prodi Start--- */
-Route::group(['middleware' => ['role:pimpinan-prodi']], function () {
+Route::group(['middleware' => ['role:pimpinanProdi']], function () {
     // Repositori RPS
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/dashboard_kaprodi', [kaprodiController::class, 'dashboard_kaprodi'])->middleware(['auth', 'verified'])->name('dashboard_kaprodi');
@@ -302,7 +302,7 @@ Route::group(['middleware' => ['role:pimpinan-prodi']], function () {
 /* ---Kepala Prodi end */
 
 /* Dosen Pengampu Start*/
-Route::group(['middleware' => ['role:dosen-pengampu']], function () {
+Route::group(['middleware' => ['role:dosenMatkul']], function () {
     // Dosen Matkul
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/Daftar_Matakuliah', [DosenMatkulController::class, 'index'])->middleware(['auth', 'verified'])->name('dosen_matkul');
@@ -332,7 +332,7 @@ Route::group(['middleware' => ['role:dosen-pengampu']], function () {
 
 
 /* ---Dosen KBK Start--- */
-Route::group(['middleware' => ['role:dosen-kbk']], function () {
+Route::group(['middleware' => ['role:dosenKbk']], function () {
     // ReviewProposalTA
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/dashboard_dosenKbk', [dosen_kbkController::class, 'dashboard_dosenKbk'])->middleware(['auth', 'verified'])->name('dashboard_dosenKbk');
@@ -354,7 +354,7 @@ Route::group(['middleware' => ['role:dosen-kbk']], function () {
 
 
 /* ---Pengurus KBK Start--- */
-Route::group(['middleware' => ['role:pengurus-kbk']], function () {
+Route::group(['middleware' => ['role:pengurusKbk']], function () {
     // Penugasan Reviewer Proposal TA
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/dashboard_pengurus', [PengurusKbkController::class, 'dashboard_pengurus'])->middleware(['auth', 'verified'])->name('dashboard_pengurus');
@@ -428,7 +428,7 @@ Route::group(['middleware' => ['role:pengurus-kbk']], function () {
 
 
 /* ---Kepala Jurusan Start--- */
-Route::group(['middleware' => ['role:pimpinan-jurusan']], function () {
+Route::group(['middleware' => ['role:pimpinanJurusan']], function () {
     // Kepala Jurusan
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/repositori_rps_jurusan', [KajurController::class, 'RepRPSJurusan'])->middleware(['auth', 'verified'])->name('rep_rps_jurusan');

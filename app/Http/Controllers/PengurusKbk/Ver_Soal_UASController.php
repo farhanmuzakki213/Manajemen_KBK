@@ -23,6 +23,12 @@ use Illuminate\Support\Facades\Validator;
 class Ver_Soal_UASController extends Controller
 {
 
+    public function __construct() {
+        $this->middleware('permission:pengurusKbk-view VerUas', ['only' => ['index', 'getDosen']]);
+        $this->middleware('permission:pengurusKbk-create VerUas', ['only' => ['create', 'store', 'getCariNomor', 'getDosen']]);
+        $this->middleware('permission:pengurusKbk-update VerUas', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:pengurusKbk-delete VerUas', ['only' => ['delete']]);
+    }
     public function getDosen()
     {
         $user = Auth::user()->name;

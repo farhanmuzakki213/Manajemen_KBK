@@ -3,25 +3,29 @@
     <link rel="stylesheet" href="{{ asset('backend/assets/css/multi-dropdown.css') }}" />
     <style>
         .dropdown-item {
-            width: auto; /* Lebar menyesuaikan dengan konten */
-            white-space: nowrap; /* Konten tidak akan melintasi baris */
+            width: auto;
+            /* Lebar menyesuaikan dengan konten */
+            white-space: nowrap;
+            /* Konten tidak akan melintasi baris */
         }
-        
+
         .dropdown-item .row {
-            display: flex; /* Menggunakan flexbox untuk mengatur kolom */
-            flex-wrap: nowrap; /* Konten tidak akan melintasi baris */
+            display: flex;
+            /* Menggunakan flexbox untuk mengatur kolom */
+            flex-wrap: nowrap;
+            /* Konten tidak akan melintasi baris */
         }
-    
+
         .dropdown-item .col-lg-3 {
-            flex: 1; /* Kolom kode_matkul mengambil 1 bagian */
+            flex: 1;
+            /* Kolom kode_matkul mengambil 1 bagian */
         }
-    
+
         .dropdown-item .col-lg-4 {
-            flex: 3; /* Kolom nama_matkul mengambil 3 bagian */
+            flex: 3;
+            /* Kolom nama_matkul mengambil 3 bagian */
         }
     </style>
-    
-    
 @endsection
 @section('admin')
     <div class="container-fluid">
@@ -39,7 +43,7 @@
                         {{ Session::get('error') }}
                     </div>
                 @endif
-                
+
 
                 <div class="container-fluid">
                     <!-- Data Verifikasi RPS -->
@@ -57,18 +61,22 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                @can('pengurusKbk-download BeritaAcaraUas')
+                                    <!-- Print Button -->
+                                    <a href="{{ route('cetak_uas_berita_acara.download', ['prodi_id' => $selectedProdiId]) }}"
+                                        class="btn btn-primary d-flex align-items-center">
+                                        <i class="bi bi-box-arrow-in-up me-2"></i>Cetak
+                                    </a>
+                                @endcan
 
-                                <!-- Print Button -->
-                                <a href="{{ route('cetak_uas_berita_acara.download', ['prodi_id' => $selectedProdiId]) }}"
-                                    class="btn btn-primary d-flex align-items-center">
-                                    <i class="bi bi-box-arrow-in-up me-2"></i>Cetak
-                                </a>
+                                @can('pengurusKbk-create BeritaAcaraUas')
+                                    <!-- Upload Button -->
+                                    <a href="{{ route('upload_uas_berita_acara.create') }}"
+                                        class="btn btn-primary d-flex align-items-center">
+                                        <i class="ti ti-upload me-2"></i>Upload Berita
+                                    </a>
+                                @endcan
 
-                                <!-- Upload Button -->
-                                <a href="{{ route('upload_uas_berita_acara.create') }}"
-                                    class="btn btn-primary d-flex align-items-center">
-                                    <i class="ti ti-upload me-2"></i>Upload Berita
-                                </a>
 
                             </div>
                             <button id="toggleTableBtn" class="btn btn-primary" onclick="toggleTable()">Tutup Tabel</button>
@@ -369,17 +377,23 @@
                                                 <th>{{ optional($data->r_jenis_kbk)->jenis_kbk }}</th>
                                                 <th style="width: 10%;">
                                                     <div class="row">
-                                                        <a href="{{ route('upload_uas_berita_acara.edit', ['id' => $data->id_berita_acara]) }}"
-                                                            class="btn btn-primary mb-2 d-flex align-items-center"><i
-                                                                class="bi bi-pencil-square"></i>Revisi</a>
+                                                        @can('pengurusKbk-update BeritaAcaraUas')
+                                                            <a href="{{ route('upload_uas_berita_acara.edit', ['id' => $data->id_berita_acara]) }}"
+                                                                class="btn btn-primary mb-2 d-flex align-items-center"><i
+                                                                    class="bi bi-pencil-square"></i>Revisi</a>
+                                                        @endcan
+                                                        @can('pengurusKbk-delete BeritaAcaraUas')
+                                                            <a data-bs-toggle="modal"
+                                                                data-bs-target="#staticBackdrop{{ $data->id_berita_acara }}"
+                                                                class="btn btn-danger mb-2 d-flex align-items-center"><i
+                                                                    class="bi bi-trash"></i>Hapus</a>
+                                                        @endcan
+
                                                         <a href="{{ asset('storage/uploads/uas/berita_acara/' . $data->file_berita_acara) }}"
                                                             class="btn btn-success mb-2 d-flex align-items-center"
                                                             target="_blank"><i
                                                                 class="bi bi-file-earmark-arrow-down"></i>Download</a>
-                                                        <a data-bs-toggle="modal"
-                                                            data-bs-target="#staticBackdrop{{ $data->id_berita_acara }}"
-                                                            class="btn btn-danger mb-2 d-flex align-items-center"><i
-                                                                class="bi bi-trash"></i>Hapus</a>
+
                                                     </div>
                                                 </th>
                                             </tr>
@@ -449,7 +463,7 @@
             }
         }
     </script>
-     <script>
+    <script>
         function filterByProdi() {
             const selectedProdi = document.getElementById('prodiSelect').value;
             window.location.href = `{{ route('upload_uas_berita_acara') }}?prodi_id=${selectedProdi}`;

@@ -79,10 +79,13 @@
                                                     @else
                                                         @if (!$cek_data_rep)
                                                             <div class="row">
+                                                                @can('pengurusKbk-create VerUas')
                                                                 <a href="{{ route('ver_soal_uas.create', ['id' => $data_rep['id_rep_rps_uas']]) }}"
                                                                     class="btn btn-primary mb-2 d-flex align-items-center">
                                                                     <i class="bi bi-pencil-square"></i> Review
                                                                 </a>
+                                                                @endcan
+                                                                
                                                                 <a href="{{ asset('storage/uploads/uas/repositori_files/'. $data_rep['file']) }}"
                                                                     class="btn btn-primary mb-2 d-flex align-items-center"
                                                                     target="_blank">
@@ -170,9 +173,18 @@
                                             <th>{{ $data_ver->saran }}</th>
                                             <th style="width: 10%;">
                                                 <div class="row">
+                                                    @can('pengurusKbk-update VerRps')
                                                     <a href="{{ route('ver_soal_uas.edit', ['id' => $data_ver->id_ver_rps_uas]) }}"
                                                         class="btn btn-primary mb-2 d-flex align-items-center"><i
                                                             class="bi bi-pencil-square"></i>Revisi</a>
+                                                    @endcan
+                                                    @can('pengurusKbk-delete VerRps')
+                                                    <a data-bs-toggle="modal"
+                                                    data-bs-target="#staticBackdrop{{ $data_ver->id_ver_rps_uas }}"
+                                                    class="btn btn-danger mb-2 d-flex align-items-center"><i
+                                                        class="bi bi-trash"></i>Hapus</a>
+                                                    @endcan
+                                                    
                                                     <a href="{{ asset('storage/uploads/uas/repositori_files/'. $data_ver->r_rep_rps_uas->file) }}"
                                                         class="btn btn-primary mb-2 d-flex align-items-center"
                                                         target="_blank"><i
@@ -181,10 +193,7 @@
                                                         data-bs-target="#detail{{ $data_ver->id_ver_rps_uas }}"
                                                         class="btn btn-primary mb-2 d-flex align-items-center"><i
                                                             class="bi bi-three-dots-vertical"></i>Detail</a>
-                                                    <a data-bs-toggle="modal"
-                                                        data-bs-target="#staticBackdrop{{ $data_ver->id_ver_rps_uas }}"
-                                                        class="btn btn-danger mb-2 d-flex align-items-center"><i
-                                                            class="bi bi-trash"></i>Hapus</a>
+                                                    
                                                 </div>
                                             </th>
                                         </tr>
