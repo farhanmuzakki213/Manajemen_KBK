@@ -116,7 +116,7 @@
                                                 </th>
                                                 <th>{{ optional($data->r_pimpinan_prodi)->r_prodi->prodi }}
                                                 </th>
-                                                <th>{{ optional($data->r_pimpinan_jurusan)->r_jurusan->jurusan }}
+                                                <th>{{ optional(optional($data->r_pimpinan_jurusan)->r_jurusan)->jurusan}}
                                                 </th>
                                                 <th>{{ optional($data->r_jenis_kbk)->jenis_kbk }}</th>
                                                 <th style="width: 10%;">
