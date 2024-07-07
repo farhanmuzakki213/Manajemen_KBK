@@ -27,4 +27,8 @@ class VerBeritaAcaraDetail extends Model
             ->useLogName('VerBeritaAcaraDetail')
             ->dontSubmitEmptyLogs();
     }
+
+    public function r_ver_rps_uas(){
+        return $this->belongsTo(VerRpsUas::class, 'ver_rps_uas_id','id_ver_rps_uas');
+    }
 }

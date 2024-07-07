@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Validator;
 
 class Berita_Ver_UASController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('permission:pimpinanProdi-view BeritaAcaraUasProdi', ['only' => ['index', 'getDosen']]);
         $this->middleware('permission:pimpinanProdi-update BeritaAcaraUasProdi', ['only' => ['edit', 'update', 'getDosen']]);
     }
@@ -40,19 +41,24 @@ class Berita_Ver_UASController extends Controller
             'r_jenis_kbk',
         ])
             ->where('kaprodi', $kaprodi->id_pimpinan_prodi)
+            ->whereHas('p_beritaDetail.r_ver_rps_uas.r_rep_rps_uas.r_matkulKbk.r_matkul.r_kurikulum', function ($query) use ($kaprodi) {
+                $query->where('prodi_id', $kaprodi->prodi_id);
+            })
             ->where('type', '=', '1')
             ->get();
 
         return view('admin.content.pimpinanProdi.berita_acara_ver_uas', compact('data_berita_acara'));
     }
 
-    public function edit(string $id){
+    public function edit(string $id)
+    {
         $beritaAcara = VerBeritaAcara::find($id);
         debug($beritaAcara);
         return view('admin.content.pimpinanProdi.form.berita_acara_ver_uas_edit', compact('beritaAcara'));
     }
 
-    public function update(Request $request, string $id){
+    public function update(Request $request, string $id)
+    {
         $validator = Validator::make($request->all(), [
             'id_berita_acara' => 'required',
             'Status_dari_kaprodi' => 'required',

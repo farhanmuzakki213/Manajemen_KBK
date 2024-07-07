@@ -39,6 +39,13 @@ class VerBeritaAcara extends Model
             ->dontSubmitEmptyLogs();
     }
 
+    
+
+    public function p_beritaDetail()
+    {
+        return $this->hasMany(VerBeritaAcaraDetail::class, 'berita_acara_id', 'id_berita_acara');
+    }
+
     public function p_ver_rps_uas(): BelongsToMany
     {
         return $this->belongsToMany(VerRpsUas::class, 'ver_berita_acara_detail_pivot', 'berita_acara_id', 'ver_rps_uas_id');

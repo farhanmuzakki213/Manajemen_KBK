@@ -60,7 +60,6 @@
                                             <th>Kode Matkul</th>
                                             <th>Dosen Upload Berita Acara</th>
                                             <th>Prodi</th>
-                                            <th>Jurusan</th>
                                             <th>Jenis KBK</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -72,7 +71,6 @@
                                             <th>Kode Matkul</th>
                                             <th>Dosen Upload Berita Acara</th>
                                             <th>Prodi</th>
-                                            <th>Jurusan</th>
                                             <th>Jenis KBK</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -115,8 +113,6 @@
                                                     @endforeach
                                                 </th>
                                                 <th>{{ optional($data->r_pimpinan_prodi)->r_prodi->prodi }}
-                                                </th>
-                                                <th>{{ optional($data->r_pimpinan_jurusan)->r_jurusan->jurusan }}
                                                 </th>
                                                 <th>{{ optional($data->r_jenis_kbk)->jenis_kbk }}</th>
                                                 <th style="width: 10%;">
