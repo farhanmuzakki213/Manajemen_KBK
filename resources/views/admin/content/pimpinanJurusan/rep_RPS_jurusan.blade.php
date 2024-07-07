@@ -33,7 +33,6 @@
                                             <th>Prodi</th>
                                             <th>Dosen Verifikasi</th>
                                             <th>Status</th>
-                                            <th>Aksi</th>
 
                                         </tr>
                                     </thead>
@@ -47,30 +46,52 @@
                                             <th>Prodi</th>
                                             <th>Dosen Verifikasi</th>
                                             <th>Status</th>
-                                            <th>Aksi</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
-
+                                        @php
+                                            $no = 1;
+                                        @endphp
                                         @foreach ($result as $data)
+                                            @php
+                                                $rekomendasi = optional(
+                                                    $data_ver_rps->firstWhere(
+                                                        'rep_rps_uas_id',
+                                                        $data['id_rep_rps_uas'],
+                                                    ),
+                                                )->rekomendasi;
+                                                $status = 'File Belum Diupload';
+
+                                                if ($rekomendasi !== null) {
+                                                    switch ($rekomendasi) {
+                                                        case 1:
+                                                            $status = 'Belum Diverifikasi';
+                                                            break;
+                                                        case 2:
+                                                            $status = 'Tidak Layak Pakai';
+                                                            break;
+                                                        case 3:
+                                                            $status = 'Butuh Revisi';
+                                                            break;
+                                                        default:
+                                                            $status = 'Layak Pakai';
+                                                            break;
+                                                    }
+                                                }
+                                            @endphp
                                             <tr>
-                                                <th>{{ $data['id_rep_rps_uas'] }}</th>
+                                                <th>{{ $no++ }}</th>
                                                 <th>{{ $data['kode_matkul'] }}</th>
                                                 <th>{{ $data['semester'] }}</th>
-                                                <th>{{ $data['dosen_upload'] }}</th>
+                                                <th>{{ $data['nama_dosen'] }}</th>
                                                 <th>{{ $data['prodi'] }}</th>
-                                                <th>{{ $data['dosen_verifikasi'] }}</th>
-                                                <th>{{ $data['status_verifikasi'] }}</th>
-                                                <th>{{ $data['aksi'] }}</th>
-                                            </tr>
+                                                <th style="{{ $status === 'File Belum Diupload' ? 'color: red;' : '' }}">{{ $data_ver_rps->firstWhere('rep_rps_uas_id', $data['id_rep_rps_uas'])->r_pengurus->r_dosen->nama_dosen ?? 'File Belum Diupload' }}
+                                                </th>
+                                                <th style="{{ $status === 'File Belum Diupload' ? 'color: red;' : '' }}">
+                                                    {{ $status }}
+                                                </th>
 
 
-                                            <th>
-                                                {{-- <a data-bs-toggle="modal"
-                                                        data-bs-target="#detail{{ $data->id_rep_rps_uas }}"
-                                                        class="btn btn-secondary d-flex align-items-center"><i
-                                                            class="bi bi-three-dots-vertical"></i>Detail</a> --}}
-                                            </th>
                                             </tr>
                                             {{-- <div class="modal fade" id="detail{{ $data->id_rep_rps_uas }}" tabindex="-1"
                                                 aria-labelledby="detailLabel" aria-hidden="true">

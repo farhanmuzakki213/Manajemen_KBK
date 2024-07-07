@@ -4,6 +4,7 @@ namespace App\Http\Controllers\PimpinanJurusan;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Jurusan;
 use App\Models\PimpinanJurusan;
 use App\Models\VerBeritaAcara;
 use Illuminate\Support\Facades\Auth;
@@ -29,11 +30,13 @@ class Berita_Ver_RPS_KajurController extends Controller
     public function index()
     {
         $kajur = $this->getDosen();
-        debug($kajur->toArray());
+        $jurusan = Jurusan::where('id_jurusan', $kajur->jurusan_id)->first();
+        debug($jurusan->toArray());
         $data_berita_acara = VerBeritaAcara::with([
             'p_ver_rps_uas.r_rep_rps_uas.r_matkulKbk.r_matkul',
             'p_ver_rps_uas.r_pengurus.r_dosen',
             'r_pimpinan_prodi.r_prodi',
+            'r_pimpinan_prodi.r_prodi.r_jurusan',
             'r_pimpinan_prodi.r_dosen',
             'r_pimpinan_jurusan.r_jurusan',
             'r_pimpinan_jurusan.r_dosen',
@@ -43,8 +46,8 @@ class Berita_Ver_RPS_KajurController extends Controller
             ->where('kajur', $kajur->id_pimpinan_jurusan)
             ->where('type', '=', '0')
             ->get();
-
-        return view('admin.content.pimpinanJurusan.berita_acara_ver_rps', compact('data_berita_acara'));
+            debug($data_berita_acara->toArray());
+        return view('admin.content.pimpinanJurusan.berita_acara_ver_rps', compact('data_berita_acara', 'jurusan'));
     }
 
     public function edit(string $id){

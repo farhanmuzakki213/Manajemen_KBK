@@ -35,26 +35,6 @@
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>
-                                {{-- @selected( old('ver_rps_uas_ids', $data_berita_acara->id_berita_acara) == $data['id_ver_rps_uas']) --}}
-                                <div class="mb-3">
-                                    <label for="ver_rps_uas_ids[]" class="form-label">Mata Kuliah</label>
-                                    <select name="ver_rps_uas_ids[]" class="form-control selectpicker" multiple data-live-search="true">
-                                        <option value="" disabled selected>Pilih Mata Kuliah VERIFIKASI</option>
-                                        @if (count($data_matkul) > 0)
-                                            @php
-                                                $selectedIds = $data_berita_acara->p_ver_rps_uas->pluck('id_ver_rps_uas')->toArray();
-                                            @endphp
-                                            @foreach ($data_matkul as $data)
-                                                <option value="{{ $data['id_ver_rps_uas'] }}" {{ in_array($data['id_ver_rps_uas'], $selectedIds) ? 'selected' : '' }}>
-                                                    {{ $data['kode_matkul'] }} || {{ $data['nama_matkul'] }}
-                                                </option>
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                    @error('ver_rps_uas_ids[]')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </div>
                                 
 
                                 <div class="col-5 mb-3">

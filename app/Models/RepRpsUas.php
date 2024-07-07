@@ -38,5 +38,9 @@ class RepRpsUas extends Model
     public function r_smt_thnakd(){
         return $this->belongsTo(ThnAkademik::class, 'smt_thnakd_id','id_smt_thnakd');
     }
+
+    public function r_ver_rps_uas(){
+        return $this->hasOne(VerRpsUas::class, 'id_rep_rps_uas','rep_rps_uas_id');
+    }
     
 }
