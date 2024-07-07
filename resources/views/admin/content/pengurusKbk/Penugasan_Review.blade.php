@@ -15,7 +15,7 @@
                         {{ Session::get('error') }}
                     </div>
                 @endif
-                
+
 
                 <div class="container-fluid">
                     <!-- Data Proposal TA -->
@@ -67,10 +67,13 @@
                                                     <th>{{ optional($data->r_jenis_kbk)->jenis_kbk }}</th>
                                                     <th style="width: 10%;">
                                                         <div class="row">
-                                                            <a href="{{ route('PenugasanReview.create', ['id' => $data['id_proposal_ta']]) }}"
-                                                                class="btn btn-primary mb-2 d-flex align-items-center">
-                                                                <i class="bi bi-pencil-square"></i> Penugasan
-                                                            </a>
+                                                            @can('pengurusKbk-create PenugasanReview')
+                                                                <a href="{{ route('PenugasanReview.create', ['id' => $data['id_proposal_ta']]) }}"
+                                                                    class="btn btn-primary mb-2 d-flex align-items-center">
+                                                                    <i class="bi bi-pencil-square"></i> Penugasan
+                                                                </a>
+                                                            @endcan
+
                                                             <a data-bs-toggle="modal"
                                                                 data-bs-target="#detail{{ $data->id_proposal_ta }}"
                                                                 class="btn btn-secondary d-flex align-items-center">
@@ -216,13 +219,17 @@
                                                 <th>{{ $data->tanggal_penugasan }}</th>
                                                 <th style="width: 10%;">
                                                     <div class="row">
-                                                        <a href="{{ route('PenugasanReview.edit', ['id' => $data->id_penugasan]) }}"
-                                                            class="btn btn-primary mb-2 d-flex align-items-center"><i
-                                                                class="bi bi-pencil-square"></i>Edit</a>
-                                                        <a data-bs-toggle="modal"
-                                                            data-bs-target="#staticBackdrop{{ $data->id_penugasan }}"
-                                                            class="btn btn-danger mb-2 d-flex align-items-center"><i
-                                                                class="bi bi-trash"></i>Delete</a>
+                                                        @can('pengurusKbk-update PenugasanReview')
+                                                            <a href="{{ route('PenugasanReview.edit', ['id' => $data->id_penugasan]) }}"
+                                                                class="btn btn-primary mb-2 d-flex align-items-center"><i
+                                                                    class="bi bi-pencil-square"></i>Edit</a>
+                                                        @endcan
+                                                        @can('pengurusKbk-delete PenugasanReview')
+                                                            <a data-bs-toggle="modal"
+                                                                data-bs-target="#staticBackdrop{{ $data->id_penugasan }}"
+                                                                class="btn btn-danger mb-2 d-flex align-items-center"><i
+                                                                    class="bi bi-trash"></i>Delete</a>
+                                                        @endcan
                                                         <a data-bs-toggle="modal"
                                                             data-bs-target="#detail{{ $data->id_penugasan }}"
                                                             class="btn btn-secondary d-flex align-items-center"><i
@@ -330,21 +337,21 @@
     </div>
 @endsection
 @section('scripts')
-<script>
-    setTimeout(function() {
-        var element = document.getElementById('delay');
-        if (element) {
-            element.parentNode.removeChild(element);
-        }
-    }, 5000); // 5000 milliseconds = 5 detik
+    <script>
+        setTimeout(function() {
+            var element = document.getElementById('delay');
+            if (element) {
+                element.parentNode.removeChild(element);
+            }
+        }, 5000); // 5000 milliseconds = 5 detik
 
-    function toggleTable() {
-        var tableContent = document.getElementById('tableContent');
-        if (tableContent.style.display === 'none') {
-            tableContent.style.display = 'block';
-        } else {
-            tableContent.style.display = 'none';
+        function toggleTable() {
+            var tableContent = document.getElementById('tableContent');
+            if (tableContent.style.display === 'none') {
+                tableContent.style.display = 'block';
+            } else {
+                tableContent.style.display = 'none';
+            }
         }
-    }
-</script>
+    </script>
 @endsection

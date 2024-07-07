@@ -19,9 +19,13 @@
                     <!-- DataMahasiswa -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <a href="{{ route('mahasiswa.show') }}" class="btn btn-primary me-md-3">
-                                <i class="ti ti-upload"></i> Ambil Data API
-                            </a>
+
+                            @can('admin-sinkronData Mahasiswa')
+                                <a href="{{ route('mahasiswa.show') }}" class="btn btn-primary me-md-3">
+                                    <i class="ti ti-upload"></i> Ambil Data API
+                                </a>
+                            @endcan
+
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -75,6 +79,7 @@
                                                     </div>
                                                 </th>
                                             </tr>
+
 
                                             {{-- Modal Detail Tabel --}}
                                             <div class="modal fade" id="detail{{ $data->id_mahasiswa }}" tabindex="-1"

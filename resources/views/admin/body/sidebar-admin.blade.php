@@ -1,6 +1,5 @@
 @section('styles')
     <link rel="stylesheet" href="{{ asset('backend/assets/css/side-drop.css') }}" />
-    
 @endsection
 
 
@@ -18,7 +17,7 @@
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
             <ul id="sidebarnav">
-                @hasanyrole('super-admin|admin|pimpinan-jurusan|pimpinan-prodi|dosen-pengampu|pengurus-kbk|dosen-kbk')
+                @hasanyrole('superAdmin|admin|pimpinanJurusan|pimpinanProdi|dosenMatkul|pengurusKbk|dosenKbk')
                     <li class="nav-small-cap">
                         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                         <span class="hide-menu">Home</span>
@@ -31,7 +30,7 @@
                             <span class="hide-menu">Dashboard</span>
                         </a>
                     </li> --}}
-                    @hasanyrole('super-admin|admin|pimpinan-jurusan|pimpinan-prodi|dosen-pengampu|pengurus-kbk|dosen-kbk')
+                    @hasanyrole('superAdmin|admin|pimpinanJurusan|pimpinanProdi|dosenMatkul|pengurusKbk|dosenKbk')
                         <li class="sidebar-item">
                             <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
                                 <span class="d-flex">
@@ -40,9 +39,9 @@
                                 <span class="hide-menu">Dashboard</span>
                             </a>
                             <ul aria-expanded="false" class="collapse first-level">
-                                @hasrole('super-admin')
+                                @hasrole('superAdmin')
                                     <li class="sidebar-item">
-                                        <a href="{{url('logs')}}" class="sidebar-link dropdown-item-custom">
+                                        <a href="{{ url('logs') }}" class="sidebar-link dropdown-item-custom">
                                             <div class="round-16 d-flex align-items-center justify-content-center">
                                                 <i class="ti ti-circle"></i>
                                             </div>
@@ -51,82 +50,94 @@
                                     </li>
                                 @endhasrole
                                 @hasrole('admin')
-                                    <li class="sidebar-item">
-                                <a href="{{ route('dashboard_admin') }}" class="sidebar-link dropdown-item-custom">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <i class="ti ti-circle"></i>
-                                        </div>
-                                        <span class="hide-menu">Admin</span>
-                                        </a>
-                                    </li>
+                                    @can('admin-dashboard')
+                                        <li class="sidebar-item">
+                                            <a href="{{ route('dashboard_admin') }}" class="sidebar-link dropdown-item-custom">
+                                                <div class="round-16 d-flex align-items-center justify-content-center">
+                                                    <i class="ti ti-circle"></i>
+                                                </div>
+                                                <span class="hide-menu">Admin</span>
+                                            </a>
+                                        </li>
+                                    @endcan
                                 @endhasrole
-                                @hasrole('pimpinan-jurusan')
-                                    @php
-                                        // Mendapatkan nama route saat ini
-                                        $currentRoute = Route::currentRouteName();
+                                @hasrole('pimpinanJurusan')
+                                    @can('pimpinanJurusan-dashboard')
+                                        @php
+                                            // Mendapatkan nama route saat ini
+                                            $currentRoute = Route::currentRouteName();
 
-                                        // Memeriksa apakah route saat ini adalah dashboard_pimpinan
-                                        $isActive = $currentRoute == 'dashboard_pimpinan';
+                                            // Memeriksa apakah route saat ini adalah dashboard_pimpinan
+                                            $isActive = $currentRoute == 'dashboard_pimpinan';
 
-                                        // Mendapatkan prodi_id dari query parameter
-                                        $prodiId = request()->query('prodi_id');
-                                    @endphp
+                                            // Mendapatkan prodi_id dari query parameter
+                                            $prodiId = request()->query('prodi_id');
+                                        @endphp
 
-                                    <li class="sidebar-item {{ $isActive && !$prodiId ? 'active' : '' }}">
-                                        <a href="{{ route('dashboard_pimpinan') }}" class="sidebar-link dropdown-item-custom">
-                                            <div class="round-16 d-flex align-items-center justify-content-center">
-                                                <i class="ti ti-circle"></i>
-                                            </div>
-                                            <span class="hide-menu">Pimpinan Jurusan</span>
-                                        </a>
-                                    </li>
+                                        <li class="sidebar-item {{ $isActive && !$prodiId ? 'active' : '' }}">
+                                            <a href="{{ route('dashboard_pimpinan') }}" class="sidebar-link dropdown-item-custom">
+                                                <div class="round-16 d-flex align-items-center justify-content-center">
+                                                    <i class="ti ti-circle"></i>
+                                                </div>
+                                                <span class="hide-menu">Pimpinan Jurusan</span>
+                                            </a>
+                                        </li>
+                                    @endcan
                                 @endhasrole
-                                @hasrole('pimpinan-prodi')
-                                    <li class="sidebar-item dropdown-item-custom">
-                                        <a href="{{ route('dashboard_kaprodi') }}" class="sidebar-link dropdown-item-custom">
-                                            <div class="round-16 d-flex align-items-center justify-content-center">
-                                                <i class="ti ti-circle"></i>
-                                            </div>
-                                            <span class="hide-menu">Pimpinan Prodi</span>
-                                        </a>
-                                    </li>
+                                @hasrole('pimpinanProdi')
+                                    @can('pimpinanProdi-dashboard')
+                                        <li class="sidebar-item dropdown-item-custom">
+                                            <a href="{{ route('dashboard_kaprodi') }}" class="sidebar-link dropdown-item-custom">
+                                                <div class="round-16 d-flex align-items-center justify-content-center">
+                                                    <i class="ti ti-circle"></i>
+                                                </div>
+                                                <span class="hide-menu">Pimpinan Prodi</span>
+                                            </a>
+                                        </li>
+                                    @endcan
                                 @endhasrole
-                                @hasrole('dosen-pengampu')
-                                    <li class="sidebar-item dropdown-item-custom">
-                                        <a href="{{ route('dashboard_pengampu') }}" class="sidebar-link dropdown-item-custom">
-                                            <div class="round-16 d-flex align-items-center justify-content-center">
-                                                <i class="ti ti-circle"></i>
-                                            </div>
-                                            <span class="hide-menu">Dosen Pengampu</span>
-                                        </a>
-                                    </li>
-                                @endhasrole
-
-                                @hasrole('pengurus-kbk')
-                                    <li class="sidebar-item dropdown-item-custom">
-                                        <a href="{{ route('dashboard_pengurus') }}" class="sidebar-link dropdown-item-custom">
-                                            <div class="round-16 d-flex align-items-center justify-content-center">
-                                                <i class="ti ti-circle"></i>
-                                            </div>
-                                            <span class="hide-menu">Pengurus KBK</span>
-                                        </a>
-                                    </li>
+                                @hasrole('dosenMatkul')
+                                    @can('dosenMatkul-dashboard')
+                                        <li class="sidebar-item dropdown-item-custom">
+                                            <a href="{{ route('dashboard_pengampu') }}" class="sidebar-link dropdown-item-custom">
+                                                <div class="round-16 d-flex align-items-center justify-content-center">
+                                                    <i class="ti ti-circle"></i>
+                                                </div>
+                                                <span class="hide-menu">Dosen Pengampu</span>
+                                            </a>
+                                        </li>
+                                    @endcan
                                 @endhasrole
 
-                                @hasrole('dosen-kbk')
-                                    <li class="sidebar-item dropdown-item-custom">
-                                        <a href="{{ route('dashboard_dosenKbk') }}" class="sidebar-link dropdown-item-custom">
-                                            <div class="round-16 d-flex align-items-center justify-content-center">
-                                                <i class="ti ti-circle"></i>
-                                            </div>
-                                            <span class="hide-menu">Dosen KBK</span>
-                                        </a>
-                                    </li>
+                                @hasrole('pengurusKbk')
+                                    @can('pengurusKbk-dashboard')
+                                        <li class="sidebar-item dropdown-item-custom">
+                                            <a href="{{ route('dashboard_pengurus') }}" class="sidebar-link dropdown-item-custom">
+                                                <div class="round-16 d-flex align-items-center justify-content-center">
+                                                    <i class="ti ti-circle"></i>
+                                                </div>
+                                                <span class="hide-menu">Pengurus KBK</span>
+                                            </a>
+                                        </li>
+                                    @endcan
+                                @endhasrole
+
+                                @hasrole('dosenKbk')
+                                    @can('dosenKbk-dashboard')
+                                        <li class="sidebar-item dropdown-item-custom">
+                                            <a href="{{ route('dashboard_dosenKbk') }}" class="sidebar-link dropdown-item-custom">
+                                                <div class="round-16 d-flex align-items-center justify-content-center">
+                                                    <i class="ti ti-circle"></i>
+                                                </div>
+                                                <span class="hide-menu">Dosen KBK</span>
+                                            </a>
+                                        </li>
+                                    @endcan
                                 @endhasrole
                             </ul>
                         </li>
                     @endhasanyrole
-                    @hasrole('super-admin')
+                    @hasrole('superAdmin')
                         <li class="nav-small-cap">
                             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                             <span class="hide-menu">Super Admin</span>
@@ -158,112 +169,131 @@
                     @endhasrole
 
 
-                   
+
                     @hasrole('admin')
-                    <li class="nav-small-cap">
-                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                        <span class="hide-menu">Admin</span>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
-                            <span class="d-flex">
-                                <i class="ti ti-briefcase"></i>
-                            </span>
-                            <span class="hide-menu">Data Perkuliahan</span>
-                        </a>
-                        <ul aria-expanded="false" class="collapse first-level">
-                                <li class="sidebar-item">
-                                    <a href="{{ route('rep_proposal_ta') }}" class="sidebar-link dropdown-item-custom">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <i class="ti ti-circle"></i>
-                                        </div>
-                                        <span class="hide-menu">Repositori Proposal TA</span>
-                                    </a>
-                                </li>
+                        <li class="nav-small-cap">
+                            <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                            <span class="hide-menu">Admin</span>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                                <span class="d-flex">
+                                    <i class="ti ti-briefcase"></i>
+                                </span>
+                                <span class="hide-menu">Data Perkuliahan</span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse first-level">
+                                @can('admin-view RepProposalTA')
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('rep_proposal_ta') }}" class="sidebar-link dropdown-item-custom">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <i class="ti ti-circle"></i>
+                                            </div>
+                                            <span class="hide-menu">Repositori Proposal TA</span>
+                                        </a>
+                                    </li>
+                                @endcan
 
-                                <li class="sidebar-item">
-                                    <a href="{{ route('dosen') }}" class="sidebar-link dropdown-item-custom">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <i class="ti ti-circle"></i>
-                                        </div>
-                                        <span class="hide-menu">Dosen</span>
-                                    </a>
-                                </li>
-                           
-                                <li class="sidebar-item">
-                                <a href="{{ route('mahasiswa') }}" class="sidebar-link dropdown-item-custom">
-                                    <div class="round-16 d-flex align-items-center justify-content-center">
-                                        <i class="ti ti-circle"></i>
-                                    </div>
-                                    <span class="hide-menu">Mahasiswa</span>
-                                    </a>
-                                </li>
-                           
+                                @can('admin-view Dosen')
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('dosen') }}" class="sidebar-link dropdown-item-custom">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <i class="ti ti-circle"></i>
+                                            </div>
+                                            <span class="hide-menu">Dosen</span>
+                                        </a>
+                                    </li>
+                                @endcan
 
-                                <li class="sidebar-item">
-                                    <a href="{{ route('jurusan') }}" class="sidebar-link dropdown-item-custom">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <i class="ti ti-circle"></i>
-                                        </div>
-                                        <span class="hide-menu">Jurusan</span>
-                                    </a>
-                                </li>
-                          
-                                <li class="sidebar-item dropdown-item-custom">
-                                    <a href="{{ route('prodi') }}" class="sidebar-link dropdown-item-custom">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <i class="ti ti-circle"></i>
-                                        </div>
-                                        <span class="hide-menu">Prodi</span>
-                                    </a>
-                                </li>
-                            
-                                <li class="sidebar-item dropdown-item-custom">
-                                    <a href="{{ route('matkul') }}" class="sidebar-link dropdown-item-custom">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <i class="ti ti-circle"></i>
-                                        </div>
-                                        <span class="hide-menu">Mata Kuliah</span>
-                                    </a>
-                                </li>
-                            
-                                <li class="sidebar-item dropdown-item-custom">
-                                    <a href="{{ route('thnakademik') }}" class="sidebar-link dropdown-item-custom">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <i class="ti ti-circle"></i>
-                                        </div>
-                                        <span class="hide-menu">Tahun Akademik</span>
-                                    </a>
-                                </li>
-                           
-                                <li class="sidebar-item dropdown-item-custom">
-                                    <a href="{{ route('kurikulum') }}" class="sidebar-link dropdown-item-custom">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <i class="ti ti-circle"></i>
-                                        </div>
-                                        <span class="hide-menu">Kurikulum</span>
-                                    </a>
-                                </li>
+                                @can('admin-view Mahasiswa')
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('mahasiswa') }}" class="sidebar-link dropdown-item-custom">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <i class="ti ti-circle"></i>
+                                            </div>
+                                            <span class="hide-menu">Mahasiswa</span>
+                                        </a>
+                                    </li>
+                                @endcan
 
-                                <li class="sidebar-item dropdown-item-custom">
-                                    <a href="{{ route('pimpinanjurusan') }}" class="sidebar-link dropdown-item-custom">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <i class="ti ti-circle"></i>
-                                        </div>
-                                        <span class="hide-menu">Pimpinan Jurusan</span>
-                                    </a>
-                                </li>
+                                @can('admin-view Jurusan')
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('jurusan') }}" class="sidebar-link dropdown-item-custom">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <i class="ti ti-circle"></i>
+                                            </div>
+                                            <span class="hide-menu">Jurusan</span>
+                                        </a>
+                                    </li>
+                                @endcan
 
-                                <li class="sidebar-item dropdown-item-custom">
-                                    <a href="{{ route('pimpinanprodi') }}" class="sidebar-link dropdown-item-custom">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <i class="ti ti-circle"></i>
-                                        </div>
-                                        <span class="hide-menu">Pimpinan Prodi</span>
-                                    </a>
-                                </li> 
-                        </ul>
-                    </li>
+                                @can('admin-view Prodi')
+                                    <li class="sidebar-item dropdown-item-custom">
+                                        <a href="{{ route('prodi') }}" class="sidebar-link dropdown-item-custom">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <i class="ti ti-circle"></i>
+                                            </div>
+                                            <span class="hide-menu">Prodi</span>
+                                        </a>
+                                    </li>
+                                @endcan
+
+                                @can('admin-view Matkul')
+                                    <li class="sidebar-item dropdown-item-custom">
+                                        <a href="{{ route('matkul') }}" class="sidebar-link dropdown-item-custom">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <i class="ti ti-circle"></i>
+                                            </div>
+                                            <span class="hide-menu">Mata Kuliah</span>
+                                        </a>
+                                    </li>
+                                @endcan
+
+                                @can('admin-view ThnAkademik')
+                                    <li class="sidebar-item dropdown-item-custom">
+                                        <a href="{{ route('thnakademik') }}" class="sidebar-link dropdown-item-custom">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <i class="ti ti-circle"></i>
+                                            </div>
+                                            <span class="hide-menu">Tahun Akademik</span>
+                                        </a>
+                                    </li>
+                                @endcan
+
+                                @can('admin-view Kurikulum')
+                                    <li class="sidebar-item dropdown-item-custom">
+                                        <a href="{{ route('kurikulum') }}" class="sidebar-link dropdown-item-custom">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <i class="ti ti-circle"></i>
+                                            </div>
+                                            <span class="hide-menu">Kurikulum</span>
+                                        </a>
+                                    </li>
+                                @endcan
+
+                                @can('admin-view PimpinanJurusan')
+                                    <li class="sidebar-item dropdown-item-custom">
+                                        <a href="{{ route('pimpinanjurusan') }}" class="sidebar-link dropdown-item-custom">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <i class="ti ti-circle"></i>
+                                            </div>
+                                            <span class="hide-menu">Pimpinan Jurusan</span>
+                                        </a>
+                                    </li>
+                                @endcan
+
+                                @can('admin-view PimpinanProdi')
+                                    <li class="sidebar-item dropdown-item-custom">
+                                        <a href="{{ route('pimpinanprodi') }}" class="sidebar-link dropdown-item-custom">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <i class="ti ti-circle"></i>
+                                            </div>
+                                            <span class="hide-menu">Pimpinan Prodi</span>
+                                        </a>
+                                    </li>
+                                @endcan
+                            </ul>
+                        </li>
 
                         <li class="sidebar-item">
                             <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
@@ -272,17 +302,19 @@
                                 </span>
                                 <span class="hide-menu">Input Data</span>
                             </a>
-                            <ul aria-expanded="false" class="collapse first-level">                               
+                            <ul aria-expanded="false" class="collapse first-level">
+                                @can('admin-view DosenMatkul')
                                     <li class="sidebar-item">
-                                    <a href="{{ route('DosenPengampuMatkul') }}" class="sidebar-link dropdown-item-custom">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <i class="ti ti-circle"></i>
-                                        </div>
-                                        <span class="hide-menu">Pengampu Matkul</span>
+                                        <a href="{{ route('DosenPengampuMatkul') }}" class="sidebar-link dropdown-item-custom">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <i class="ti ti-circle"></i>
+                                            </div>
+                                            <span class="hide-menu">Pengampu Matkul</span>
                                         </a>
                                     </li>
-                               
-    
+                                @endcan
+
+                                @can('admin-view PengurusKbk')
                                     <li class="sidebar-item">
                                         <a href="{{ route('pengurus_kbk') }}" class="sidebar-link dropdown-item-custom">
                                             <div class="round-16 d-flex align-items-center justify-content-center">
@@ -291,7 +323,9 @@
                                             <span class="hide-menu">Pengurus KBK</span>
                                         </a>
                                     </li>
-                              
+                                @endcan
+
+                                @can('admin-view DosenKbk')
                                     <li class="sidebar-item dropdown-item-custom">
                                         <a href="{{ route('dosen_kbk') }}" class="sidebar-link dropdown-item-custom">
                                             <div class="round-16 d-flex align-items-center justify-content-center">
@@ -300,7 +334,9 @@
                                             <span class="hide-menu">Dosen KBK</span>
                                         </a>
                                     </li>
-                                
+                                @endcan
+
+                                @can('admin-view MatkulKbk')
                                     <li class="sidebar-item dropdown-item-custom">
                                         <a href="{{ route('matkul_kbk') }}" class="sidebar-link dropdown-item-custom">
                                             <div class="round-16 d-flex align-items-center justify-content-center">
@@ -309,7 +345,9 @@
                                             <span class="hide-menu">Mata Kuliah KBK</span>
                                         </a>
                                     </li>
-                                
+                                @endcan
+
+                                @can('admin-view JenisKbk')
                                     <li class="sidebar-item dropdown-item-custom">
                                         <a href="{{ route('jenis_kbk') }}" class="sidebar-link dropdown-item-custom">
                                             <div class="round-16 d-flex align-items-center justify-content-center">
@@ -318,12 +356,14 @@
                                             <span class="hide-menu">Data KBK</span>
                                         </a>
                                     </li>
+                                @endcan
+
                             </ul>
                         </li>
                     @endhasrole
 
 
-                    @hasrole('pimpinan-jurusan')
+                    @hasrole('pimpinanJurusan')
                         <li class="nav-small-cap">
                             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                             <span class="hide-menu">Kepala Jurusan</span>
@@ -336,6 +376,7 @@
                                 <span class="hide-menu">Data RPS</span>
                             </a>
                             <ul aria-expanded="false" class="collapse first-level">
+                                @can('pimpinanJurusan-view RepRPSJurusan')
                                     <li class="sidebar-item">
                                         <a href="{{ route('rep_rps_jurusan') }}" class="sidebar-link dropdown-item-custom">
                                             <div class="round-16 d-flex align-items-center justify-content-center">
@@ -344,14 +385,19 @@
                                             <span class="hide-menu">Repositori RPS</span>
                                         </a>
                                     </li>
+                                @endcan
+
+                                @can('pimpinanJurusan-view BeritaAcaraRpsKajur')
                                     <li class="sidebar-item">
-                                    <a href="{{ route('kajur_berita_ver_rps') }}" class="sidebar-link dropdown-item-custom">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <i class="ti ti-circle"></i>
-                                        </div>
-                                        <span class="hide-menu">Verifikasi Berita Acara RPS</span>
+                                        <a href="{{ route('kajur_berita_ver_rps') }}" class="sidebar-link dropdown-item-custom">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <i class="ti ti-circle"></i>
+                                            </div>
+                                            <span class="hide-menu">Verifikasi Berita Acara RPS</span>
                                         </a>
                                     </li>
+                                @endcan
+                                @can('pimpinanJurusan-view grafikRps')
                                     <li class="sidebar-item">
                                         <a href="{{ route('grafik_rps') }}" class="sidebar-link dropdown-item-custom">
                                             <div class="round-16 d-flex align-items-center justify-content-center">
@@ -360,8 +406,10 @@
                                             <span class="hide-menu">Tabel & Grafik RPS</span>
                                         </a>
                                     </li>
-                                </ul>
-                            </li>
+                                @endcan
+
+                            </ul>
+                        </li>
 
                         <li class="sidebar-item">
                             <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
@@ -371,6 +419,7 @@
                                 <span class="hide-menu">Data UAS</span>
                             </a>
                             <ul aria-expanded="false" class="collapse first-level">
+                                @can('pimpinanJurusan-view RepSoalUASJurusan')
                                     <li class="sidebar-item">
                                         <a href="{{ route('rep_soal_uas_jurusan') }}" class="sidebar-link dropdown-item-custom">
                                             <div class="round-16 d-flex align-items-center justify-content-center">
@@ -379,14 +428,19 @@
                                             <span class="hide-menu">Repositori Soal UAS</span>
                                         </a>
                                     </li>
+                                @endcan
+
+                                @can('pimpinanJurusan-view BeritaAcaraUasKajur')
                                     <li class="sidebar-item">
-                                    <a href="{{ route('kajur_berita_ver_uas') }}" class="sidebar-link dropdown-item-custom">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <i class="ti ti-circle"></i>
-                                        </div>
-                                        <span class="hide-menu">Verifikasi Berita Acara UAS</span>
+                                        <a href="{{ route('kajur_berita_ver_uas') }}" class="sidebar-link dropdown-item-custom">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <i class="ti ti-circle"></i>
+                                            </div>
+                                            <span class="hide-menu">Verifikasi Berita Acara UAS</span>
                                         </a>
                                     </li>
+                                @endcan
+                                @can('pimpinanJurusan-view grafikUas')
                                     <li class="sidebar-item">
                                         <a href="{{ route('grafik_uas') }}" class="sidebar-link dropdown-item-custom">
                                             <div class="round-16 d-flex align-items-center justify-content-center">
@@ -395,8 +449,10 @@
                                             <span class="hide-menu">Tabel & Grafik UAS</span>
                                         </a>
                                     </li>
-                                </ul>
-                            </li>
+                                @endcan
+
+                            </ul>
+                        </li>
 
                         <li class="sidebar-item">
                             <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
@@ -406,14 +462,18 @@
                                 <span class="hide-menu">Data TA</span>
                             </a>
                             <ul aria-expanded="false" class="collapse first-level">
+                                @can('pimpinanJurusan-view RepProposalTAJurusan')
                                     <li class="sidebar-item">
-                                        <a href="{{ route('rep_proposal_ta_jurusan') }}" class="sidebar-link dropdown-item-custom">
+                                        <a href="{{ route('rep_proposal_ta_jurusan') }}"
+                                            class="sidebar-link dropdown-item-custom">
                                             <div class="round-16 d-flex align-items-center justify-content-center">
                                                 <i class="ti ti-circle"></i>
                                             </div>
                                             <span class="hide-menu">Repositori Proposal TA</span>
                                         </a>
                                     </li>
+                                @endcan
+                                @can('pimpinanJurusan-view grafikProposal')
                                     <li class="sidebar-item">
                                         <a href="{{ route('grafik_proposal') }}" class="sidebar-link dropdown-item-custom">
                                             <div class="round-16 d-flex align-items-center justify-content-center">
@@ -422,10 +482,12 @@
                                             <span class="hide-menu">Tabel & Grafik Proposal TA</span>
                                         </a>
                                     </li>
-                                </ul>
-                            </li>
-                              
-                                  
+                                @endcan
+
+                            </ul>
+                        </li>
+
+
 
 
                         {{-- <li class="sidebar-item">
@@ -493,7 +555,7 @@
                             </a>
                         </li> --}}
                     @endhasrole
-                    @hasrole('pimpinan-prodi')
+                    @hasrole('pimpinanProdi')
                         <li class="nav-small-cap">
                             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                             <span class="hide-menu">Kepala Prodi</span>
@@ -507,6 +569,7 @@
                                 <span class="hide-menu">Data RPS</span>
                             </a>
                             <ul aria-expanded="false" class="collapse first-level">
+                                @can('pimpinanProdi-view RepRpsProdi')
                                     <li class="sidebar-item">
                                         <a href="{{ route('rep_rps') }}" class="sidebar-link dropdown-item-custom">
                                             <div class="round-16 d-flex align-items-center justify-content-center">
@@ -515,14 +578,20 @@
                                             <span class="hide-menu">Repositori RPS</span>
                                         </a>
                                     </li>
+                                @endcan
+
+                                @can('pimpinanProdi-view BeritaAcaraRpsProdi')
                                     <li class="sidebar-item">
-                                    <a href="{{ route('berita_ver_rps') }}" class="sidebar-link dropdown-item-custom">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <i class="ti ti-circle"></i>
-                                        </div>
-                                        <span class="hide-menu">Verifikasi Berita Acara RPS</span>
+                                        <a href="{{ route('berita_ver_rps') }}" class="sidebar-link dropdown-item-custom">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <i class="ti ti-circle"></i>
+                                            </div>
+                                            <span class="hide-menu">Verifikasi Berita Acara RPS</span>
                                         </a>
                                     </li>
+                                @endcan
+
+                                @can('pimpinanProdi-view grafikRps')
                                     <li class="sidebar-item">
                                         <a href="{{ route('grafik_rps_prodi') }}" class="sidebar-link dropdown-item-custom">
                                             <div class="round-16 d-flex align-items-center justify-content-center">
@@ -531,8 +600,10 @@
                                             <span class="hide-menu">Tabel & Grafik RPS</span>
                                         </a>
                                     </li>
-                                </ul>
-                            </li>
+                                @endcan
+
+                            </ul>
+                        </li>
 
                         <li class="sidebar-item">
                             <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
@@ -542,6 +613,7 @@
                                 <span class="hide-menu">Data UAS</span>
                             </a>
                             <ul aria-expanded="false" class="collapse first-level">
+                                @can('pimpinanProdi-view RepUasProdi')
                                     <li class="sidebar-item">
                                         <a href="{{ route('rep_soal_uas') }}" class="sidebar-link dropdown-item-custom">
                                             <div class="round-16 d-flex align-items-center justify-content-center">
@@ -550,14 +622,20 @@
                                             <span class="hide-menu">Repositori Soal UAS</span>
                                         </a>
                                     </li>
+                                @endcan
+
+                                @can('pimpinanProdi-view BeritaAcaraUasProdi')
                                     <li class="sidebar-item">
-                                    <a href="{{ route('berita_ver_uas') }}" class="sidebar-link dropdown-item-custom">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <i class="ti ti-circle"></i>
-                                        </div>
-                                        <span class="hide-menu">Verifikasi Berita Acara UAS</span>
+                                        <a href="{{ route('berita_ver_uas') }}" class="sidebar-link dropdown-item-custom">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <i class="ti ti-circle"></i>
+                                            </div>
+                                            <span class="hide-menu">Verifikasi Berita Acara UAS</span>
                                         </a>
                                     </li>
+                                @endcan
+
+                                @can('pimpinanProdi-view grafikUas')
                                     <li class="sidebar-item">
                                         <a href="{{ route('grafik_uas_prodi') }}" class="sidebar-link dropdown-item-custom">
                                             <div class="round-16 d-flex align-items-center justify-content-center">
@@ -566,8 +644,10 @@
                                             <span class="hide-menu">Tabel & Grafik UAS</span>
                                         </a>
                                     </li>
-                                </ul>
-                            </li>
+                                @endcan
+
+                            </ul>
+                        </li>
 
                         <li class="sidebar-item">
                             <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
@@ -577,19 +657,23 @@
                                 <span class="hide-menu">Data TA</span>
                             </a>
                             <ul aria-expanded="false" class="collapse first-level">
+                                @can('pimpinanProdi-view ProposalTaFinal')
                                     <li class="sidebar-item">
-                                        <a href="{{ route('hasil_review_proposal_ta') }}" class="sidebar-link dropdown-item-custom">
+                                        <a href="{{ route('hasil_review_proposal_ta') }}"
+                                            class="sidebar-link dropdown-item-custom">
                                             <div class="round-16 d-flex align-items-center justify-content-center">
                                                 <i class="ti ti-circle"></i>
                                             </div>
                                             <span class="hide-menu">Hasil Review Proposal TA</span>
                                         </a>
                                     </li>
-                                </ul>
-                            </li>
+                                @endcan
+
+                            </ul>
+                        </li>
 
 
-                        
+
                         {{-- <li class="sidebar-item">
                             <a class="sidebar-link" href="{{ route('rep_rps') }}" aria-expanded="false">
                                 <span>
@@ -649,7 +733,7 @@
                     @endhasrole
 
 
-                    @hasrole('pengurus-kbk')
+                    @hasrole('pengurusKbk')
                         <li class="nav-small-cap">
                             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                             <span class="hide-menu">Pengurus KBK</span>
@@ -663,6 +747,7 @@
                                 <span class="hide-menu">Data RPS</span>
                             </a>
                             <ul aria-expanded="false" class="collapse first-level">
+                                @can('pengurusKbk-view VerRps')
                                     <li class="sidebar-item">
                                         <a href="{{ route('ver_rps') }}" class="sidebar-link dropdown-item-custom">
                                             <div class="round-16 d-flex align-items-center justify-content-center">
@@ -671,14 +756,20 @@
                                             <span class="hide-menu">Verifikasi RPS</span>
                                         </a>
                                     </li>
+                                @endcan
+                                @can('pengurusKbk-view BeritaAcaraRps')
                                     <li class="sidebar-item">
-                                    <a href="{{ route('upload_rps_berita_acara') }}" class="sidebar-link dropdown-item-custom">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <i class="ti ti-circle"></i>
-                                        </div>
-                                        <span class="hide-menu">Upload Berita Acara RPS</span>
+                                        <a href="{{ route('upload_rps_berita_acara') }}"
+                                            class="sidebar-link dropdown-item-custom">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <i class="ti ti-circle"></i>
+                                            </div>
+                                            <span class="hide-menu">Upload Berita Acara RPS</span>
                                         </a>
                                     </li>
+                                @endcan
+
+                                @can('pengurusKbk-view GrafikRps')
                                     <li class="sidebar-item">
                                         <a href="{{ route('grafik_rps_pengurus') }}" class="sidebar-link dropdown-item-custom">
                                             <div class="round-16 d-flex align-items-center justify-content-center">
@@ -687,8 +778,9 @@
                                             <span class="hide-menu">Tabel & Grafik RPS</span>
                                         </a>
                                     </li>
-                                </ul>
-                            </li>
+                                @endcan
+                            </ul>
+                        </li>
 
                         <li class="sidebar-item">
                             <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
@@ -698,7 +790,8 @@
                                 <span class="hide-menu">Data UAS</span>
                             </a>
                             <ul aria-expanded="false" class="collapse first-level">
-                                    <li class="sidebar-item">
+                                <li class="sidebar-item">
+                                    @can('pengurusKbk-view VerUas')
                                         <a href="{{ route('ver_soal_uas') }}" class="sidebar-link dropdown-item-custom">
                                             <div class="round-16 d-flex align-items-center justify-content-center">
                                                 <i class="ti ti-circle"></i>
@@ -706,14 +799,20 @@
                                             <span class="hide-menu">Verifikasi Soal UAS</span>
                                         </a>
                                     </li>
+                                @endcan
+                                @can('pengurusKbk-view BeritaAcaraUas')
                                     <li class="sidebar-item">
-                                    <a href="{{ route('upload_uas_berita_acara') }}" class="sidebar-link dropdown-item-custom">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <i class="ti ti-circle"></i>
-                                        </div>
-                                        <span class="hide-menu">Verifikasi Berita Acara UAS</span>
+                                        <a href="{{ route('upload_uas_berita_acara') }}"
+                                            class="sidebar-link dropdown-item-custom">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <i class="ti ti-circle"></i>
+                                            </div>
+                                            <span class="hide-menu">Verifikasi Berita Acara UAS</span>
                                         </a>
                                     </li>
+                                @endcan
+
+                                @can('pengurusKbk-view GrafikUas')
                                     <li class="sidebar-item">
                                         <a href="{{ route('grafik_uas_pengurus') }}" class="sidebar-link dropdown-item-custom">
                                             <div class="round-16 d-flex align-items-center justify-content-center">
@@ -722,8 +821,9 @@
                                             <span class="hide-menu">Tabel & Grafik UAS</span>
                                         </a>
                                     </li>
-                                </ul>
-                            </li>
+                                @endcan
+                            </ul>
+                        </li>
 
                         <li class="sidebar-item">
                             <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
@@ -733,6 +833,7 @@
                                 <span class="hide-menu">Data TA</span>
                             </a>
                             <ul aria-expanded="false" class="collapse first-level">
+                                @can('pengurusKbk-view PenugasanReview')
                                     <li class="sidebar-item">
                                         <a href="{{ route('PenugasanReview') }}" class="sidebar-link dropdown-item-custom">
                                             <div class="round-16 d-flex align-items-center justify-content-center">
@@ -741,6 +842,8 @@
                                             <span class="hide-menu">Penugasan Review</span>
                                         </a>
                                     </li>
+                                @endcan
+                                @can('pengurusKbk-view PenugasanHasilReview')
                                     <li class="sidebar-item">
                                         <a href="{{ route('HasilReview') }}" class="sidebar-link dropdown-item-custom">
                                             <div class="round-16 d-flex align-items-center justify-content-center">
@@ -749,8 +852,9 @@
                                             <span class="hide-menu">Hasil Review</span>
                                         </a>
                                     </li>
-                                </ul>
-                            </li>
+                                @endcan
+                            </ul>
+                        </li>
 
 
                         {{-- <li class="sidebar-item">
@@ -818,7 +922,7 @@
                             </a>
                         </li> --}}
                     @endhasrole
-                    @hasrole('dosen-pengampu')
+                    @hasrole('dosenMatkul')
                         <li class="nav-small-cap">
                             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                             <span class="hide-menu">Dosen Pengampu</span>
@@ -831,16 +935,18 @@
                             <span class="hide-menu">Dashboard Pengampu</span>
                         </a>
                     </li> --}}
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('dosen_matkul') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Mata Kuliah</span>
-                            </a>
-                        </li>
+                        @can('dosenMatkul-view DosenMatkul')
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('dosen_matkul') }}" aria-expanded="false">
+                                    <span>
+                                        <i class="ti ti-aperture"></i>
+                                    </span>
+                                    <span class="hide-menu">Dosen Mata Kuliah</span>
+                                </a>
+                            </li>
+                        @endcan
                     @endhasrole
-                    @hasrole('dosen-kbk')
+                    @hasrole('dosenKbk')
                         <li class="nav-small-cap">
                             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                             <span class="hide-menu">Dosen KBK</span>
@@ -853,14 +959,16 @@
                             <span class="hide-menu">Dashboard Dosen KBK</span>
                         </a>
                     </li> --}}
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('review_proposal_ta') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Review Proposal TA</span>
-                            </a>
-                        </li>
+                        @can('dosenKbk-view ReviewProposalTA')
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('review_proposal_ta') }}" aria-expanded="false">
+                                    <span>
+                                        <i class="ti ti-aperture"></i>
+                                    </span>
+                                    <span class="hide-menu">Review Proposal TA</span>
+                                </a>
+                            </li>
+                        @endcan
                     @endhasrole
                 @endhasanyrole
             </ul>

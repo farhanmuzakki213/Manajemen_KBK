@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Validator;
 
 class Berita_Ver_RPS_KajurController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:pimpinanJurusan-view BeritaAcaraRpsKajur', ['only' => ['index', 'getDosen']]);
+        $this->middleware('permission:pimpinanJurusan-update BeritaAcaraRpsKajur', ['only' => ['edit', 'update', 'getDosen']]);
+    }
     public function getDosen()
     {
         $user = Auth::user()->name;

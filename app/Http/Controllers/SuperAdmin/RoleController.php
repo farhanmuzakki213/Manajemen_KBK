@@ -41,7 +41,7 @@ class RoleController extends Controller
                 'unique:roles,name'
             ]
         ]);
-        
+
 
         Role::create([
             'name' => $request->name
@@ -62,7 +62,7 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        return view('admin.content.superadmin.role.edit',[
+        return view('admin.content.superadmin.role.edit', [
             'role' => $role
         ]);
     }
@@ -76,10 +76,10 @@ class RoleController extends Controller
             'name' => [
                 'required',
                 'string',
-                'unique:roles,name,'.$role->id
+                'unique:roles,name,' . $role->id
             ]
         ]);
-        
+
 
         $role->update([
             'name' => $request->name
@@ -97,23 +97,60 @@ class RoleController extends Controller
         return redirect('roles')->with('success', 'role berhasil dihapus');
     }
 
-    public function addPermissionsToRole($roleId){
-        $permissions = Permission::get();
+    public function addPermissionsToRole($roleId)
+    {
+        $permissionsAdmin = Permission::where('name', 'like', 'admin%')->get();
+        foreach ($permissionsAdmin as &$item) {
+            $item['name'] = str_replace('admin-', '', $item['name']);
+            $item['name_real'] = 'admin-' . $item['name'];
+        }
+        $permissionsPengurusKbk = Permission::where('name', 'like', 'pengurusKbk%')->get();
+        foreach ($permissionsPengurusKbk as &$item) {
+            $item['name'] = str_replace('pengurusKbk-', '', $item['name']);
+            $item['name_real'] = 'pengurusKbk-' . $item['name'];
+        }
+        $permissionsDosenKbk = Permission::where('name', 'like', 'dosenKbk%')->get();
+        foreach ($permissionsDosenKbk as &$item) {
+            $item['name'] = str_replace('dosenKbk-', '', $item['name']);
+            $item['name_real'] = 'dosenKbk-' . $item['name'];
+        }
+        $permissionsDosenMatkul = Permission::where('name', 'like', 'dosenMatkul%')->get();
+        foreach ($permissionsDosenMatkul as &$item) {
+            $item['name'] = str_replace('dosenMatkul-', '', $item['name']);
+            $item['name_real'] = 'dosenMatkul-' . $item['name'];
+        }
+        $permissionsPimpinanProdi = Permission::where('name', 'like', 'pimpinanProdi%')->get();
+        foreach ($permissionsPimpinanProdi as &$item) {
+            $item['name'] = str_replace('pimpinanProdi-', '', $item['name']);
+            $item['name_real'] = 'pimpinanProdi-' . $item['name'];
+        }
+        $permissionsPimpinanJurusan = Permission::where('name', 'like', 'pimpinanJurusan%')->get();
+        foreach ($permissionsPimpinanJurusan as &$item) {
+            $item['name'] = str_replace('pimpinanJurusan-', '', $item['name']);
+            $item['name_real'] = 'pimpinanJurusan-' . $item['name'];
+        }
+        //dd($permissionsSuperAdmin->toArray());
         $role = Role::findOrFail($roleId);
         $rolePermissions = DB::table('role_has_permissions')
             ->where('role_has_permissions.role_id', $role->id)
-            ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
+            ->pluck('role_has_permissions.permission_id', 'role_has_permissions.permission_id')
             ->all();
 
-        return view('admin.content.superadmin.role.add-permission',[
+        return view('admin.content.superadmin.role.add-permission', [
             'role' => $role,
-            'permissions' => $permissions,
+            'permissionsAdmin' => $permissionsAdmin,
+            'permissionsPengurusKbk' => $permissionsPengurusKbk,
+            'permissionsDosenKbk' => $permissionsDosenKbk,
+            'permissionsDosenMatkul' => $permissionsDosenMatkul,
+            'permissionsPimpinanProdi' => $permissionsPimpinanProdi,
+            'permissionsPimpinanJurusan' => $permissionsPimpinanJurusan,
             'rolePermissions' => $rolePermissions
         ]);
     }
 
-    public function givePermissionsToRole(Request $request, $roleId){
-        $request ->validate([
+    public function givePermissionsToRole(Request $request, $roleId)
+    {
+        $request->validate([
             'permission' => 'required'
         ]);
 

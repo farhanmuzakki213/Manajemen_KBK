@@ -28,12 +28,19 @@
 
                         <div class="card-header py-2">
                             <div class="d-grid gap-2 d-md-block">
-                                <a href="{{ route('matkul_kbk.create') }}" class="btn btn-primary me-md-3"><i
-                                        class="bi bi-file-earmark-plus"></i> New</a>
-                                <a href="{{ route('matkul_kbk.export') }}" class="btn btn-primary me-md-3"><i
-                                        class="bi bi-box-arrow-in-up"></i> Export</a>
-                                <a data-bs-toggle="modal" data-bs-target="#import{{-- {{ $data->id_jenis_kbk }} --}}"
-                                    class="btn btn-primary"><i class="bi bi-box-arrow-in-down"></i> Import</a>
+
+                                @can('admin-create MatkulKbk')
+                                    <a href="{{ route('matkul_kbk.create') }}" class="btn btn-primary me-md-3"><i
+                                            class="bi bi-file-earmark-plus"></i> New</a>
+                                @endcan
+                                @can('admin-import MatkulKbk')
+                                    <a data-bs-toggle="modal" data-bs-target="#import" class="btn btn-primary"><i
+                                            class="bi bi-box-arrow-in-down"></i> Import</a>
+                                @endcan
+                                @can('admin-export MatkulKbk')
+                                    <a href="{{ route('matkul_kbk.export') }}" class="btn btn-primary me-md-3"><i
+                                            class="bi bi-box-arrow-in-up"></i> Export</a>
+                                @endcan
                             </div>
                         </div>
 
@@ -100,20 +107,28 @@
                                                 <th>{{ $data->r_jenis_kbk->jenis_kbk }}</th>
                                                 <th>{{ $data->r_matkul->semester }}</th>
                                                 <th>{{ $data->r_kurikulum->nama_kurikulum }}</th>
+
+
+
                                                 <th style="width: 10%;">
                                                     <div class="row">
-                                                        <a href="{{ route('matkul_kbk.edit', ['id' => $data->id_matkul_kbk]) }}"
-                                                            class="btn btn-primary mb-2 d-flex align-items-center"><span
-                                                                class="bi bi-pencil-square">Edit</span></a>
-                                                        <a data-bs-toggle="modal"
-                                                            data-bs-target="#staticBackdrop{{ $data->id_matkul_kbk }}"
-                                                            class="btn btn-danger mb-2 d-flex align-items-center"><span
-                                                                class="bi bi-trash">Hapus</span></a>
+                                                        @can('admin-update MatkulKbk')
+                                                            <a href="{{ route('matkul_kbk.edit', ['id' => $data->id_matkul_kbk]) }}"
+                                                                class="btn btn-primary mb-2 d-flex align-items-center"><span
+                                                                    class="bi bi-pencil-square">Edit</span></a>
+                                                        @endcan
+                                                        @can('admin-delete MatkulKbk')
+                                                            <a data-bs-toggle="modal"
+                                                                data-bs-target="#staticBackdrop{{ $data->id_matkul_kbk }}"
+                                                                class="btn btn-danger mb-2 d-flex align-items-center"><span
+                                                                    class="bi bi-trash">Hapus</span></a>
+                                                        @endcan
                                                         <a data-bs-toggle="modal"
                                                             data-bs-target="#detail{{ $data->id_matkul_kbk }}"
                                                             class="btn btn-secondary mb-2 d-flex align-items-center"><span
                                                                 class="bi bi-three-dots-vertical">Detail</span></a>
                                                     </div>
+
                                                 </th>
                                             </tr>
                                             {{-- Modal Konfirmasi hapus data --}}
@@ -155,6 +170,7 @@
                                                 aria-labelledby="detailLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
+
                                                         <div class="modal-header bg-primary text-white">
                                                             <h5 class="modal-title" id="detailLabel">Detail Matkul KBK
                                                             </h5>
@@ -180,6 +196,7 @@
                                                                 </div>
 
                                                                 <div class="mb-3">
+
                                                                     <div class="row">
                                                                         <div class="col">
                                                                             <label for="message-text"
@@ -197,9 +214,11 @@
 
                                                                         </div>
                                                                     </div>
+
                                                                 </div>
 
                                                                 <div class="mb-3">
+
                                                                     <div class="row">
                                                                         <div class="col">
                                                                             <label for="message-text"
@@ -217,10 +236,12 @@
 
                                                                         </div>
                                                                     </div>
+
                                                                 </div>
 
 
                                                                 <div class="mb-3">
+
                                                                     <div class="row">
                                                                         <div class="col">
                                                                             <label for="message-text"
@@ -238,9 +259,11 @@
 
                                                                         </div>
                                                                     </div>
+
                                                                 </div>
 
                                                                 <div class="mb-3">
+
                                                                     <div class="row">
                                                                         <div class="col">
                                                                             <label for="message-text"
@@ -260,6 +283,7 @@
 
                                                                         </div>
                                                                     </div>
+
                                                                 </div>
 
                                                                 <div class="mb-3">

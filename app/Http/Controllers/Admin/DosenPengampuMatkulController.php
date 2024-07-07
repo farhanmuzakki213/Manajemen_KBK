@@ -19,6 +19,14 @@ use Illuminate\Support\Facades\Validator;
 
 class DosenPengampuMatkulController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:admin-view DosenMatkul', ['only' => ['index']]);
+        $this->middleware('permission:admin-create DosenMatkul', ['only' => ['create', 'store', 'getCariNomor']]);
+        $this->middleware('permission:admin-update DosenMatkul', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:admin-delete DosenMatkul', ['only' => ['delete']]);
+        $this->middleware('permission:admin-sinkronData DosenMatkul', ['only' => ['storeAPI', 'show', 'getCariNomor']]);
+        $this->middleware('permission:admin-export DosenMatkul', ['only' => ['export_excel']]);
+    }
     /**
      * Display a listing of the resource.
      */

@@ -15,7 +15,7 @@
                         {{ Session::get('error') }}
                     </div>
                 @endif
-                
+
 
                 <div class="container-fluid">
                     <!-- DataReview Proposal TA -->
@@ -70,10 +70,11 @@
                                                 <th style="width: 10%;">
                                                     @if (!$existsInDetail)
                                                         <div class="row">
-                                                            <a href="{{ route('review_proposal_ta.create', ['id' => $data->id_penugasan, 'dosen' => $data->dosen_r]) }}"
-                                                                class="btn btn-primary mb-2 d-flex align-items-center"><i
-                                                                    class="bi bi-pencil-square"></i>Review</a>
-
+                                                            @can('dosenKbk-create ReviewProposalTA')
+                                                                <a href="{{ route('review_proposal_ta.create', ['id' => $data->id_penugasan, 'dosen' => $data->dosen_r]) }}"
+                                                                    class="btn btn-primary mb-2 d-flex align-items-center"><i
+                                                                        class="bi bi-pencil-square"></i>Review</a>
+                                                            @endcan
                                                             <a data-bs-toggle="modal"
                                                                 data-bs-target="#detail{{ $data->id_penugasan }}"
                                                                 class="btn btn-primary d-flex align-items-center"><i
@@ -200,13 +201,17 @@
                                                     <td>{{ $data->catatan }}</td>
                                                     <td style="width: 10%;">
                                                         <div class="row">
-                                                            <a href="{{ route('review_proposal_ta.edit', ['id' => $data->penugasan_id, 'dosen' => $data->dosen_r]) }}"
-                                                                class="btn btn-primary mb-2 d-flex align-items-center"><i
-                                                                    class="bi bi-pencil-square"></i>Edit</a>
-                                                            <a data-bs-toggle="modal"
-                                                                data-bs-target="#staticBackdrop{{ $data->penugasan_id, $data->dosen }}"
-                                                                class="btn btn-danger mb-2 d-flex align-items-center"><i
-                                                                    class="bi bi-trash"></i>Delete</a>
+                                                            @can('dosenKbk-update ReviewProposalTA')
+                                                                <a href="{{ route('review_proposal_ta.edit', ['id' => $data->penugasan_id, 'dosen' => $data->dosen_r]) }}"
+                                                                    class="btn btn-primary mb-2 d-flex align-items-center"><i
+                                                                        class="bi bi-pencil-square"></i>Edit</a>
+                                                            @endcan
+                                                            @can('dosenKbk-delete ReviewProposalTA')
+                                                                <a data-bs-toggle="modal"
+                                                                    data-bs-target="#staticBackdrop{{ $data->penugasan_id, $data->dosen }}"
+                                                                    class="btn btn-danger mb-2 d-flex align-items-center"><i
+                                                                        class="bi bi-trash"></i>Delete</a>
+                                                            @endcan
                                                             <a data-bs-toggle="modal"
                                                                 data-bs-target="#detail{{ $data->penugasan_id }}"
                                                                 class="btn btn-primary d-flex align-items-center"><i
@@ -345,12 +350,12 @@
     </div>
 @endsection
 @section('scripts')
-<script>
-    setTimeout(function() {
-        var element = document.getElementById('delay');
-        if (element) {
-            element.parentNode.removeChild(element);
-        }
-    }, 5000); // 5000 milliseconds = 5 detik
-</script>
+    <script>
+        setTimeout(function() {
+            var element = document.getElementById('delay');
+            if (element) {
+                element.parentNode.removeChild(element);
+            }
+        }, 5000); // 5000 milliseconds = 5 detik
+    </script>
 @endsection

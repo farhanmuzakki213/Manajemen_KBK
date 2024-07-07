@@ -61,18 +61,22 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                @can('pengurusKbk-download BeritaAcaraRps')
+                                    <!-- Print Button -->
+                                    <a href="{{ route('cetak_rps_berita_acara.download', ['prodi_id' => $selectedProdiId]) }}"
+                                        class="btn btn-primary d-flex align-items-center">
+                                        <i class="bi bi-box-arrow-in-up me-2"></i>Cetak
+                                    </a>
+                                @endcan
 
-                                <!-- Print Button -->
-                                <a href="{{ route('cetak_rps_berita_acara.download', ['prodi_id' => $selectedProdiId]) }}"
-                                    class="btn btn-primary d-flex align-items-center">
-                                    <i class="bi bi-box-arrow-in-up me-2"></i>Cetak
-                                </a>
+                                @can('pengurusKbk-create BeritaAcaraRps')
+                                    <!-- Upload Button -->
+                                    <a href="{{ route('upload_rps_berita_acara.create') }}"
+                                        class="btn btn-primary d-flex align-items-center">
+                                        <i class="ti ti-upload me-2"></i>Upload Berita
+                                    </a>
+                                @endcan
 
-                                <!-- Upload Button -->
-                                <a href="{{ route('upload_rps_berita_acara.create') }}"
-                                    class="btn btn-primary d-flex align-items-center">
-                                    <i class="ti ti-upload me-2"></i>Upload Berita
-                                </a>
 
                             </div>
 
@@ -372,17 +376,23 @@
                                                 <th>{{ optional($data->r_jenis_kbk)->jenis_kbk }}</th>
                                                 <th style="width: 10%;">
                                                     <div class="row">
-                                                        <a href="{{ route('upload_rps_berita_acara.edit', ['id' => $data->id_berita_acara]) }}"
-                                                            class="btn btn-primary mb-2 d-flex align-items-center"><i
-                                                                class="bi bi-pencil-square"></i>Revisi</a>
+                                                        @can('pengurusKbk-update BeritaAcaraRps')
+                                                            <a href="{{ route('upload_rps_berita_acara.edit', ['id' => $data->id_berita_acara]) }}"
+                                                                class="btn btn-primary mb-2 d-flex align-items-center"><i
+                                                                    class="bi bi-pencil-square"></i>Revisi</a>
+                                                        @endcan
+                                                        @can('pengurusKbk-delete BeritaAcaraRps')
+                                                            <a data-bs-toggle="modal"
+                                                                data-bs-target="#staticBackdrop{{ $data->id_berita_acara }}"
+                                                                class="btn btn-danger mb-2 d-flex align-items-center"><i
+                                                                    class="bi bi-trash"></i>Hapus</a>
+                                                        @endcan
+
                                                         <a href="{{ asset('storage/uploads/rps/berita_acara/' . $data->file_berita_acara) }}"
                                                             class="btn btn-success mb-2 d-flex align-items-center"
                                                             target="_blank"><i
                                                                 class="bi bi-file-earmark-arrow-down"></i>Download</a>
-                                                        <a data-bs-toggle="modal"
-                                                            data-bs-target="#staticBackdrop{{ $data->id_berita_acara }}"
-                                                            class="btn btn-danger mb-2 d-flex align-items-center"><i
-                                                                class="bi bi-trash"></i>Hapus</a>
+
                                                     </div>
                                                 </th>
                                             </tr>

@@ -18,6 +18,15 @@ use Illuminate\Validation\ValidationException;
 
 class MatkulController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:admin-view Matkul', ['only' => ['index']]);
+        $this->middleware('permission:admin-create Matkul', ['only' => ['create', 'store', 'getCariNomor']]);
+        $this->middleware('permission:admin-update Matkul', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:admin-delete Matkul', ['only' => ['delete']]);
+        $this->middleware('permission:admin-sinkronData Matkul', ['only' => ['storeAPI', 'show', 'getCariNomor']]);
+        $this->middleware('permission:admin-export Matkul', ['only' => ['export_excel']]);
+        $this->middleware('permission:admin-import Matkul', ['only' => ['import']]);
+    }
     /**
      * Display a listing of the resource.
      */

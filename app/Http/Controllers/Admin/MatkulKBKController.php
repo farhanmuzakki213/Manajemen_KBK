@@ -20,6 +20,14 @@ use Illuminate\Validation\ValidationException;
 
 class MatkulKBKController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:admin-view MatkulKbk', ['only' => ['index']]);
+        $this->middleware('permission:admin-create MatkulKbk', ['only' => ['create', 'store', 'getCariNomor']]);
+        $this->middleware('permission:admin-update MatkulKbk', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:admin-delete MatkulKbk', ['only' => ['delete']]);
+        $this->middleware('permission:admin-export MatkulKbk', ['only' => ['export_excel']]);
+        $this->middleware('permission:admin-import MatkulKbk', ['only' => ['import']]);
+    }
     /**
      * Display a listing of the resource.
      */

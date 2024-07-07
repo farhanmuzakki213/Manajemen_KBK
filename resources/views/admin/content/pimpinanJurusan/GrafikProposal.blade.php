@@ -52,13 +52,13 @@
                                             <th>{{ optional($data->p_reviewProposal)->tanggal_penugasan }}</th>
                                             <th>{{ $data->tanggal_review }}</th>
                                             <th>
-                                                @if ($data->status_review_proposal == 0)
+                                                @if ($data->p_reviewProposal->status_final_proposal == 0)
                                                     Diajukan
-                                                @elseif ($data->status_review_proposal == 1)
+                                                @elseif ($data->p_reviewProposal->status_final_proposal == 1)
                                                     Ditolak
-                                                @elseif ($data->status_review_proposal == 2)
+                                                @elseif ($data->p_reviewProposal->status_final_proposal == 2)
                                                     Direvisi
-                                                @elseif ($data->status_review_proposal == 3)
+                                                @else
                                                     Diterima
                                                 @endif
                                             </th>

@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Log;
 
 class ThnAkademikController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:admin-view ThnAkademik', ['only' => ['index']]);
+        $this->middleware('permission:admin-sinkronData ThnAkademik', ['only' => ['storeAPI', 'show']]);
+    }
     /**
      * Display a listing of the resource.
      */

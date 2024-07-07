@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Log;
 
 class ProdiController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:admin-view Prodi', ['only' => ['index']]);
+        $this->middleware('permission:admin-sinkronData Prodi', ['only' => ['storeAPI', 'show']]);
+    }
     /**
      * Display a listing of the resource.
      */

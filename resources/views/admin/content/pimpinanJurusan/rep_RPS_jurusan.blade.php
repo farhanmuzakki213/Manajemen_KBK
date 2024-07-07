@@ -51,24 +51,26 @@
                                         </tr>
                                     </tfoot>
                                     <tbody>
+
                                         @foreach ($result as $data)
-                                        <tr>
-                                            <th>{{ $data['id_rep_rps_uas'] }}</th>
-                                            <th>{{ $data['kode_matkul'] }}</th>
-                                            <th>{{ $data['semester'] }}</th>
-                                            <th>{{ $data['dosen_upload'] }}</th>
-                                            <th>{{ $data['prodi'] }}</th>
-                                            <th>{{ $data['dosen_verifikasi'] }}</th>
-                                            <th>{{ $data['status_verifikasi'] }}</th>
-                                            <th>{{ $data['aksi'] }}</th>
-                                        </tr>
-                                       
-                                                <th>
-                                                    {{-- <a data-bs-toggle="modal"
+                                            <tr>
+                                                <th>{{ $data['id_rep_rps_uas'] }}</th>
+                                                <th>{{ $data['kode_matkul'] }}</th>
+                                                <th>{{ $data['semester'] }}</th>
+                                                <th>{{ $data['dosen_upload'] }}</th>
+                                                <th>{{ $data['prodi'] }}</th>
+                                                <th>{{ $data['dosen_verifikasi'] }}</th>
+                                                <th>{{ $data['status_verifikasi'] }}</th>
+                                                <th>{{ $data['aksi'] }}</th>
+                                            </tr>
+
+
+                                            <th>
+                                                {{-- <a data-bs-toggle="modal"
                                                         data-bs-target="#detail{{ $data->id_rep_rps_uas }}"
                                                         class="btn btn-secondary d-flex align-items-center"><i
                                                             class="bi bi-three-dots-vertical"></i>Detail</a> --}}
-                                                </th>
+                                            </th>
                                             </tr>
                                             {{-- <div class="modal fade" id="detail{{ $data->id_rep_rps_uas }}" tabindex="-1"
                                                 aria-labelledby="detailLabel" aria-hidden="true">
@@ -157,14 +159,13 @@
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
                                                         </div>
                                                         <form method="POST" action="rps.store" class="was-validated">
                                                             <div class="modal-body">
                                                                 <div class="mb-3">
-                                                                    <label for="catatan"
-                                                                        class="form-label">Catatan</label>
+                                                                    <label for="catatan" class="form-label">Catatan</label>
                                                                     <textarea class="form-control" id="catatan" name="catatan"
                                                                         placeholder="Ketik 'Selesai' Jika tidak ada revisi dan jika ada beri keterangan" required></textarea>
                                                                     <div class="invalid-feedback">

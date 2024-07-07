@@ -19,8 +19,11 @@
                     <!-- DataReview Proposal TA -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-2">
-                            <a href="{{ route('hasil_review_proposal_ta.export') }}" class="btn btn-primary me-md-3"><i
-                                    class="bi bi-box-arrow-in-up"></i> Export</a>
+                            @can('pimpinanProdi-export ProposalTaFinal')
+                                <a href="{{ route('hasil_review_proposal_ta.export') }}" class="btn btn-primary me-md-3"><i
+                                        class="bi bi-box-arrow-in-up"></i> Export</a>
+                            @endcan
+
 
                         </div>
                         <div class="card-body">
@@ -98,11 +101,14 @@
                                                 </th>
                                                 <th style="width: 14%;">
                                                     <div class="row">
-                                                        <a data-bs-toggle="modal"
-                                                            data-bs-target="#edit{{ $data['penugasan_id'] }}"
-                                                            class="btn btn-primary mb-2 d-flex align-items-center">
-                                                            <i class="bi bi-pencil-square"></i> Ubah Status
-                                                        </a>
+                                                        @can('pimpinanProdi-update ProposalTaFinal')
+                                                            <a data-bs-toggle="modal"
+                                                                data-bs-target="#edit{{ $data['penugasan_id'] }}"
+                                                                class="btn btn-primary mb-2 d-flex align-items-center">
+                                                                <i class="bi bi-pencil-square"></i> Ubah Status
+                                                            </a>
+                                                        @endcan
+
                                                         <a data-bs-toggle="modal"
                                                             data-bs-target="#detail{{ $data['penugasan_id'] }}"
                                                             class="btn btn-secondary d-flex align-items-center">
@@ -211,32 +217,29 @@
                                                                         class="form-label">Status</label><br>
                                                                     <div class="form-check form-check-inline">
                                                                         <input class="form-check-input" type="radio"
-                                                                            name="status" id="diajukan"
-                                                                            value="0"
+                                                                            name="status" id="diajukan" value="0"
                                                                             {{ $data['status_final_proposal'] == 0 ? 'checked' : '' }}>
                                                                         <label class="form-check-label"
                                                                             for="aktif">Diajukan</label>
                                                                     </div>
                                                                     <div class="form-check form-check-inline">
                                                                         <input class="form-check-input" type="radio"
-                                                                            name="status" id="ditolak"
-                                                                            value="1"
+                                                                            name="status" id="ditolak" value="1"
                                                                             {{ $data['status_final_proposal'] == 1 ? 'checked' : '' }}>
                                                                         <label class="form-check-label"
                                                                             for="aktif">DiTolak</label>
                                                                     </div>
                                                                     <div class="form-check form-check-inline">
                                                                         <input class="form-check-input" type="radio"
-                                                                            name="status" id="direvisi"
-                                                                            value="2"
+                                                                            name="status" id="direvisi" value="2"
                                                                             {{ $data['status_final_proposal'] == 2 ? 'checked' : '' }}>
                                                                         <label class="form-check-label"
                                                                             for="tidak_aktif">DiRevisi</label>
                                                                     </div>
                                                                     <div class="form-check form-check-inline">
                                                                         <input class="form-check-input" type="radio"
-                                                                            name="status" id="diterima"
-                                                                            value="3" {{ $data['status_final_proposal'] == 3 ? 'checked' : '' }}>
+                                                                            name="status" id="diterima" value="3"
+                                                                            {{ $data['status_final_proposal'] == 3 ? 'checked' : '' }}>
                                                                         <label class="form-check-label"
                                                                             for="tidak_aktif">DiTerima</label>
                                                                     </div>
@@ -263,12 +266,12 @@
     </div>
 @endsection
 @section('scripts')
-<script>
-    setTimeout(function() {
-        var element = document.getElementById('delay');
-        if (element) {
-            element.parentNode.removeChild(element);
-        }
-    }, 5000); // 5000 milliseconds = 5 detik
-</script>
+    <script>
+        setTimeout(function() {
+            var element = document.getElementById('delay');
+            if (element) {
+                element.parentNode.removeChild(element);
+            }
+        }, 5000); // 5000 milliseconds = 5 detik
+    </script>
 @endsection

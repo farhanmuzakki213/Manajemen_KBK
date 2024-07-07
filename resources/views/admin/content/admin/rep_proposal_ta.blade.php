@@ -20,9 +20,13 @@
                     <!-- DataReview Proposal TA -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-2">
-                            <a href="{{ route('rep_proposal_ta.show') }}" class="btn btn-primary me-md-3">
-                                <i class="ti ti-upload"></i> Ambil Data API
-                            </a>
+
+                            @can('admin-sinkronData RepProposalTA')
+                                <a href="{{ route('rep_proposal_ta.show') }}" class="btn btn-primary me-md-3">
+                                    <i class="ti ti-upload"></i> Ambil Data API
+                                </a>
+                            @endcan
+
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -132,15 +136,21 @@
                                                             <div class="mb-3">
                                                                 <div class="row">
                                                                     <div class="col">
-                                                                        <label for="nama_dosen" class="form-label">Dosen Pembimbing
+
+                                                                        <label for="nama_dosen" class="form-label">Dosen
+                                                                            Pembimbing
                                                                             1</label>
+
                                                                         <input type="text" class="form-control"
                                                                             value="{{ $data->r_pembimbing_satu->nama_dosen }}"
                                                                             readonly>
                                                                     </div>
                                                                     <div class="col">
-                                                                        <label for="nama_dosen" class="form-label">Dosen Pembimbing
+
+                                                                        <label for="nama_dosen" class="form-label">Dosen
+                                                                            Pembimbing
                                                                             2</label>
+
                                                                         <input type="text" class="form-control"
                                                                             value="{{ $data->r_pembimbing_dua->nama_dosen }}"
                                                                             readonly>
@@ -149,6 +159,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
+
                                                             <button type="button" class="btn btn-primary"
                                                                 data-bs-dismiss="modal">Close</button>
                                                         </div>

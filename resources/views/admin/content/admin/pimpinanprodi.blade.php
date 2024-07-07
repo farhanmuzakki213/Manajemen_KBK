@@ -19,9 +19,13 @@
                     <!-- Data Pimpinan Prodi -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <a href="{{ route('pimpinanprodi.show') }}" class="btn btn-primary me-md-3">
-                                <i class="ti ti-upload"></i> Ambil Data API
-                            </a>
+                            @can('admin-sinkronData PimpinanProdi')
+                                <a href="{{ route('pimpinanprodi.show') }}" class="btn btn-primary me-md-3">
+                                    <i class="ti ti-upload"></i> Ambil Data API
+                                </a>
+                            @endcan
+
+
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -63,6 +67,7 @@
                                                         Aktif
                                                     @endif
                                                 </th>
+
                                                 <th style="width: 10%">
                                                     <div class="row">
                                                         <a data-bs-toggle="modal"

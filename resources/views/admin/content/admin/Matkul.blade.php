@@ -29,17 +29,23 @@
 
                         <div class="card-header py-2">
                             <div class="d-grid gap-2 d-md-block">
-                                {{-- <a href="{{ route('matkul.create') }}" class="btn btn-primary me-md-3"><i
-                                        class="bi bi-file-earmark-plus"></i> New</a> --}}
-
-                                <a href="{{ route('matkul.show') }}" class="btn btn-primary me-md-3">
-                                    <i class="ti ti-upload"></i> Ambil Data API
-                                </a>
-
-                                <a href="{{ route('matkul.export') }}" class="btn btn-primary me-md-3"><i
-                                        class="bi bi-box-arrow-in-up"></i> Export</a>
-                                <a data-bs-toggle="modal" data-bs-target="#import" class="btn btn-primary"><i
-                                        class="bi bi-box-arrow-in-down"></i> Import</a>
+                                @can('admin-sinkronData Matkul')
+                                    <a href="{{ route('matkul.show') }}" class="btn btn-primary me-md-3">
+                                        <i class="ti ti-upload"></i> Ambil Data API
+                                    </a>
+                                @endcan
+                                @can('admin-create Matkul')
+                                    <a href="{{ route('matkul.create') }}" class="btn btn-primary me-md-3"><i
+                                            class="bi bi-file-earmark-plus"></i> New</a>
+                                @endcan
+                                @can('admin-export Matkul')
+                                    <a href="{{ route('matkul.export') }}" class="btn btn-primary me-md-3"><i
+                                            class="bi bi-box-arrow-in-up"></i> Export</a>
+                                @endcan
+                                @can('admin-import Matkul')
+                                    <a data-bs-toggle="modal" data-bs-target="#import"
+                                        class="btn btn-primary"><i class="bi bi-box-arrow-in-down"></i> Import</a>
+                                @endcan
                             </div>
                         </div>
 
@@ -106,19 +112,24 @@
                                                 <th>{{ $data->nama_matkul }}</th>
                                                 <th>{{ $data->semester }}</th>
                                                 <th>{{ $data->r_kurikulum->nama_kurikulum }}</th>
-                                                {{-- <th>{{ $data->smt_thnakd }}</th> --}}
-                                                <th style="width: 10%">
-                                                    <div class="row">
-                                                        {{-- <a href="{{ route('matkul.edit', ['id' => $data->id_matkul]) }}"
-                                                        class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
-                                                    <a data-bs-toggle="modal"
-                                                        data-bs-target="#staticBackdrop{{ $data->id_matkul }}"
-                                                        class="btn btn-danger"><i class="bi bi-trash"></i></a> --}}
+
+<th style="width: 10%">
+    <div class="row">
+                                                    @can('admin-update Matkul')
+                                                        <a href="{{ route('matkul.edit', ['id' => $data->id_matkul]) }}"
+                                                            class="btn btn-primary mb-2 d-flex align-items-center"><span class="bi bi-pencil-square">Edit</span></a>
+                                                    @endcan
+                                                    @can('admin-delete Matkul')
                                                         <a data-bs-toggle="modal"
-                                                            data-bs-target="#detail{{ $data->id_matkul }}"
-                                                            class="btn btn-secondary mb-2 d-flex align-items-cente"><span
-                                                                class="bi bi-three-dots-vertical">Detail</span></a>
+                                                            data-bs-target="#staticBackdrop{{ $data->id_matkul }}"
+                                                            class="btn btn-danger mb-2 d-flex align-items-center"><span class="bi bi-trash">Hapus</span></a>
+                                                    @endcan
+                                                    <a data-bs-toggle="modal"
+                                                    data-bs-target="#detail{{ $data->id_matkul }}"
+                                                    class="btn btn-secondary mb-2 d-flex align-items-center"><span
+                                                        class="bi bi-three-dots-vertical">Detail</span></a>
                                                     </div>
+
                                                 </th>
                                             </tr>{{-- 
                                             Modal Konfirmasi hapus data

@@ -21,6 +21,13 @@ use Illuminate\Support\Facades\Validator;
 class PenugasanReviewController extends Controller
 {
 
+    public function __construct() {
+        $this->middleware('permission:pengurusKbk-view PenugasanReview', ['only' => ['index', 'getDosen']]);
+        $this->middleware('permission:pengurusKbk-view PenugasanHasilReview', ['only' => ['hasil', 'getDosen']]);
+        $this->middleware('permission:pengurusKbk-create PenugasanReview', ['only' => ['create', 'store', 'getCariNomor', 'getDosen']]);
+        $this->middleware('permission:pengurusKbk-update PenugasanReview', ['only' => ['edit', 'update', 'getDosen']]);
+        $this->middleware('permission:pengurusKbk-delete PenugasanReview', ['only' => ['delete']]);
+    }
     public function getDosen()
     {
         $user = Auth::user()->name;

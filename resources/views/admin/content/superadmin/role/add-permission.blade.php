@@ -4,7 +4,9 @@
         <div class="card">
             <div class="card-body">
                 <!-- Page Heading -->
-                <h5 class="card-title fw-semibold mb-4">Role : {{ $role->name }} </h5>
+                    <h5 class="card-title fw-semibold mb-4">Role : {{ $role->name }}
+                        <a href="{{ url('roles') }}" class="btn btn-success float-end" style="width: 100px; font-size:80%; height: 30px; --bs-btn-padding-y: 4px;"> Kembali</a>
+                    </h5>
                 @if (Session::has('success'))
                     <div id="delay" class="alert alert-success" role="alert">
                         {{ Session::get('success') }}
@@ -27,11 +29,7 @@
                     <!-- Form Edit Data -->
                     <div class="card shadow mb-4">
                         <div class="card-body">
-                            <div class="row justify-content-end">
-                                <div class="col-2-kembali">
-                                    <p><a href="{{ url('roles') }}" class="btn btn-success"> Kembali</a></p>
-                                </div>
-                            </div>
+                            
                             <form method="post" action="{{ url('roles/' . $role->id . '/give-permissions') }}">
                                 @csrf
                                 @method('PUT')
@@ -39,13 +37,68 @@
                                     @error('permission')
                                         <small>{{ $message }}</small>
                                     @enderror
-                                    <label for="">Permissions</label>
+                                    <label for="" class="fw-semibold">Permissions Admin</label>
                                     <div class="row mt-2">
-                                        @foreach ($permissions as $permission)
-                                            <div class="col-md-2">
+                                        @foreach ($permissionsAdmin as $permission)
+                                            <div class="col-lg-3">
                                                 <label>
                                                     <input type="checkbox" class="ms-auto" name="permission[]"
-                                                        value="{{ $permission->name }}" {{in_array($permission->id, $rolePermissions) ? 'checked' : '' }}>  {{ $permission->name }}
+                                                        value="{{ $permission->name_real }}" {{in_array($permission->id, $rolePermissions) ? 'checked' : '' }}>  {{ $permission->name }}
+                                                </label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    <label for="" class="mt-2 fw-semibold">Permissions Pengurus KBK</label>
+                                    <div class="row mt-2">
+                                        @foreach ($permissionsPengurusKbk as $permission)
+                                            <div class="col-lg-3">
+                                                <label>
+                                                    <input type="checkbox" class="ms-auto" name="permission[]"
+                                                        value="{{ $permission->name_real }}" {{in_array($permission->id, $rolePermissions) ? 'checked' : '' }}>  {{ $permission->name }}
+                                                </label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    <label for="" class="mt-2 fw-semibold">Permissions Dosen KBK</label>
+                                    <div class="row mt-2">
+                                        @foreach ($permissionsDosenKbk as $permission)
+                                            <div class="col-lg-3">
+                                                <label>
+                                                    <input type="checkbox" class="ms-auto" name="permission[]"
+                                                        value="{{ $permission->name_real }}" {{in_array($permission->id, $rolePermissions) ? 'checked' : '' }}>  {{ $permission->name }}
+                                                </label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    <label for="" class="mt-2 fw-semibold">Permissions Dosen Matkul</label>
+                                    <div class="row mt-2">
+                                        @foreach ($permissionsDosenMatkul as $permission)
+                                            <div class="col-lg-3">
+                                                <label>
+                                                    <input type="checkbox" class="ms-auto" name="permission[]"
+                                                        value="{{ $permission->name_real }}" {{in_array($permission->id, $rolePermissions) ? 'checked' : '' }}>  {{ $permission->name }}
+                                                </label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    <label for="" class="mt-2 fw-semibold">Permissions Pimpinan Prodi</label>
+                                    <div class="row mt-2">
+                                        @foreach ($permissionsPimpinanProdi as $permission)
+                                            <div class="col-lg-3">
+                                                <label>
+                                                    <input type="checkbox" class="ms-auto" name="permission[]"
+                                                        value="{{ $permission->name_real }}" {{in_array($permission->id, $rolePermissions) ? 'checked' : '' }}>  {{ $permission->name }}
+                                                </label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    <label for="" class="mt-2 fw-semibold">Permissions Pimpinan Jurusan</label>
+                                    <div class="row mt-2">
+                                        @foreach ($permissionsPimpinanJurusan as $permission)
+                                            <div class="col-lg-3">
+                                                <label>
+                                                    <input type="checkbox" class="ms-auto" name="permission[]"
+                                                        value="{{ $permission->name_real }}" {{in_array($permission->id, $rolePermissions) ? 'checked' : '' }}>  {{ $permission->name }}
                                                 </label>
                                             </div>
                                         @endforeach

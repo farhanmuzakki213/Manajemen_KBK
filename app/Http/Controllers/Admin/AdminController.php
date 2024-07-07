@@ -18,6 +18,12 @@ use App\Models\ReviewProposalTaDetailPivot;
 
 class AdminController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:admin-view RepProposalTA', ['only' => ['index']]);
+        $this->middleware('permission:admin-sinkronData RepProposalTA', ['only' => ['storeAPI', 'show', 'getCariNomor']]);
+        $this->middleware('permission:admin-dashboard', ['only' => ['dashboard_admin']]);
+    }
+
     public function destroy(Request $request)
     {
         Auth::guard('web')->logout();
@@ -35,7 +41,7 @@ class AdminController extends Controller
 
     public function RepProposalTA()
     {
-        $data_rep_proposal = ProposalTAModel::with('r_mahasiswa', 'r_pembimbing_satu', 'r_pembimbing_dua'   )
+        $data_rep_proposal = ProposalTAModel::with('r_mahasiswa', 'r_pembimbing_satu', 'r_pembimbing_dua', 'r_jenis_kbk')
             ->orderByDesc('id_proposal_ta')
             ->get();
 
@@ -57,7 +63,7 @@ class AdminController extends Controller
                 }
             }
             $file_default = 'none';
-            $jenis_kbk_default = 5;
+            $jenis_kbk_default = rand(1, 5);
             foreach ($differences_api as $data) {
                 $nextNumber = $this->getCariNomor();
                 $data_mahasiswa = Mahasiswa::where('nim', $data['nim'])->pluck('id_mahasiswa')->first();

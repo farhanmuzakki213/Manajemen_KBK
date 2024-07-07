@@ -26,12 +26,16 @@
                     <!-- Data Jurusan -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                            <a href="{{ route('jurusan.show') }}" class="btn btn-primary mb-2 d-flex align-items-center">
-                                <i class="ti ti-upload"></i> Ambil Data API
-                            </a>
-                            <a href="delete-row" class="btn btn-danger mb-2 d-flex align-items-center">
+
+                            @can('admin-sinkronData Jurusan')
+                                <a href="{{ route('jurusan.show') }}" class="btn btn-primary mb-2 d-flex align-items-center">
+                                    <i class="ti ti-upload"></i> Ambil Data API
+                                </a>
+                            @endcan
+
+                            {{-- <a href="delete-row" class="btn btn-danger mb-2 d-flex align-items-center">
                                 <i class="bi bi-trash""></i> Hapus
-                            </a>
+                            </a> --}}
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -58,6 +62,7 @@
                                                 <th>{{ $data->id_jurusan }}</th>
                                                 <th>{{ $data->kode_jurusan }}</th>
                                                 <th>{{ $data->jurusan }}</th>
+
                                                 <th style="width: 10%">
                                                     <div class="row">
                                                         <a data-bs-toggle="modal"
@@ -105,6 +110,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                </tr>
                                         @endforeach
                                     </tbody>
                                 </table>

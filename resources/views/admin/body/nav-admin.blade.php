@@ -12,7 +12,7 @@
         </ul>
         <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-                @hasanyrole('dosen-pengampu|dosen-kbk')
+                @hasanyrole('dosenMatkul|dosenKbk')
                     <li class="nav-item nav-icon-hover-bg rounded-circle dropdown">
                         <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
                             aria-expanded="false">
@@ -26,7 +26,7 @@
                                 <span
                                     class="badge text-bg-primary rounded-4 px-3 py-1 lh-sm">{{ auth()->user()->unreadNotifications->count() }}</span>
                             </div>
-                            @hasrole('dosen-pengampu')
+                            @hasrole('dosenMatkul')
                                 {{-- dosen matkul --}}
                                 <div class="simplebar-content" style="padding: 0px;">
                                     @foreach (auth()->user()->unreadNotifications as $notification)
@@ -49,7 +49,7 @@
                                     @endforeach
                                 </div>
                             @endhasrole
-                            @hasrole('dosen-kbk')
+                            @hasrole('dosenKbk')
                                 {{-- pengurus kbk --}}
                                 <div class="simplebar-content" style="padding: 0px;">
                                     @foreach (auth()->user()->unreadNotifications as $notification)

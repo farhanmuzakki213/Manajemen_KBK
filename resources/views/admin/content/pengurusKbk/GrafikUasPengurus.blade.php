@@ -145,7 +145,7 @@
             tooltip: {
                 y: {
                     formatter: function(val) {
-                        return parseInt(val) + " RPS";
+                        return parseInt(val) + " UAS";
                     }
                 }
             }

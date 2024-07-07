@@ -14,6 +14,11 @@ use App\Models\ReviewProposalTaDetailPivot;
 
 class PengurusKbkController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:pengurusKbk-dashboard', ['only' => ['dashboard_pengurus', 'getDosen']]);
+        $this->middleware('permission:pengurusKbk-view GrafikRps', ['only' => ['grafik_rps', 'getDosen']]);
+        $this->middleware('permission:pengurusKbk-view GrafikUas', ['only' => ['grafik_uas', 'getDosen']]);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -87,14 +92,14 @@ class PengurusKbkController extends Controller
 
         debug($data_proposal_ta->toArray());
         $jumlah_proposal = $data_proposal_ta->count();
-        
+
         $data_review_proposal_ta = ReviewProposalTaDetailPivot::with('p_reviewProposal', 'p_reviewProposal.proposal_ta.r_jenis_kbk')
             ->whereHas('p_reviewProposal.proposal_ta.r_jenis_kbk', function ($query) use ($pengurus) {
                 $query->where('jenis_kbk_id', $pengurus->jenis_kbk_id);
             })
             ->orderBy('review_proposal_ta_detail_pivot.penugasan_id', 'desc')
             ->get();
-            $jumlah_review_proposal = $data_review_proposal_ta->count();
+        $jumlah_review_proposal = $data_review_proposal_ta->count();
         debug($data_review_proposal_ta->toArray());
 
         $grouped_data = $data_review_proposal_ta->groupBy('penugasan_id');
@@ -146,8 +151,12 @@ class PengurusKbkController extends Controller
 
     public function grafik_rps()
     {
+        $pengurus = $this->getDosen();
         $banyak_pengunggahan = RepRpsUas::join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
+            ->join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
+            ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
             ->select(DB::raw("smt_thnakd.smt_thnakd, COUNT(rep_rps_uas.id_rep_rps_uas) as banyak_pengunggahan"))
+            ->where('matkul_kbk.jenis_kbk_id', $pengurus->jenis_kbk_id)
             ->where('type', '=', '0')
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('banyak_pengunggahan', 'smt_thnakd.smt_thnakd');
@@ -155,42 +164,54 @@ class PengurusKbkController extends Controller
         $banyak_verifikasi = VerRpsUas::join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')
             ->join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
             ->select(DB::raw("smt_thnakd.smt_thnakd, COUNT(ver_rps_uas.id_ver_rps_uas) as banyak_verifikasi"))
-            ->where('type', '=', '0')
+            ->where('pengurus_id', $pengurus->id_pengurus)
+            ->where('rep_rps_uas.type', '=', '0')
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('banyak_verifikasi', 'smt_thnakd.smt_thnakd');
+
 
         $banyak_berita = DB::table('ver_rps_uas')
             ->join('ver_berita_acara_detail_pivot', 'ver_rps_uas.id_ver_rps_uas', '=', 'ver_berita_acara_detail_pivot.ver_rps_uas_id')
             ->join('ver_berita_acara', 'ver_berita_acara.id_berita_acara', '=', 'ver_berita_acara_detail_pivot.berita_acara_id')
             ->join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')
             ->join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
-            ->select(DB::raw("smt_thnakd.smt_thnakd, COUNT(ver_berita_acara.id_berita_acara) as banyak_berita"))
+            ->select(DB::raw("smt_thnakd.smt_thnakd, COUNT(DISTINCT ver_berita_acara.id_berita_acara) as banyak_berita"))
             ->where('ver_berita_acara.type', '=', '0')
+            ->where('pengurus_id', $pengurus->id_pengurus)
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('banyak_berita', 'smt_thnakd.smt_thnakd');
-        // dd($banyak_berita);
+
+
 
         $semester = RepRpsUas::join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
+            ->join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
+            ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
             ->select(DB::raw("smt_thnakd.smt_thnakd as semester"))
             ->where('type', '=', '0')
+            ->where('matkul_kbk.jenis_kbk_id', $pengurus->jenis_kbk_id)
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('semester');
-
-        $data_ver_rps = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_dosen_matkul.r_dosen')
+        //dd($semester);
+        $data_ver_rps = VerRpsUas::with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_dosen_matkul.r_dosen')
             ->whereHas('r_rep_rps_uas', function ($query) {
-                $query->where('type', '=', '0'); 
+                $query->where('type', '=', '0');
             })
+            ->where('pengurus_id', $pengurus->id_pengurus)
             ->orderByDesc('id_ver_rps_uas')
             ->get();
-            debug($data_ver_rps);
+        debug($data_ver_rps);
         return view('admin.content.pengurusKbk.GrafikRpsPengurus', compact('banyak_pengunggahan', 'banyak_verifikasi', 'semester', 'data_ver_rps', 'banyak_berita'));
     }
 
 
     public function grafik_uas()
     {
+        $pengurus = $this->getDosen();
         $banyak_pengunggahan = RepRpsUas::join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
+            ->join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
+            ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
             ->select(DB::raw("smt_thnakd.smt_thnakd, COUNT(rep_rps_uas.id_rep_rps_uas) as banyak_pengunggahan"))
+            ->where('matkul_kbk.jenis_kbk_id', $pengurus->jenis_kbk_id)
             ->where('type', '=', '1')
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('banyak_pengunggahan', 'smt_thnakd.smt_thnakd');
@@ -198,7 +219,8 @@ class PengurusKbkController extends Controller
         $banyak_verifikasi = VerRpsUas::join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')
             ->join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
             ->select(DB::raw("smt_thnakd.smt_thnakd, COUNT(ver_rps_uas.id_ver_rps_uas) as banyak_verifikasi"))
-            ->where('type', '=', '1')
+            ->where('pengurus_id', $pengurus->id_pengurus)
+            ->where('rep_rps_uas.type', '=', '1')
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('banyak_verifikasi', 'smt_thnakd.smt_thnakd');
 
@@ -207,27 +229,31 @@ class PengurusKbkController extends Controller
             ->join('ver_berita_acara', 'ver_berita_acara.id_berita_acara', '=', 'ver_berita_acara_detail_pivot.berita_acara_id')
             ->join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')
             ->join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
-            ->select(DB::raw("smt_thnakd.smt_thnakd, COUNT(ver_berita_acara.id_berita_acara) as banyak_berita"))
+            ->select(DB::raw("smt_thnakd.smt_thnakd, COUNT(DISTINCT ver_berita_acara.id_berita_acara) as banyak_berita"))
             ->where('ver_berita_acara.type', '=', '1')
+            ->where('pengurus_id', $pengurus->id_pengurus)
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('banyak_berita', 'smt_thnakd.smt_thnakd');
-
+        //dd($banyak_berita);
         $semester = RepRpsUas::join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
+            ->join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
+            ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
             ->select(DB::raw("smt_thnakd.smt_thnakd as semester"))
             ->where('type', '=', '1')
+            ->where('matkul_kbk.jenis_kbk_id', $pengurus->jenis_kbk_id)
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('semester');
-        
-            // dd($banyak_pengunggahan);
 
-        $data_ver_uas = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_dosen_matkul.r_dosen')
+        // dd($banyak_pengunggahan);
+
+        $data_ver_uas = VerRpsUas::with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_dosen_matkul.r_dosen')
             ->whereHas('r_rep_rps_uas', function ($query) {
-                $query->where('type', '=', '1'); 
+                $query->where('type', '=', '1');
             })
+            ->where('pengurus_id', $pengurus->id_pengurus)
             ->orderByDesc('id_ver_rps_uas')
             ->get();
 
         return view('admin.content.pengurusKbk.GrafikUasPengurus', compact('banyak_pengunggahan', 'banyak_verifikasi', 'banyak_berita', 'semester', 'data_ver_uas'));
     }
-
 }

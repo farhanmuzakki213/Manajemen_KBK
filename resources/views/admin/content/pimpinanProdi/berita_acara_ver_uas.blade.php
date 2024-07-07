@@ -4,25 +4,29 @@
     <link href="{{ asset('backend/assets/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
     <style>
         .dropdown-item {
-            width: auto; /* Lebar menyesuaikan dengan konten */
-            white-space: nowrap; /* Konten tidak akan melintasi baris */
+            width: auto;
+            /* Lebar menyesuaikan dengan konten */
+            white-space: nowrap;
+            /* Konten tidak akan melintasi baris */
         }
-        
+
         .dropdown-item .row {
-            display: flex; /* Menggunakan flexbox untuk mengatur kolom */
-            flex-wrap: nowrap; /* Konten tidak akan melintasi baris */
+            display: flex;
+            /* Menggunakan flexbox untuk mengatur kolom */
+            flex-wrap: nowrap;
+            /* Konten tidak akan melintasi baris */
         }
-    
+
         .dropdown-item .col-lg-3 {
-            flex: 1; /* Kolom kode_matkul mengambil 1 bagian */
+            flex: 1;
+            /* Kolom kode_matkul mengambil 1 bagian */
         }
-    
+
         .dropdown-item .col-lg-4 {
-            flex: 3; /* Kolom nama_matkul mengambil 3 bagian */
+            flex: 3;
+            /* Kolom nama_matkul mengambil 3 bagian */
         }
     </style>
-    
-    
 @endsection
 @section('admin')
     <div class="container-fluid">
@@ -117,9 +121,12 @@
                                                 <th>{{ optional($data->r_jenis_kbk)->jenis_kbk }}</th>
                                                 <th style="width: 10%;">
                                                     <div class="row">
-                                                        <a href="{{ route('berita_ver_uas.edit', ['id' => $data->id_berita_acara]) }}"
-                                                            class="btn btn-primary mb-2 d-flex align-items-center"><i
-                                                                class="bi bi-pencil-square"></i>Upload</a>
+                                                        @can('pimpinanProdi-update BeritaAcaraUasProdi')
+                                                            <a href="{{ route('berita_ver_uas.edit', ['id' => $data->id_berita_acara]) }}"
+                                                                class="btn btn-primary mb-2 d-flex align-items-center"><i
+                                                                    class="bi bi-pencil-square"></i>Upload</a>
+                                                        @endcan
+
                                                         <a href="{{ asset('storage/uploads/uas/berita_acara/' . $data->file_berita_acara) }}"
                                                             class="btn btn-success mb-2 d-flex align-items-center"
                                                             target="_blank"><i
@@ -142,9 +149,6 @@
     <script src="{{ asset('backend/assets/js/jquery3-1-1.js') }}"></script>
     <script src="{{ asset('backend/assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('backend/assets/js/multi-dropdown.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/sidebarmenu.js') }}"></script>
-    <script src="{{ asset('backend/assets/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('backend/assets/datatables/dataTables.bootstrap4.min.js') }}"></script>
     <script>
         setTimeout(function() {
             var element = document.getElementById('delay');

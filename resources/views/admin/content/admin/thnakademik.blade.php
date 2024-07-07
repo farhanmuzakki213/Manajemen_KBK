@@ -20,9 +20,15 @@
                     <!-- Data Tahun Akademik -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-2">
-                            <a href="{{ route('thnakademik.show') }}" class="btn btn-primary me-md-3">
-                                <i class="ti ti-upload"></i> Ambil Data API
-                            </a>
+
+
+                            @can('admin-sinkronData ThnAkademik')
+                                <a href="{{ route('thnakademik.show') }}" class="btn btn-primary me-md-3">
+                                    <i class="ti ti-upload"></i> Ambil Data API
+                                </a>
+                            @endcan
+
+
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -58,6 +64,7 @@
                                                         Aktif
                                                     @endif
                                                 </th>
+
                                                 <th style="width: 10%">
                                                     <div class="row">
                                                         <a data-bs-toggle="modal"

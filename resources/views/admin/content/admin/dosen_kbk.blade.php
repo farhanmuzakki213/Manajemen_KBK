@@ -28,12 +28,18 @@
 
                         <div class="card-header py-3">
                             <div class="d-grid gap-2 d-md-block">
-                                <a href="{{ route('dosen_kbk.create') }}" class="btn btn-primary me-md-3"><i
-                                        class="bi bi-file-earmark-plus"></i> New</a>
-                                <a href="{{ route('dosen_kbk.export') }}" class="btn btn-primary me-md-3"><i
-                                        class="bi bi-box-arrow-in-up"></i> Export</a>
-                                <a data-bs-toggle="modal" data-bs-target="#import"
-                                    class="btn btn-primary"><i class="bi bi-box-arrow-in-down"></i> Import</a>
+                                @can('admin-create DosenKbk')
+                                    <a href="{{ route('dosen_kbk.create') }}" class="btn btn-primary me-md-3"><i
+                                            class="bi bi-file-earmark-plus"></i> New</a>
+                                @endcan
+                                @can('admin-export DosenKbk')
+                                    <a href="{{ route('dosen_kbk.export') }}" class="btn btn-primary me-md-3"><i
+                                            class="bi bi-box-arrow-in-up"></i> Export</a>
+                                @endcan
+                                @can('admin-import DosenKbk')
+                                    <a data-bs-toggle="modal" data-bs-target="#import"
+                                        class="btn btn-primary"><i class="bi bi-box-arrow-in-down"></i> Import</a>
+                                @endcan
                             </div>
                         </div>
 
@@ -94,18 +100,22 @@
                                                 <th>{{ $data->r_jenis_kbk->jenis_kbk }}</th>
                                                 <th style="width: 10%;">
                                                     <div class="row">
-                                                    <a href="{{ route('dosen_kbk.edit', ['id' => $data->id_dosen_kbk]) }}"
-                                                        class="btn btn-primary mb-2 d-flex align-items-center"><span class="bi bi-pencil-square"></span>Edit</a>
-                                                    <a data-bs-toggle="modal"
-                                                        data-bs-target="#staticBackdrop{{ $data->id_dosen_kbk }}"
-                                                        class="btn btn-danger mb-2 d-flex align-items-center"><span class="bi bi-trash">Hapus</span></a>
+                                                    @can('admin-update DosenKbk')
+                                                        <a href="{{ route('dosen_kbk.edit', ['id' => $data->id_dosen_kbk]) }}"
+                                                            class="btn btn-primary mb-2 d-flex align-items-center"><span class="bi bi-pencil-square"></span>Edit</a>
+                                                    @endcan
+                                                    @can('admin-delete DosenKbk')
                                                         <a data-bs-toggle="modal"
-                                                        data-bs-target="#detail{{ $data->id_dosen_kbk }}"
-                                                        class="btn btn-secondary mb-2 d-flex align-items-center">
-                                                        <span class="bi bi-three-dots-vertical"></span>Detail
-                                                    </a>
+                                                            data-bs-target="#staticBackdrop{{ $data->id_dosen_kbk }}"
+                                                            class="btn btn-danger mb-2 d-flex align-items-center"><span class="bi bi-trash"></span>Hapus</a>
+                                                    @endcan
+                                                    <a data-bs-toggle="modal"
+                                                    data-bs-target="#detail{{ $data->id_dosen_kbk }}"
+                                                    class="btn btn-secondary mb-2 d-flex align-items-center">
+                                                    <span class="bi bi-three-dots-vertical"></span>Detail
+                                                </a>
                                                     </div>
-                                                </th>
+                                                    </th>
                                             </tr>
                                             {{-- Modal Konfirmasi hapus data --}}
                                             <div class="modal fade" id="staticBackdrop{{ $data->id_dosen_kbk }}"
@@ -215,12 +225,12 @@
     </div>
 @endsection
 @section('scripts')
-<script>
-    setTimeout(function() {
-        var element = document.getElementById('delay');
-        if (element) {
-            element.parentNode.removeChild(element);
-        }
-    }, 5000); // 5000 milliseconds = 5 detik
-</script>
+    <script>
+        setTimeout(function() {
+            var element = document.getElementById('delay');
+            if (element) {
+                element.parentNode.removeChild(element);
+            }
+        }, 5000); // 5000 milliseconds = 5 detik
+    </script>
 @endsection

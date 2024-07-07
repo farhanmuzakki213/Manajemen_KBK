@@ -20,6 +20,13 @@ use App\Models\ThnAkademik;
 
 class VerBeritaAcaraUasController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:pengurusKbk-view BeritaAcaraUas', ['only' => ['index', 'getDosen']]);
+        $this->middleware('permission:pengurusKbk-download BeritaAcaraUas', ['only' => ['download_pdf', 'getDosen']]);
+        $this->middleware('permission:pengurusKbk-create BeritaAcaraUas', ['only' => ['create', 'store', 'getCariNomor', 'getDosen']]);
+        $this->middleware('permission:pengurusKbk-update BeritaAcaraUas', ['only' => ['edit', 'update', 'getDosen']]);
+        $this->middleware('permission:pengurusKbk-delete BeritaAcaraUas', ['only' => ['delete']]);
+    }
     public function getDosen()
     {
         $user = Auth::user()->name;

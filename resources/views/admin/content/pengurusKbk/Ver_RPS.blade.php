@@ -15,7 +15,7 @@
                         {{ Session::get('error') }}
                     </div>
                 @endif
-                
+
                 <div class="container-fluid">
                     <!-- DataDosen -->
                     <div class="card shadow mb-4">
@@ -53,48 +53,51 @@
                                             $no = 1;
                                         @endphp
                                         @foreach ($result as $data_rep)
-                                        @php
-                                            $cek_data_rep = false;
-                                            if ($data_rep['id_rep_rps_uas'] !== null) {
-                                                $cek_data_rep = App\Models\VerRpsUas::whereHas(
-                                                    'r_rep_rps_uas',
-                                                    function ($query) use ($data_rep) {
-                                                        $query
-                                                            ->where('type', '=', '0')
-                                                            ->where('rep_rps_uas_id', $data_rep['id_rep_rps_uas']);
-                                                    },
-                                                )->exists();
-                                            }
-                                        @endphp
-                                        <tr class="table-Light">
-                                            <th>{{ $no++ }}</th>
-                                            <th>{{ $data_rep['kode_matkul'] }}</th>
-                                            <th>{{ $data_rep['nama_dosen'] }}</th>
-                                            <th>{{ $data_rep['semester'] }}</th>
-                                            <th>{{ $data_rep['smt_thnakd'] }}</th>
-                                            <th style="width: 10%;">
-                                                @if ($data_rep['id_rep_rps_uas'] === null)
-                                                    <p style="color: red">File belum diupload</p>
-                                                @else
-                                                    @if (!$cek_data_rep)
-                                                        <div class="row">
-                                                            <a href="{{ route('ver_rps.create', ['id' => $data_rep['id_rep_rps_uas']]) }}"
-                                                                class="btn btn-primary mb-2 d-flex align-items-center">
-                                                                <i class="bi bi-pencil-square"></i> Review
-                                                            </a>
-                                                            <!-- Pastikan path file sesuai dengan struktur dan nama yang benar -->
-                                                            <a href="{{ asset('storage/uploads/rps/repositori_files/' . $data_rep['file']) }}"
-                                                                class="btn btn-primary mb-2 d-flex align-items-center"
-                                                                target="_blank">
-                                                                <i class="bi bi-file-earmark-arrow-down"></i>FileRPS
-                                                            </a>
-                                                        </div>
+                                            @php
+                                                $cek_data_rep = false;
+                                                if ($data_rep['id_rep_rps_uas'] !== null) {
+                                                    $cek_data_rep = App\Models\VerRpsUas::whereHas(
+                                                        'r_rep_rps_uas',
+                                                        function ($query) use ($data_rep) {
+                                                            $query
+                                                                ->where('type', '=', '0')
+                                                                ->where('rep_rps_uas_id', $data_rep['id_rep_rps_uas']);
+                                                        },
+                                                    )->exists();
+                                                }
+                                            @endphp
+                                            <tr class="table-Light">
+                                                <th>{{ $no++ }}</th>
+                                                <th>{{ $data_rep['kode_matkul'] }}</th>
+                                                <th>{{ $data_rep['nama_dosen'] }}</th>
+                                                <th>{{ $data_rep['semester'] }}</th>
+                                                <th>{{ $data_rep['smt_thnakd'] }}</th>
+                                                <th style="width: 10%;">
+                                                    @if ($data_rep['id_rep_rps_uas'] === null)
+                                                        <p style="color: red">File belum diupload</p>
                                                     @else
-                                                        <p style="color: green">Sudah diverifikasi</p>
+                                                        @if (!$cek_data_rep)
+                                                            <div class="row">
+                                                                @can('pengurusKbk-create VerRps')
+                                                                    <a href="{{ route('ver_rps.create', ['id' => $data_rep['id_rep_rps_uas']]) }}"
+                                                                        class="btn btn-primary mb-2 d-flex align-items-center">
+                                                                        <i class="bi bi-pencil-square"></i> Review
+                                                                    </a>
+                                                                @endcan
+
+                                                                <!-- Pastikan path file sesuai dengan struktur dan nama yang benar -->
+                                                                <a href="{{ asset('storage/uploads/rps/repositori_files/' . $data_rep['file']) }}"
+                                                                    class="btn btn-primary mb-2 d-flex align-items-center"
+                                                                    target="_blank">
+                                                                    <i class="bi bi-file-earmark-arrow-down"></i>FileRPS
+                                                                </a>
+                                                            </div>
+                                                        @else
+                                                            <p style="color: green">Sudah diverifikasi</p>
+                                                        @endif
                                                     @endif
-                                                @endif
-                                            </th>
-                                        </tr>
+                                                </th>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -170,22 +173,28 @@
                                             <th>{{ $data_ver->saran }}</th>
                                             <th style="width: 10%;">
                                                 <div class="row">
-                                                    <a href="{{ route('ver_rps.edit', ['id' => $data_ver->id_ver_rps_uas]) }}"
-                                                        class="btn btn-primary mb-2 d-flex align-items-center"><i
-                                                            class="bi bi-pencil-square"></i>Revisi</a>
+                                                    @can('pengurusKbk-update VerRps')
+                                                        <a href="{{ route('ver_rps.edit', ['id' => $data_ver->id_ver_rps_uas]) }}"
+                                                            class="btn btn-primary mb-2 d-flex align-items-center"><i
+                                                                class="bi bi-pencil-square"></i>Revisi</a>
+                                                    @endcan
+                                                    @can('pengurusKbk-delete VerRps')
+                                                        <a data-bs-toggle="modal"
+                                                            data-bs-target="#staticBackdrop{{ $data_ver->id_ver_rps_uas }}"
+                                                            class="btn btn-danger mb-2 d-flex align-items-center"><i
+                                                                class="bi bi-trash"></i>Hapus</a>
+                                                    @endcan
+
                                                     <a href="{{ asset('storage/uploads/rps/repositori_files/' . $data_ver->r_rep_rps_uas->file) }}"
                                                         class="btn btn-primary mb-2 d-flex align-items-center"
                                                         target="_blank"><i
                                                             class="bi bi-file-earmark-arrow-down"></i>FileRPS</a>
-                                                            
+
                                                     <a data-bs-toggle="modal"
                                                         data-bs-target="#detail{{ $data_ver->id_ver_rps_uas }}"
                                                         class="btn btn-secondary mb-2 d-flex align-items-center"><i
                                                             class="bi bi-three-dots-vertical"></i>Detail</a>
-                                                    <a data-bs-toggle="modal"
-                                                        data-bs-target="#staticBackdrop{{ $data_ver->id_ver_rps_uas }}"
-                                                        class="btn btn-danger mb-2 d-flex align-items-center"><i
-                                                            class="bi bi-trash"></i>Hapus</a>
+
                                                 </div>
                                             </th>
                                         </tr>
@@ -338,21 +347,21 @@
     </div>
 @endsection
 @section('scripts')
-<script>
-    setTimeout(function() {
-        var element = document.getElementById('delay');
-        if (element) {
-            element.parentNode.removeChild(element);
-        }
-    }, 5000); // 5000 milliseconds = 5 detik
+    <script>
+        setTimeout(function() {
+            var element = document.getElementById('delay');
+            if (element) {
+                element.parentNode.removeChild(element);
+            }
+        }, 5000); // 5000 milliseconds = 5 detik
 
-    function toggleTable() {
-        var tableContent = document.getElementById('tableContent');
-        if (tableContent.style.display === 'none') {
-            tableContent.style.display = 'block';
-        } else {
-            tableContent.style.display = 'none';
+        function toggleTable() {
+            var tableContent = document.getElementById('tableContent');
+            if (tableContent.style.display === 'none') {
+                tableContent.style.display = 'block';
+            } else {
+                tableContent.style.display = 'none';
+            }
         }
-    }
-</script>
+    </script>
 @endsection

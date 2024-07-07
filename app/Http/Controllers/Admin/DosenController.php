@@ -18,6 +18,14 @@ class DosenController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function __construct() {
+        $this->middleware('permission:admin-view Dosen', ['only' => ['index']]);
+        $this->middleware('permission:admin-create Dosen', ['only' => ['create', 'store', 'getCariNomor']]);
+        $this->middleware('permission:admin-update Dosen', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:admin-sinkronData Dosen', ['only' => ['storeAPI', 'show', 'getCariNomor']]);
+        $this->middleware('permission:admin-delete Dosen', ['only' => ['delete']]);
+    }
+
     public function index()
     {
         $data_dosen = Dosen::with('r_jurusan', 'r_prodi')
