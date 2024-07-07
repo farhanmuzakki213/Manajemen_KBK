@@ -20,7 +20,8 @@ use App\Models\ThnAkademik;
 
 class VerBeritaAcaraUasController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('permission:pengurusKbk-view BeritaAcaraUas', ['only' => ['index', 'getDosen']]);
         $this->middleware('permission:pengurusKbk-download BeritaAcaraUas', ['only' => ['download_pdf', 'getDosen']]);
         $this->middleware('permission:pengurusKbk-create BeritaAcaraUas', ['only' => ['create', 'store', 'getCariNomor', 'getDosen']]);
@@ -59,14 +60,13 @@ class VerBeritaAcaraUasController extends Controller
             ->whereHas('r_rep_rps_uas', function ($query) use ($pengurus_kbk, $selectedProdiId) {
                 $query->whereHas('r_matkulKbk', function ($nestedQuery) use ($pengurus_kbk, $selectedProdiId) {
                     $nestedQuery->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id)
-                    ->whereHas('r_matkul.r_kurikulum.r_prodi', function ($subnestedQuery) use ($selectedProdiId) {
-                        if ($selectedProdiId) {
-                            $subnestedQuery->where('prodi_id', $selectedProdiId); // Filter by prodi
-                        }
-                    });
-                    
+                        ->whereHas('r_matkul.r_kurikulum.r_prodi', function ($subnestedQuery) use ($selectedProdiId) {
+                            if ($selectedProdiId) {
+                                $subnestedQuery->where('prodi_id', $selectedProdiId); // Filter by prodi
+                            }
+                        });
                 })
-                
+
                     ->whereHas('r_smt_thnakd', function ($nestedQuery) {
                         $nestedQuery->where('status_smt_thnakd', '=', '1');
                     })
@@ -74,18 +74,20 @@ class VerBeritaAcaraUasController extends Controller
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
-
-        $data_berita_acara = VerBeritaAcara::whereHas('p_ver_rps_uas', function ($query) use ($pengurus_kbk) {
-            $query->where('pengurus_id', $pengurus_kbk->id_pengurus);
-        })->with([
-            'p_ver_rps_uas.r_rep_rps_uas.r_matkulKbk.r_matkul',
-            'p_ver_rps_uas.r_pengurus.r_dosen',
-            'r_pimpinan_prodi.r_prodi',
-            'r_pimpinan_jurusan.r_jurusan',
-            'r_jenis_kbk',
-        ])
+        debug($data_ver_rps->toArray());
+        $data_berita_acara = VerBeritaAcara::whereHas('p_ver_rps_uas.r_rep_rps_uas.r_matkulKbk', function ($query) use ($pengurus_kbk) {
+            $query->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id);
+        })
+            ->with([
+                'p_ver_rps_uas.r_rep_rps_uas.r_matkulKbk.r_matkul',
+                'p_ver_rps_uas.r_pengurus.r_dosen',
+                'r_pimpinan_prodi.r_prodi',
+                'r_pimpinan_jurusan.r_jurusan',
+                'r_jenis_kbk',
+            ])
             ->where('type', '=', '1')
             ->get();
+
 
         debug($data_berita_acara->toArray());
         return view('admin.content.pengurusKbk.VerBeritaAcaraUas', compact('data_ver_rps', 'data_berita_acara', 'prodiList', 'selectedProdiId'));
@@ -95,19 +97,19 @@ class VerBeritaAcaraUasController extends Controller
     {
         $pengurus_kbk = $this->getDosen();
         $prodiList = Prodi::where('jurusan_id', $pengurus_kbk->r_dosen->jurusan_id)->get();
-    
+
         $selectedProdiId = $request->input('prodi_id');
-    
+
         if (!$selectedProdiId) {
             return redirect()->route('upload_uas_berita_acara')->with('error', 'Silahkan pilih prodi yang ingin di cetak');
         }
-    
+
         $selectedProdi = Prodi::find($selectedProdiId);
         $kajur = PimpinanJurusan::where('jurusan_id', $pengurus_kbk->r_dosen->jurusan_id)->first();
         $kaprodi = PimpinanProdi::where('prodi_id', $selectedProdiId)->first();
 
         $semester = ThnAkademik::where('status_smt_thnakd', '=', '1')->first();
-    
+
         $data_ver_rps = VerRpsUas::with([
             'r_pengurus',
             'r_pengurus.r_dosen',
@@ -129,12 +131,12 @@ class VerBeritaAcaraUasController extends Controller
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
-    
+
         if ($data_ver_rps->isEmpty()) {
             return redirect()->route('upload_uas_berita_acara')->with('error', 'Data verifikasi uas pada prodi ini tidak ada');
         }
 
-    
+
         $pdf = Pdf::loadView('admin.content.pengurusKbk.pdf.berita_acara_uas', [
             'data_ver_rps' => $data_ver_rps,
             'selectedProdi' => $selectedProdi,
@@ -144,7 +146,7 @@ class VerBeritaAcaraUasController extends Controller
             'kajur' => $kajur,
             'pengurus_kbk' => $pengurus_kbk,
         ]);
-    
+
         // return $pdf->stream('Berita_Acara_UAS.pdf');
         return $pdf->download('Berita_Acara_UAS.pdf');
     }
@@ -161,7 +163,9 @@ class VerBeritaAcaraUasController extends Controller
             'r_rep_rps_uas',
             'r_rep_rps_uas.r_dosen_matkul.p_kelas',
             'r_rep_rps_uas.r_smt_thnakd',
-            'r_rep_rps_uas.r_matkulKbk.r_matkul'
+            'r_rep_rps_uas.r_matkulKbk.r_matkul',
+            'r_rep_rps_uas.r_matkulKbk.r_matkul.r_kurikulum',
+            'r_rep_rps_uas.r_matkulKbk.r_matkul.r_kurikulum.r_prodi',
         ])
             ->where(function ($query) use ($pengurus_kbk) {
                 $query->whereHas('r_rep_rps_uas', function ($subQuery) use ($pengurus_kbk) {
@@ -180,19 +184,21 @@ class VerBeritaAcaraUasController extends Controller
                 return [
                     'kode_matkul' => $item->r_rep_rps_uas->r_matkulKbk->r_matkul->kode_matkul,
                     'nama_matkul' => $item->r_rep_rps_uas->r_matkulKbk->r_matkul->nama_matkul,
-                    'prodi_id' => optional(optional(optional($item->r_rep_rps_uas)->r_dosen_matkul)->p_kelas->first())->prodi_id,
-                    'jurusan_id' => optional(optional(optional($item->r_rep_rps_uas)->r_dosen_matkul)->p_kelas->first())->r_prodi->jurusan_id,
+                    'prodi_id' => $item->r_rep_rps_uas->r_matkulKbk->r_matkul->r_kurikulum->prodi_id,
+                    'jurusan_id' => $item->r_rep_rps_uas->r_matkulKbk->r_matkul->r_kurikulum->r_prodi->jurusan_id,
                     'id_ver_rps_uas' => $item->id_ver_rps_uas,
                 ];
             });
-        $prodiId = isset($data_ver_rps[0]['prodi_id']) ? $data_ver_rps[0]['prodi_id'] : null;
-        $jurusanId = isset($data_ver_rps[0]['jurusan_id']) ? $data_ver_rps[0]['jurusan_id'] : null;
+        debug($data_ver_rps->toArray());
+        // Mengambil prodi_id dan jurusan_id dari hasil map
+        $id_prodi = $data_ver_rps->pluck('prodi_id')->filter()->first();
+        $id_jurusan = $data_ver_rps->pluck('jurusan_id')->filter()->first();
 
-        $kajur = PimpinanJurusan::where('jurusan_id', $jurusanId)->pluck('id_pimpinan_jurusan')->first();
-        $kaprodi = PimpinanProdi::where('prodi_id', $prodiId)->pluck('id_pimpinan_prodi')->first();
+        $kajur = PimpinanJurusan::where('jurusan_id', $id_jurusan)->pluck('id_pimpinan_jurusan')->first();
+        $kaprodi = PimpinanProdi::where('prodi_id', $id_prodi)->pluck('id_pimpinan_prodi')->first();
 
 
-        debug($data_ver_rps->toArray(), $kajur, $kaprodi);
+        debug($kajur, $kaprodi);
         return view('admin.content.pengurusKbk.form.ver_uas_berita_acara_form', compact('data_ver_rps', 'pengurus_kbk', 'nextNumber', 'kajur', 'kaprodi'));
     }
 

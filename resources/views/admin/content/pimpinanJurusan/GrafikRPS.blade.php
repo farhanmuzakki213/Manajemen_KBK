@@ -136,7 +136,7 @@
                         data: verifikasiData
                     },
                     {
-                        name: 'Banyak Verifikasi Uas di Berita Acara',
+                        name: 'Banyak Verifikasi Rps di Berita Acara',
                         data: beritaDataVer
                     },
                     {

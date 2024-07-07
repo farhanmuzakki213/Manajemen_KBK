@@ -46,6 +46,6 @@ class VerRpsUas extends Model
     
     public function p_VerBeritaAcara()
     {
-        return $this->belongsToMany(VerBeritaAcara::class, 'ver_berita_acara_detail_pivot', 'rep_rps_uas_id', 'berita_acara_id');
+        return $this->belongsToMany(VerBeritaAcara::class, 'ver_berita_acara_detail_pivot', 'ver_rps_uas_id', 'berita_acara_id');
     }
 }

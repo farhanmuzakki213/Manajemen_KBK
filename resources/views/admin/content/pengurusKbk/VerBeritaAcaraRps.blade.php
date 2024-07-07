@@ -118,42 +118,47 @@
                                             $no = 1;
                                         @endphp
                                         @foreach ($data_ver_rps as $data_ver)
-                                            <tr class="table-Light">
-                                                <th>{{ $no++ }}</th>
-                                                {{-- <th>{{ $data_rep->id_rep_rps }}</th> --}}
-                                                <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->kode_matkul }}
-                                                </th>
-                                                <th>{{ optional($data_ver->r_rep_rps_uas)->r_dosen_matkul->r_dosen->nama_dosen }}
-                                                </th>
-                                                <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->semester }}
-                                                </th>
-                                                <th>{{ optional($data_ver->r_rep_rps_uas)->r_smt_thnakd->smt_thnakd }}</th>
-                                                <th>{{ optional($data_ver->r_pengurus)->r_dosen->nama_dosen }}</th>
-                                                <th>
-                                                    @if ($data_ver->rekomendasi == 0)
-                                                        Belum diverifikasi
-                                                    @elseif ($data_ver->rekomendasi == 1)
-                                                        Tidak Layak Pakai
-                                                    @elseif ($data_ver->rekomendasi == 2)
-                                                        Butuh Revisi
-                                                    @else
-                                                        Layak Pakai
-                                                    @endif
-                                                </th>
-                                                <th>{{ $data_ver->saran }}</th>
-                                                <th style="width: 10%;">
-                                                    <div class="row">
-                                                        <a href="{{ asset('storage/uploads/rps/repositori_files/' . $data_ver->r_rep_rps_uas->file) }}"
-                                                            class="btn btn-primary mb-2 d-flex align-items-center"
-                                                            target="_blank"><i
-                                                                class="bi bi-file-earmark-arrow-down"></i>FileRPS</a>
-                                                        <a data-bs-toggle="modal"
-                                                            data-bs-target="#detail{{ $data_ver->id_ver_rps_uas }}"
-                                                            class="btn btn-secondary mb-2 d-flex align-items-center"><i
-                                                                class="bi bi-three-dots-vertical"></i>Detail</a>
-                                                    </div>
-                                                </th>
-                                            </tr>
+                                            @php
+                                                $hasReviewAssigned = $data_ver->p_VerBeritaAcara()->exists();
+                                            @endphp
+                                            @unless ($hasReviewAssigned)
+                                                <tr class="table-Light">
+                                                    <th>{{ $no++ }}</th>
+                                                    {{-- <th>{{ $data_rep->id_rep_rps }}</th> --}}
+                                                    <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->kode_matkul }}
+                                                    </th>
+                                                    <th>{{ optional($data_ver->r_rep_rps_uas)->r_dosen_matkul->r_dosen->nama_dosen }}
+                                                    </th>
+                                                    <th>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->semester }}
+                                                    </th>
+                                                    <th>{{ optional($data_ver->r_rep_rps_uas)->r_smt_thnakd->smt_thnakd }}</th>
+                                                    <th>{{ optional($data_ver->r_pengurus)->r_dosen->nama_dosen }}</th>
+                                                    <th>
+                                                        @if ($data_ver->rekomendasi == 0)
+                                                            Belum diverifikasi
+                                                        @elseif ($data_ver->rekomendasi == 1)
+                                                            Tidak Layak Pakai
+                                                        @elseif ($data_ver->rekomendasi == 2)
+                                                            Butuh Revisi
+                                                        @else
+                                                            Layak Pakai
+                                                        @endif
+                                                    </th>
+                                                    <th>{{ $data_ver->saran }}</th>
+                                                    <th style="width: 10%;">
+                                                        <div class="row">
+                                                            <a href="{{ asset('storage/uploads/rps/repositori_files/' . $data_ver->r_rep_rps_uas->file) }}"
+                                                                class="btn btn-primary mb-2 d-flex align-items-center"
+                                                                target="_blank"><i
+                                                                    class="bi bi-file-earmark-arrow-down"></i>FileRPS</a>
+                                                            <a data-bs-toggle="modal"
+                                                                data-bs-target="#detail{{ $data_ver->id_ver_rps_uas }}"
+                                                                class="btn btn-secondary mb-2 d-flex align-items-center"><i
+                                                                    class="bi bi-three-dots-vertical"></i>Detail</a>
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            @endunless
                                             {{-- Modal Konfirmasi hapus data --}}
                                             <div class="modal fade" id="staticBackdrop{{ $data_ver->id_ver_rps_uas }}"
                                                 data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -441,6 +446,9 @@
     </div>
 @endsection
 @section('scripts')
+    <script src="{{ asset('backend/assets/js/jquery3-1-1.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/multi-dropdown.js') }}"></script>
     <script>
         setTimeout(function() {
             var element = document.getElementById('delay');

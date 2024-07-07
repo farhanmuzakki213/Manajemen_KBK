@@ -46,7 +46,7 @@ class PenugasanReviewController extends Controller
         $pengurus_kbk = $this->getDosen();
         debug($pengurus_kbk);
 
-        $data_proposal_ta = ProposalTAModel::orderByDesc('id_proposal_ta')->get();
+        $data_proposal_ta = ProposalTAModel::where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id)->orderByDesc('id_proposal_ta')->get();
 
         $data_review_proposal_ta = ReviewProposalTAModel::with('proposal_ta', 'reviewer_satu_dosen', 'reviewer_dua_dosen', 'p_reviewDetail')
             ->where('pengurus_id', $pengurus_kbk->id_pengurus)

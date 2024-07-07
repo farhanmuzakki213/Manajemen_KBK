@@ -30,9 +30,13 @@ class Rep_RPSController extends Controller
     
     public function index()
     {
+        $kaprodi = $this->getDosen();
         $data_rep_rps = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_smt_thnakd','r_rep_rps_uas.r_dosen_matkul.r_dosen')
             ->whereHas('r_rep_rps_uas.r_smt_thnakd', function ($query) {
                 $query->where('status_smt_thnakd', '=', '1'); 
+            })
+            ->whereHas('r_rep_rps_uas.r_matkulKbk.r_matkul.r_kurikulum.r_prodi', function ($query) use ($kaprodi) {
+                $query->where('prodi_id', '=', $kaprodi->prodi_id);
             })
             ->whereHas('r_rep_rps_uas', function ($query) {
                 $query->where('type', '=', '0'); 

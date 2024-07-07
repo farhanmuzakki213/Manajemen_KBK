@@ -88,6 +88,7 @@
         var pengunggahan = <?php echo json_encode($banyak_pengunggahan); ?>;
         var verifikasi = <?php echo json_encode($banyak_verifikasi); ?>;
         var berita = <?php echo json_encode($banyak_berita); ?>;
+        var beritaVer = <?php echo json_encode($banyak_berita_ver); ?>;
         var semester = <?php echo json_encode($semester); ?>;
 
         var options = {
@@ -100,7 +101,11 @@
                     data: Object.values(verifikasi)
                 },
                 {
-                    name: 'Banyak Berita Acara',
+                    name: 'Banyak Verifikasi Uas di Berita Acara',
+                    data: Object.values(beritaVer)
+                },
+                {
+                    name: 'Banyak Pengunggahan Berita Acara',
                     data: Object.values(berita)
                 }
             ],

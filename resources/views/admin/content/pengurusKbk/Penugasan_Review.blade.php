@@ -35,7 +35,6 @@
                                             <th>Nama Mahasiswa</th>
                                             <th>Pembimbing 1</th>
                                             <th>Pembimbing 2</th>
-                                            <th>Jenis Kbk</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -46,7 +45,6 @@
                                             <th>Nama Mahasiswa</th>
                                             <th>Pembimbing 1</th>
                                             <th>Pembimbing 2</th>
-                                            <th>Jenis Kbk</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </tfoot>
@@ -64,7 +62,6 @@
                                                     <th>{{ optional($data->r_mahasiswa)->nama }}</th>
                                                     <th>{{ optional($data->r_pembimbing_satu)->nama_dosen }}</th>
                                                     <th>{{ optional($data->r_pembimbing_dua)->nama_dosen }}</th>
-                                                    <th>{{ optional($data->r_jenis_kbk)->jenis_kbk }}</th>
                                                     <th style="width: 10%;">
                                                         <div class="row">
                                                             @can('pengurusKbk-create PenugasanReview')

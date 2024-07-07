@@ -76,8 +76,8 @@ class VerBeritaAcaraRpsController extends Controller
             ->get();
 
         // Filtered VerBeritaAcara data
-        $data_berita_acara = VerBeritaAcara::whereHas('p_ver_rps_uas', function ($query) use ($pengurus_kbk) {
-            $query->where('pengurus_id', $pengurus_kbk->id_pengurus);
+        $data_berita_acara = VerBeritaAcara::whereHas('p_ver_rps_uas.r_rep_rps_uas.r_matkulKbk', function ($query) use ($pengurus_kbk) {
+            $query->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id);
         })->with([
             'p_ver_rps_uas.r_rep_rps_uas.r_matkulKbk.r_matkul',
             'p_ver_rps_uas.r_pengurus.r_dosen',
@@ -184,16 +184,18 @@ class VerBeritaAcaraRpsController extends Controller
                 return [
                     'kode_matkul' => $item->r_rep_rps_uas->r_matkulKbk->r_matkul->kode_matkul,
                     'nama_matkul' => $item->r_rep_rps_uas->r_matkulKbk->r_matkul->nama_matkul,
-                    'prodi_id' => optional(optional(optional($item->r_rep_rps_uas)->r_dosen_matkul)->p_kelas->first())->prodi_id,
-                    'jurusan_id' => optional(optional(optional($item->r_rep_rps_uas)->r_dosen_matkul)->p_kelas->first())->r_prodi->jurusan_id,
+                    'prodi_id' => $item->r_rep_rps_uas->r_matkulKbk->r_matkul->r_kurikulum->prodi_id,
+                    'jurusan_id' => $item->r_rep_rps_uas->r_matkulKbk->r_matkul->r_kurikulum->r_prodi->jurusan_id,
                     'id_ver_rps_uas' => $item->id_ver_rps_uas,
                 ];
             });
-        $prodiId = isset($data_ver_rps[0]['prodi_id']) ? $data_ver_rps[0]['prodi_id'] : null;
-        $jurusanId = isset($data_ver_rps[0]['jurusan_id']) ? $data_ver_rps[0]['jurusan_id'] : null;
+        //debug($data_ver_rps->toArray());
+        // Mengambil prodi_id dan jurusan_id dari hasil map
+        $id_prodi = $data_ver_rps->pluck('prodi_id')->filter()->first();
+        $id_jurusan = $data_ver_rps->pluck('jurusan_id')->filter()->first();
 
-        $kajur = PimpinanJurusan::where('jurusan_id', $jurusanId)->pluck('id_pimpinan_jurusan')->first();
-        $kaprodi = PimpinanProdi::where('prodi_id', $prodiId)->pluck('id_pimpinan_prodi')->first();
+        $kajur = PimpinanJurusan::where('jurusan_id', $id_jurusan)->pluck('id_pimpinan_jurusan')->first();
+        $kaprodi = PimpinanProdi::where('prodi_id', $id_prodi)->pluck('id_pimpinan_prodi')->first();
 
 
         debug($data_ver_rps->toArray(), $kajur, $kaprodi);

@@ -24,8 +24,8 @@
                                 <input type="hidden" class="form-control" id="id_berita_acara" name="id_berita_acara" value="{{ $nextNumber }}" readonly>
                                 <input type="hidden" class="form-control" id="jenis_kbk_id" name="jenis_kbk_id" value="{{ $pengurus_kbk->jenis_kbk_id }}" readonly>
                                 <input type="hidden" class="form-control" id="type" name="type" value="0" readonly>
-                                <input type="hidden" class="form-control" id="kajur" name="kajur" value="{{ $kajur }}" readonly>
-                                <input type="hidden" class="form-control" id="prodi" name="prodi" value="{{ $kaprodi }}" readonly>
+                                {{-- <input type="hidden" class="form-control" id="kajur" name="kajur" value="{{ $kajur }}" readonly>
+                                <input type="hidden" class="form-control" id="prodi" name="prodi" value="{{ $kaprodi }}" readonly> --}}
                                 
                                 <div class="mb-3">
                                     <label for="file_berita_acara" class="form-label">Upload File Berita Acara Rps</label>
@@ -35,7 +35,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="mb-3">
+                                {{-- <div class="mb-3">
                                     <label for="ver_rps_uas_ids[]" class="form-label">Mata Kuliah</label>
                                     <select name="ver_rps_uas_ids[]" class="form-control selectpicker" multiple data-live-search="true">
                                         <option value="" disabled selected>Pilih Mata Kuliah VERIFIKASI</option>
@@ -48,7 +48,7 @@
                                     @error('ver_rps_uas_ids[]')
                                         <small>{{ $message }}</small>
                                     @enderror
-                                </div>
+                                </div> --}}
 
                                 <div class="col-5 mb-3">
                                     <div class="input-group tanggal_upload">
