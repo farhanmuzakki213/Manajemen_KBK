@@ -20,7 +20,7 @@
             left: 56.8px;
             right: 56.8px;
             z-index: 0;
-           
+
         }
 
         .kepala table {
@@ -59,8 +59,8 @@
         .badan {
             top: 160px;
             position: relative;
-            
-           
+
+
         }
 
         .details {
@@ -77,7 +77,7 @@
             font-weight: bold;
         }
 
-        table .isi{
+        table .isi {
             page-break-inside: auto;
         }
 
@@ -87,7 +87,7 @@
             page-break-inside: auto;
             /* margin-bottom: 5px; */
         }
-  
+
 
         table,
         th,
@@ -128,27 +128,27 @@
         }
 
         .signatures .left,
-        .signatures .right, {
-            width: 50%;
-            /* margin-bottom: 50px; */
-            text-align: center;
-            border: none;
-            page-break-inside: avoid;
-            white-space: nowrap;
+        .signatures .right,
+        {
+        width: 50%;
+        /* margin-bottom: 50px; */
+        text-align: center;
+        border: none;
+        page-break-inside: avoid;
+        white-space: nowrap;
         }
 
         .signatures .center {
             width: 100%;
             text-align: center;
             page-break-inside: avoid;
-            
+
         }
 
-        .signatures .center p { 
+        .signatures .center p {
             /* margin-bottom: 50px; */
             page-break-after: avoid;
         }
-
     </style>
 </head>
 
@@ -162,8 +162,10 @@
                 </td>
                 <td class="header-content">
                     <center>
-                        <font style="font-size: 17px;">KEMENTRIAN PENDIDIKAN, KEBUDAYAAN,</font><br>
-                        <font style="font-size: 17px;">RISET, DAN TEKNOLOGI</font><br>
+                        <strong>
+                            <font style="font-size: 15px;">KEMENTRIAN PENDIDIKAN, KEBUDAYAAN,</font><br>
+                            <font style="font-size: 15px;">RISET, DAN TEKNOLOGI</font><br>
+                        </strong>
                         <strong>
                             <font style="font-size: 15px;">POLITEKNIK NEGERI PADANG</font>
                         </strong><br>
@@ -190,7 +192,8 @@
                 <td class="header-content" colspan="2">
                     <center>
                         <strong>
-                            <font style="font-size: 15px;">VERIFIKASI SOAL UJIAN AKHIR SEMESTER {{strtoupper($semester->smt_thnakd)}}</font>
+                            <font style="font-size: 15px;">VERIFIKASI SOAL UJIAN AKHIR SEMESTER
+                                {{ strtoupper($semester->smt_thnakd) }}</font>
                         </strong><br>
                         <strong>
                             <font style="font-size: 15px;">
@@ -207,7 +210,8 @@
 
     <div class="badan">
         <div class="details">
-            <p>Telah dilaksanakan rapat verifikasi dan validasi soal ujian Akhir Semester bersama KBK dan Kaprodi yang dilaksanakan pada:</p>
+            <p>Telah dilaksanakan rapat verifikasi dan validasi soal ujian Akhir Semester bersama KBK dan Kaprodi yang
+                dilaksanakan pada:</p>
             <p id="hari-tanggal" style="padding-left: 50px;">
                 Hari / Tanggal : {{ \Carbon\Carbon::now()->isoFormat('dddd, D MMMM Y') }}
             </p>
@@ -270,9 +274,9 @@
                     </td>
                     <td class="right" style="padding-left: 100px">
                         <p>Ketua KBK</p>
-                        <p style="font-style: italic;">{{$pengurus_kbk->r_jenis_kbk->deskripsi}}</p>
+                        <p style="font-style: italic;">{{ $pengurus_kbk->r_jenis_kbk->jenis_kbk }}</p>
                         <br><br><br><br>
-                        <p>{{$pengurus_kbk->r_dosen->nama_dosen}}</p>
+                        <p>{{ $pengurus_kbk->r_dosen->nama_dosen }}</p>
                     </td>
 
                 </tr>
@@ -283,7 +287,7 @@
             <div class="center">
                 <p>Mengetahui</p>
                 <br><br><br><br>
-                <p>{{$kajur->r_dosen->nama_dosen}}</p>
+                <p>{{ $kajur->r_dosen->nama_dosen }}</p>
             </div>
         </div>
     </div>

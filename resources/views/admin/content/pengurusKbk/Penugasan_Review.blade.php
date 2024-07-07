@@ -73,7 +73,7 @@
                                                             </a>
                                                             <a data-bs-toggle="modal"
                                                                 data-bs-target="#detail{{ $data->id_proposal_ta }}"
-                                                                class="btn btn-primary d-flex align-items-center">
+                                                                class="btn btn-secondary d-flex align-items-center">
                                                                 <i class="bi bi-three-dots-vertical"></i>Detail
                                                             </a>
                                                         </div>
@@ -92,11 +92,10 @@
                                                 aria-labelledby="detailLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="detailLabel">Detail Proposal TA
-                                                            </h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Close"></button>
+                                                        <div class="modal-header bg-primary text-white">
+                                                            <h5 class="modal-title" id="detailLabel">Detail Proposal TA</h5>
+                                                            <button type="button" class="btn-close btn-close-white"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="mb-3">
@@ -113,7 +112,8 @@
                                                             <div class="mb-3">
                                                                 <label for="nama_dosen" class="form-label">Status</label>
                                                                 <input type="text" class="form-control" id="nama_dosen"
-                                                                    value="{{ $data->status_proposal_ta }}" readonly>
+                                                                value="@if ($data->status_proposal_ta == 0) Di Ajukan @elseif ($data->status_proposal_ta == 1) Di Tolak @elseif ($data->status_proposal_ta == 2) Di Revisi @else Di Terima @endif"
+                                                                readonly>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="file_proposal" class="form-label">File</label>
@@ -121,20 +121,26 @@
                                                                     id="file_proposal" value="{{ $data->file_proposal }}"
                                                                     readonly>
                                                             </div>
+
                                                             <div class="mb-3">
-                                                                <label for="nama_dosen" class="form-label">Dosen Pembimbing
-                                                                    1</label>
-                                                                <input type="text" class="form-control" id="nama_dosen"
-                                                                    value="{{ optional($data->r_pembimbing_satu)->nama_dosen }}"
-                                                                    readonly>
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <label for="nama_dosen" class="form-label">Dosen Pembimbing
+                                                                        1</label>
+                                                                    <input type="text" class="form-control"
+                                                                        value="{{ $data->r_pembimbing_satu->nama_dosen }}"
+                                                                        readonly>
+                                                                </div>
+                                                                <div class="col">
+                                                                    <label for="nama_dosen" class="form-label">Dosen Pembimbing
+                                                                        2</label>
+                                                                    <input type="text" class="form-control"
+                                                                        value="{{ $data->r_pembimbing_dua->nama_dosen }}"
+                                                                        readonly>
+                                                                </div>
                                                             </div>
-                                                            <div class="mb-3">
-                                                                <label for="nama_dosen" class="form-label">Dosen Pembimbing
-                                                                    2</label>
-                                                                <input type="text" class="form-control" id="nama_dosen"
-                                                                    value="{{ optional($data->r_pembimbing_dua)->nama_dosen }}"
-                                                                    readonly>
-                                                            </div>
+                                                        </div>
+
                                                             <div class="mb-3">
                                                                 <label for="jenis_kbk" class="form-label">Jenis kbk</label>
                                                                 <input type="text" class="form-control" id="jenis_kbk"
@@ -144,7 +150,7 @@
                                                             <!-- tambahkan input untuk atribut lainnya jika diperlukan -->
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
+                                                            <button type="button" class="btn btn-primary"
                                                                 data-bs-dismiss="modal">Close</button>
                                                         </div>
                                                     </div>
@@ -219,7 +225,7 @@
                                                                 class="bi bi-trash"></i>Delete</a>
                                                         <a data-bs-toggle="modal"
                                                             data-bs-target="#detail{{ $data->id_penugasan }}"
-                                                            class="btn btn-primary d-flex align-items-center"><i
+                                                            class="btn btn-secondary d-flex align-items-center"><i
                                                                 class="bi bi-three-dots-vertical"></i>Detail</a>
                                                     </div>
                                                 </th>
@@ -263,11 +269,9 @@
                                                 aria-labelledby="detailLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="detailLabel">Detail penugasan
-                                                                Proposal TA
-                                                            </h5>
-                                                            <button type="button" class="btn-close"
+                                                        <div class="modal-header bg-primary text-white">
+                                                            <h5 class="modal-title" id="detailLabel">Detail Penugasan Proposal TA</h5>
+                                                            <button type="button" class="btn-close btn-close-white"
                                                                 data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
@@ -308,7 +312,7 @@
                                                             <!-- tambahkan input untuk atribut lainnya jika diperlukan -->
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
+                                                            <button type="button" class="btn btn-primary"
                                                                 data-bs-dismiss="modal">Close</button>
                                                         </div>
                                                     </div>

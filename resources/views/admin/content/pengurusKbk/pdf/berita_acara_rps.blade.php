@@ -162,8 +162,10 @@
                 </td>
                 <td class="header-content">
                     <center>
-                        <font style="font-size: 17px;">KEMENTRIAN PENDIDIKAN, KEBUDAYAAN,</font><br>
-                        <font style="font-size: 17px;">RISET, DAN TEKNOLOGI</font><br>
+<strong>
+                        <font style="font-size: 15px;">KEMENTRIAN PENDIDIKAN, KEBUDAYAAN,</font><br>
+                        <font style="font-size: 15px;">RISET, DAN TEKNOLOGI</font><br>
+                        </strong>
                         <strong>
                             <font style="font-size: 15px;">POLITEKNIK NEGERI PADANG</font>
                         </strong><br>
@@ -270,7 +272,7 @@
                     </td>
                     <td class="right" style="padding-left: 100px">
                         <p>Ketua KBK</p>
-                        <p style="font-style: italic;">{{$pengurus_kbk->r_jenis_kbk->deskripsi}}</p>
+                        <p style="font-style: italic;">{{$pengurus_kbk->r_jenis_kbk->jenis_kbk}}</p>
                         <br><br><br><br>
                         <p>{{$pengurus_kbk->r_dosen->nama_dosen}}</p>
                     </td>

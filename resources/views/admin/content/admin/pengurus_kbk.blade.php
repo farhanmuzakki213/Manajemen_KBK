@@ -68,7 +68,7 @@
                                             <th>Jenis KBK</th>
                                             <th>Jabatan</th>
                                             <th>Status</th>
-                                            <th>Action</th>
+                                            <th>Akasi</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -78,7 +78,7 @@
                                             <th>Jenis KBK</th>
                                             <th>Jabatan</th>
                                             <th>Status</th>
-                                            <th>Action</th>
+                                            <th>Akasi</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
@@ -95,15 +95,18 @@
                                                         Aktif
                                                     @endif
                                                 </th>
-                                                <th>
+                                                <th style="width: 10%;">
+                                                <div class="row">
                                                     <a href="{{ route('pengurus_kbk.edit', ['id' => $data->id_pengurus]) }}"
-                                                        class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
+                                                        class="btn btn-primary mb-2 d-flex align-items-center"><span class="bi bi-pencil-square">Edit</span></a>
                                                     <a data-bs-toggle="modal"
                                                         data-bs-target="#staticBackdrop{{ $data->id_pengurus }}"
-                                                        class="btn btn-danger"><i class="bi bi-trash"></i></a>
-                                                    {{-- <a data-bs-toggle="modal"
-                                                        data-bs-target="#detail"
-                                                        class="btn btn-secondary"><i class="bi bi-three-dots-vertical"></i></a> --}}
+                                                        class="btn btn-danger mb-2 d-flex align-items-center"><span class="bi bi-trash">Hapus</span></a>
+
+                                                 <a data-bs-toggle="modal" data-bs-target="#detail{{ $data->id_pengurus}}"
+                                                    class="btn btn-secondary mb-2 d-flex align-items-center"><span
+                                                        class="bi bi-three-dots-vertical">Detail</span></a>
+                                                </div>
                                                 </th>
                                             </tr>
                                             {{-- Modal Konfirmasi hapus data --}}
@@ -141,30 +144,79 @@
                                             </div>
 
                                             {{-- Modal Detail Tabel --}}
-                                            <div class="modal fade" id="detail" tabindex="-1" aria-labelledby="detailLabel" aria-hidden="true">
+                                            <div class="modal fade" id="detail{{ $data->id_pengurus }}" tabindex="-1"
+                                                aria-labelledby="detailLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
-                                                        <div class="modal-header">
+                                                        <div class="modal-header bg-primary text-white">
                                                             <h5 class="modal-title" id="detailLabel">Detail Pengurus KBK</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            <button type="button" class="btn-close btn-close-white"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
+    
                                                             <div class="mb-3">
-                                                                <label for="nama_dosen" class="form-label">Nama Dosen:</label>
-                                                                <input type="text" class="form-control" id="nama_dosen" readonly>
+                                                                <label for="kode_matkul" class="col-form-label">Nama Dosen</label>
+                                                                <input type="text" class="form-control" id="kode_matkul"
+                                                                    value="{{ $data->r_dosen->nama_dosen }}" readonly>
                                                             </div>
+
                                                             <div class="mb-3">
-                                                                <label for="jenis_kbk" class="form-label">Jenis KBK:</label>
-                                                                <input type="text" class="form-control" id="jenis_kbk" readonly>
+                                                                <div class="row">
+                                                                    <div class="col">
+                                                                        <label for="message-text"
+                                                                            class="col-form-label">NIDN</label>
+                                                                        <input class="form-control" id="message-text"
+                                                                            value="{{ $data->r_dosen->nidn }}" readonly></input>
+                                                                    </div>
+                                                                    <div class="col">
+                                                                        <label for="message-text"
+                                                                            class="col-form-label">NIP</label>
+                                                                        <input class="form-control"
+                                                                            id="message-text"value="{{ $data->r_dosen->nip }}"
+                                                                            readonly></input>
+                                                                    </div>
+                                                                </div>
                                                             </div>
+    
                                                             <div class="mb-3">
-                                                                <label for="jabatan_kbk" class="form-label">Jabatan:</label>
-                                                                <input type="text" class="form-control" id="jabatan_kbk" readonly>
+                                                                <div class="row">
+                                                                    <div class="col">
+                                                                        <label for="kode_matkul" class="col-form-label">Jenis KBK</label>
+                                                                <input type="text" class="form-control" id="kode_matkul"
+                                                                    value="{{$data->r_jenis_kbk->jenis_kbk}}" readonly>
+                                                                    </div>
+                                                                    <div class="col">
+                                                                        <label for="message-text"
+                                                                            class="col-form-label">Jabatan</label>
+                                                                        <input class="form-control" id="message-text"
+                                                                            value="{{$data->r_jabatan_kbk->jabatan}}"
+                                                                            readonly></input>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            <!-- tambahkan input untuk atribut lainnya jika diperlukan -->
-                                                        </div>
+    
+                                                            <div class="mb-3">
+                                                                <div class="row">
+                                                                    <div class="col">
+                                                                        <label for="kode_matkul" class="col-form-label">Gender</label>
+                                                                <input type="text" class="form-control" id="kode_matkul"
+                                                                    value="{{$data->r_dosen->gender}}" readonly>
+                                                                    </div>
+                                                                    <div class="col">
+                                                                        <label for="message-text"
+                                                                        class="col-form-label">Status</label>
+                                                                    <input class="form-control" id="message-text"
+                                                                        value="{{ $data->status_pengurus_kbk == 1 ? 'Aktif' : 'Tidak Aktif' }}"
+                                                                        readonly>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+    
+                                                            
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-primary"
+                                                                data-bs-dismiss="modal">Close</button>
                                                         </div>
                                                     </div>
                                                 </div>

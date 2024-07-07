@@ -56,6 +56,7 @@
                                         @php
                                             $no = 1;
                                         @endphp
+                                        {{-- @dd($merged_data); --}}
                                         @foreach ($merged_data as $data)
                                             <tr class="table-Light">
                                                 <th>{{ $no++ }}</th>
@@ -113,11 +114,11 @@
                                                 aria-labelledby="detailLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
-                                                        <div class="modal-header">
+                                                        <div class="modal-header bg-primary text-white">
                                                             <h5 class="modal-title" id="detailLabel">Detail Review Proposal
                                                             </h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Close"></button>
+                                                            <button type="button" class="btn-close btn-close-white"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="mb-3">
@@ -132,30 +133,51 @@
                                                                 <input type="text" class="form-control" id="nim"
                                                                     value="{{ $data['nim_mahasiswa'] }}" readonly>
                                                             </div>
+
                                                             <div class="mb-3">
-                                                                <label for="nama_dosen" class="form-label">pembimbing
-                                                                    1:</label>
-                                                                <input type="text" class="form-control" id="nama_dosen"
-                                                                    value="{{ $data['pembimbing_satu'] }}" readonly>
+                                                                <div class="row">
+                                                                    <div class="col">
+                                                                        <label for="nama_dosen"
+                                                                            class="form-label">pembimbing
+                                                                            1:</label>
+                                                                            <input type="text" class="form-control"
+                                                                            id="pembimbing_satu"
+                                                                            value="{{ $data['pembimbing_satu'] ?? ($data_ta->firstWhere('proposal_ta_id', $data['proposal_ta_id_satu'] ?? $data['proposal_ta_id_dua'] )->proposal_ta->r_pembimbing_satu->nama_dosen ?? 'Tidak Ada') }}"
+                                                                            readonly>
+                                                                    </div>
+
+                                                                    <div class="col">
+                                                                        <label for="pembimbing_dua"
+                                                                            class="form-label">Pembimbing 2:</label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="pembimbing_dua"
+                                                                            value="{{ $data['pembimbing_dua'] ?? ($data_ta->firstWhere('proposal_ta_id', $data['proposal_ta_id_satu'] ?? $data['proposal_ta_id_dua'] )->proposal_ta->r_pembimbing_dua->nama_dosen ?? 'Tidak Ada') }}"
+                                                                            readonly>
+                                                                    </div>
+                                                                </div>
                                                             </div>
+
                                                             <div class="mb-3">
-                                                                <label for="nama_dosen" class="form-label">pembimbing
-                                                                    2:</label>
-                                                                <input type="text" class="form-control" id="nama_dosen"
-                                                                    value="{{ $data['pembimbing_dua'] }}" readonly>
+                                                                <div class="row">
+                                                                    <div class="col">
+                                                                        <label for="nama_dosen" class="form-label">Reviewer
+                                                                            1:</label>
+                                                                            <input type="text" class="form-control"
+                                                                            id="reviewer_satu"
+                                                                            value="{{ $data['reviewer_satu'] ?? ($data_review_proposal_ta->firstWhere('penugasan_id', $data['penugasan_id'])->p_reviewProposal['reviewer_satu_dosen']['r_dosen']['nama_dosen'] ?? 'Tidak Ada') }}"
+                                                                            readonly>
+                                                                    </div>
+                                                                    <div class="col">
+                                                                        <label for="reviewer_dua"
+                                                                            class="form-label">Reviewer 2:</label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="reviewer_dua"
+                                                                            value="{{ $data['reviewer_dua'] ?? ($data_review_proposal_ta->firstWhere('penugasan_id', $data['penugasan_id'])->p_reviewProposal['reviewer_dua_dosen']['r_dosen']['nama_dosen'] ?? 'Tidak Ada') }}"
+                                                                            readonly>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            <div class="mb-3">
-                                                                <label for="nama_dosen" class="form-label">Reviewer
-                                                                    1:</label>
-                                                                <input type="text" class="form-control" id="nama_dosen"
-                                                                    value="{{ $data['reviewer_satu'] }}" readonly>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label for="nama_dosen" class="form-label">Reviewer
-                                                                    2:</label>
-                                                                <input type="text" class="form-control" id="nama_dosen"
-                                                                    value="{{ $data['reviewer_dua'] }}" readonly>
-                                                            </div>
+
                                                             <div class="mb-3">
                                                                 <label for="Judul" class="form-label">Judul</label>
                                                                 <textarea class="form-control" id="Judul" name="Judul" rows="3" readonly>{{ $data['judul'] }}</textarea>
@@ -170,7 +192,7 @@
                                                             <!-- tambahkan input untuk atribut lainnya jika diperlukan -->
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
+                                                            <button type="button" class="btn btn-primary"
                                                                 data-bs-dismiss="modal">Close</button>
                                                         </div>
                                                     </div>

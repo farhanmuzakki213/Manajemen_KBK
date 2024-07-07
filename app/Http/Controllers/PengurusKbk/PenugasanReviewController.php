@@ -263,12 +263,20 @@ class PenugasanReviewController extends Controller
     public function hasil()
     {
         $pengurus_kbk = $this->getDosen();
-        $data_review_proposal_ta = ReviewProposalTaDetailPivot::with('p_reviewProposal', 'p_reviewProposal.proposal_ta.r_mahasiswa.r_prodi')
+        $data_ta = ReviewProposalTAModel::where('pengurus_id', $pengurus_kbk->id_pengurus)
+        ->with('proposal_ta.r_pembimbing_satu', 'proposal_ta.r_pembimbing_dua')
+        ->get();
+
+        debug($data_ta->toArray());
+
+        $data_review_proposal_ta = ReviewProposalTaDetailPivot::with('p_reviewProposal', 'p_reviewProposal.proposal_ta.r_mahasiswa.r_prodi', 'p_reviewProposal.proposal_ta')
             ->whereHas('p_reviewProposal', function ($query) use ($pengurus_kbk) {
                 $query->where('pengurus_id', $pengurus_kbk->id_pengurus);
             })
             ->orderByDesc('review_proposal_ta_detail_pivot.penugasan_id')
             ->get();
+
+            debug($data_review_proposal_ta->toArray());
 
         $grouped_data = $data_review_proposal_ta->groupBy('penugasan_id');
 
@@ -312,6 +320,8 @@ class PenugasanReviewController extends Controller
             // Gabungkan data jika ada kedua reviewer
             $merged_data[] = [
                 'penugasan_id' => $penugasan_id,
+                'proposal_ta_id_satu' => $reviewer_satu ? $reviewer_satu->p_reviewProposal->proposal_ta->id_proposal_ta : null,
+                'proposal_ta_id_dua' => $reviewer_dua ? $reviewer_dua->p_reviewProposal->proposal_ta->id_proposal_ta : null,
                 'nama_mahasiswa' => $reviewer_satu ? $reviewer_satu->p_reviewProposal->proposal_ta->r_mahasiswa->nama : null,
                 'nim_mahasiswa' => $reviewer_satu ? $reviewer_satu->p_reviewProposal->proposal_ta->r_mahasiswa->nim : null,
                 'judul' => $reviewer_satu ? $reviewer_satu->p_reviewProposal->proposal_ta->judul : null,
@@ -329,7 +339,7 @@ class PenugasanReviewController extends Controller
 
         debug($merged_data);
 
-        return view('admin.content.pengurusKbk.Hasil_Review', compact('merged_data', 'data_review_proposal_ta'));
+        return view('admin.content.pengurusKbk.Hasil_Review', compact('data_ta', 'merged_data', 'data_review_proposal_ta'));
     }
 
     function getCariNomor()

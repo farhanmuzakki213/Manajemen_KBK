@@ -28,4 +28,21 @@ class DosenPengampuMatkulDetail extends Model
             ->useLogName('DosenPengampuMatkulDetail')
             ->dontSubmitEmptyLogs();
     }
+    public function r_matkulKbk()
+    {
+        // Menggunakan relasi yang sesuai dengan struktur yang sesuai
+        return $this->belongsTo(MatKulKbk::class, 'matkul_kbk_id');
+    }
+
+    public function r_dosen_matkul()
+    {
+        // Menggunakan relasi yang sesuai dengan struktur yang sesuai
+        return $this->belongsTo(DosenPengampuMatkul::class, 'dosen_matkul_id');
+    }
+
+    public function r_kelas()
+    {
+        // Menggunakan relasi yang sesuai dengan struktur yang sesuai
+        return $this->belongsTo(Kelas::class, 'kelas_id');
+    }
 }

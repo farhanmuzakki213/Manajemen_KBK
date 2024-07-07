@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\PimpinanJurusan;
 
+use App\Models\Prodi;
 use App\Models\RepRpsUas;
 use App\Models\VerRpsUas;
 use App\Models\ThnAkademik;
@@ -9,10 +10,11 @@ use Illuminate\Http\Request;
 use App\Models\PimpinanJurusan;
 use App\Models\ProposalTAModel;
 use Illuminate\Support\Facades\DB;
+use App\Models\DosenPengampuMatkul;
 use App\Http\Controllers\Controller;
-use App\Models\Prodi;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ReviewProposalTAModel;
+use App\Models\DosenPengampuMatkulDetail;
 use App\Models\ReviewProposalTaDetailPivot;
 
 
@@ -367,36 +369,36 @@ class KajurController extends Controller
         // dd($banyak_berita);
 
         $kbk = RepRpsUas::join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
-        ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
+            ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
             ->select(DB::raw("jenis_kbk.jenis_kbk as jenis_kbk"))
             ->where('type', '=', '0')
             ->groupBy('jenis_kbk.jenis_kbk')
             ->pluck('jenis_kbk');
 
-        $data_ver_rps = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas')
+        $data_ver_rps = VerRpsUas::with('r_pengurus.r_dosen', 'r_rep_rps_uas')
             ->whereHas('r_rep_rps_uas', function ($query) {
-                $query->where('type', '=', '0'); 
+                $query->where('type', '=', '0');
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
 
-            $data = [
-                'banyak_pengunggahan_smt' => $banyak_pengunggahan_smt,
-                'banyak_verifikasi_smt' => $banyak_verifikasi_smt,
-                'banyak_berita_smt' => $banyak_berita_smt,
-                'semester' => $semester,
-                'banyak_pengunggahan_prodi' => $banyak_pengunggahan_prodi,
-                'banyak_verifikasi_prodi' => $banyak_verifikasi_prodi,
-                'banyak_berita_prodi' => $banyak_berita_prodi,
-                'prodi' => $prodi,
-                'banyak_pengunggahan_kbk' => $banyak_pengunggahan_kbk,
-                'banyak_verifikasi_kbk' => $banyak_verifikasi_kbk,
-                'banyak_berita_kbk' => $banyak_berita_kbk,
-                'kbk' => $kbk,
-                'data_ver_rps' => $data_ver_rps,
-            ];
-        
-            return view('admin.content.pimpinanJurusan.GrafikRPS', compact('data'));
+        $data = [
+            'banyak_pengunggahan_smt' => $banyak_pengunggahan_smt,
+            'banyak_verifikasi_smt' => $banyak_verifikasi_smt,
+            'banyak_berita_smt' => $banyak_berita_smt,
+            'semester' => $semester,
+            'banyak_pengunggahan_prodi' => $banyak_pengunggahan_prodi,
+            'banyak_verifikasi_prodi' => $banyak_verifikasi_prodi,
+            'banyak_berita_prodi' => $banyak_berita_prodi,
+            'prodi' => $prodi,
+            'banyak_pengunggahan_kbk' => $banyak_pengunggahan_kbk,
+            'banyak_verifikasi_kbk' => $banyak_verifikasi_kbk,
+            'banyak_berita_kbk' => $banyak_berita_kbk,
+            'kbk' => $kbk,
+            'data_ver_rps' => $data_ver_rps,
+        ];
+
+        return view('admin.content.pimpinanJurusan.GrafikRPS', compact('data'));
     }
 
 
@@ -498,35 +500,35 @@ class KajurController extends Controller
         // dd($banyak_berita);
 
         $kbk = RepRpsUas::join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
-        ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
+            ->join('jenis_kbk', 'matkul_kbk.jenis_kbk_id', '=', 'jenis_kbk.id_jenis_kbk')
             ->select(DB::raw("jenis_kbk.jenis_kbk as jenis_kbk"))
             ->where('type', '=', '1')
             ->groupBy('jenis_kbk.jenis_kbk')
             ->pluck('jenis_kbk');
 
-        $data_ver_rps = VerRpsUas:: with('r_pengurus.r_dosen', 'r_rep_rps_uas')
+        $data_ver_rps = VerRpsUas::with('r_pengurus.r_dosen', 'r_rep_rps_uas')
             ->whereHas('r_rep_rps_uas', function ($query) {
-                $query->where('type', '=', '1'); 
+                $query->where('type', '=', '1');
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
 
-            $data = [
-                'banyak_pengunggahan_smt' => $banyak_pengunggahan_smt,
-                'banyak_verifikasi_smt' => $banyak_verifikasi_smt,
-                'banyak_berita_smt' => $banyak_berita_smt,
-                'semester' => $semester,
-                'banyak_pengunggahan_prodi' => $banyak_pengunggahan_prodi,
-                'banyak_verifikasi_prodi' => $banyak_verifikasi_prodi,
-                'banyak_berita_prodi' => $banyak_berita_prodi,
-                'prodi' => $prodi,
-                'banyak_pengunggahan_kbk' => $banyak_pengunggahan_kbk,
-                'banyak_verifikasi_kbk' => $banyak_verifikasi_kbk,
-                'banyak_berita_kbk' => $banyak_berita_kbk,
-                'kbk' => $kbk,
-                'data_ver_rps' => $data_ver_rps,
-            ];
-            
+        $data = [
+            'banyak_pengunggahan_smt' => $banyak_pengunggahan_smt,
+            'banyak_verifikasi_smt' => $banyak_verifikasi_smt,
+            'banyak_berita_smt' => $banyak_berita_smt,
+            'semester' => $semester,
+            'banyak_pengunggahan_prodi' => $banyak_pengunggahan_prodi,
+            'banyak_verifikasi_prodi' => $banyak_verifikasi_prodi,
+            'banyak_berita_prodi' => $banyak_berita_prodi,
+            'prodi' => $prodi,
+            'banyak_pengunggahan_kbk' => $banyak_pengunggahan_kbk,
+            'banyak_verifikasi_kbk' => $banyak_verifikasi_kbk,
+            'banyak_berita_kbk' => $banyak_berita_kbk,
+            'kbk' => $kbk,
+            'data_ver_rps' => $data_ver_rps,
+        ];
+
         return view('admin.content.pimpinanJurusan.GrafikUAS', compact('data'));
     }
 
@@ -584,20 +586,197 @@ class KajurController extends Controller
     }
 
 
+    // public function RepRPSJurusan()
+    // {
+    //     $data_rep_rps = VerRpsUas::with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_smt_thnakd')
+    //         ->whereHas('r_rep_rps_uas.r_smt_thnakd', function ($query) {
+    //             $query->where('status_smt_thnakd', '=', '1');
+    //         })
+    //         ->whereHas('r_rep_rps_uas', function ($query) {
+    //             $query->where('type', '=', '0');
+    //         })
+    //         ->orderByDesc('id_ver_rps_uas')
+    //         ->get();
+
+
+    //         $data_rep_rps_detail = DosenPengampuMatkulDetail::with([
+    //             'r_matkulKbk.r_matkul',
+    //             'r_dosen_matkul.r_dosen',
+    //             'r_kelas'
+    //         ])
+    //         ->orderByDesc('dosen_matkul_id')
+    //         ->get();
+    //     //dd($data_rep_rps);
+    //     return view('admin.content.pimpinanJurusan.rep_RPS_jurusan', compact('data_rep_rps', 'data_rep_rps_detail'));
+    // }
+
+
+
+    //     public function RepRPSJurusan()
+    // {
+    //     $data_rep_rps = VerRpsUas::with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_smt_thnakd')
+    //         ->whereHas('r_rep_rps_uas.r_smt_thnakd', function ($query) {
+    //             $query->where('status_smt_thnakd', '=', '1');
+    //         })
+    //         ->whereHas('r_rep_rps_uas', function ($query) {
+    //             $query->where('type', '=', '0');
+    //         })
+    //         ->orderBy('id_ver_rps_uas')
+    //         ->get();
+
+    //     $data_rep_rps_detail = DosenPengampuMatkulDetail::with([
+    //         'r_matkulKbk.r_matkul',
+    //         'r_dosen_matkul.r_dosen',
+    //         'r_matkulKbk.r_kurikulum.r_prodi',
+    //         'r_kelas'
+    //     ])
+    //     ->orderBy('dosen_matkul_id')
+    //     ->get();
+
+    //     // Menggabungkan data dalam satu array atau koleksi
+    //     $merged_data = [];
+
+    //     // Ambil data dari VerRpsUas untuk yang sudah diupload dan diverifikasi
+    //     foreach ($data_rep_rps as $item) {
+    //         $dosen_upload = optional($item->r_dosen_matkul)->r_dosen ? $item->r_dosen_matkul->r_dosen->nama_dosen : '-';
+
+    //         $merged_data[] = [
+    //             'id' => $item->id_ver_rps_uas,
+    //             'kode_matkul' => optional($item->r_rep_rps_uas->r_matkulKbk->r_matkul)->nama_matkul ?? '-',
+    //             'semester' => optional($item->r_rep_rps_uas->r_matkulKbk->r_matkul)->semester ?? '-',
+    //             'dosen_upload' =>  $dosen_upload,
+    //             'prodi' => optional($item->r_rep_rps_uas->r_matkulKbk->r_kurikulum->r_prodi)->prodi ?? '-',
+    //             'dosen_verifikasi' => optional($item->r_pengurus->r_dosen)->nama_dosen ?? '-',
+    //             'status_verifikasi' => $item->status_verifikasi == 0 ? 'Tidak Diverifikasi' : 'Diverifikasi',
+    //             'aksi' => 'Aksi dari Rep RPS' // Sesuaikan dengan aksi yang sesuai
+    //         ];
+    //     }
+
+    //     // Ambil data dari DosenPengampuMatkulDetail untuk yang belum mengupload file
+    //     foreach ($data_rep_rps_detail as $item) {
+    //         if ($item->r_dosen_matkul && $item->r_dosen_matkul->r_dosen) {
+    //             // Periksa apakah sudah ada data dengan id_ver_rps_uas yang sama dalam merged_data
+    //             $already_added = collect($merged_data)->contains('id', $item->dosen_matkul_id);
+
+    //             // Jika belum ada dalam merged_data, tambahkan data dari DosenPengampuMatkulDetail
+    //             if (!$already_added) {
+    //                 $merged_data[] = [
+    //                     'id' => $item->dosen_matkul_id,
+    //                     'kode_matkul' => optional($item->r_matkulKbk->r_matkul)->nama_matkul ?? '-',
+    //                     'semester' => '-', // Tidak ada semester dalam model DosenPengampuMatkulDetail
+    //                     'dosen_upload' => $item->r_dosen_matkul->r_dosen->nama_dosen,
+    //                     'prodi' => optional($item->r_matkulKbk->r_kurikulum->r_prodi)->prodi ?? '-',
+    //                     'dosen_verifikasi' => '-', // Kosongkan karena data dari DosenPengampuMatkulDetail belum tentu diverifikasi
+    //                     'status_verifikasi' => 'Belum Upload', // Tambahkan status khusus untuk belum diupload
+    //                     'aksi' => 'Aksi dari Dosen Pengampu' // Sesuaikan dengan aksi yang sesuai
+    //                 ];
+    //             }
+    //         }
+    //     }
+
+    //     return view('admin.content.pimpinanJurusan.rep_RPS_jurusan', compact('merged_data'));
+    // }   
+
     public function RepRPSJurusan()
     {
-        $data_rep_rps = VerRpsUas::with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_smt_thnakd')
-            ->whereHas('r_rep_rps_uas.r_smt_thnakd', function ($query) {
-                $query->where('status_smt_thnakd', '=', '1');
-            })
-            ->whereHas('r_rep_rps_uas', function ($query) {
-                $query->where('type', '=', '0');
-            })
-            ->orderByDesc('id_ver_rps_uas')
-            ->get();
-        //dd($data_rep_rps);
-        return view('admin.content.pimpinanJurusan.rep_RPS_jurusan', compact('data_rep_rps'));
+        // Ambil data dengan relasi yang diperlukan dan filter
+        $data_ver_rps = VerRpsUas::with([
+            'r_pengurus.r_dosen',
+            'r_rep_rps_uas.r_smt_thnakd',
+            'r_rep_rps_uas.r_dosen_matkul.r_dosen'
+        ])
+        ->whereHas('r_rep_rps_uas.r_smt_thnakd', function ($query) {
+            $query->where('status_smt_thnakd', '=', '1');
+        })
+        ->whereHas('r_rep_rps_uas', function ($query) {
+            $query->where('type', '=', '0');
+        })
+        ->orderByDesc('id_ver_rps_uas')
+        ->get();
+    
+        $data_matkul_kbk = DosenPengampuMatkul::with([
+            'p_matkulKbk.r_matkul',
+            'p_kelas',
+            'r_dosen',
+            'r_smt_thnakd',
+            'p_matkulKbk.r_kurikulum.r_prodi'
+        ])
+        ->whereHas('r_smt_thnakd', function ($query) {
+            $query->where('status_smt_thnakd', '=', '1');
+        })
+        ->orderByDesc('id_dosen_matkul')
+        ->get();
+    
+        $data_rep_rps = RepRpsUas::with([
+            'r_dosen_matkul.r_dosen',
+            'r_matkulKbk.r_matkul',
+            'r_smt_thnakd'
+        ])
+        ->whereHas('r_smt_thnakd', function ($query) {
+            $query->where('status_smt_thnakd', '=', '1');
+        })
+        ->where('type', '=', '0')
+        ->orderByDesc('id_rep_rps_uas')
+        ->get();
+    
+        // Format data dan cocokkan entri
+        $data_array_formatted = collect($data_matkul_kbk)->flatMap(function ($item) use ($data_rep_rps, $data_ver_rps) {
+            return $item->p_matkulKbk->map(function ($matkulKbk) use ($item, $data_rep_rps, $data_ver_rps) {
+                // Cocokkan data Rep RPS
+                $matched_data = $data_rep_rps->firstWhere(function ($data_rep_rps_item) use ($item, $matkulKbk) {
+                    return $item->r_dosen->nama_dosen == optional($data_rep_rps_item->r_dosen_matkul->r_dosen)->nama_dosen
+                        && $item->r_smt_thnakd->smt_thnakd == optional($data_rep_rps_item->r_smt_thnakd)->smt_thnakd
+                        && optional($matkulKbk->r_matkul)->nama_matkul == optional($data_rep_rps_item->r_matkulKbk->r_matkul)->nama_matkul
+                        && optional($matkulKbk->r_matkul)->semester == optional($data_rep_rps_item->r_matkulKbk->r_matkul)->semester;
+                });
+    
+                // Ambil data verifikasi yang sesuai
+                $verifikasi_data = $matched_data ? $data_ver_rps->firstWhere('rep_rps_uas_id', $matched_data->id_rep_rps_uas) : null;
+    
+                // Tentukan status dan dosen verifikasi
+                $status_verifikasi = '-';
+                $dosen_verifikasi = '-';
+                if ($verifikasi_data) {
+                    $dosen_verifikasi = optional($verifikasi_data->r_pengurus->r_dosen)->nama_dosen ?? '-';
+                    $status_verifikasi = match($verifikasi_data->rekomendasi) {
+                        0 => 'Belum diverifikasi',
+                        1 => 'Tidak Layak Pakai',
+                        2 => 'Butuh Revisi',
+                        3 => 'Layak Dipakai',
+                        default => '-',
+                    };
+                }
+    
+                // Kembalikan data yang diformat
+                return [
+                    'nama_dosen' => $item->r_dosen->nama_dosen,
+                    'kode_matkul' => optional($matkulKbk->r_matkul)->nama_matkul,
+                    'smt_thnakd' => $item->r_smt_thnakd->smt_thnakd,
+                    'semester' => optional($matkulKbk->r_matkul)->semester,
+                    'id_rep_rps_uas' => $matched_data->id_rep_rps_uas ?? null,
+                    'file' => $matched_data->file ?? null,
+                    'dosen_upload' => $item->r_dosen->nama_dosen,
+                    'prodi' => optional($matkulKbk->r_kurikulum->r_prodi)->prodi,
+                    'dosen_verifikasi' => $dosen_verifikasi,
+                    'status_verifikasi' => $status_verifikasi,
+                    'aksi' => 'Aksi dari Rep RPS',
+                ];
+            });
+        });
+    
+        $result = $data_array_formatted->toArray();
+    
+        debug($result);
+    
+        return view('admin.content.pimpinanJurusan.rep_RPS_jurusan', compact('data_ver_rps', 'result'));
     }
+    
+    
+
+    
+
+
+
 
     public function RepSoalUASJurusan()
     {

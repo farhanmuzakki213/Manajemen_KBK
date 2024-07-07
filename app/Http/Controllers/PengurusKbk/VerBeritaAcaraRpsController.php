@@ -101,6 +101,7 @@ class VerBeritaAcaraRpsController extends Controller
         $kajur = PimpinanJurusan::where('jurusan_id', $pengurus_kbk->r_dosen->jurusan_id)->first();
         debug($kajur);
         $kaprodi = PimpinanProdi::where('prodi_id', $selectedProdiId)->first();
+        
 
         $data_ver_rps = VerRpsUas::with([
             'r_pengurus',

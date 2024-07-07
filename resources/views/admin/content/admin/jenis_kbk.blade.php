@@ -83,17 +83,21 @@
                                                 <th>{{ $data->id_jenis_kbk }}</th>
                                                 <th>{{ $data->jenis_kbk }}</th>
                                                 <th>{{ $data->deskripsi }}</th>
-                                                <th>
+                                                <th style="width: 10%;">
+                                                    <div class="row">
                                                     <a href="{{ route('jenis_kbk.edit', ['id' => $data->id_jenis_kbk]) }}"
-                                                        class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
+                                                        class="btn btn-primary mb-2 d-flex align-items-center"><span class="bi bi-pencil-square">Edit</span></a>
                                                     <a data-bs-toggle="modal"
                                                         data-bs-target="#staticBackdrop{{ $data->id_jenis_kbk }}"
-                                                        class="btn btn-danger"><i class="bi bi-trash"></i></a>
-                                                    {{-- <a data-bs-toggle="modal"
-                                                        data-bs-target="#detail
-                                                        class="btn btn-secondary"><i class="bi bi-three-dots-vertical"></i></a> --}}
+                                                        class="btn btn-danger mb-2 d-flex align-items-center"><span class="bi bi-trash">Hapus</span></a>
+                                                        <a data-bs-toggle="modal"
+                                                        data-bs-target="#detail{{ $data->id_jenis_kbk }}"
+                                                        class="btn btn-secondary mb-2 d-flex align-items-center"><span
+                                                            class="bi bi-three-dots-vertical">Detail</span></a>
+                                                        </div>
                                                 </th>
                                             </tr>
+                                            
                                             {{-- Modal Konfirmasi hapus data --}}
                                             <div class="modal fade" id="staticBackdrop{{ $data->id_jenis_kbk }}"
                                                 data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -128,39 +132,36 @@
                                                 </div>
                                             </div>
 
-                                            {{-- Modal Detail Tabel --}}
-                                            <div class="modal fade" id="detail" tabindex="-1"
-                                                aria-labelledby="detailLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h1 class="modal-title fs-5" id="detailLabel">New message
-                                                            </h1>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Close"></button>
+                                             {{-- Modal Detail Tabel --}}
+                                        <div class="modal fade" id="detail{{ $data->id_jenis_kbk }}" tabindex="-1"
+                                            aria-labelledby="detailLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header bg-primary text-white">
+                                                        <h5 class="modal-title" id="detailLabel">Detail Data KBK</h5>
+                                                        <button type="button" class="btn-close btn-close-white"
+                                                            data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="mb-3">
+                                                            <label for="kode_matkul" class="col-form-label">Nama KBK</label>
+                                                            <input type="text" class="form-control" id="kode_matkul"
+                                                                value="{{ $data->jenis_kbk }}" readonly>
                                                         </div>
-                                                        <div class="modal-body">
-                                                            <form>
-                                                                <div class="mb-3">
-                                                                    <label for="recipient-name"
-                                                                        class="col-form-label">Recipient:</label>
-                                                                    <input type="text" class="form-control"
-                                                                        id="recipient-name">
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="message-text"
-                                                                        class="col-form-label">Message:</label>
-                                                                    <textarea class="form-control" id="message-text"></textarea>
-                                                                </div>
-                                                            </form>
+                                                        <div class="mb-3">
+                                                            <label for="Judul" class="form-label">Deskripsi</label>
+                                                            <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" readonly>{{ $data->deskripsi }}</textarea>
                                                         </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-primary"
-                                                                data-bs-dismiss="modal">Close</button>
-                                                        </div>
+                                                        
+
+                                                        
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-primary"
+                                                            data-bs-dismiss="modal">Close</button>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
                                         @endforeach
                                     </tbody>
                                 </table>

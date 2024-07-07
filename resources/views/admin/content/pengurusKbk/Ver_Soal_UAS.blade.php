@@ -179,7 +179,7 @@
                                                             class="bi bi-file-earmark-arrow-down"></i>FileUas</a>
                                                     <a data-bs-toggle="modal"
                                                         data-bs-target="#detail{{ $data_ver->id_ver_rps_uas }}"
-                                                        class="btn btn-primary mb-2 d-flex align-items-center"><i
+                                                        class="btn btn-secondary mb-2 d-flex align-items-center"><i
                                                             class="bi bi-three-dots-vertical"></i>Detail</a>
                                                     <a data-bs-toggle="modal"
                                                         data-bs-target="#staticBackdrop{{ $data_ver->id_ver_rps_uas }}"
@@ -229,12 +229,10 @@
                                             aria-labelledby="detailLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title fs-5" id="detailLabel">Detail
-                                                            Verifikasi
-                                                        </h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
+                                                    <div class="modal-header bg-primary text-white">
+                                                        <h5 class="modal-title" id="detailLabel">Detail Verifikasi</h5>
+                                                        <button type="button" class="btn-close btn-close-white"
+                                                            data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <form>
