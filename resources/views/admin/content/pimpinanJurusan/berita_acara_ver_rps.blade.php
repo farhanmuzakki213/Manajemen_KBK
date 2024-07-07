@@ -33,7 +33,7 @@
         <div class="card">
             <div class="card-body">
                 <!-- Page Heading -->
-                <h5 class="card-title fw-semibold mb-4">Berita Acara Verifikasi Soal UAS</h5>
+                <h5 class="card-title fw-semibold mb-4">Berita Acara Verifikasi Rps</h5>
                 @if (Session::has('success'))
                     <div id="delay" class="alert alert-success" role="alert">
                         {{ Session::get('success') }}

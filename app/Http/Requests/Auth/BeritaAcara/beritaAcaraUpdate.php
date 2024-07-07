@@ -25,8 +25,6 @@ class beritaAcaraUpdate extends FormRequest
             'id_berita_acara' => 'required|integer',
             'file_berita_acara' => 'sometimes|required|mimes:pdf',
             'tanggal_upload' => 'required|date_format:Y-m-d H:i:s',
-            'ver_rps_uas_ids' => 'required|array',
-            'ver_rps_uas_ids.*' => 'required|string',
         ];
     }
 }

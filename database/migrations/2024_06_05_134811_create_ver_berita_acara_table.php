@@ -16,7 +16,7 @@ return new class extends Migration
             $table->bigInteger('kajur');
             $table->bigInteger('kaprodi');
             $table->bigInteger('jenis_kbk_id');
-            $table->string('file_berita_acara');
+            $table->string('file_berita_acara')->nullable();
             $table->enum('Status_dari_kaprodi',  ['0', '1', '2', '3'])->default('0')->comment('0: Diajukan, 1: Ditolak, 2: Direvisi, 3: Diterima');
             $table->enum('Status_dari_kajur', ['0', '1'])->default('0')->comment('0: Tidak Diketahui, 1: Di Ketahui');
             $table->enum('type', ['0', '1'])->comment('0: RPS, 1: UAS');

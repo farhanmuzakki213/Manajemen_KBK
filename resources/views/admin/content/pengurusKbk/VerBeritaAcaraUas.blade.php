@@ -64,18 +64,18 @@
                                 @can('pengurusKbk-download BeritaAcaraUas')
                                     <!-- Print Button -->
                                     <a href="{{ route('cetak_uas_berita_acara.download', ['prodi_id' => $selectedProdiId]) }}"
-                                        class="btn btn-primary d-flex align-items-center">
+                                        class="btn btn-primary d-flex align-items-center" id="refreshButton">
                                         <i class="bi bi-box-arrow-in-up me-2"></i>Cetak
                                     </a>
                                 @endcan
 
-                                @can('pengurusKbk-create BeritaAcaraUas')
+                                {{-- @can('pengurusKbk-create BeritaAcaraUas')
                                     <!-- Upload Button -->
                                     <a href="{{ route('upload_uas_berita_acara.create') }}"
                                         class="btn btn-primary d-flex align-items-center">
                                         <i class="ti ti-upload me-2"></i>Upload Berita
                                     </a>
-                                @endcan
+                                @endcan --}}
 
 
                             </div>
@@ -378,12 +378,12 @@
                                                 <th>{{ optional(optional($data->r_pimpinan_jurusan)->r_jurusan)->jurusan }}
                                                 </th>
                                                 <th>{{ optional($data->r_jenis_kbk)->jenis_kbk }}</th>
-                                                <th style="width: 10%;">
+                                                <th style="width: 13.2%;">
                                                     <div class="row">
                                                         @can('pengurusKbk-update BeritaAcaraUas')
                                                             <a href="{{ route('upload_uas_berita_acara.edit', ['id' => $data->id_berita_acara]) }}"
                                                                 class="btn btn-primary mb-2 d-flex align-items-center"><i
-                                                                    class="bi bi-pencil-square"></i>Revisi</a>
+                                                                    class="bi bi-pencil-square"></i>Upload File</a>
                                                         @endcan
                                                         @can('pengurusKbk-delete BeritaAcaraUas')
                                                             <a data-bs-toggle="modal"
@@ -448,6 +448,13 @@
     <script src="{{ asset('backend/assets/js/jquery3-1-1.js') }}"></script>
     <script src="{{ asset('backend/assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('backend/assets/js/multi-dropdown.js') }}"></script>
+    <script>
+        document.getElementById('refreshButton').addEventListener('click', function() {
+            setTimeout(function() {
+                location.reload();
+            }, 3000); // Timer 4 detik
+        });
+    </script>
     <script>
         setTimeout(function() {
             var element = document.getElementById('delay');

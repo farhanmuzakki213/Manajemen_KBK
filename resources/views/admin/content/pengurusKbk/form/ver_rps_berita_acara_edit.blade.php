@@ -31,32 +31,11 @@
                                     <label for="file_berita_acara" class="form-label">Upload File Berita Acara Rps</label>
                                     <input type="file" class="form-control" id="file_berita_acara"
                                         name="file_berita_acara">
+                                        <small>Pastikan upload file berita acara yang sudah ditanda tangan</small>
                                     @error('file_berita_acara')
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>
-                                {{-- @selected( old('ver_rps_uas_ids', $data_berita_acara->id_berita_acara) == $data['id_ver_rps_uas']) --}}
-                                <div class="mb-3">
-                                    <label for="ver_rps_uas_ids[]" class="form-label">Mata Kuliah</label>
-                                    <select name="ver_rps_uas_ids[]" class="form-control selectpicker" multiple data-live-search="true">
-                                        <option value="" disabled selected>Pilih Mata Kuliah VERIFIKASI</option>
-                                        @if (count($data_matkul) > 0)
-                                            @php
-                                                $selectedIds = $data_berita_acara->p_ver_rps_uas->pluck('id_ver_rps_uas')->toArray();
-                                            @endphp
-                                            @foreach ($data_matkul as $data)
-                                                <option value="{{ $data['id_ver_rps_uas'] }}" {{ in_array($data['id_ver_rps_uas'], $selectedIds) ? 'selected' : '' }}>
-                                                    {{ $data['kode_matkul'] }} || {{ $data['nama_matkul'] }}
-                                                </option>
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                    @error('ver_rps_uas_ids[]')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </div>
-                                
-
                                 <div class="col-5 mb-3">
                                     <div class="input-group tanggal_upload">
                                         <input type="hidden" class="form-control" id="tanggal_upload" name="tanggal_upload"

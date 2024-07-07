@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title fw-semibold mb-4">Grafik dan Tabel Pengunggahan dan Verifikasi RPS</h5>
+                <h5 class="card-title fw-semibold mb-4">Grafik dan Tabel Pengunggahan dan Verifikasi Soal UAS</h5>
                 <div class="container-fluid">
                     <div>
                         <select id="filterType">
@@ -185,7 +185,7 @@
                 tooltip: {
                     y: {
                         formatter: function (val) {
-                            return parseInt(val) + " RPS";
+                            return parseInt(val) + " Soal UAS";
                         }
                     }
                 }

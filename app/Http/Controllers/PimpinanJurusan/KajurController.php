@@ -879,116 +879,108 @@ class KajurController extends Controller
     public function RepRPSJurusan()
     {
         $kajur = $this->getDosen();
-        $data_rep_rps = VerRpsUas::with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_smt_thnakd')
-            ->whereHas('r_rep_rps_uas.r_smt_thnakd', function ($query) {
-                $query->where('status_smt_thnakd', '=', '1');
-            })
-            ->whereHas('r_rep_rps_uas.r_matkulKbk.r_matkul.r_kurikulum.r_prodi', function ($query) use ($kajur) {
-                $query->where('jurusan_id', '=', $kajur->jurusan_id);
-            })
-            ->whereHas('r_rep_rps_uas', function ($query) {
-                $query->where('type', '=', '0');
+        $data_ver_rps = VerRpsUas::with([
+            'r_pengurus',
+            'r_pengurus.r_dosen',
+            'r_rep_rps_uas',
+            'r_rep_rps_uas.r_smt_thnakd',
+            'r_rep_rps_uas.r_matkulKbk'
+        ])
+            ->where(function ($query) use ($kajur) {
+                $query->whereHas('r_rep_rps_uas', function ($subQuery) use ($kajur) {
+                    $subQuery->whereHas('r_matkulKbk.r_matkul.r_kurikulum.r_prodi', function ($nestedQuery) use ($kajur) {
+                        $nestedQuery->where('jurusan_id', $kajur->jurusan_id);
+                    })
+                        ->whereHas('r_smt_thnakd', function ($nestedQuery) {
+                            $nestedQuery->where('status_smt_thnakd', '=', '1');
+                        })
+                        ->where('type', '=', '0');
+                });
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
-
-        //dd($data_rep_rps);
-        return view('admin.content.pimpinanJurusan.rep_RPS_jurusan', compact('data_rep_rps'));
-        // Ambil data dengan relasi yang diperlukan dan filter
-        $data_ver_rps = VerRpsUas::with([
-            'r_pengurus.r_dosen',
-            'r_rep_rps_uas.r_smt_thnakd',
-            'r_rep_rps_uas.r_dosen_matkul.r_dosen'
-        ])
-        ->whereHas('r_rep_rps_uas.r_smt_thnakd', function ($query) {
-            $query->where('status_smt_thnakd', '=', '1');
-        })
-        ->whereHas('r_rep_rps_uas', function ($query) {
-            $query->where('type', '=', '0');
-        })
-        ->orderByDesc('id_ver_rps_uas')
-        ->get();
-    
+        debug($data_ver_rps->toArray());
         $data_matkul_kbk = DosenPengampuMatkul::with([
-            'p_matkulKbk.r_matkul',
-            'p_kelas',
-            'r_dosen',
-            'r_smt_thnakd',
-            'p_matkulKbk.r_kurikulum.r_prodi'
+            'p_matkulKbk.r_matkul', 'p_kelas', 'r_dosen', 'r_smt_thnakd', 'p_matkulKbk.r_matkul.r_kurikulum.r_prodi'
         ])
-        ->whereHas('r_smt_thnakd', function ($query) {
-            $query->where('status_smt_thnakd', '=', '1');
-        })
-        ->orderByDesc('id_dosen_matkul')
-        ->get();
-    
-        $data_rep_rps = RepRpsUas::with([
-            'r_dosen_matkul.r_dosen',
-            'r_matkulKbk.r_matkul',
-            'r_smt_thnakd'
-        ])
-        ->whereHas('r_smt_thnakd', function ($query) {
-            $query->where('status_smt_thnakd', '=', '1');
-        })
-        ->where('type', '=', '0')
-        ->orderByDesc('id_rep_rps_uas')
-        ->get();
-    
-        // Format data dan cocokkan entri
-        $data_array_formatted = collect($data_matkul_kbk)->flatMap(function ($item) use ($data_rep_rps, $data_ver_rps) {
-            return $item->p_matkulKbk->map(function ($matkulKbk) use ($item, $data_rep_rps, $data_ver_rps) {
-                // Cocokkan data Rep RPS
-                $matched_data = $data_rep_rps->firstWhere(function ($data_rep_rps_item) use ($item, $matkulKbk) {
-                    return $item->r_dosen->nama_dosen == optional($data_rep_rps_item->r_dosen_matkul->r_dosen)->nama_dosen
-                        && $item->r_smt_thnakd->smt_thnakd == optional($data_rep_rps_item->r_smt_thnakd)->smt_thnakd
-                        && optional($matkulKbk->r_matkul)->nama_matkul == optional($data_rep_rps_item->r_matkulKbk->r_matkul)->nama_matkul
-                        && optional($matkulKbk->r_matkul)->semester == optional($data_rep_rps_item->r_matkulKbk->r_matkul)->semester;
-                });
-    
-                // Ambil data verifikasi yang sesuai
-                $verifikasi_data = $matched_data ? $data_ver_rps->firstWhere('rep_rps_uas_id', $matched_data->id_rep_rps_uas) : null;
-    
-                // Tentukan status dan dosen verifikasi
-                $status_verifikasi = '-';
-                $dosen_verifikasi = '-';
-                if ($verifikasi_data) {
-                    $dosen_verifikasi = optional($verifikasi_data->r_pengurus->r_dosen)->nama_dosen ?? '-';
-                    $status_verifikasi = match($verifikasi_data->rekomendasi) {
-                        0 => 'Belum diverifikasi',
-                        1 => 'Tidak Layak Pakai',
-                        2 => 'Butuh Revisi',
-                        3 => 'Layak Dipakai',
-                        default => '-',
-                    };
+            ->whereHas('r_smt_thnakd', function ($query) {
+                $query->where('status_smt_thnakd', '=', '1');
+            })
+            ->whereHas('p_matkulKbk.r_matkul.r_kurikulum.r_prodi', function ($query) use ($kajur) {
+                $query->where('jurusan_id', $kajur->jurusan_id);
+            })
+            ->orderByDesc('id_dosen_matkul')
+            ->get();
+
+
+        /* debug($data_matkul_kbk->toArray()); */
+        $data_array = $data_matkul_kbk->flatMap(function ($item) use ($kajur) {
+            return $item->p_matkulKbk->flatMap(function ($matkulKbk) use ($item, $kajur) {
+                $prodi = $matkulKbk->r_matkul->r_kurikulum->r_prodi;
+                if ($prodi->jurusan_id === $kajur->jurusan_id) {
+                    return [[
+                        'nama_dosen' => $item->r_dosen->nama_dosen,
+                        'smt_thnakd' => $item->r_smt_thnakd->smt_thnakd,
+                        'kode_matkul' => optional($matkulKbk->r_matkul)->kode_matkul,
+                        'semester' => optional($matkulKbk->r_matkul)->semester,
+                        'prodi' => optional(optional($matkulKbk->r_matkul)->r_kurikulum)->r_prodi->prodi,
+                    ]];
+                } else {
+                    return [];
                 }
-    
-                // Kembalikan data yang diformat
-                return [
-                    'nama_dosen' => $item->r_dosen->nama_dosen,
-                    'kode_matkul' => optional($matkulKbk->r_matkul)->nama_matkul,
-                    'smt_thnakd' => $item->r_smt_thnakd->smt_thnakd,
-                    'semester' => optional($matkulKbk->r_matkul)->semester,
-                    'id_rep_rps_uas' => $matched_data->id_rep_rps_uas ?? null,
-                    'file' => $matched_data->file ?? null,
-                    'dosen_upload' => $item->r_dosen->nama_dosen,
-                    'prodi' => optional($matkulKbk->r_kurikulum->r_prodi)->prodi,
-                    'dosen_verifikasi' => $dosen_verifikasi,
-                    'status_verifikasi' => $status_verifikasi,
-                    'aksi' => 'Aksi dari Rep RPS',
-                ];
             });
+        })->toArray();
+
+
+
+        debug($data_array);
+        $data_rep_rps = RepRpsUas::with('r_dosen_matkul', 'r_dosen_matkul.r_dosen', 'r_matkulKbk.r_matkul.r_kurikulum.r_prodi', 'r_smt_thnakd')
+            ->whereHas('r_smt_thnakd', function ($query) {
+                $query->where('status_smt_thnakd', '=', '1');
+            })
+            ->whereHas('r_matkulKbk.r_matkul.r_kurikulum.r_prodi', function ($query) use ($kajur) {
+                $query->where('jurusan_id', $kajur->jurusan_id);
+            })
+            ->where('type', '=', '0')
+            ->orderByDesc('id_rep_rps_uas')
+            ->get();
+        debug($data_rep_rps->toArray());
+        $data_array_formatted = collect($data_array)->map(function ($item) {
+            return [
+                'nama_dosen' => $item['nama_dosen'],
+                'smt_thnakd' => $item['smt_thnakd'],
+                'kode_matkul' => $item['kode_matkul'],
+                'semester' => $item['semester'],
+                'prodi' => $item['prodi'],
+            ];
         });
-    
-        $result = $data_array_formatted->toArray();
-    
+        $data_array_gabungan = $data_array_formatted->map(function ($item) use ($data_rep_rps) {
+            $matched_data = $data_rep_rps->first(function ($data_rep_rps_item) use ($item) {
+                return $item['nama_dosen'] == optional($data_rep_rps_item->r_dosen_matkul)->r_dosen->nama_dosen
+                    && $item['smt_thnakd'] == optional($data_rep_rps_item->r_smt_thnakd)->smt_thnakd
+                    && $item['kode_matkul'] == optional(optional($data_rep_rps_item->r_matkulKbk)->r_matkul)->kode_matkul
+                    && $item['semester'] == optional(optional($data_rep_rps_item->r_matkulKbk)->r_matkul)->semester
+                    && $item['prodi'] == optional(optional(optional($data_rep_rps_item->r_matkulKbk)->r_matkul)->r_kurikulum)->r_prodi->prodi;
+            });
+            return [
+                'nama_dosen' => $item['nama_dosen'],
+                'kode_matkul' => $item['kode_matkul'],
+                'smt_thnakd' => $item['smt_thnakd'],
+                'semester' => $item['semester'],
+                'prodi' => $item['prodi'],
+                'id_rep_rps_uas' => $matched_data ? $matched_data->id_rep_rps_uas : null,
+                'file' => $matched_data ? $matched_data->file : null,
+            ];
+        });
+        $result = $data_array_gabungan->toArray();
         debug($result);
-    
+
         return view('admin.content.pimpinanJurusan.rep_RPS_jurusan', compact('data_ver_rps', 'result'));
     }
-    
-    
 
-    
+
+
+
 
 
 
@@ -996,20 +988,102 @@ class KajurController extends Controller
     public function RepSoalUASJurusan()
     {
         $kajur = $this->getDosen();
-        $data_rep_soal_uas = VerRpsUas::with('r_pengurus.r_dosen', 'r_rep_rps_uas.r_smt_thnakd')
-            ->whereHas('r_rep_rps_uas.r_smt_thnakd', function ($query) {
-                $query->where('status_smt_thnakd', '=', '1');
-            })
-            ->whereHas('r_rep_rps_uas.r_matkulKbk.r_matkul.r_kurikulum.r_prodi', function ($query) use ($kajur) {
-                $query->where('jurusan_id', '=', $kajur->jurusan_id);
-            })
-            ->whereHas('r_rep_rps_uas', function ($query) {
-                $query->where('type', '=', '1');
+        $data_ver_rps = VerRpsUas::with([
+            'r_pengurus',
+            'r_pengurus.r_dosen',
+            'r_rep_rps_uas',
+            'r_rep_rps_uas.r_smt_thnakd',
+            'r_rep_rps_uas.r_matkulKbk'
+        ])
+            ->where(function ($query) use ($kajur) {
+                $query->whereHas('r_rep_rps_uas', function ($subQuery) use ($kajur) {
+                    $subQuery->whereHas('r_matkulKbk.r_matkul.r_kurikulum.r_prodi', function ($nestedQuery) use ($kajur) {
+                        $nestedQuery->where('jurusan_id', $kajur->jurusan_id);
+                    })
+                        ->whereHas('r_smt_thnakd', function ($nestedQuery) {
+                            $nestedQuery->where('status_smt_thnakd', '=', '1');
+                        })
+                        ->where('type', '=', '1');
+                });
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
-        debug($data_rep_soal_uas);
-        return view('admin.content.pimpinanJurusan.rep_Soal_UAS_jurusan', compact('data_rep_soal_uas'));
+        debug($data_ver_rps->toArray());
+        $data_matkul_kbk = DosenPengampuMatkul::with([
+            'p_matkulKbk.r_matkul', 'p_kelas', 'r_dosen', 'r_smt_thnakd', 'p_matkulKbk.r_matkul.r_kurikulum.r_prodi'
+        ])
+            ->whereHas('r_smt_thnakd', function ($query) {
+                $query->where('status_smt_thnakd', '=', '1');
+            })
+            ->whereHas('p_matkulKbk.r_matkul.r_kurikulum.r_prodi', function ($query) use ($kajur) {
+                $query->where('jurusan_id', $kajur->jurusan_id);
+            })
+            ->orderByDesc('id_dosen_matkul')
+            ->get();
+
+
+        /* debug($data_matkul_kbk->toArray()); */
+        $data_array = $data_matkul_kbk->flatMap(function ($item) use ($kajur) {
+            return $item->p_matkulKbk->flatMap(function ($matkulKbk) use ($item, $kajur) {
+                $prodi = $matkulKbk->r_matkul->r_kurikulum->r_prodi;
+                if ($prodi->jurusan_id === $kajur->jurusan_id) {
+                    return [[
+                        'nama_dosen' => $item->r_dosen->nama_dosen,
+                        'smt_thnakd' => $item->r_smt_thnakd->smt_thnakd,
+                        'kode_matkul' => optional($matkulKbk->r_matkul)->kode_matkul,
+                        'semester' => optional($matkulKbk->r_matkul)->semester,
+                        'prodi' => optional(optional($matkulKbk->r_matkul)->r_kurikulum)->r_prodi->prodi,
+                    ]];
+                } else {
+                    return [];
+                }
+            });
+        })->toArray();
+
+
+
+        debug($data_array);
+        $data_rep_rps = RepRpsUas::with('r_dosen_matkul', 'r_dosen_matkul.r_dosen', 'r_matkulKbk.r_matkul.r_kurikulum.r_prodi', 'r_smt_thnakd')
+            ->whereHas('r_smt_thnakd', function ($query) {
+                $query->where('status_smt_thnakd', '=', '1');
+            })
+            ->whereHas('r_matkulKbk.r_matkul.r_kurikulum.r_prodi', function ($query) use ($kajur) {
+                $query->where('jurusan_id', $kajur->jurusan_id);
+            })
+            ->where('type', '=', '1')
+            ->orderByDesc('id_rep_rps_uas')
+            ->get();
+        debug($data_rep_rps->toArray());
+        $data_array_formatted = collect($data_array)->map(function ($item) {
+            return [
+                'nama_dosen' => $item['nama_dosen'],
+                'smt_thnakd' => $item['smt_thnakd'],
+                'kode_matkul' => $item['kode_matkul'],
+                'semester' => $item['semester'],
+                'prodi' => $item['prodi'],
+            ];
+        });
+        $data_array_gabungan = $data_array_formatted->map(function ($item) use ($data_rep_rps) {
+            $matched_data = $data_rep_rps->first(function ($data_rep_rps_item) use ($item) {
+                return $item['nama_dosen'] == optional($data_rep_rps_item->r_dosen_matkul)->r_dosen->nama_dosen
+                    && $item['smt_thnakd'] == optional($data_rep_rps_item->r_smt_thnakd)->smt_thnakd
+                    && $item['kode_matkul'] == optional(optional($data_rep_rps_item->r_matkulKbk)->r_matkul)->kode_matkul
+                    && $item['semester'] == optional(optional($data_rep_rps_item->r_matkulKbk)->r_matkul)->semester
+                    && $item['prodi'] == optional(optional(optional($data_rep_rps_item->r_matkulKbk)->r_matkul)->r_kurikulum)->r_prodi->prodi;
+            });
+            return [
+                'nama_dosen' => $item['nama_dosen'],
+                'kode_matkul' => $item['kode_matkul'],
+                'smt_thnakd' => $item['smt_thnakd'],
+                'semester' => $item['semester'],
+                'prodi' => $item['prodi'],
+                'id_rep_rps_uas' => $matched_data ? $matched_data->id_rep_rps_uas : null,
+                'file' => $matched_data ? $matched_data->file : null,
+            ];
+        });
+        $result = $data_array_gabungan->toArray();
+        debug($result);
+        return view('admin.content.pimpinanJurusan.rep_Soal_UAS_jurusan', compact('data_ver_rps', 'result'));
     }
 
     /**

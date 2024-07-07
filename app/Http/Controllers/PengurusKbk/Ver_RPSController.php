@@ -88,6 +88,9 @@ class Ver_RPSController extends Controller
                         'smt_thnakd' => $item->r_smt_thnakd->smt_thnakd,
                         'kode_matkul' => optional($matkulKbk->r_matkul)->kode_matkul,
                         'semester' => optional($matkulKbk->r_matkul)->semester,
+                        'prodi' => optional($matkulKbk->r_matkul)->semester,
+                        'dosen_verifikasi' => optional($matkulKbk->r_matkul)->semester,
+                        'status_verifikasi' => optional($matkulKbk->r_matkul)->semester,
                     ];
                 });
             } else {

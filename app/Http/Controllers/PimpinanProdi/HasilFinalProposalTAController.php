@@ -35,6 +35,11 @@ class HAsilFinalProposalTAController extends Controller
     public function index()
     {
         $kaprodi = $this->getDosen();
+        $data_ta = ReviewProposalTAModel::with('proposal_ta.r_pembimbing_satu', 'proposal_ta.r_pembimbing_dua', 'p_reviewDetail.p_reviewProposal')
+        ->whereHas('p_reviewDetail.p_reviewProposal', function ($query) use ($kaprodi) {
+            $query->where('pimpinan_prodi_id', $kaprodi->id_pimpinan_prodi);
+        })
+        ->get();
         $data_review_proposal_ta = ReviewProposalTaDetailPivot::with('p_reviewProposal')
             ->whereHas('p_reviewProposal', function ($query) use ($kaprodi) {
                 $query->where('pimpinan_prodi_id', $kaprodi->id_pimpinan_prodi);
@@ -84,6 +89,8 @@ class HAsilFinalProposalTAController extends Controller
             // Gabungkan data jika ada kedua reviewer
             $merged_data[] = [
                 'penugasan_id' => $penugasan_id,
+                'proposal_ta_id_satu' => $reviewer_satu ? $reviewer_satu->p_reviewProposal->proposal_ta->id_proposal_ta : null,
+                'proposal_ta_id_dua' => $reviewer_dua ? $reviewer_dua->p_reviewProposal->proposal_ta->id_proposal_ta : null,
                 'nama_mahasiswa' => $reviewer_satu ? $reviewer_satu->p_reviewProposal->proposal_ta->r_mahasiswa->nama : null,
                 'nim_mahasiswa' => $reviewer_satu ? $reviewer_satu->p_reviewProposal->proposal_ta->r_mahasiswa->nim : null,
                 'judul' => $reviewer_satu ? $reviewer_satu->p_reviewProposal->proposal_ta->judul : null,
@@ -99,7 +106,7 @@ class HAsilFinalProposalTAController extends Controller
 
         debug($merged_data);
 
-        return view('admin.content.pimpinanProdi.hasil_review_proposal_ta', compact('merged_data', 'data_review_proposal_ta'));
+        return view('admin.content.pimpinanProdi.hasil_review_proposal_ta', compact('merged_data', 'data_review_proposal_ta', 'data_ta'));
     }
 
     /**
