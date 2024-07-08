@@ -1,109 +1,167 @@
 @extends('admin.admin_master')
+
 @section('styles')
-<style>
-    .charts-row {
-        display: flex;
-        justify-content: center; /* Center align charts row */
-        align-items: flex-start;
-        gap: 20px; /* Space between charts */
-        flex-wrap: wrap; /* Ensure charts remain neat on small screens */
-    }
+    <style>
+        .apexcharts-legend {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
 
-    .chart-container {
-        flex: 1 1 30%; /* Each chart uses around 30% of the container's width */
-        min-width: 300px; /* Minimum width to prevent charts from being too small */
-        max-width: 400px; /* Maximum width to prevent charts from stretching too wide */
-        margin: 0 auto; /* Center align the chart container */
-    }
+        .apexcharts-legend-series {
+            width: calc(50% - 10px);
+            display: flex;
+            justify-content: center;
+            margin: 5px;
+        }
 
-    .chart-container h3 {
-        margin-bottom: 20px; /* Space between heading and chart */
-    }
+        .apexcharts-legend-series .apexcharts-legend-item {
+            display: flex;
+            align-items: center;
+            margin-right: 15px; 
+        }
 
-    .card {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        min-height: 100px; /* Ensure cards have consistent height */
-        margin: 0 auto; /* Center align the card */
-    }
-
-    #chartRPS, #chartUAS, #chartTA {
-        width: 100%;
-        height: 300px; /* Adequate height for charts */
-    }
-</style>
+        .apexcharts-legend-series .apexcharts-legend-marker {
+            width: 10px; 
+            height: 10px;
+            margin-right: 5px;    
+        }
+    </style>
 @endsection
+
 @section('admin')
-<div class="container py-5">
-    <div class="charts-row py-5">
-        <!-- RPS Chart -->
-        <div class="chart-container">
-            <h3 class="text-center">RPS</h3>
-            <div id="chartRPS"></div>
-            <div class="row justify-content-center text-center mt-3">
-                <div class="col-md-5 mb-4">
-                    <div class="card bg-primary text-white mx-auto h-100">
-                        <div class="card-body d-flex flex-column justify-content-center">
-                            <h5 class="card-title">Unggahan</h5>
-                            <p class="card-text">{{ $banyak_pengunggahan_rps }}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-5 mb-4">
-                    <div class="card bg-success text-white mx-auto h-100">
-                        <div class="card-body d-flex flex-column justify-content-center">
-                            <h5 class="card-title">Verifikasi</h5>
-                            <p class="card-text">{{ $banyak_verifikasi_rps }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="container-fluid">
+    <div class="card">
+        <div class="container-fluid">
+            <div class="container-fluid">
+                <div class="card-body">
 
-        <!-- UAS Chart -->
-        <div class="chart-container">
-            <h3 class="text-center">UAS</h3>
-            <div id="chartUAS"></div>
-            <div class="row justify-content-center text-center mt-3">
-                <div class="col-md-5 mb-4">
-                    <div class="card bg-primary text-white mx-auto h-100">
-                        <div class="card-body d-flex flex-column justify-content-center">
-                            <h5 class="card-title">Unggahan</h5>
-                            <p class="card-text">{{ $banyak_pengunggahan_uas }}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-5 mb-4">
-                    <div class="card bg-success text-white mx-auto h-100">
-                        <div class="card-body d-flex flex-column justify-content-center">
-                            <h5 class="card-title">Verifikasi</h5>
-                            <p class="card-text">{{ $banyak_verifikasi_uas }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    {{-- <h3 class="fw-semibold text-center">Pengunggahan dan Verifikasi</h3> --}}
 
-        <!-- Proposal TA Chart -->
-        <div class="chart-container">
-            <h3 class="text-center">Proposal TA</h3>
-            <div id="chartTA"></div>
-            <div class="row justify-content-center text-center mt-3">
-                <div class="col-md-5 mb-4">
-                    <div class="card bg-primary text-white mx-auto h-100">
-                        <div class="card-body d-flex flex-column justify-content-center">
-                            <h5 class="card-title">Proposal</h5>
-                            <p class="card-text">{{ $jumlah_proposal }}</p>
+                    <div class="row">
+                        <div class="col-lg-8 d-flex align-items-stretch">
+                            <div class="card w-100">
+                                <div class="card-body">
+                                    <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+                                        <div class="mb-3 mb-sm-0">
+
+                                        </div>
+                                        <div>
+
+                                        </div>
+                                    </div>
+                                    <div id="pengurusChart"></div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-4">
+                            
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        
+                                        <div class="row align-items-start">
+                                            
+                                            <div class="col-8">
+                                                
+                                                <h5 class="card-title mb-9 fw-semibold">Unggahan RPS</h5>
+                                                <h4 class="fw-semibold mb-9">{{ $banyak_pengunggahan_rps }}</h4>
+                                                <div class="d-flex align-items-center pb-1"> 
+                                                </div>
+                                                <h5 class="card-title my-9 fw-semibold">Verifikasi RPS</h5>
+                                                <h4 class="fw-semibold">{{ $banyak_verifikasi_rps }}</h4>
+                                               
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="d-flex justify-content-end">
+                                                    <div
+                                                        class="text-white bg-primary rounded-circle p-6 d-flex align-items-center justify-content-center">
+                                                        <i class="ti ti-clipboard fs-6"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="earning"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 mt-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row align-items-start">
+                                            <div class="col-8">
+                                                <h5 class="card-title mb-9 fw-semibold">Unggahan Soal UAS</h5>
+                                                <h4 class="fw-semibold mb-9">{{ $banyak_pengunggahan_uas }}</h4>
+                                                <div class="d-flex align-items-center pb-1">
+                                                </div>
+                                                <h5 class="card-title my-9 fw-semibold">Verifikasi Soal UAS</h5>
+                                                <h4 class="fw-semibold">{{ $banyak_verifikasi_uas }}</h4>
+                                                
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="d-flex justify-content-end">
+                                                    <div
+                                                            class="text-white rounded-circle p-6 d-flex align-items-center justify-content-center" style="background-color: #50B498;">
+                                                            <i class="ti ti-receipt fs-6"></i>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="earning"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 mt-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row align-items-start">
+                                            <div class="col-8">
+                                                <h5 class="card-title mb-9 fw-semibold">Proposal TA</h5>
+                                                <h4 class="fw-semibold mb-9">{{ $jumlah_proposal }}</h4>
+                                                <div class="d-flex align-items-center pb-1">
+                                                </div>
+                                                <h5 class="card-title my-9 fw-semibold">Review Proposal TA</h5>
+                                                <h4 class="fw-semibold">{{ $jumlah_review_proposal }}</h4>
+                                                
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="d-flex justify-content-end">
+                                                    <div
+                                                        class="text-white bg-warning rounded-circle p-6 d-flex align-items-center justify-content-center">
+                                                        <i class="ti ti-school fs-6"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="earning"></div>
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
-                </div>
-                <div class="col-md-5 mb-4">
-                    <div class="card bg-success text-white mx-auto h-100">
-                        <div class="card-body d-flex flex-column justify-content-center">
-                            <h5 class="card-title">Review</h5>
-                            <p class="card-text">{{ $jumlah_review_proposal }}</p>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <!-- RPS Chart -->
+                                <div class="col-lg-4 chart-container">
+                                    <h3 class="text-center">RPS</h3>
+                                    <div id="chartRPS"></div>
+                                </div>
+                                <!-- UAS Chart -->
+                                <div class="col-lg-4 chart-container">
+                                    <h3 class="text-center">UAS</h3>
+                                    <div id="chartUAS"></div>
+                                </div>
+                                <!-- TA Chart -->
+                                <div class="col-lg-4 chart-container">
+                                    <h3 class="text-center">Proposal TA</h3>
+                                    <div id="chartTA"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -111,6 +169,8 @@
         </div>
     </div>
 </div>
+
+
 @endsection
 @section('scripts')
     <!-- Load ApexCharts Library -->
@@ -131,7 +191,138 @@
         var percentProposalTA = @json($percentProposalTA);
         var percentReviewProposalTA = @json($percentReviewProposalTA);
 
-        // Common chart options to ensure consistent appearance
+
+        var barChartOptions = {
+                series: [{
+                        name: "Pengunggahan RPS",
+                        data: [banyakPengunggahanRPS]
+                    },
+                    {
+                        name: "Veifikasi RPS",
+                        data: [banyakVerifikasiRPS]
+                    },
+                    {
+                        name: "Pengunggahan UAS",
+                        data: [banyakPengunggahanUas]
+                    },
+                    {
+                        name: "Veifikasi UAS",
+                        data: [banyakVerifikasiUas]
+                    },
+                    {
+                        name: "Proposal TA",
+                        data: [jumlahProposal]
+                    },
+                    {
+                        name: "Review Proposal TA",
+                        data: [jumlahReviewProposal]
+                    }
+                ],
+                chart: {
+                    type: "bar",
+                    height: 700,
+                    offsetX: -15,
+                    toolbar: {
+                        show: true
+                    },
+                    foreColor: "#adb0bb",
+                    fontFamily: 'inherit',
+                    sparkline: {
+                        enabled: false
+                    },
+                },
+                colors: ["#5D87FF", "#49BEFF", "#50B498", "#9CDBA6", "#FFC700", "#FFF455"],
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: "70%",
+                        borderRadius: [6],
+                        borderRadiusApplication: 'end',
+                        borderRadiusWhenStacked: 'all'
+                    },
+                },
+                markers: {
+                    size: 0
+                },
+                dataLabels: {
+                    enabled: false,
+                },
+                legend: {
+                    show: true,
+                    position: 'bottom',
+                    horizontalAlign: 'left',
+                    floating: false,
+                    offsetY: 10,
+                    offsetX: 0,
+                    itemMargin: {
+                        horizontal: 2,
+                        vertical: 5
+                    },
+                    markers: {
+                        width: 10,
+                        height: 10,
+                        radius: 5
+                    },
+                    formatter: function(seriesName, opts) {
+                        return seriesName; 
+                    }
+                },
+                grid: {
+                    borderColor: "rgba(0,0,0,0.1)",
+                    strokeDashArray: 3,
+                    xaxis: {
+                        lines: {
+                            show: false,
+                        },
+                    },
+                },
+                xaxis: {
+                    type: "category",
+                    categories: ["Data"],
+                    labels: {
+                        style: {
+                            cssClass: "grey--text lighten-2--text fill-color"
+                        },
+                    },
+                },
+                yaxis: {
+                    show: true,
+                    min: 0,
+                    max: Math.max(banyakPengunggahanRPS, banyakVerifikasiRPS, banyakPengunggahanUas,
+                        banyakVerifikasiUas, jumlahProposal, jumlahReviewProposal) + 10 ,
+                    tickAmount: 4,
+                    labels: {
+                        style: {
+                            cssClass: "grey--text lighten-2--text fill-color",
+                        },
+                    },
+                },
+                stroke: {
+                    show: true,
+                    width: 3,
+                    lineCap: "butt",
+                    colors: ["transparent"],
+                },
+                tooltip: {
+                    theme: "light"
+                },
+                responsive: [{
+                    breakpoint: 600,
+                    options: {
+                        plotOptions: {
+                            bar: {
+                                borderRadius: 3,
+                            }
+                        },
+                    }
+                }]
+            };
+
+            
+            var barChart = new ApexCharts(document.querySelector("#pengurusChart"), barChartOptions);
+            barChart.render();
+
+      
         var commonOptionsRPS = {
             chart: {
                 type: 'donut',
@@ -146,9 +337,10 @@
                             show: true,
                             total: {
                                 show: true,
-                                label: 'Verifikasi',
+                                label: 'Total Data',
                                 formatter: function (w) {
-                                    return banyakVerifikasiRPS;
+                                    // return banyakVerifikasiRPS;
+                                    return w.globals.seriesTotals.reduce((a, b) => a + b, 0);
                                 }
                             }
                         }
@@ -158,7 +350,7 @@
             tooltip: {
                 y: {
                     formatter: function (value, { seriesIndex }) {
-                // Custom tooltip text based on the series index
+             
                         if (seriesIndex === 0) {
                             return banyakPengunggahanRPS + ' data';
                         } else if (seriesIndex === 1) {
@@ -171,21 +363,21 @@
             legend: {
                 position: 'bottom'
             },
-            colors: ['#008FFB', '#00E396']
+            colors: ["#5D87FF", "#49BEFF"]
         };
 
-        // Options for RPS Chart
+       
         var optionsRPS = {
             ...commonOptionsRPS,
-            series: [percentUploadedRPS, percentVerifiedRPS],
+            series: [banyakPengunggahanRPS, banyakVerifikasiRPS],
             labels: ['Unggahan', 'Verifikasi']
         };
 
-        // Render RPS Chart
+      
         var chartRPS = new ApexCharts(document.querySelector("#chartRPS"), optionsRPS);
         chartRPS.render();
 
-        // Options for UAS Chart
+      
         var commonOptionsUAS = {
             chart: {
                 type: 'donut',
@@ -200,9 +392,10 @@
                             show: true,
                             total: {
                                 show: true,
-                                label: 'Verifikasi',
+                                label: 'Total Data',
                                 formatter: function (w) {
-                                    return banyakVerifikasiUas;
+                                    // return banyakVerifikasiUas;
+                                    return w.globals.seriesTotals.reduce((a, b) => a + b, 0);
                                 }
                             }
                         }
@@ -212,7 +405,7 @@
             tooltip: {
                 y: {
                     formatter: function (value, { seriesIndex }) {
-                // Custom tooltip text based on the series index
+               
                         if (seriesIndex === 0) {
                             return banyakPengunggahanUas + ' data';
                         } else if (seriesIndex === 1) {
@@ -225,20 +418,20 @@
             legend: {
                 position: 'bottom'
             },
-            colors: ['#008FFB', '#00E396']
+            colors: ["#50B498", "#9CDBA6"]
         };
 
         var optionsUAS = {
             ...commonOptionsUAS,
-            series: [percentUploadedUAS, percentVerifiedUAS],
+            series: [banyakPengunggahanUas, banyakVerifikasiUas],
             labels: ['Unggahan', 'Verifikasi']
         };
 
-        // Render UAS Chart
+      
         var chartUAS = new ApexCharts(document.querySelector("#chartUAS"), optionsUAS);
         chartUAS.render();
 
-        // Options for Proposal TA Chart
+      
         var commonOptionsTA = {
             chart: {
                 type: 'donut',
@@ -253,9 +446,10 @@
                             show: true,
                             total: {
                                 show: true,
-                                label: 'Review',
+                                label: 'Total Data',
                                 formatter: function (w) {
-                                    return jumlahReviewProposal;
+                                    // return jumlahReviewProposal;
+                                    return w.globals.seriesTotals.reduce((a, b) => a + b, 0);
                                 }
                             }
                         }
@@ -265,7 +459,7 @@
             tooltip: {
                 y: {
                     formatter: function (value, { seriesIndex }) {
-                // Custom tooltip text based on the series index
+         
                         if (seriesIndex === 0) {
                             return jumlahProposal + ' data';
                         } else if (seriesIndex === 1) {
@@ -278,18 +472,19 @@
             legend: {
                 position: 'bottom'
             },
-            colors: ['#008FFB', '#00E396']
+            colors: ["#FFC700", "#FFF455"]
         };
 
         var optionsTA = {
             ...commonOptionsTA,
-            series: [percentProposalTA, percentReviewProposalTA],
+            series: [jumlahProposal, jumlahReviewProposal],
             labels: ['Proposal', 'Review']
         };
 
-        // Render Proposal TA Chart
+     
         var chartTA = new ApexCharts(document.querySelector("#chartTA"), optionsTA);
         chartTA.render();
     });
 </script>
+
 @endsection

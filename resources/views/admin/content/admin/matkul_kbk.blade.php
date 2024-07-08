@@ -115,18 +115,18 @@
                                                         @can('admin-update MatkulKbk')
                                                             <a href="{{ route('matkul_kbk.edit', ['id' => $data->id_matkul_kbk]) }}"
                                                                 class="btn btn-primary mb-2 d-flex align-items-center"><span
-                                                                    class="bi bi-pencil-square">Edit</span></a>
+                                                                    class="bi bi-pencil-square"></span>Edit</a>
                                                         @endcan
                                                         @can('admin-delete MatkulKbk')
                                                             <a data-bs-toggle="modal"
                                                                 data-bs-target="#staticBackdrop{{ $data->id_matkul_kbk }}"
                                                                 class="btn btn-danger mb-2 d-flex align-items-center"><span
-                                                                    class="bi bi-trash">Hapus</span></a>
+                                                                    class="bi bi-trash"></span>Hapus</a>
                                                         @endcan
                                                         <a data-bs-toggle="modal"
                                                             data-bs-target="#detail{{ $data->id_matkul_kbk }}"
                                                             class="btn btn-secondary mb-2 d-flex align-items-center"><span
-                                                                class="bi bi-three-dots-vertical">Detail</span></a>
+                                                                class="bi bi-three-dots-vertical"></span>Detail</a>
                                                     </div>
 
                                                 </th>

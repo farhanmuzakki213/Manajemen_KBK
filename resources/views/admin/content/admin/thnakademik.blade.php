@@ -70,7 +70,7 @@
                                                         <a data-bs-toggle="modal"
                                                             data-bs-target="#detail{{ $data->id_smt_thnakd }}"
                                                             class="btn btn-secondary mb-2 d-flex align-items-cente"><span
-                                                                class="bi bi-three-dots-vertical">Detail</span></a>
+                                                                class="bi bi-three-dots-vertical"></span>Detail</a>
                                                     </div>
                                                 </th>
                                             </tr>

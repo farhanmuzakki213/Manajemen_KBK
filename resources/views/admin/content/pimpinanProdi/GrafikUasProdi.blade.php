@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title fw-semibold mb-4">Grafik dan Tabel Pengunggahan dan Verifikasi RPS</h5>
+                <h5 class="card-title fw-semibold mb-4">Grafik dan Tabel Pengunggahan dan Verifikasi UAS</h5>
                 <div class="container-fluid">
                     <div>
                         <select id="filterType">

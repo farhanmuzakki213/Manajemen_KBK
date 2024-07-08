@@ -28,9 +28,9 @@
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
 
                             @can('admin-sinkronData Jurusan')
-                                <a href="{{ route('jurusan.show') }}" class="btn btn-primary mb-2 d-flex align-items-center">
-                                    <i class="ti ti-upload"></i> Ambil Data API
-                                </a>
+                            <a href="{{ route('jurusan.show') }}" class="btn btn-primary mb-2 d-flex align-items-center">
+                                <i class="ti ti-upload"></i> Ambil Data API
+                            </a>
                             @endcan
 
                             {{-- <a href="delete-row" class="btn btn-danger mb-2 d-flex align-items-center">
@@ -68,7 +68,7 @@
                                                         <a data-bs-toggle="modal"
                                                             data-bs-target="#detail{{ $data->id_jurusan }}"
                                                             class="btn btn-secondary mb-2 d-flex align-items-cente"><span
-                                                                class="bi bi-three-dots-vertical">Detail</span></a>
+                                                                class="bi bi-three-dots-vertical"></span>Detail</a>
                                                     </div>
                                                 </th>
                                             </tr>
@@ -110,7 +110,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                </tr>
+                                            </tr>
+
                                         @endforeach
                                     </tbody>
                                 </table>

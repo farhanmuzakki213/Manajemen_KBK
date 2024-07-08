@@ -122,3 +122,13 @@
             </div>
         </div>
     @endsection
+    @section('scripts')
+    <script>
+        setTimeout(function() {
+            var element = document.getElementById('delay');
+            if (element) {
+                element.parentNode.removeChild(element);
+            }
+        }, 5000); // 5000 milliseconds = 5 detik
+    </script>
+@endsection

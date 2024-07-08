@@ -117,17 +117,17 @@
     <div class="row">
                                                     @can('admin-update Matkul')
                                                         <a href="{{ route('matkul.edit', ['id' => $data->id_matkul]) }}"
-                                                            class="btn btn-primary mb-2 d-flex align-items-center"><span class="bi bi-pencil-square">Edit</span></a>
+                                                            class="btn btn-primary mb-2 d-flex align-items-center"><span class="bi bi-pencil-square"></span>Edit</a>
                                                     @endcan
                                                     @can('admin-delete Matkul')
                                                         <a data-bs-toggle="modal"
                                                             data-bs-target="#staticBackdrop{{ $data->id_matkul }}"
-                                                            class="btn btn-danger mb-2 d-flex align-items-center"><span class="bi bi-trash">Hapus</span></a>
+                                                            class="btn btn-danger mb-2 d-flex align-items-center"><span class="bi bi-trash"></span>Hapus</a>
                                                     @endcan
                                                     <a data-bs-toggle="modal"
                                                     data-bs-target="#detail{{ $data->id_matkul }}"
                                                     class="btn btn-secondary mb-2 d-flex align-items-center"><span
-                                                        class="bi bi-three-dots-vertical">Detail</span></a>
+                                                        class="bi bi-three-dots-vertical"></span>Detail</a>
                                                     </div>
 
                                                 </th>

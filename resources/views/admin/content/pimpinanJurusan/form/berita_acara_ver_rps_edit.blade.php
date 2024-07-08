@@ -25,7 +25,7 @@
                                     <input type="hidden" class="form-control" id="Status_dari_kajur" name="Status_dari_kajur"
                                     value="1" readonly>
                                 <div class="mb-3">
-                                    <label for="file_berita_acara" class="form-label">Upload File Berita Acara Uas</label>
+                                    <label for="file_berita_acara" class="form-label">Upload File Berita Acara RPS</label>
                                     <input type="file" class="form-control" id="file_berita_acara"
                                         name="file_berita_acara">
                                     <small>Pastikan upload file berita acara yang sudah anda beri tanda tangan</small>

@@ -132,16 +132,17 @@ class DosenMatkulController extends Controller
     
         // Calculate percentages
         $total_rps = $banyak_pengunggahan_rps + $banyak_verifikasi_rps;
-        // $percentUploaded = $total_rps > 0 ? ($banyak_pengunggahan_rps / $total_rps) * 100 : 0;
-        // $percentVerified = $total_rps > 0 ? ($banyak_verifikasi_rps / $total_rps) * 100 : 0;
-        $percentVerifiedRPS = $banyak_pengunggahan_rps > 0 ? ($banyak_verifikasi_rps / $banyak_pengunggahan_rps) * 100 : 0;
-        $percentUploadedRPS = 100 - $percentVerifiedRPS;
+        $percentUploadedRPS = $total_rps > 0 ? ($banyak_pengunggahan_rps / $total_rps) * 100 : 0;
+        $percentVerifiedRPS = $total_rps > 0 ? ($banyak_verifikasi_rps / $total_rps) * 100 : 0;
+        // $percentVerifiedRPS = $banyak_pengunggahan_rps > 0 ? ($banyak_verifikasi_rps / $banyak_pengunggahan_rps) * 100 : 0;
+        // $percentUploadedRPS = 100 - $percentVerifiedRPS;
     
         $total_uas = $banyak_pengunggahan_uas + $banyak_verifikasi_uas;
-        // $percentUploadedUas = $total_uas > 0 ? ($banyak_pengunggahan_uas / $total_uas) * 100 : 0;
-        // $percentVerifiedUas = $total_uas > 0 ? ($banyak_verifikasi_uas / $total_uas) * 100 : 0;
-        $percentVerifiedUAS = $banyak_pengunggahan_uas > 0 ? ($banyak_verifikasi_uas / $banyak_pengunggahan_uas) * 100 : 0;
-        $percentUploadedUAS = 100 - $percentVerifiedUAS;
+        $percentUploadedUAS = $total_uas > 0 ? ($banyak_pengunggahan_uas / $total_uas) * 100 : 0;
+        $percentVerifiedUAS = $total_uas > 0 ? ($banyak_verifikasi_uas / $total_uas) * 100 : 0;
+        // $percentVerifiedUAS = $banyak_pengunggahan_uas > 0 ? ($banyak_verifikasi_uas / $banyak_pengunggahan_uas) * 100 : 0;
+        // $percentUploadedUAS = 100 - $percentVerifiedUAS;
+        
         debug($banyak_pengunggahan_rps);
         debug($percentVerifiedRPS);
         debug($percentUploadedRPS);

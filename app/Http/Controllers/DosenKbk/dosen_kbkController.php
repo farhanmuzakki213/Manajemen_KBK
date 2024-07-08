@@ -44,34 +44,40 @@ class dosen_kbkController extends Controller
             })
             ->orderBy('id_penugasan', 'desc')
             ->get();
+       
 
         $jumlah_proposal = $data_penugasan->count();
 
-        // $data_review_proposal_ta = ReviewProposalTaDetailPivot::with('p_reviewProposal.reviewer_satu_dosen', 'p_reviewProposal.reviewer_dua_dosen')
-        //     ->whereHas('p_reviewProposal', function ($query) use ($dosenKbk) {
-        //         $query->where('reviewer_satu', $dosenKbk->id_dosen_kbk)
-        //             ->orWhere('reviewer_dua', $dosenKbk->id_dosen_kbk);
-        //     })
-        //     ->orderBy('penugasan_id', 'desc')
-        //     ->get();
-
-        $data_review_proposal_ta = DB::table('review_proposal_ta_detail_pivot')
-            ->join('review_proposal_ta', 'review_proposal_ta.id_penugasan', '=', 'review_proposal_ta_detail_pivot.penugasan_id')
-            ->select(DB::raw("review_proposal_ta_detail_pivot.penugasan_id"))
-            ->where(function ($query) use ($dosenKbk) {
-                $query->where('review_proposal_ta.reviewer_satu', '=', $dosenKbk->id_dosen_kbk)
-                    ->orWhere('review_proposal_ta.reviewer_dua', '=', $dosenKbk->id_dosen_kbk);
+        $data_review_proposal_ta = ReviewProposalTaDetailPivot::with('p_reviewProposal.reviewer_satu_dosen', 'p_reviewProposal.reviewer_dua_dosen')
+            ->whereHas('p_reviewProposal', function ($query) use ($dosenKbk) {
+                $query->where('reviewer_satu', $dosenKbk->id_dosen_kbk)
+                    ->orWhere('reviewer_dua', $dosenKbk->id_dosen_kbk);
             })
             ->orderBy('penugasan_id', 'desc')
             ->get();
 
+        // $data_review_proposal_ta = DB::table('review_proposal_ta_detail_pivot')
+        //     ->join('review_proposal_ta', 'review_proposal_ta.id_penugasan', '=', 'review_proposal_ta_detail_pivot.penugasan_id')
+        //     ->select(DB::raw("review_proposal_ta_detail_pivot.penugasan_id"))
+        //     ->where(function ($query) use ($dosenKbk) {
+        //         $query->where('review_proposal_ta.reviewer_satu', '=', $dosenKbk->id_dosen_kbk)
+        //             ->orWhere('review_proposal_ta.reviewer_dua', '=', $dosenKbk->id_dosen_kbk);
+        //     })
+        //     ->orderBy('penugasan_id', 'desc')
+        //     ->get();
+
 
         $jumlah_review_proposal = $data_review_proposal_ta->count();
 
+       
         // $total_ta = $jumlah_proposal + $jumlah_review_proposal;
 
         $percentReviewProposalTA = $jumlah_proposal > 0 ? ($jumlah_review_proposal / $jumlah_proposal) * 100 : 0;
         $percentProposalTA = 100 - $percentReviewProposalTA;
+
+        // $total_ta = $jumlah_proposal + $jumlah_review_proposal;
+        // $percentReviewProposalTA = $total_ta > 0 ? ($jumlah_review_proposal / $total_ta) * 100 : 0;
+        // $percentProposalTA = $total_ta > 0 ? ($jumlah_proposal / $total_ta) * 100 : 0;
 
         // $data = [
         //     'jumlah_proposal' => $jumlah_proposal,

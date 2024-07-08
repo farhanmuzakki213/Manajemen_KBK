@@ -95,36 +95,21 @@
 
                                                 <th style="width: 10%;">
                                                     <div class="row">
-                                                        <a href="{{ route('jenis_kbk.edit', ['id' => $data->id_jenis_kbk]) }}"
-                                                            class="btn btn-primary mb-2 d-flex align-items-center"><span
-                                                                class="bi bi-pencil-square">Edit</span></a>
-                                                        <a data-bs-toggle="modal"
-                                                            data-bs-target="#staticBackdrop{{ $data->id_jenis_kbk }}"
-                                                            class="btn btn-danger mb-2 d-flex align-items-center"><span
-                                                                class="bi bi-trash">Hapus</span></a>
-                                                        <a data-bs-toggle="modal"
-                                                            data-bs-target="#detail{{ $data->id_jenis_kbk }}"
-                                                            class="btn btn-secondary mb-2 d-flex align-items-center"><span
-                                                                class="bi bi-three-dots-vertical">Detail</span></a>
-                                                    </div>
-
-                                                <th style="width: 10%;">
-                                                    <div class="row">>
                                                         @can('admin-update JenisKbk')
                                                             <a href="{{ route('jenis_kbk.edit', ['id' => $data->id_jenis_kbk]) }}"
                                                                 class="btn btn-primary mb-2 d-flex align-items-center"><span
-                                                                    class="bi bi-pencil-square">Edit</span></a>
+                                                                    class="bi bi-pencil-square"></span>Edit</a>
                                                         @endcan
                                                         @can('admin-delete JenisKbk')
                                                             <a data-bs-toggle="modal"
                                                                 data-bs-target="#staticBackdrop{{ $data->id_jenis_kbk }}"
                                                                 class="btn btn-danger mb-2 d-flex align-items-center"><span
-                                                                    class="bi bi-trash">Hapus</span></a>
+                                                                    class="bi bi-trash"></span>Hapus</a>
                                                         @endcan
                                                         <a data-bs-toggle="modal"
                                                             data-bs-target="#detail{{ $data->id_jenis_kbk }}"
                                                             class="btn btn-secondary mb-2 d-flex align-items-center"><span
-                                                                class="bi bi-three-dots-vertical">Detail</span></a>
+                                                                class="bi bi-three-dots-vertical"></span>Detail</a>
                                                     </div>
 
                                                 </th>

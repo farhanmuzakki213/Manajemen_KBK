@@ -3,7 +3,7 @@
         <div class="row_2 wow fadeInUp" data-wow-delay="0.3s">
             <div class="col-lg-6" style="min-height: 500px;">
                 <div class="position-relative-2 h-100">
-                    <img class="position-absolute-2 w-100 h-100" src="frontend/landing-page/assets/img/about/bingung1.svg"
+                    <img class="position-absolute-2 w-100 h-100" src="frontend/landing-page/assets/img/about/bingung2.svg"
                         style="object-fit: cover; box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);">
                 </div>
             </div>
