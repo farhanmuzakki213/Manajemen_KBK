@@ -142,12 +142,11 @@
                                         <div class="card-body">
                                             <div class="row align-items-start">
                                                 <div class="col-8">
-                                                    <h5 class="card-title mb-9 fw-semibold">Proposal TA</h5>
-                                                    <h4 class="fw-semibold mb-9">{{ $total_jumlah_proposal }}</h4>
-                                                    <div class="d-flex align-items-center pb-1">
-                                                    </div>
                                                     <h5 class="card-title my-9 fw-semibold">Review Proposal TA</h5>
                                                     <h4 class="fw-semibold">{{ $total_jumlah_review_proposal }}</h4>
+                                                    <div class="d-flex align-items-center pb-1">
+                                                    </div>
+                                                   
 
                                                 </div>
                                                 <div class="col-4">
@@ -171,20 +170,16 @@
                             <div class="card-body">
                                 <div class="row">
                                     <!-- RPS Chart -->
-                                    <div class="col-lg-4 chart-container">
+                                    <div class="col-lg-6 chart-container">
                                         <h3 class="text-center">RPS</h3>
                                         <div id="chartRPS"></div>
                                     </div>
                                     <!-- UAS Chart -->
-                                    <div class="col-lg-4 chart-container">
+                                    <div class="col-lg-6 chart-container">
                                         <h3 class="text-center">UAS</h3>
                                         <div id="chartUAS"></div>
                                     </div>
-                                    <!-- TA Chart -->
-                                    <div class="col-lg-4 chart-container">
-                                        <h3 class="text-center">Proposal TA</h3>
-                                        <div id="chartTA"></div>
-                                    </div>
+                                   
                                 </div>
                             </div>
                         </div>
@@ -215,7 +210,6 @@
                 total_banyak_verifikasi_rps: {{ $total_banyak_verifikasi_rps }},
                 total_banyak_pengunggahan_uas: {{ $total_banyak_pengunggahan_uas }},
                 total_banyak_verifikasi_uas: {{ $total_banyak_verifikasi_uas }},
-                total_jumlah_proposal: {{ $total_jumlah_proposal }},
                 total_jumlah_review_proposal: {{ $total_jumlah_review_proposal }}
             };
 
@@ -238,17 +232,13 @@
                         data: [initialData.total_banyak_verifikasi_uas]
                     },
                     {
-                        name: "Proposal TA",
-                        data: [initialData.total_jumlah_proposal]
-                    },
-                    {
                         name: "Review Proposal TA",
                         data: [initialData.total_jumlah_review_proposal]
                     }
                 ],
                 chart: {
                     type: "bar",
-                    height: 700,
+                    height: 600,
                     offsetX: -15,
                     toolbar: {
                         show: true
@@ -259,7 +249,7 @@
                         enabled: false
                     },
                 },
-                colors: ["#5D87FF", "#49BEFF", "#50B498", "#9CDBA6", "#FFC700", "#FFF455"],
+                colors: ["#5D87FF", "#49BEFF", "#50B498", "#9CDBA6", "#FFC700"],
                 plotOptions: {
                     bar: {
                         horizontal: false,
@@ -322,7 +312,6 @@
                         initialData.total_banyak_verifikasi_rps,
                         initialData.total_banyak_pengunggahan_uas,
                         initialData.total_banyak_verifikasi_uas,
-                        initialData.total_jumlah_proposal,
                         initialData.total_jumlah_review_proposal
                     ) + 10,
                     tickAmount: 4,
