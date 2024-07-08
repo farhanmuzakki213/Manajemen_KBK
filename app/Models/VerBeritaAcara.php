@@ -56,12 +56,12 @@ class VerBeritaAcara extends Model
 
     public function r_pimpinan_prodi()
     {
-        return $this->belongsTo(PimpinanProdi::class, 'kajur', 'id_pimpinan_prodi');
+        return $this->belongsTo(PimpinanProdi::class, 'kaprodi', 'id_pimpinan_prodi');
     }
 
     public function r_pimpinan_jurusan()
     {
-        return $this->belongsTo(PimpinanJurusan::class, 'kaprodi', 'id_pimpinan_jurusan');
+        return $this->belongsTo(PimpinanJurusan::class, 'kajur', 'id_pimpinan_jurusan');
     }
 
     public function r_jenis_kbk()

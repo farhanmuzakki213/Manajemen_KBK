@@ -5,7 +5,9 @@ namespace App\Http\Controllers\PimpinanJurusan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Jurusan;
+use App\Models\Pengurus_kbk;
 use App\Models\PimpinanJurusan;
+use App\Models\Prodi;
 use App\Models\VerBeritaAcara;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -36,18 +38,17 @@ class Berita_Ver_RPS_KajurController extends Controller
             'p_ver_rps_uas.r_rep_rps_uas.r_matkulKbk.r_matkul',
             'p_ver_rps_uas.r_pengurus.r_dosen',
             'r_pimpinan_prodi.r_prodi',
-            'r_pimpinan_prodi.r_prodi.r_jurusan',
-            'r_pimpinan_prodi.r_dosen',
             'r_pimpinan_jurusan.r_jurusan',
             'r_pimpinan_jurusan.r_dosen',
             'r_jenis_kbk',
         ])
-            ->where('Status_dari_kaprodi', '=', '1')
             ->where('kajur', $kajur->id_pimpinan_jurusan)
             ->where('type', '=', '0')
             ->get();
             debug($data_berita_acara->toArray());
-        return view('admin.content.pimpinanJurusan.berita_acara_ver_rps', compact('data_berita_acara', 'jurusan'));
+            $pengurus = Pengurus_kbk::with('r_dosen')->get();
+            $prodi = Prodi::get();
+        return view('admin.content.pimpinanJurusan.berita_acara_ver_rps', compact('data_berita_acara', 'jurusan', 'pengurus', 'prodi'));
     }
 
     public function edit(string $id){

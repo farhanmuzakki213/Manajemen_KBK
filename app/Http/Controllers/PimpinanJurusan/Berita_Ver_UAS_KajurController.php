@@ -4,8 +4,10 @@ namespace App\Http\Controllers\PimpinanJurusan;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Pengurus_kbk;
 use App\Models\PimpinanJurusan;
 use App\Models\PimpinanProdi;
+use App\Models\Prodi;
 use App\Models\VerBeritaAcara;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -40,12 +42,12 @@ class Berita_Ver_UAS_KajurController extends Controller
             'r_pimpinan_jurusan.r_dosen',
             'r_jenis_kbk',
         ])
-            ->where('Status_dari_kaprodi', '=', '1')
             ->where('kajur', $kajur->id_pimpinan_jurusan)
             ->where('type', '=', '1')
             ->get();
-
-        return view('admin.content.pimpinanJurusan.berita_acara_ver_uas', compact('data_berita_acara'));
+            $pengurus = Pengurus_kbk::with('r_dosen')->get();
+            $prodi = Prodi::get();
+        return view('admin.content.pimpinanJurusan.berita_acara_ver_uas', compact('data_berita_acara', 'pengurus', 'prodi'));
     }
 
     public function edit(string $id){

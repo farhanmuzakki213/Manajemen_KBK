@@ -109,9 +109,7 @@
                                                 </th>
 
                                                 <th>
-                                                    @foreach ($data->first()->p_ver_rps_uas->unique('pengurus_id') as $data_pengurus)
-                                                        {{ optional($data_pengurus->r_pengurus)->r_dosen->nama_dosen }}
-                                                    @endforeach
+                                                    {{ optional($pengurus->firstWhere('jenis_kbk_id', $data->jenis_kbk_id))->r_dosen->nama_dosen }}
                                                 </th>
                                                 <th>{{ optional($data->r_pimpinan_prodi)->r_prodi->prodi }}
                                                 </th>

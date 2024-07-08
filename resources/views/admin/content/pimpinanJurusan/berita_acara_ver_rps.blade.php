@@ -60,7 +60,6 @@
                                             <th>Kode Matkul</th>
                                             <th>Dosen Upload Berita Acara</th>
                                             <th>Prodi</th>
-                                            <th>Jurusan</th>
                                             <th>Jenis KBK</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -72,7 +71,6 @@
                                             <th>Kode Matkul</th>
                                             <th>Dosen Upload Berita Acara</th>
                                             <th>Prodi</th>
-                                            <th>Jurusan</th>
                                             <th>Jenis KBK</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -110,22 +108,21 @@
                                                 </th>
 
                                                 <th>
-                                                    @foreach ($data->first()->p_ver_rps_uas->unique('pengurus_id') as $data_pengurus)
-                                                        {{ optional($data_pengurus->r_pengurus)->r_dosen->nama_dosen }}
-                                                    @endforeach
+                                                    {{ optional($pengurus->firstWhere('jenis_kbk_id', $data->jenis_kbk_id))->r_dosen->nama_dosen }}
                                                 </th>
-                                                <th>{{ optional($data->r_pimpinan_prodi)->r_prodi->prodi }}
-                                                </th>
-                                                <th>{{ optional(optional($data->r_pimpinan_jurusan)->r_jurusan)->jurusan}}
+                                                <th>{{ optional(optional($data->r_pimpinan_prodi)->r_prodi)->prodi }}
                                                 </th>
                                                 <th>{{ optional($data->r_jenis_kbk)->jenis_kbk }}</th>
                                                 <th style="width: 10%;">
                                                     <div class="row">
-                                                        @can('pimpinanJurusan-update BeritaAcaraRpsKajur')
-                                                            <a href="{{ route('kajur_berita_ver_rps.edit', ['id' => $data->id_berita_acara]) }}"
-                                                                class="btn btn-primary mb-2 d-flex align-items-center"><i
-                                                                    class="bi bi-pencil-square"></i>Upload</a>
-                                                        @endcan
+                                                        @if ($data->Status_dari_kaprodi != 0)
+                                                            @can('pimpinanJurusan-update BeritaAcaraRpsKajur')
+                                                                <a href="{{ route('kajur_berita_ver_rps.edit', ['id' => $data->id_berita_acara]) }}"
+                                                                    class="btn btn-primary mb-2 d-flex align-items-center"><i
+                                                                        class="bi bi-pencil-square"></i>Upload</a>
+                                                            @endcan
+                                                        @endif
+
 
                                                         <a href="{{ asset('storage/uploads/rps/berita_acara/' . $data->file_berita_acara) }}"
                                                             class="btn btn-success mb-2 d-flex align-items-center"

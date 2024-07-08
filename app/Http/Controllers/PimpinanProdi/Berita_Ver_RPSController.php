@@ -4,6 +4,7 @@ namespace App\Http\Controllers\PimpinanProdi;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Pengurus_kbk;
 use App\Models\PimpinanProdi;
 use App\Models\VerBeritaAcara;
 use Illuminate\Support\Facades\Auth;
@@ -49,7 +50,8 @@ class Berita_Ver_RPSController extends Controller
             ->where('type', '=', '0')
             ->get();
             debug($data_berita_acara->toArray());
-        return view('admin.content.pimpinanProdi.berita_acara_ver_rps', compact('data_berita_acara'));
+            $pengurus = Pengurus_kbk::with('r_dosen')->get();
+        return view('admin.content.pimpinanProdi.berita_acara_ver_rps', compact('data_berita_acara', 'pengurus'));
     }
 
     public function edit(string $id)
