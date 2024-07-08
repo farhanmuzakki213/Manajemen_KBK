@@ -123,9 +123,12 @@
                                         <div class="card-body">
                                             <div class="row align-items-start">
                                                 <div class="col-8">
-                                                    <h5 class="card-title my-9 fw-semibold">Review Proposal TA</h4>
-                                                        <h4 class="fw-semibold">{{ $jumlah_review_proposal }}</h4>
-                                                        <div class="d-flex align-items-center pb-1"></div>
+                                                    <h5 class="card-title my-9 fw-semibold">Penugasan Review Proposal TA</h5>
+                                                    <h4 class="fw-semibold">{{ $total_jumlah_proposal }}</h4>
+                                                    <div class="d-flex align-items-center pb-1">
+                                                    </div>
+                                                    <h5 class="card-title my-9 fw-semibold">Review Proposal TA</h5>
+                                                    <h4 class="fw-semibold">{{ $total_jumlah_review_proposal }}</h4>
 
                                                 </div>
                                                 <div class="col-4">
@@ -149,14 +152,19 @@
                             <div class="card-body">
                                 <div class="row">
                                     <!-- RPS Chart -->
-                                    <div class="col-lg-6 chart-container">
+                                    <div class="col-lg-4 chart-container">
                                         <h3 class="text-center">RPS</h3>
                                         <div id="chartRPS"></div>
                                     </div>
                                     <!-- UAS Chart -->
-                                    <div class="col-lg-6 chart-container">
+                                    <div class="col-lg-4 chart-container">
                                         <h3 class="text-center">UAS</h3>
                                         <div id="chartUAS"></div>
+                                    </div>
+
+                                    <div class="col-lg-4 chart-container">
+                                        <h3 class="text-center">UAS</h3>
+                                        <div id="chartTA"></div>
                                     </div>
 
 
@@ -179,7 +187,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             const dataRPS = @json($data_rps);
             const dataUAS = @json($data_uas);
-            const jumlahReviewProposal = {{ $jumlah_review_proposal }};
+            const jumlahProposal = {{ $total_jumlah_proposal }};
+            const jumlahReviewProposal = {{ $total_jumlah_review_proposal }};
 
             let chart, chartRPS, chartUAS, chartTA;
 
@@ -220,6 +229,14 @@
                         {
                             name: 'Banyak Verifikasi UAS',
                             data: verifikasiDataUAS
+                        },
+                        {
+                            name: 'Penugasan Review Proposal TA',
+                            data: Array(labels.length).fill(jumlahProposal)
+                        },
+                        {
+                            name: 'Review Proposal TA',
+                            data: Array(labels.length).fill(jumlahReviewProposal)
                         }
                     ],
                     chart: {
@@ -235,7 +252,7 @@
                             enabled: false
                         }
                     },
-                    colors: ["#008FFB", "#49BEFF", "#50B498", "#9CDBA6", "#FFC700"],
+                    colors: ["#008FFB", "#49BEFF", "#50B498", "#9CDBA6", "#FFC700", "#ffd84d"],
                     plotOptions: {
                         bar: {
                             horizontal: false,
@@ -297,8 +314,10 @@
                             ...pengunggahanDataRPS,
                             ...verifikasiDataRPS,
                             ...pengunggahanDataUAS,
-                            ...verifikasiDataUAS
-                        ),
+                            ...verifikasiDataUAS,
+                            jumlahProposal,
+                            jumlahReviewProposal
+                        ) + 10,
                         tickAmount: 4,
                         labels: {
                             style: {
@@ -324,8 +343,10 @@
                                     return parseInt(val) + " RPS";
                                 } else if (seriesName.includes('UAS')) {
                                     return parseInt(val) + " UAS";
+                                } else if (seriesName.includes('Proposal')) {
+                                    return parseInt(val) + " Proposal";
                                 } else {
-                                    return parseInt(val);
+                                    return parseInt(val) + " Review";
                                 }
                             }
                         }
@@ -387,7 +408,7 @@
                                 total: {
                                     show: true,
                                     formatter: function(w) {
-                                        return w.globals.seriesTotals.reduce((a, b) => a + b, 0);
+                                        return w.globals.seriesTotals.reduce((a, b) => a);
                                     }
                                 }
                             }
@@ -457,5 +478,6 @@
 
             document.getElementById('filterType').dispatchEvent(new Event('change'));
         });
-    </script>
+</script>
+
 @endsection

@@ -110,11 +110,11 @@ class KajurController extends Controller
             $total_banyak_verifikasi_uas += $banyak_verifikasi_uas;
 
             // Count Thesis Proposal data for this Prodi
-            $jumlah_proposal = ProposalTAModel::whereHas('r_mahasiswa', function ($query) use ($single_prodi) {
+            $jumlah_proposal = ReviewProposalTAModel::whereHas('proposal_ta.r_mahasiswa', function ($query) use ($single_prodi) {
                 $query->where('prodi_id', $single_prodi->id_prodi);
             })->count();
 
-            $total_jumlah_proposal += $jumlah_proposal;
+            $total_jumlah_proposal += $jumlah_proposal * 2;
 
             // Count Thesis Proposal Review data for this Prodi
             $jumlah_review_proposal = ReviewProposalTaDetailPivot::whereHas('p_reviewProposal.proposal_ta.r_mahasiswa', function ($query) use ($single_prodi) {

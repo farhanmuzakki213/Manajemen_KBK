@@ -53,6 +53,35 @@ class kaprodiController extends Controller
         $data_rps = $this->data_rps();
         $data_uas = $this->data_uas();
         debug($data_rps, $data_uas);
+        $total_jumlah_proposal = 0;
+        $total_jumlah_review_proposal = 0;
+
+        // Count Thesis Proposal data for this Prodi
+        $jumlah_proposal = ReviewProposalTAModel::whereHas('proposal_ta.r_mahasiswa', function ($query) use ($kaprodi) {
+            $query->where('prodi_id', $kaprodi->prodi_id);
+        })->count();
+
+        $total_jumlah_proposal += $jumlah_proposal * 2;
+
+        // Count Thesis Proposal Review data for this Prodi
+        $jumlah_review_proposal = ReviewProposalTaDetailPivot::whereHas('p_reviewProposal.proposal_ta.r_mahasiswa', function ($query) use ($kaprodi) {
+            $query->where('prodi_id', $kaprodi->prodi_id);
+        })->count();
+
+        $total_jumlah_review_proposal += $jumlah_review_proposal;
+
+        $total_ta = $total_jumlah_proposal + $total_jumlah_review_proposal;
+
+        $percentProposalTA = $total_ta > 0 ? ($total_jumlah_proposal / $total_ta) * 100 : 0;
+        $percentReviewProposalTA = $total_ta > 0 ? ($total_jumlah_review_proposal / $total_ta) * 100 : 0;
+
+        debug($jumlah_proposal);
+        debug($total_jumlah_proposal);
+        debug($jumlah_review_proposal);
+        debug($total_jumlah_review_proposal);
+        debug($total_ta);
+        debug($percentProposalTA);
+        debug($percentReviewProposalTA);
         /* $smt_thnakd_saat_ini = ThnAkademik::where('status_smt_thnakd', '1')->first();
 
         // Hitung jumlah unggahan dan verifikasi RPS
@@ -98,65 +127,6 @@ class kaprodiController extends Controller
                 $query->where('id_smt_thnakd', $smt_thnakd_saat_ini->id_smt_thnakd);
             })
             ->count(); */
-        // Ambil data proposal TA dengan mahasiswa terkait prodi
-        $data_proposal_ta = ProposalTAModel::with('r_mahasiswa')
-            ->whereHas('r_mahasiswa', function ($query) use ($kaprodi) {
-                $query->where('prodi_id', $kaprodi->prodi_id);
-            })
-            ->orderBy('proposal_ta.id_proposal_ta', 'desc')
-            ->get();
-
-        // Debugging untuk memeriksa data proposal TA
-        debug($data_proposal_ta->toArray());
-        $jumlah_proposal = $data_proposal_ta->count();
-
-        // Ambil data review proposal TA dengan filter berdasarkan prodi
-        $data_review_proposal_ta = ReviewProposalTaDetailPivot::with('p_reviewProposal', 'p_reviewProposal.proposal_ta.r_mahasiswa')
-            ->whereHas('p_reviewProposal.proposal_ta.r_mahasiswa', function ($query) use ($kaprodi) {
-                $query->where('prodi_id', $kaprodi->prodi_id);
-            })
-            ->orderBy('review_proposal_ta_detail_pivot.penugasan_id', 'desc')
-            ->get();
-        $jumlah_review_proposal = $data_review_proposal_ta->count();
-        // Debugging untuk memeriksa data review proposal TA
-        debug($data_review_proposal_ta->toArray());
-
-        // Kelompokkan data review berdasarkan penugasan_id
-        $grouped_data = $data_review_proposal_ta->groupBy('penugasan_id');
-
-        // Ambil dua penugasan_id pertama
-        $two_penugasan_ids = $grouped_data->keys()->take(2);
-
-        // Inisialisasi array untuk menyimpan data yang sudah digabungkan
-        $merged_data = [];
-
-        // foreach ($two_penugasan_ids as $penugasan_id) {
-        //     // Ambil data dari kelompok dengan penugasan_id tertentu
-        //     $group = $grouped_data[$penugasan_id];
-
-        //     // Ambil data reviewer pertama dan kedua dari kelompok
-        //     $reviewer_satu = $group->where('dosen', '1')->first();
-        //     $reviewer_dua = $group->where('dosen', '2')->first();
-
-        // Jika ada data reviewer pertama dan kedua, gabungkan dalam satu array
-        //     if ($reviewer_satu && $reviewer_dua) {
-        //         $merged_data[] = [
-        //             'penugasan_id' => $penugasan_id,
-        //             'nama_mahasiswa' => $reviewer_satu->p_reviewProposal->proposal_ta->r_mahasiswa->nama,
-        //             'nim_mahasiswa' => $reviewer_satu->p_reviewProposal->proposal_ta->r_mahasiswa->nim,
-        //             'judul' => $reviewer_satu->p_reviewProposal->proposal_ta->judul,
-        //             'reviewer_satu' => $reviewer_satu->p_reviewProposal->reviewer_satu_dosen->r_dosen->nama_dosen,
-        //             'pembimbing_satu' => $reviewer_satu->p_reviewProposal->proposal_ta->r_pembimbing_satu->nama_dosen,
-        //             'reviewer_dua' => $reviewer_dua->p_reviewProposal->reviewer_dua_dosen->r_dosen->nama_dosen,
-        //             'pembimbing_dua' => $reviewer_dua->p_reviewProposal->proposal_ta->r_pembimbing_satu->nama_dosen,
-        //             'status_satu' => $reviewer_satu->status_review_proposal,
-        //             'status_dua' => $reviewer_dua->status_review_proposal,
-        //             'status_final_proposal' => $reviewer_dua->p_reviewProposal->status_final_proposal,
-        //         ];
-        //     }
-        // }
-
-        // debug($merged_data);
 
         // Hitung total 
         /* $total_rps = $banyak_pengunggahan_rps + $banyak_verifikasi_rps;
@@ -191,7 +161,9 @@ class kaprodiController extends Controller
             'data_uas',
             'data_rps',
             'jumlah_proposal',
-            'jumlah_review_proposal'
+            'total_jumlah_proposal',
+            'jumlah_review_proposal',
+            'total_jumlah_review_proposal'
         ));
     }
 
@@ -244,7 +216,8 @@ class kaprodiController extends Controller
         //
     }
 
-    public function data_rps(){
+    public function data_rps()
+    {
         $kaprodi = $this->getDosen();
         $banyak_pengunggahan_smt = RepRpsUas::join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
             ->join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
@@ -390,20 +363,20 @@ class kaprodiController extends Controller
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
-            $data = [
-                'banyak_pengunggahan_smt' => $banyak_pengunggahan_smt,
-                'banyak_verifikasi_smt' => $banyak_verifikasi_smt,
-                'banyak_berita_smt' => $banyak_berita_smt,
-                'banyak_berita_ver_smt' => $banyak_berita_ver_smt,
-                'semester' => $semester,
-                'banyak_pengunggahan_kbk' => $banyak_pengunggahan_kbk,
-                'banyak_verifikasi_kbk' => $banyak_verifikasi_kbk,
-                'banyak_berita_kbk' => $banyak_berita_kbk,
-                'banyak_berita_ver_kbk' => $banyak_berita_ver_kbk,
-                'kbk' => $kbk,
-                'data_ver_rps' => $data_ver_rps,
-            ];
-            return $data;
+        $data = [
+            'banyak_pengunggahan_smt' => $banyak_pengunggahan_smt,
+            'banyak_verifikasi_smt' => $banyak_verifikasi_smt,
+            'banyak_berita_smt' => $banyak_berita_smt,
+            'banyak_berita_ver_smt' => $banyak_berita_ver_smt,
+            'semester' => $semester,
+            'banyak_pengunggahan_kbk' => $banyak_pengunggahan_kbk,
+            'banyak_verifikasi_kbk' => $banyak_verifikasi_kbk,
+            'banyak_berita_kbk' => $banyak_berita_kbk,
+            'banyak_berita_ver_kbk' => $banyak_berita_ver_kbk,
+            'kbk' => $kbk,
+            'data_ver_rps' => $data_ver_rps,
+        ];
+        return $data;
     }
 
     public function grafik_rps()
@@ -414,7 +387,8 @@ class kaprodiController extends Controller
     }
 
 
-    public function data_uas(){
+    public function data_uas()
+    {
         $kaprodi = $this->getDosen();
         $banyak_pengunggahan_smt = RepRpsUas::join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
             ->join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
