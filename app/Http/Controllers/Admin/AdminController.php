@@ -258,6 +258,14 @@ class AdminController extends Controller
         $review = [];
         $bulan = [];
 
+
+        $totalCounts = [
+            'Diajukan' => 0,
+            'Ditolak' => 0,
+            'Direvisi' => 0,
+            'Diterima' => 0
+        ];
+
         foreach ($data as $value) {
             $month = $value->month;
             $status = $status_mapping[$value->status_proposal_ta];
@@ -267,6 +275,7 @@ class AdminController extends Controller
                 $bulan[] = $month;
             }
             $review[$month][$status] = $value->count;
+            $totalCounts[$status] += $value->count;
         }
 
         // Ensure all months have all statuses even if they are zero
@@ -283,7 +292,7 @@ class AdminController extends Controller
         $data_proposal = ReviewProposalTaDetailPivot::with('p_reviewProposal')
             ->get();
 
-        return view('admin.content.admin.dashboard_admin', compact('banyak_pengunggahan_rps', 'banyak_verifikasi_rps', 'banyak_berita_rps', 'semester_rps', 'data_ver_rps', 'banyak_pengunggahan_uas', 'banyak_verifikasi_uas', 'banyak_berita_uas','semester_uas', 'data_ver_uas', 'review', 'statuses', 'bulan', 'data_proposal'));
+        return view('admin.content.admin.dashboard_admin', compact('totalCounts', 'banyak_pengunggahan_rps', 'banyak_verifikasi_rps', 'banyak_berita_rps', 'semester_rps', 'data_ver_rps', 'banyak_pengunggahan_uas', 'banyak_verifikasi_uas', 'banyak_berita_uas','semester_uas', 'data_ver_uas', 'review', 'statuses', 'bulan', 'data_proposal'));
     }
 
 }

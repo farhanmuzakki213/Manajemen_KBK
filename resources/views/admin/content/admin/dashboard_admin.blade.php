@@ -41,6 +41,116 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
+
+                            
+                        {{-- TA--}}
+                            <div class="row my-3">
+                                <div class="col-lg-12 d-flex flex-wrap">
+                                    <div class="col-lg-3 col-md-6" style="padding-right:20px;">
+                                        <div class="card mb-3">
+                                            <div class="card-body">
+                                                <div class="row align-items-start">
+                                                    <div class="col-8">
+                                                        <h5 class="card-title mb-9 fw-semibold">Diajukan</h5>
+                                                        <h4 class="fw-semibold mb-9">{{ $totalCounts['Diajukan'] ?? 0 }}</h4>
+                                                        <div class="d-flex align-items-center pb-1"></div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="d-flex justify-content-end">
+                                                            <div
+                                                                class="text-white bg-success rounded-circle p-6 d-flex align-items-center justify-content-center">
+                                                                <i class="ti ti-school fs-6"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="earning"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6" style="padding-right:20px;">
+                                        <div class="card mb-3">
+                                            <div class="card-body">
+                                                <div class="row align-items-start">
+                                                    <div class="col-8">
+                                                        <h5 class="card-title mb-9 fw-semibold">Ditolak</h5>
+                                                        <h4 class="fw-semibold mb-9">
+                                                            <h4 class="fw-semibold mb-9">{{ $totalCounts['Ditolak'] ?? 0 }}</h4>
+                                                        <div class="d-flex align-items-center pb-1"></div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="d-flex justify-content-end">
+                                                            <div
+                                                                class="text-white bg-danger rounded-circle p-6 d-flex align-items-center justify-content-center">
+                                                                <i class="ti ti-school fs-6"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="earning"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6" style="padding-right:20px;">
+                                        <div class="card mb-3">
+                                            <div class="card-body">
+                                                <div class="row align-items-start">
+                                                    <div class="col-8">
+                                                        <h5 class="card-title mb-9 fw-semibold">Direvisi</h5>
+                                                        <h4 class="fw-semibold mb-9">{{ $totalCounts['Direvisi'] ?? 0 }}</h4>
+                                                        <div class="d-flex align-items-center pb-1"></div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="d-flex justify-content-end">
+                                                            <div
+                                                                class="text-white bg-warning rounded-circle p-6 d-flex align-items-center justify-content-center">
+                                                                <i class="ti ti-school fs-6"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="earning"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6" style="padding-right:20px;">
+                                        <div class="card mb-3">
+                                            <div class="card-body">
+                                                <div class="row align-items-start">
+                                                    <div class="col-8">
+                                                        <h5 class="card-title mb-9 fw-semibold">Diterima</h5>
+                                                        <h4 class="fw-semibold mb-9">{{ $totalCounts['Diterima'] ?? 0 }}</h4>
+                                                        <div class="d-flex align-items-center pb-1"></div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="d-flex justify-content-end">
+                                                            <div
+                                                                class="text-white bg-primary rounded-circle p-6 d-flex align-items-center justify-content-center">
+                                                                <i class="ti ti-school fs-6"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="earning"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 d-flex align-items-stretch mt-3">
+                                    <div class="card w-100">
+                                        <div class="card-body">
+                                            <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+                                                <div class="mb-3 mb-sm-0"></div>
+                                                <div></div>
+                                            </div>
+                                            <h4>Chart TA</h4>
+                                            <div id="chart-ta" style="min-height: 350px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- RPS--}}
                             <div class="col-lg-8 d-flex align-items-stretch">
                                 <div class="card w-100">
                                     <div class="card-body">
@@ -57,7 +167,7 @@
                                 </div>
                             </div>
 
-
+                          
                             <div class="col-lg-4">
                                 <div class="col-lg-12">
                                     <div class="card">
@@ -123,7 +233,7 @@
                                                     <div class="d-flex justify-content-end">
                                                         <div
                                                             class="text-white bg-warning rounded-circle p-6 d-flex align-items-center justify-content-center">
-                                                            <i class="ti ti-school fs-6"></i>
+                                                            <i class="ti ti-news fs-6"></i>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -136,6 +246,8 @@
                             </div>
                         </div>
 
+
+                          {{-- UAS--}}
                         <div class="row">
                             <div class="col-lg-4">
                                 <div class="col-lg-12">
@@ -202,7 +314,7 @@
                                                     <div class="d-flex justify-content-end">
                                                         <div
                                                             class="text-white bg-warning rounded-circle p-6 d-flex align-items-center justify-content-center">
-                                                            <i class="ti ti-school fs-6"></i>
+                                                            <i class="ti ti-news fs-6"></i>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -228,120 +340,6 @@
                                 </div>
                             </div>
                         </div>
-
-
-
-
-
-                        <div class="row my-3">
-                            <div class="col-lg-12 d-flex flex-wrap">
-                                <div class="col-lg-3 col-md-6" style="padding-right:20px;">
-                                    <div class="card mb-3">
-                                        <div class="card-body">
-                                            <div class="row align-items-start">
-                                                <div class="col-8">
-                                                    <h5 class="card-title mb-9 fw-semibold">Diajukan</h5>
-                                                    <h4 class="fw-semibold mb-9">
-                                                        {{ $banyak_pengunggahan_uas['2023/2024-Genap'] ?? 0 }}</h4>
-                                                    <div class="d-flex align-items-center pb-1"></div>
-                                                </div>
-                                                <div class="col-4">
-                                                    <div class="d-flex justify-content-end">
-                                                        <div
-                                                            class="text-white bg-primary rounded-circle p-6 d-flex align-items-center justify-content-center">
-                                                            <i class="ti ti-clipboard fs-6"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="earning"></div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-6" style="padding-right:20px;">
-                                    <div class="card mb-3">
-                                        <div class="card-body">
-                                            <div class="row align-items-start">
-                                                <div class="col-8">
-                                                    <h5 class="card-title mb-9 fw-semibold">Ditolak</h5>
-                                                    <h4 class="fw-semibold mb-9">
-                                                        {{ $banyak_verifikasi_uas['2023/2024-Genap'] ?? 0 }}</h4>
-                                                    <div class="d-flex align-items-center pb-1"></div>
-                                                </div>
-                                                <div class="col-4">
-                                                    <div class="d-flex justify-content-end">
-                                                        <div
-                                                            class="text-white bg-success rounded-circle p-6 d-flex align-items-center justify-content-center">
-                                                            <i class="ti ti-receipt fs-6"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="earning"></div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-6" style="padding-right:20px;">
-                                    <div class="card mb-3">
-                                        <div class="card-body">
-                                            <div class="row align-items-start">
-                                                <div class="col-8">
-                                                    <h5 class="card-title mb-9 fw-semibold">Direvisi</h5>
-                                                    <h4 class="fw-semibold mb-9">
-                                                        {{ $banyak_berita_uas['2023/2024-Genap'] ?? 0 }}</h4>
-                                                    <div class="d-flex align-items-center pb-1"></div>
-                                                </div>
-                                                <div class="col-4">
-                                                    <div class="d-flex justify-content-end">
-                                                        <div
-                                                            class="text-white bg-warning rounded-circle p-6 d-flex align-items-center justify-content-center">
-                                                            <i class="ti ti-school fs-6"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="earning"></div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-6" style="padding-right:20px;">
-                                    <div class="card mb-3">
-                                        <div class="card-body">
-                                            <div class="row align-items-start">
-                                                <div class="col-8">
-                                                    <h5 class="card-title mb-9 fw-semibold">Diterima</h5>
-                                                    <h4 class="fw-semibold mb-9">
-                                                        {{ $banyak_berita_uas['2023/2024-Genap'] ?? 0 }}</h4>
-                                                    <div class="d-flex align-items-center pb-1"></div>
-                                                </div>
-                                                <div class="col-4">
-                                                    <div class="d-flex justify-content-end">
-                                                        <div
-                                                            class="text-white bg-warning rounded-circle p-6 d-flex align-items-center justify-content-center">
-                                                            <i class="ti ti-school fs-6"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="earning"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12 d-flex align-items-stretch mt-3">
-                                <div class="card w-100">
-                                    <div class="card-body">
-                                        <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
-                                            <div class="mb-3 mb-sm-0"></div>
-                                            <div></div>
-                                        </div>
-                                        <h4>Chart TA</h4>
-                                        <div id="chart-ta" style="min-height: 350px;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
 
                     </div>
                 </div>
@@ -600,7 +598,7 @@
             const bulan = @json($bulan);
             const review = @json($review);
             const statuses = @json($statuses);
-            const colors = ['#008FFB', '#FF4560', '#FEB019', '#00E396'];
+            const colors = ['#00E396', '#FF4560', '#FEB019', '#008FFB'];
 
             const seriesData = statuses.map((status, index) => ({
                 name: status,
@@ -608,25 +606,108 @@
                 color: colors[index]
             }));
 
-            const chartTa = new ApexCharts(document.querySelector("#chart-ta"), {
+            const chartTaOptions = {
+                series: seriesData,
                 chart: {
                     type: 'bar',
-                    height: 350
+                    height: 350,
+                    offsetX: -15,
+                    toolbar: {
+                        show: true
+                    },
+                    foreColor: "#adb0bb",
+                    fontFamily: 'inherit',
                 },
-                series: seriesData,
+                colors: ['#00E396', '#FF4560', '#FEB019', '#008FFB'], // Ganti sesuai kebutuhan
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: "35%",
+                        borderRadius: [6],
+                        borderRadiusApplication: 'end',
+                        borderRadiusWhenStacked: 'all'
+                    },
+                },
+                markers: {
+                    size: 0
+                },
+                dataLabels: {
+                    enabled: false,
+                },
+                legend: {
+                    show: true,
+                    position: 'bottom',
+                    horizontalAlign: 'center',
+                    floating: false,
+                    offsetY: 10,
+                    offsetX: 0,
+                    itemMargin: {
+                        horizontal: 2,
+                        vertical: 15
+                    },
+                    markers: {
+                        width: 10,
+                        height: 10,
+                        radius: 5
+                    },
+                    formatter: function(seriesName, opts) {
+                        return seriesName;
+                    }
+                },
+                grid: {
+                    borderColor: "rgba(0,0,0,0.1)",
+                    strokeDashArray: 3,
+                    xaxis: {
+                        lines: {
+                            show: false,
+                        },
+                    },
+                },
                 xaxis: {
-                    categories: bulan
+                    type: "category",
+                    categories: bulan,
+                    labels: {
+                        style: {
+                            cssClass: "grey--text lighten-2--text fill-color"
+                        },
+                    },
                 },
                 yaxis: {
+                    show: true,
+                    min: 0,
+                    max: Math.max(...seriesData.flatMap(s => s.data)) + 5, 
+                    tickAmount: 4,
                     labels: {
-                        formatter: function(value) {
-                            return Math.round(value);
-                        }
+                        style: {
+                            cssClass: "grey--text lighten-2--text fill-color",
+                        },
+                    },
+                },
+                stroke: {
+                    show: true,
+                    width: 3,
+                    lineCap: "butt",
+                    colors: ["transparent"],
+                },
+                tooltip: {
+                    theme: "light"
+                },
+                responsive: [{
+                    breakpoint: 600,
+                    options: {
+                        plotOptions: {
+                            bar: {
+                                borderRadius: 3,
+                            }
+                        },
                     }
-                }
-            });
+                }]
+            };
 
+            const chartTa = new ApexCharts(document.querySelector("#chart-ta"), chartTaOptions);
             chartTa.render();
+
         });
+        
     </script>
 @endsection
