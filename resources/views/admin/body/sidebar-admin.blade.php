@@ -6,9 +6,9 @@
 <aside class="left-sidebar">
     <!-- Sidebar scroll-->
     <div>
-        <div class="brand-logo d-flex align-items-center justify-content-between my-2">
-            <a href="#" class="text-nowrap logo-img">
-                <img src="{{ asset('backend/assets/images/logos/ti-logo.png') }}" width="180" alt="" />
+        <div class="brand-logo d-flex align-items-center justify-content-between my-3 mb-0">
+            <a class="text-nowrap logo-img ms-auto me-auto">
+                <img class="centered-image" src="{{ asset('backend/assets/images/logos/kbk4.svg') }}" width="100" alt="" />
             </a>
             <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                 <i class="ti ti-x fs-8"></i>

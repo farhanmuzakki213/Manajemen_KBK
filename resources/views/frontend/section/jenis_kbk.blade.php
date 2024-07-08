@@ -2,21 +2,13 @@
     <style>
         .service .nav-link {
             padding: 15px 20px !important;
-            /* Mengurangi padding untuk membuat tombol lebih kecil */
             margin-bottom: 26px !important;
-            /* Mengurangi margin bawah untuk jarak antar tombol */
             font-size: 8px !important;
-            /* Mengurangi ukuran teks */
             font-weight: 400 !important;
-            /* background-color: #000 !important; */
             color: #000000 !important;
-            /* Warna teks putih */
             border: none !important;
-            /* Menghapus border */
             text-align: left;
-            /* Penyesuaian untuk teks menjadi satu baris */
             white-space: nowrap;
-            /* Mencegah pematahan teks ke baris baru */
             overflow: hidden;
             text-overflow: ellipsis;
         }
@@ -27,20 +19,15 @@
 
         .service .nav-link i {
             font-size: 20px !important;
-            /* Mengurangi ukuran ikon */
             margin-right: 8px !important;
-            /* Mengurangi jarak antara ikon dan teks */
         }
 
-        /* Menyesuaikan tombol aktif pada navbar */
         .service .nav-link.active {
             background-color: #000000 !important;
-            /* Warna latar belakang untuk tombol aktif */
             color: #ffffff !important;
-            /* Warna teks untuk tombol aktif */
         }
 
-        
+
 
         .tab-pane {
             opacity: 0;
@@ -53,9 +40,7 @@
 
         .tab-pane p {
             text-align: justify;
-            /* Ratakan paragraf ke kiri dan kanan */
             margin-bottom: 30px;
-            /* Atur margin bottom untuk paragraf */
         }
 
         .tab-pane img {
@@ -72,7 +57,6 @@
 
             .tab-pane .media-1 {
                 margin-top: 220px;
-                /* Ubah margin-top sesuai kebutuhan Anda */
             }
         }
 
@@ -84,7 +68,6 @@
 
             .tab-pane .media-1 {
                 margin-top: 350px;
-                /* Ubah margin-top sesuai kebutuhan Anda */
             }
         }
 
@@ -101,7 +84,6 @@
 
             .tab-pane .media-1 {
                 margin-top: 370px;
-                /* Ubah margin-top sesuai kebutuhan Anda */
             }
         }
 
@@ -112,7 +94,6 @@
 
             .tab-pane .media-1 {
                 margin-top: 380px;
-                /* Ubah margin-top sesuai kebutuhan Anda */
             }
         }
 
@@ -123,7 +104,6 @@
 
             .tab-pane .media-1 {
                 margin-top: 20px;
-                /* Ubah margin-top sesuai kebutuhan Anda */
             }
         }
 
@@ -142,7 +122,7 @@
     </style>
 
 
-    <div class="container">
+    <div class="container pt-5 pb-5">
         <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
             <h1 class="mb-5">Jenis KBK</h1>
         </div>
@@ -152,17 +132,17 @@
                     <button class="nav-link w-100 d-flex align-items-center text-start p-4 active" data-bs-toggle="pill"
                         data-bs-target="#tab-pane-1" type="button">
                         <i class="fa fa-code fa-2x me-3"></i>
-                        <h4 class="m-0">Programming</h4>
+                        <h4 class="m-0">PROGRAMMING</h4>
                     </button>
                     <button class="nav-link w-100 d-flex align-items-center text-start" data-bs-toggle="pill"
                         data-bs-target="#tab-pane-2" type="button">
                         <i class="fa fa-server fa-2x me-3"></i>
-                        <h4 class="m-0">IT Infrastruktur</h4>
+                        <h4 class="m-0">IT INFRASTUKUR</h4>
                     </button>
                     <button class="nav-link w-100 d-flex align-items-center text-start" data-bs-toggle="pill"
                         data-bs-target="#tab-pane-3" type="button">
                         <i class="fa fa-shield-alt fa-2x me-3"></i>
-                        <h4 class="m-0">Networking and Cybersec</h4>
+                        <h4 class="m-0">NCS</h4>
                     </button>
                     <button class="nav-link w-100 d-flex align-items-center text-start" data-bs-toggle="pill"
                         data-bs-target="#tab-pane-4" type="button">
@@ -183,19 +163,18 @@
                             <div class="col-md-6">
                                 <div class="position-relative h-100">
                                     <img class="position-absolute img-fluid"
-                                        src="frontend/landing-page/assets/img/jenis/programming1.webp"
+                                        src="frontend/landing-page/assets/img/kbk/programming.svg"
                                         style="object-fit: cover;" alt="">
                                 </div>
                             </div>
                             <div class="col-md-6 media-1">
-                                <h4 class="mb-3">Programming</h4>
-                                <p class="mb-4">KBK Programming merupakan disiplin yang fokus pada pengembangan
-                                    perangkat lunak dan aplikasi komputer. Ini meliputi semua aspek dari proses
-                                    pengembangan perangkat lunak, mulai dari perencanaan dan analisis kebutuhan
-                                    pengguna, desain arsitektur sistem, penulisan kode, pengujian, hingga implementasi
-                                    dan pemeliharaan. Spesialis dalam KBK ini mampu menggunakan berbagai bahasa
-                                    pemrograman dan teknologi terkini untuk menciptakan solusi perangkat lunak yang
-                                    efisien dan sesuai dengan kebutuhan bisnis.</p>
+                                <h4 class="mb-3">PROGRAMMING</h4>
+                                <p class="mb-4">KBK dalam bidang keahlian programming adalah sebuah unit atau kelompok
+                                    di dalam sebuah institusi pendidikan, seperti universitas, yang bertanggung jawab
+                                    dalam mengelola dan mengembangkan kurikulum serta kegiatan akademik terkait dengan
+                                    pemrograman dan teknologi informasi. KBK biasanya terdiri dari sekelompok dosen dan
+                                    tenaga pendidik yang memiliki keahlian dalam berbagai aspek pemrograman komputer,
+                                    mulai dari dasar pemrograman hingga perkembangan teknologi terkini.</p>
                             </div>
                         </div>
                     </div>
@@ -205,19 +184,18 @@
                             <div class="col-md-6">
                                 <div class="position-relative h-100">
                                     <img class="position-absolute img-fluid"
-                                        src="frontend/landing-page/assets/img/jenis/it-infrastruktur1.webp"
+                                        src="frontend/landing-page/assets/img/kbk/it_infrastruktur.svg"
                                         style="object-fit: cover;" alt="">
                                 </div>
                             </div>
                             <div class="col-md-6 media-1">
-                                <h4 class="mb-3">IT Infrastruktur</h4>
-                                <p class="mb-4">KBK Programming merupakan disiplin yang fokus pada pengembangan
-                                    perangkat lunak dan aplikasi komputer. Ini meliputi semua aspek dari proses
-                                    pengembangan perangkat lunak, mulai dari perencanaan dan analisis kebutuhan
-                                    pengguna, desain arsitektur sistem, penulisan kode, pengujian, hingga implementasi
-                                    dan pemeliharaan. Spesialis dalam KBK ini mampu menggunakan berbagai bahasa
-                                    pemrograman dan teknologi terkini untuk menciptakan solusi perangkat lunak yang
-                                    efisien dan sesuai dengan kebutuhan bisnis.</p>
+                                <h4 class="mb-3">IT INFRASTRUKTUR</h4>
+                                <p class="mb-4">KBK IT Infrastruktur adalah unit atau kelompok di dalam institusi
+                                    pendidikan atau organisasi yang fokus pada pengelolaan, pengembangan, dan keamanan
+                                    infrastruktur teknologi informasi. KBK ini bertanggung jawab untuk merancang,
+                                    mengelola, dan mengoptimalkan sistem dan jaringan komputer, serta layanan
+                                    infrastruktur lainnya yang mendukung operasional teknologi informasi suatu
+                                    organisasi.</p>
                             </div>
                         </div>
                     </div>
@@ -226,19 +204,17 @@
                             <div class="col-md-6">
                                 <div class="position-relative h-100">
                                     <img class="position-absolute img-fluid"
-                                        src="frontend/landing-page/assets/img/jenis/networking.webp"
-                                        style="object-fit: cover;" alt="">
+                                        src="frontend/landing-page/assets/img/kbk/ncs.svg" style="object-fit: cover;"
+                                        alt="">
                                 </div>
                             </div>
                             <div class="col-md-6 media-1">
-                                <h4 class="mb-3">Networking and Cybersec</h4>
-                                <p class="mb-4">KBK Programming merupakan disiplin yang fokus pada pengembangan
-                                    perangkat lunak dan aplikasi komputer. Ini meliputi semua aspek dari proses
-                                    pengembangan perangkat lunak, mulai dari perencanaan dan analisis kebutuhan
-                                    pengguna, desain arsitektur sistem, penulisan kode, pengujian, hingga implementasi
-                                    dan pemeliharaan. Spesialis dalam KBK ini mampu menggunakan berbagai bahasa
-                                    pemrograman dan teknologi terkini untuk menciptakan solusi perangkat lunak yang
-                                    efisien dan sesuai dengan kebutuhan bisnis.</p>
+                                <h4 class="mb-3">NETWORKING AND CYBERSECURITY</h4>
+                                <p class="mb-4">KBK Networking and Cybersecurity adalah sebuah unit atau kelompok di
+                                    dalam institusi pendidikan atau organisasi yang fokus pada pengelolaan,
+                                    pengembangan, dan keamanan jaringan komputer serta sistem keamanan informasi. KBK
+                                    ini bertanggung jawab untuk merancang, mengelola, dan mengamankan jaringan komputer,
+                                    serta melindungi data dari ancaman keamanan cyber.</p>
                             </div>
                         </div>
                     </div>
@@ -247,18 +223,17 @@
                             <div class="col-md-6">
                                 <div class="position-relative h-100">
                                     <img class="position-absolute img-fluid"
-                                        src="frontend/landing-page/assets/img/jenis/cait2.webp"
-                                        style="object-fit: cover;" alt="">
+                                        src="frontend/landing-page/assets/img/kbk/cait.svg" style="object-fit: cover;"
+                                        alt="">
                                 </div>
                             </div>
                             <div class="col-md-6 media-1">
-                                <h4 class="mb-3"">CAIT (Creative Animation and IT)</h4>
-                                <p class="mb-4">KBK CAIT menggabungkan kreativitas digital dengan teknologi informasi
-                                    untuk menghasilkan konten visual yang menarik dan bermakna. Ini meliputi
-                                    pengembangan animasi, grafis digital, dan konten multimedia lainnya menggunakan
-                                    perangkat lunak khusus. Spesialis dalam KBK ini tidak hanya memiliki keterampilan
-                                    teknis dalam menggunakan alat-alat kreatif, tetapi juga memahami prinsip desain
-                                    estetika dan kebutuhan pasar untuk konten digital yang inovatif.</p>
+                                <h4 class="mb-3"">CENTER OF ARTIFICIAL INTELEGENCE TECHNOLOGY</h4>
+                                <p class="mb-4">KBK Center of Artificial Intelligence Technology adalah sebuah unit
+                                    atau kelompok di dalam institusi pendidikan atau organisasi yang fokus pada riset,
+                                    pengembangan, dan penerapan teknologi kecerdasan buatan (Artificial
+                                    Intelligence/AI). KBK ini bertanggung jawab untuk mempelajari, mengembangkan, dan
+                                    menerapkan teknik-teknik AI dalam berbagai aplikasi praktis.</p>
 
                             </div>
                         </div>
@@ -268,23 +243,17 @@
                             <div class="col-md-6">
                                 <div class="position-relative h-100">
                                     <img class="position-absolute img-fluid"
-                                        src="frontend/landing-page/assets/img/jenis/softam.webp"
-                                        style="object-fit: cover;" alt="">
+                                        src="frontend/landing-page/assets/img/kbk/softam.svg" style="object-fit: cover;"
+                                        alt="">
                                 </div>
                             </div>
                             <div class="col-md-6 media-1">
-                                <h4 class="mb-3"">SOFTAM (Software Application and Management)</h4>
-                                <p class="mb-4">KBK SOFTAM berfokus pada manajemen siklus hidup aplikasi perangkat
-                                    lunak dari awal
-                                    pengembangan hingga pensiun. Ini mencakup perencanaan kebutuhan bisnis, analisis,
-                                    desain, implementasi,
-                                    pengujian, dan pemeliharaan aplikasi. Spesialis dalam KBK ini tidak hanya menguasai
-                                    teknologi aplikasi
-                                    terkini, tetapi juga memiliki pemahaman mendalam tentang proses bisnis dan kebutuhan
-                                    pengguna. Mereka
-                                    bertanggung jawab untuk memastikan bahwa aplikasi berfungsi optimal, aman, dan
-                                    memenuhi tujuan bisnis
-                                    yang ditetapkan.</p>
+                                <h4 class="mb-3"">CENTER OF SOFTWARE TECHNOLOGY & MANAGEMENT</h4>
+                                <p class="mb-4">KBK Center of Software Technology & Management adalah sebuah unit
+                                    atau kelompok di dalam institusi pendidikan atau organisasi yang fokus pada
+                                    pengembangan, pengelolaan, dan aplikasi teknologi perangkat lunak (software). KBK
+                                    ini bertanggung jawab untuk mempelajari, mengembangkan, dan mengelola berbagai aspek
+                                    perangkat lunak dalam konteks teknologi informasi dan industri.</p>
                             </div>
                         </div>
                     </div>
@@ -295,27 +264,26 @@
     </div>
 </div>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    const tabLinks = document.querySelectorAll('.nav-link');
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabLinks = document.querySelectorAll('.nav-link');
 
-    tabLinks.forEach(tabLink => {
-        tabLink.addEventListener('click', function () {
-            const targetPaneId = this.getAttribute('data-bs-target');
-            const targetPane = document.querySelector(targetPaneId);
+        tabLinks.forEach(tabLink => {
+            tabLink.addEventListener('click', function() {
+                const targetPaneId = this.getAttribute('data-bs-target');
+                const targetPane = document.querySelector(targetPaneId);
 
-            // Hapus kelas active dari semua tab-link
-            tabLinks.forEach(link => link.classList.remove('active'));
+                // Hapus kelas active dari semua tab-link
+                tabLinks.forEach(link => link.classList.remove('active'));
 
-            // Tambahkan kelas active pada tab-link yang diklik
-            this.classList.add('active');
+                // Tambahkan kelas active pada tab-link yang diklik
+                this.classList.add('active');
 
-            // Tampilkan tab-pane yang sesuai dengan tab-link yang diklik
-            const allPanes = document.querySelectorAll('.tab-pane');
-            allPanes.forEach(pane => pane.classList.remove('show', 'active'));
+                // Tampilkan tab-pane yang sesuai dengan tab-link yang diklik
+                const allPanes = document.querySelectorAll('.tab-pane');
+                allPanes.forEach(pane => pane.classList.remove('show', 'active'));
 
-            targetPane.classList.add('show', 'active');
+                targetPane.classList.add('show', 'active');
+            });
         });
     });
-});
-
 </script>

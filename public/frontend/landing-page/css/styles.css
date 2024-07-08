@@ -92,8 +92,9 @@
   }
 }
 
+
 body {
-  
+  overflow-x: hidden;
   margin: 0;
   font-family: var(--bs-body-font-family);
   font-size: var(--bs-body-font-size);
@@ -104,6 +105,20 @@ body {
   background-color: var(--bs-body-bg);
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+body::-webkit-scrollbar {
+  width: 12px;             
+}
+
+body::-webkit-scrollbar-track {
+  background: rgb(255, 255, 255);       
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: rgb(0, 0, 0);    
+  border-radius: 20px;       
+  border: 3px solid rgb(255, 255, 255);  
 }
 
 hr {

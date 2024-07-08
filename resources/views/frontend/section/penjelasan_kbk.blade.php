@@ -1,5 +1,5 @@
 <div class="container-fluid_2 py-5" id="deskripsi">
-    <div class="container_2 pt-5" >
+    <div class="container_2 pt-5 pb-5" >
         <div class="row_2 wow fadeInUp" data-wow-delay="0.3s">
             <div class="col-lg-6" style="min-height: 500px;">
                 <div class="position-relative-2 h-100">

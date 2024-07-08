@@ -34,19 +34,19 @@
     <div class="swiper-container swiper-container-prodi">
     <div class="swiper-wrapper swiper-wrapper-prodi">
     <div class="swiper-slide swiper-slide-prodi">
-      <img class="img-fluid d-block mx-auto" src="frontend/landing-page/assets/img/kbk/cait.png" aria-label="TRPL Logo" />
+      <img class="img-fluid d-block mx-auto" src="frontend/landing-page/assets/img/kbk/cait.svg" aria-label="CAIT Logo" />
     </div>
     <div class="swiper-slide swiper-slide-prodi">
-      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/kbk/softam.png" aria-label="ANIMASI Logo" />
+      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/kbk/softam.svg" aria-label="SOFTAM Logo" />
     </div>
     <div class="swiper-slide swiper-slide-prodi">
-      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/kbk/it_infrastruktur.png" aria-label="MI Logo" />
+      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/kbk/it_infrastruktur.svg" aria-label="IT INFRASTRUKTUR Logo" />
     </div>
     <div class="swiper-slide swiper-slide-prodi">
-      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/kbk/programming.png" aria-label="TKOM Logo" />
+      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/kbk/programming.svg" aria-label="PROGRAMMING Logo" />
     </div>
     <div class="swiper-slide swiper-slide-prodi">
-      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/kbk/ncs.png" aria-label="SI Logo" />
+      <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/kbk/ncs.svg" aria-label="NCS Logo" />
     </div>
     {{-- <div class="swiper-slide swiper-slide-prodi">
       <img class="img-fluid img-prodi d-block mx-auto" src="frontend/landing-page/assets/img/prodi/ajk2.png" aria-label="ADM JARINGAN Logo" />
