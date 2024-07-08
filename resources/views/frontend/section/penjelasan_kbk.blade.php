@@ -15,7 +15,7 @@
                         keterampilan dan pengetahuan spesifik sesuai dengan kebutuhan dan tujuan belajar. Melalui KBK,
                         siswa belajar berdasarkan kompetensi yang harus dicapai, memungkinkan pembelajaran yang lebih
                         relevan dan terarah. Di jurusan Teknologi Informasi Ada Beberapa Jenis KBK.</p>
-                    <a href="#jenis_kbk" class="btn btn-primary mt-2">Jenis Kbk</a>
+                    <a href="#jenis_kbk" class="btn btn-info mt-2">Jenis Kbk</a>
                 </div>
             </div>
         </div>

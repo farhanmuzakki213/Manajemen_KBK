@@ -11,7 +11,9 @@
                         <p class="card-text mb-4">{{$data->isi_berita}}</p>
                         <div class="mt-auto text-start">
                             {{-- <a href="/detail_berita/{{ $data->id_berita }}" class="btn btn-primary">Read More</a> --}}
-                            <a data-bs-toggle="modal" data-bs-target="#detail{{ $data->id_berita }}" class="btn btn-primary">Read More</a>
+                            <a data-bs-toggle="modal" data-bs-target="#detail{{ $data->id_berita }}" class="btn btn-info">Read More</a>
+
+
                             </a>
                         </div>
                     </div>

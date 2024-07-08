@@ -123,15 +123,23 @@
     border: none;
     outline: none;
     padding: 0; 
+}
 
-.btn-primary {
+/* .btn-primary {
     border-radius: 10px;
     width: 120px;
     margin: 0;
+} */
+.btn-custom-primary {
+    font-weight: normal !important; 
+    background-color: #ffc800;
+    color: #fff;
+    /* border-color: #ffc800;  */
 }
 
-.btn-primary:hover {
-    background-color: black;
+
+.btn-custom-primary:hover {
+    background-color: rgb(255, 255, 255);
     border: none;
 }
 
@@ -176,7 +184,7 @@ h6 {
 
 
 
-}
+
 
 
 
