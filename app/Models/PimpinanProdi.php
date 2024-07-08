@@ -22,7 +22,10 @@ class PimpinanProdi extends Model
             ->logAll()
             ->logOnlyDirty()
             ->useLogName('PimpinanProdi')
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function(string $eventName) {
+                return "{$eventName} PimpinanProdi";
+            });
     }
 
     public function r_jabatan_pimpinan(){

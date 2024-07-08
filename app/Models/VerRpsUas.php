@@ -33,7 +33,10 @@ class VerRpsUas extends Model
             ->logAll()
             ->logOnlyDirty()
             ->useLogName('VerRpsUas')
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function(string $eventName) {
+                return "{$eventName} VerRpsUas";
+            });
     }
 
     public function r_pengurus(){

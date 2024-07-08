@@ -23,7 +23,10 @@ class Kurikulum extends Model
             ->logAll()
             ->logOnlyDirty()
             ->useLogName('Kurikulum')
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function(string $eventName) {
+                return "{$eventName} Kurikulum";
+            });
     }
 
     public function r_prodi(){

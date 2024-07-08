@@ -23,7 +23,7 @@
                                 @foreach ($logs as $log)
                                 <tr>
                                     <th>{{ $log->causer->name ?? 'anonim' }}</th>
-                                    <th>{{ $log->properties['attributes']['deskripsi'] ?? 'null'}}</th>
+                                    <th>{{ $log->description ?? 'null'}}</th>
                                     <th>{{ $log->created_at }}</th>
                                     <th><a href="#"
                                             class="badge fw-semibold py-1 w-85 bg-primary-subtle text-primary">Detail</a>

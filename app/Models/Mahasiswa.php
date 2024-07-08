@@ -23,7 +23,10 @@ class Mahasiswa extends Model
             ->logAll()
             ->logOnlyDirty()
             ->useLogName('Mahasiswa')
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function(string $eventName) {
+                return "{$eventName} Mahasiswa";
+            });
     }
     
     public function r_prodi(){

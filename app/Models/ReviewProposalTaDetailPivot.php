@@ -21,7 +21,10 @@ class ReviewProposalTaDetailPivot extends Model
             ->logAll()
             ->logOnlyDirty()
             ->useLogName('ReviewProposalTaDetailPivot')
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function(string $eventName) {
+                return "{$eventName} ReviewProposalTA";
+            });
     }
 
     public function p_reviewProposal()

@@ -21,7 +21,10 @@ class Matkul extends Model
             ->logAll()
             ->logOnlyDirty()
             ->useLogName('Matkul')
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function(string $eventName) {
+                return "{$eventName} Matkul";
+            });
     }
 
     public function r_kurikulum(){

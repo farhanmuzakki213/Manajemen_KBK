@@ -21,7 +21,10 @@ class DosenKBK extends Model
             ->logAll()
             ->logOnlyDirty()
             ->useLogName('DosenKBK')
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function(string $eventName) {
+                return "{$eventName} DosenKbk";
+            });
     }
 
     public function r_jenis_kbk(){

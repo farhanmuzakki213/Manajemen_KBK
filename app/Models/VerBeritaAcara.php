@@ -36,7 +36,10 @@ class VerBeritaAcara extends Model
             ->logAll()
             ->logOnlyDirty()
             ->useLogName('VerBeritaAcara')
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function(string $eventName) {
+                return "{$eventName} VerBeritaAcara";
+            });
     }
 
     

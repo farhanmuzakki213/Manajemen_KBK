@@ -21,7 +21,10 @@ class Prodi extends Model
             ->logAll()
             ->logOnlyDirty()
             ->useLogName('Prodi')
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function(string $eventName) {
+                return "{$eventName} Prodi";
+            });
     }
 
     public function r_jurusan(){
