@@ -14,8 +14,6 @@ class BeritaDetailSeeder extends Seeder
     public function run(): void
     {
         $BeritaData = [
-            [1, 1],
-            [2, 1],
         ];
 
         foreach ($BeritaData as $data) {

@@ -224,3 +224,4 @@
         document.getElementById('filterType').dispatchEvent(new Event('change'));
     </script>
 @endsection
+

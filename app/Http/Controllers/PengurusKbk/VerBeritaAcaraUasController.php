@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Auth\BeritaAcara\beritaAcaraCreate;
 use App\Http\Requests\Auth\BeritaAcara\beritaAcaraUpdate;
 use App\Models\ThnAkademik;
+use App\Models\VerBeritaAcaraDetail;
 use Carbon\Carbon;
 
 class VerBeritaAcaraUasController extends Controller
@@ -139,8 +140,17 @@ class VerBeritaAcaraUasController extends Controller
                 return redirect()->route('upload_uas_berita_acara')->with('error', 'Data verifikasi uas pada prodi ini tidak ada');
             }
 
-            foreach ($data_ver_rps as $verRps) {
-                $ver_rps_uas_ids[] = $verRps->id_ver_rps_uas;
+            // Mengambil semua id_ver_rps_uas
+            $ver_rps_uas_ids = $data_ver_rps->pluck('id_ver_rps_uas')->toArray();
+
+            // Memeriksa apakah ada id_ver_rps_uas yang sudah ada di VerBeritaAcaraDetail
+            $existing_ver_rps_uas_ids = VerBeritaAcaraDetail::whereIn('ver_rps_uas_id', $ver_rps_uas_ids)->pluck('ver_rps_uas_id')->toArray();
+
+            // Filter hanya id_ver_rps_uas yang belum ada di VerBeritaAcaraDetail
+            $ver_rps_uas_to_process = array_diff($ver_rps_uas_ids, $existing_ver_rps_uas_ids);
+
+            if (empty($ver_rps_uas_to_process)) {
+                return redirect()->route('upload_rps_berita_acara')->with('error', 'Semua data verifikasi RPS pada prodi ini sudah diproses');
             }
 
             $verBeritaAcara = VerBeritaAcara::create([
@@ -151,7 +161,7 @@ class VerBeritaAcaraUasController extends Controller
                 'tanggal_upload' => Carbon::now(),
             ]);
             //dd($verBeritaAcara);
-            foreach ($ver_rps_uas_ids as $ver_rps_uas_id) {
+            foreach ($ver_rps_uas_to_process as $ver_rps_uas_id) {
                 $verBeritaAcara->p_ver_rps_uas()->attach($ver_rps_uas_id);
             }
             DB::commit();
