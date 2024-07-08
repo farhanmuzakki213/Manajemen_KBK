@@ -21,7 +21,10 @@ class Pengurus_kbk extends Model
             ->logAll()
             ->logOnlyDirty()
             ->useLogName('Pengurus_kbk')
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function(string $eventName) {
+                return "{$eventName} PengurusKbk";
+            });
     }
 
     public function r_dosen(){

@@ -23,7 +23,10 @@ class Dosen extends Model
             ->logAll()
             ->logOnlyDirty()
             ->useLogName('Dosen')
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function(string $eventName) {
+                return "{$eventName} Dosen";
+            });
     }
 
     public function r_jurusan(){

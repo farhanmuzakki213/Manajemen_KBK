@@ -11,6 +11,8 @@ use App\Models\ReviewProposalTaDetailPivot;
 use App\Models\ReviewProposalTAModel;
 use Illuminate\Support\Facades\DB;
 
+use function PHPUnit\Framework\isEmpty;
+
 class dosen_kbkController extends Controller
 {
     /**
@@ -36,59 +38,55 @@ class dosen_kbkController extends Controller
     {
         $dosenKbk = $this->getDosen();
         $smt_thnakd_saat_ini = ThnAkademik::where('status_smt_thnakd', '1')->first();
-
-        $data_penugasan = ReviewProposalTAModel::with('reviewer_satu_dosen', 'reviewer_dua_dosen')
+        $data_penugasan = ReviewProposalTAModel::with('reviewer_satu_dosen', 'reviewer_dua_dosen', 'review_proposal_ta_detail')
             ->where(function ($query) use ($dosenKbk) {
                 $query->where('reviewer_satu', $dosenKbk->id_dosen_kbk)
                     ->orWhere('reviewer_dua', $dosenKbk->id_dosen_kbk);
             })
             ->orderBy('id_penugasan', 'desc')
             ->get();
-       
-
         $jumlah_proposal = $data_penugasan->count();
-
-        $data_review_proposal_ta = ReviewProposalTaDetailPivot::with('p_reviewProposal.reviewer_satu_dosen', 'p_reviewProposal.reviewer_dua_dosen')
-            ->whereHas('p_reviewProposal', function ($query) use ($dosenKbk) {
-                $query->where('reviewer_satu', $dosenKbk->id_dosen_kbk)
-                    ->orWhere('reviewer_dua', $dosenKbk->id_dosen_kbk);
-            })
-            ->orderBy('penugasan_id', 'desc')
+        $data_penugasan = ReviewProposalTAModel::with('reviewer_satu_dosen', 'reviewer_dua_dosen', 'review_proposal_ta_detail')
+            ->orderBy('id_penugasan', 'desc')
             ->get();
+        debug($data_penugasan->toArray());
 
-        // $data_review_proposal_ta = DB::table('review_proposal_ta_detail_pivot')
-        //     ->join('review_proposal_ta', 'review_proposal_ta.id_penugasan', '=', 'review_proposal_ta_detail_pivot.penugasan_id')
-        //     ->select(DB::raw("review_proposal_ta_detail_pivot.penugasan_id"))
-        //     ->where(function ($query) use ($dosenKbk) {
-        //         $query->where('review_proposal_ta.reviewer_satu', '=', $dosenKbk->id_dosen_kbk)
-        //             ->orWhere('review_proposal_ta.reviewer_dua', '=', $dosenKbk->id_dosen_kbk);
-        //     })
-        //     ->orderBy('penugasan_id', 'desc')
-        //     ->get();
+        $dosen = [];
 
+        foreach ($data_penugasan as $data) {
+            $data_reviewer = [];
+            if (
+                $data->reviewer_satu == $dosenKbk->id_dosen_kbk &&
+                $data->review_proposal_ta_detail()->where('dosen', '1')->exists()
+            ) {
 
-        $jumlah_review_proposal = $data_review_proposal_ta->count();
+                $data_reviewer = [
+                    'reviewer_id' => $data->reviewer_satu,
+                    'dosen' => '1'
+                ];
+            }
+            if (
+                $data->reviewer_dua == $dosenKbk->id_dosen_kbk &&
+                $data->review_proposal_ta_detail()->where('dosen', '2')->exists()
+            ) {
 
-       
-        // $total_ta = $jumlah_proposal + $jumlah_review_proposal;
+                $data_reviewer = [
+                    'reviewer_id' => $data->reviewer_dua,
+                    'dosen' => '2'
+                ];
+            }
+            if (!empty($data_reviewer)) {
+                $dosen[] = $data_reviewer;
+            }
+        }
+
+        debug($dosen);
+
+        $jumlah_review_proposal = count($dosen);
 
         $percentReviewProposalTA = $jumlah_proposal > 0 ? ($jumlah_review_proposal / $jumlah_proposal) * 100 : 0;
         $percentProposalTA = 100 - $percentReviewProposalTA;
-
-        // $total_ta = $jumlah_proposal + $jumlah_review_proposal;
-        // $percentReviewProposalTA = $total_ta > 0 ? ($jumlah_review_proposal / $total_ta) * 100 : 0;
-        // $percentProposalTA = $total_ta > 0 ? ($jumlah_proposal / $total_ta) * 100 : 0;
-
-        // $data = [
-        //     'jumlah_proposal' => $jumlah_proposal,
-        //     'jumlah_review_proposal' => $jumlah_review_proposal,
-        //     // 'percentProposalTA' => $total_ta > 0 ? ($jumlah_proposal / $total_ta) * 100 : 0,
-        //     // 'percentReviewProposalTA' => $total_ta > 0 ? ($jumlah_review_proposal / $total_ta) * 100 : 0,
-        //     'percentReviewProposalTA' => $percentReviewProposalTA,
-        //     'percentProposalTA' => $percentProposalTA,
-        // ];
-        // debug($data);
-        debug($jumlah_review_proposal);
+        //debug($jumlah_review_proposal);
 
         /* return $data; */
         return view('admin.content.dosenKbk.dashboard_dosenKbk', compact('jumlah_proposal', 'jumlah_review_proposal', 'percentReviewProposalTA', 'percentProposalTA'));

@@ -21,7 +21,10 @@ class PimpinanJurusan extends Model
             ->logAll()
             ->logOnlyDirty()
             ->useLogName('PimpinanJurusan')
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function(string $eventName) {
+                return "{$eventName} PimpinanJurusan";
+            });
     }
 
     public function r_dosen(){

@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Auth\BeritaAcara\beritaAcaraCreate;
 use App\Http\Requests\Auth\BeritaAcara\beritaAcaraUpdate;
 use App\Models\MatkulKBK;
+use App\Models\VerBeritaAcaraDetail;
 
 class VerBeritaAcaraRpsController extends Controller
 {
@@ -75,7 +76,7 @@ class VerBeritaAcaraRpsController extends Controller
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
-
+            debug($data_ver_rps->toArray());
         // Filtered VerBeritaAcara data
         $data_berita_acara = VerBeritaAcara::whereHas('p_ver_rps_uas.r_rep_rps_uas.r_matkulKbk', function ($query) use ($pengurus_kbk) {
             $query->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id);
@@ -96,68 +97,78 @@ class VerBeritaAcaraRpsController extends Controller
     public function download_pdf(Request $request)
     {
         $pengurus_kbk = $this->getDosen();
-        
+
         $prodiList = Prodi::where('jurusan_id', $pengurus_kbk->r_dosen->jurusan_id)->get();
         debug($prodiList);
-        
-        
+
+
         $selectedProdiId = $request->input('prodi_id');
         if (!$selectedProdiId) {
             return redirect()->route('upload_rps_berita_acara')->with('error', 'Silahkan pilih prodi yang ingin di cetak');
         }
-        
+
         $selectedProdi = Prodi::find($selectedProdiId);
 
         $kajur = PimpinanJurusan::where('jurusan_id', $pengurus_kbk->r_dosen->jurusan_id)->first();
         $kaprodi = PimpinanProdi::where('prodi_id', $selectedProdiId)->first();
         //dd($kaprodi->toArray());
-
         DB::beginTransaction();
         try {
-            $data_ver_rps = VerRpsUas::with([
-                'r_pengurus',
-                'r_pengurus.r_dosen',
-                'r_rep_rps_uas',
-                'r_rep_rps_uas.r_smt_thnakd',
-                'r_rep_rps_uas.r_matkulKbk',
-                'r_rep_rps_uas.r_dosen_matkul.p_kelas',
-                'r_rep_rps_uas.r_matkulKbk.r_matkul'
-            ])
-                ->whereHas('r_rep_rps_uas', function ($query) use ($pengurus_kbk, $selectedProdiId) {
-                    $query->whereHas('r_matkulKbk', function ($nestedQuery) use ($pengurus_kbk) {
-                        $nestedQuery->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id);
-                    })
-                        ->whereHas('r_matkulKbk.r_matkul.r_kurikulum.r_prodi', function ($query) use ($selectedProdiId) {
-                            $query->where('prodi_id', '=', $selectedProdiId);
-                        })
-                        ->whereHas('r_smt_thnakd', function ($nestedQuery) {
-                            $nestedQuery->where('status_smt_thnakd', '=', '1');
-                        })
-                        ->where('type', '=', '0');
+        $data_ver_rps = VerRpsUas::with([
+            'r_pengurus',
+            'r_pengurus.r_dosen',
+            'r_rep_rps_uas',
+            'r_rep_rps_uas.r_smt_thnakd',
+            'r_rep_rps_uas.r_matkulKbk',
+            'r_rep_rps_uas.r_dosen_matkul.p_kelas',
+            'r_rep_rps_uas.r_matkulKbk.r_matkul'
+        ])
+            ->whereHas('r_rep_rps_uas', function ($query) use ($pengurus_kbk, $selectedProdiId) {
+                $query->whereHas('r_matkulKbk', function ($nestedQuery) use ($pengurus_kbk) {
+                    $nestedQuery->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id);
                 })
-                ->orderByDesc('id_ver_rps_uas')
-                ->get();
-            //dd($data_ver_rps->toArray());
+                ->whereHas('r_matkulKbk.r_matkul.r_kurikulum.r_prodi', function ($query) use ($selectedProdiId) {
+                    $query->where('prodi_id', '=', $selectedProdiId);
+                })
+                ->whereHas('r_smt_thnakd', function ($nestedQuery) {
+                    $nestedQuery->where('status_smt_thnakd', '=', '1');
+                })
+                ->where('type', '=', '0');
+            })
+            ->orderByDesc('id_ver_rps_uas')
+            ->get();
+        
+        // Memeriksa apakah ada review yang sudah ditugaskan
+        // Jika tidak ada data verifikasi RPS
+        if ($data_ver_rps->isEmpty()) {
+            return redirect()->route('upload_rps_berita_acara')->with('error', 'Data verifikasi RPS pada prodi ini tidak ada');
+        }
+        
+        // Mengambil semua id_ver_rps_uas
+        $ver_rps_uas_ids = $data_ver_rps->pluck('id_ver_rps_uas')->toArray();
+        
+        // Memeriksa apakah ada id_ver_rps_uas yang sudah ada di VerBeritaAcaraDetail
+        $existing_ver_rps_uas_ids = VerBeritaAcaraDetail::whereIn('ver_rps_uas_id', $ver_rps_uas_ids)->pluck('ver_rps_uas_id')->toArray();
+        
+        // Filter hanya id_ver_rps_uas yang belum ada di VerBeritaAcaraDetail
+        $ver_rps_uas_to_process = array_diff($ver_rps_uas_ids, $existing_ver_rps_uas_ids);
+        
+        if (empty($ver_rps_uas_to_process)) {
+            return redirect()->route('upload_rps_berita_acara')->with('error', 'Semua data verifikasi RPS pada prodi ini sudah diproses');
+        }
 
-            if ($data_ver_rps->isEmpty()) {
-                return redirect()->route('upload_rps_berita_acara')->with('error', 'Data verifikasi rps pada prodi ini tidak ada');
-            }
-            foreach ($data_ver_rps as $verRps) {
-                $ver_rps_uas_ids[] = $verRps->id_ver_rps_uas;
-            }
-
-            $verBeritaAcara = VerBeritaAcara::create([
-                'kajur' => $kajur->id_pimpinan_jurusan,
-                'kaprodi' => $kaprodi->id_pimpinan_prodi,
-                'jenis_kbk_id' => $pengurus_kbk->jenis_kbk_id,
-                'type' => '0',
-                'tanggal_upload' => Carbon::now(),
-            ]);
-            //dd($verBeritaAcara);
-            foreach ($ver_rps_uas_ids as $ver_rps_uas_id) {
-                $verBeritaAcara->p_ver_rps_uas()->attach($ver_rps_uas_id);
-            }
-            DB::commit();
+        $verBeritaAcara = VerBeritaAcara::create([
+            'kajur' => $kajur->id_pimpinan_jurusan,
+            'kaprodi' => $kaprodi->id_pimpinan_prodi,
+            'jenis_kbk_id' => $pengurus_kbk->jenis_kbk_id,
+            'type' => '0',
+            'tanggal_upload' => Carbon::now(),
+        ]);
+        //dd($verBeritaAcara);
+        foreach ($ver_rps_uas_to_process as $ver_rps_uas_id) {
+            $verBeritaAcara->p_ver_rps_uas()->attach($ver_rps_uas_id);
+        }
+        DB::commit();
         } catch (\Throwable) {
             DB::rollback();
             return redirect()->route('upload_rps_berita_acara')->with('error', 'Berita Acara Gagal di Upload.');

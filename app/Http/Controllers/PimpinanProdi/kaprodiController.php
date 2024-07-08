@@ -50,7 +50,10 @@ class kaprodiController extends Controller
     public function dashboard_kaprodi()
     {
         $kaprodi = $this->getDosen();
-        $smt_thnakd_saat_ini = ThnAkademik::where('status_smt_thnakd', '1')->first();
+        $data_rps = $this->data_rps();
+        $data_uas = $this->data_uas();
+        debug($data_rps, $data_uas);
+        /* $smt_thnakd_saat_ini = ThnAkademik::where('status_smt_thnakd', '1')->first();
 
         // Hitung jumlah unggahan dan verifikasi RPS
         $queryRPS = RepRpsUas::where('type', '=', '0')
@@ -94,15 +97,10 @@ class kaprodiController extends Controller
             ->whereHas('r_rep_rps_uas.r_smt_thnakd', function ($query) use ($smt_thnakd_saat_ini) {
                 $query->where('id_smt_thnakd', $smt_thnakd_saat_ini->id_smt_thnakd);
             })
-            ->count();
-
-
-
-
-
+            ->count(); */
         // Ambil data proposal TA dengan mahasiswa terkait prodi
-        $data_proposal_ta = ProposalTAModel::with('r_mahasiswa.r_prodi')
-            ->whereHas('r_mahasiswa.r_prodi', function ($query) use ($kaprodi) {
+        $data_proposal_ta = ProposalTAModel::with('r_mahasiswa')
+            ->whereHas('r_mahasiswa', function ($query) use ($kaprodi) {
                 $query->where('prodi_id', $kaprodi->prodi_id);
             })
             ->orderBy('proposal_ta.id_proposal_ta', 'desc')
@@ -113,8 +111,8 @@ class kaprodiController extends Controller
         $jumlah_proposal = $data_proposal_ta->count();
 
         // Ambil data review proposal TA dengan filter berdasarkan prodi
-        $data_review_proposal_ta = ReviewProposalTaDetailPivot::with('p_reviewProposal', 'p_reviewProposal.proposal_ta.r_mahasiswa.r_prodi')
-            ->whereHas('p_reviewProposal.proposal_ta.r_mahasiswa.r_prodi', function ($query) use ($kaprodi) {
+        $data_review_proposal_ta = ReviewProposalTaDetailPivot::with('p_reviewProposal', 'p_reviewProposal.proposal_ta.r_mahasiswa')
+            ->whereHas('p_reviewProposal.proposal_ta.r_mahasiswa', function ($query) use ($kaprodi) {
                 $query->where('prodi_id', $kaprodi->prodi_id);
             })
             ->orderBy('review_proposal_ta_detail_pivot.penugasan_id', 'desc')
@@ -161,17 +159,17 @@ class kaprodiController extends Controller
         // debug($merged_data);
 
         // Hitung total 
-        $total_rps = $banyak_pengunggahan_rps + $banyak_verifikasi_rps;
+        /* $total_rps = $banyak_pengunggahan_rps + $banyak_verifikasi_rps;
         $total_uas = $banyak_pengunggahan_uas + $banyak_verifikasi_uas;
-        $total_ta = $jumlah_proposal + $jumlah_review_proposal;
+        $total_ta = $jumlah_proposal + $jumlah_review_proposal; */
 
         // Hitung persentase 
-        $percentUploadedRPS = $total_rps > 0 ? ($banyak_pengunggahan_rps / $total_rps) * 100 : 0;
+        /* $percentUploadedRPS = $total_rps > 0 ? ($banyak_pengunggahan_rps / $total_rps) * 100 : 0;
         $percentVerifiedRPS = $total_rps > 0 ? ($banyak_verifikasi_rps / $total_rps) * 100 : 0;
         $percentUploadedUAS = $total_uas > 0 ? ($banyak_pengunggahan_uas / $total_uas) * 100 : 0;
         $percentVerifiedUAS = $total_uas > 0 ? ($banyak_verifikasi_uas / $total_uas) * 100 : 0;
         $percentProposalTA = $total_ta > 0 ? ($jumlah_proposal / $total_ta) * 100 : 0;
-        $percentReviewProposalTA = $total_ta > 0 ? ($jumlah_review_proposal / $total_ta) * 100 : 0;
+        $percentReviewProposalTA = $total_ta > 0 ? ($jumlah_review_proposal / $total_ta) * 100 : 0; */
         // $percentVerifiedRPS = $banyak_pengunggahan_rps > 0 ? ($banyak_verifikasi_rps / $banyak_pengunggahan_rps) * 100 : 0;
         // $percentUploadedRPS = 100 - $percentVerifiedRPS;
         // $percentVerifiedUAS = $banyak_pengunggahan_uas > 0 ? ($banyak_verifikasi_uas / $banyak_pengunggahan_uas) * 100 : 0;
@@ -190,18 +188,10 @@ class kaprodiController extends Controller
         // debug($queryUAS->toArray());
 
         return view('admin.content.PimpinanProdi.dashboard_kaprodi', compact(
-            'percentUploadedRPS',
-            'percentVerifiedRPS',
-            'percentUploadedUAS',
-            'percentVerifiedUAS',
-            'percentProposalTA',
-            'percentReviewProposalTA',
-            'banyak_pengunggahan_rps',
-            'banyak_verifikasi_rps',
-            'banyak_pengunggahan_uas',
-            'banyak_verifikasi_uas',
+            'data_uas',
+            'data_rps',
             'jumlah_proposal',
-            'jumlah_review_proposal',
+            'jumlah_review_proposal'
         ));
     }
 
@@ -254,10 +244,8 @@ class kaprodiController extends Controller
         //
     }
 
-    public function grafik_rps()
-    {
+    public function data_rps(){
         $kaprodi = $this->getDosen();
-
         $banyak_pengunggahan_smt = RepRpsUas::join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
             ->join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
             ->join('matkul', 'matkul_kbk.matkul_id', '=', 'matkul.id_matkul')
@@ -402,31 +390,32 @@ class kaprodiController extends Controller
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
+            $data = [
+                'banyak_pengunggahan_smt' => $banyak_pengunggahan_smt,
+                'banyak_verifikasi_smt' => $banyak_verifikasi_smt,
+                'banyak_berita_smt' => $banyak_berita_smt,
+                'banyak_berita_ver_smt' => $banyak_berita_ver_smt,
+                'semester' => $semester,
+                'banyak_pengunggahan_kbk' => $banyak_pengunggahan_kbk,
+                'banyak_verifikasi_kbk' => $banyak_verifikasi_kbk,
+                'banyak_berita_kbk' => $banyak_berita_kbk,
+                'banyak_berita_ver_kbk' => $banyak_berita_ver_kbk,
+                'kbk' => $kbk,
+                'data_ver_rps' => $data_ver_rps,
+            ];
+            return $data;
+    }
 
-        $data = [
-            'banyak_pengunggahan_smt' => $banyak_pengunggahan_smt,
-            'banyak_verifikasi_smt' => $banyak_verifikasi_smt,
-            'banyak_berita_smt' => $banyak_berita_smt,
-            'banyak_berita_ver_smt' => $banyak_berita_ver_smt,
-            'semester' => $semester,
-            'banyak_pengunggahan_kbk' => $banyak_pengunggahan_kbk,
-            'banyak_verifikasi_kbk' => $banyak_verifikasi_kbk,
-            'banyak_berita_kbk' => $banyak_berita_kbk,
-            'banyak_berita_ver_kbk' => $banyak_berita_ver_kbk,
-            'kbk' => $kbk,
-            'data_ver_rps' => $data_ver_rps,
-        ];
+    public function grafik_rps()
+    {
+        $data = $this->data_rps();
 
         return view('admin.content.pimpinanProdi.GrafikRpsProdi', compact('data'));
     }
 
 
-
-
-    public function grafik_uas()
-    {
+    public function data_uas(){
         $kaprodi = $this->getDosen();
-
         $banyak_pengunggahan_smt = RepRpsUas::join('smt_thnakd', 'rep_rps_uas.smt_thnakd_id', '=', 'smt_thnakd.id_smt_thnakd')
             ->join('matkul_kbk', 'rep_rps_uas.matkul_kbk_id', '=', 'matkul_kbk.id_matkul_kbk')
             ->join('matkul', 'matkul_kbk.matkul_id', '=', 'matkul.id_matkul')
@@ -585,7 +574,12 @@ class kaprodiController extends Controller
             'kbk' => $kbk,
             'data_ver_rps' => $data_ver_rps,
         ];
+        return $data;
+    }
 
+    public function grafik_uas()
+    {
+        $data = $this->data_uas();
         return view('admin.content.pimpinanProdi.GrafikUasProdi', compact('data'));
     }
 }

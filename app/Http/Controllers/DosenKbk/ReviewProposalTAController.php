@@ -19,7 +19,8 @@ use Illuminate\Support\Facades\Validator;
 
 class ReviewProposalTAController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('permission:dosenKbk-view ReviewProposalTA', ['only' => ['index', 'getDosen']]);
         $this->middleware('permission:dosenKbk-create ReviewProposalTA', ['only' => ['create', 'store', 'getCariNomor', 'getDosen']]);
         $this->middleware('permission:dosenKbk-update ReviewProposalTA', ['only' => ['edit', 'update', 'getDosen']]);
@@ -56,17 +57,17 @@ class ReviewProposalTAController extends Controller
 
         $reviewer_data = $data_review_proposal_ta->map(function ($item) use ($dosen_kbk) {
             $reviewer = null;
-        
+
             // Determine the reviewer role
             if ($item->reviewer_satu == $dosen_kbk->id_dosen_kbk) {
                 $reviewer = '1';
             } elseif ($item->reviewer_dua == $dosen_kbk->id_dosen_kbk) {
                 $reviewer = '2';
             }
-        
+
             // Extract 'dosen' from 'p_reviewDetail', default to null if empty
             $dosen_review = $item->p_reviewDetail->isNotEmpty() ? $item->p_reviewDetail->first()->dosen : null;
-        
+
             // Prepare data object based on whether 'dosen_review' is null or not
             $dataObject = (object) [
                 'id_penugasan' => $item->id_penugasan,
@@ -82,16 +83,16 @@ class ReviewProposalTAController extends Controller
                 'prodi_id' => $item->proposal_ta->r_mahasiswa->prodi_id,
                 'dosen_r' => $reviewer
             ];
-        
+
             // Add 'dosen' to data object if 'dosen_review' is not null
             if ($dosen_review !== null) {
                 $dataObject->dosen = $dosen_review;
             }
-        
+
             return $dataObject;
         });
-        
-        
+
+
 
         debug($reviewer_data->toArray());
         // Ambil penugasan hanya untuk dosen yang terpilih sebagai reviewer pada tabel review
@@ -143,7 +144,7 @@ class ReviewProposalTAController extends Controller
                 'catatan' => $item->catatan,
                 'dosen_r' => $reviewer
             ];
-        });   
+        });
         // $penugasan_ids sekarang berisi semua penugasan_id dari $reviewer_data_detail
 
 
@@ -263,16 +264,17 @@ class ReviewProposalTAController extends Controller
 
     public function delete(string $id, string $dosen)
     {
-        $reviewer = ReviewProposalTaDetailPivot::where('penugasan_id', $id)
+        // Hanya menghapus entri dengan penugasan_id dan dosen yang sesuai
+        $deleted = ReviewProposalTaDetailPivot::where('penugasan_id', $id)
             ->where('dosen', $dosen)
-            ->first();
+            ->delete();
 
-        if ($reviewer) {
-            $reviewer->delete();
+        if ($deleted) {
             Session::flash('success', 'Data berhasil dihapus');
         } else {
             Session::flash('error', 'Data tidak ditemukan');
         }
+
 
         return redirect()->route('review_proposal_ta');
         // dd($reviewer);

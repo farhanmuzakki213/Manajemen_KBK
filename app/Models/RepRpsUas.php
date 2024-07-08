@@ -24,7 +24,10 @@ class RepRpsUas extends Model
             ->logAll()
             ->logOnlyDirty()
             ->useLogName('RepRpsUas')
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function(string $eventName) {
+                return "{$eventName} RepRpsUas";
+            });
     }
 
     public function r_dosen_matkul(){

@@ -21,6 +21,9 @@ class ThnAkademik extends Model
             ->logAll()
             ->logOnlyDirty()
             ->useLogName('ThnAkademik')
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function(string $eventName) {
+                return "{$eventName} ThnAkademik";
+            });
     }
 }

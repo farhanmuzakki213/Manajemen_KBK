@@ -22,6 +22,9 @@ class JenisKbk extends Model
             ->logAll()
             ->logOnlyDirty()
             ->useLogName('JenisKbk')
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function(string $eventName) {
+                return "{$eventName} JenisKbk";
+            });
     }
 }

@@ -55,6 +55,9 @@ class User extends Authenticatable
             ->logAll()
             ->logOnlyDirty()
             ->useLogName('User')
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function(string $eventName) {
+                return "{$eventName} User";
+            });
     }
 }

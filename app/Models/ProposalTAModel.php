@@ -23,7 +23,10 @@ class ProposalTAModel extends Model
             ->logAll()
             ->logOnlyDirty()
             ->useLogName('ProposalTAModel')
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function(string $eventName) {
+                return "{$eventName} ProposalTA";
+            });
     }
 
     public function r_mahasiswa(){

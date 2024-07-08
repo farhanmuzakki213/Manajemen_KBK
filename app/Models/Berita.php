@@ -20,6 +20,9 @@ class Berita extends Model
             ->logAll()
             ->logOnlyDirty()
             ->useLogName('Berita')
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function(string $eventName) {
+                return "{$eventName} Berita";
+            });
     }
 }

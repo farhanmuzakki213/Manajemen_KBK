@@ -22,7 +22,10 @@ class DosenPengampuMatkul extends Model
             ->logAll()
             ->logOnlyDirty()
             ->useLogName('DosenPengampuMatkul')
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function(string $eventName) {
+                return "{$eventName} DosenMatkul";
+            });
     }
 
     public function p_matkulKbk()

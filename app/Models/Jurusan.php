@@ -21,6 +21,9 @@ class Jurusan extends Model
             ->logAll()
             ->logOnlyDirty()
             ->useLogName('Jurusan')
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function(string $eventName) {
+                return "{$eventName} Jurusan";
+            });
     }
 }

@@ -14,8 +14,7 @@ class BeritaVerSeeder extends Seeder
     public function run(): void
     {
         $BeritaData = [
-            [1, 1, 1, 4, '', '1', '1', '1', '2024-01-23', '2024-01-23', '2024-01-23'],
-            [2, 1, 1, 4, '', '1', '1', '0', '2024-01-23', '2024-01-23', '2024-01-23'],
+            
         ];
 
         foreach ($BeritaData as $data) {

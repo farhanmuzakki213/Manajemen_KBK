@@ -19,7 +19,10 @@ class Kelas extends Model
             ->logAll()
             ->logOnlyDirty()
             ->useLogName('Kelas')
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function(string $eventName) {
+                return "{$eventName} Kelas";
+            });
     }
 
     public function p_dosenPengampuMatkul()

@@ -22,6 +22,9 @@ class JabatanKbk extends Model
             ->logAll()
             ->logOnlyDirty()
             ->useLogName('JabatanKbk')
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function(string $eventName) {
+                return "{$eventName} JabatanKbk";
+            });
     }
 }

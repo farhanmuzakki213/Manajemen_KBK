@@ -23,7 +23,10 @@ class ReviewProposalTAModel extends Model
             ->logAll()
             ->logOnlyDirty()
             ->useLogName('ReviewProposalTAModel')
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function(string $eventName) {
+                return "{$eventName} ReviewProposalTADetail";
+            });
     }
 
     public function proposal_ta(){
