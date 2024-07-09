@@ -146,7 +146,7 @@
                     </button>
                     <button class="nav-link w-100 d-flex align-items-center text-start" data-bs-toggle="pill"
                         data-bs-target="#tab-pane-4" type="button">
-                        <i class="fa fa-paint-brush fa-2x me-3"></i>
+                        <i class="fa fa-brain fa-2x me-3"></i>
                         <h4 class="m-0">CAIT</h4>
                     </button>
                     <button class="nav-link w-100 d-flex align-items-center text-start" data-bs-toggle="pill"
@@ -169,7 +169,7 @@
                             </div>
                             <div class="col-md-6 media-1">
                                 <h4 class="mb-3">PROGRAMMING</h4>
-                                <p class="mb-4">KBK dalam bidang keahlian programming adalah sebuah unit atau kelompok
+                                <p class="mb-4">KBK programming adalah sebuah unit atau kelompok
                                     di dalam sebuah institusi pendidikan, seperti universitas, yang bertanggung jawab
                                     dalam mengelola dan mengembangkan kurikulum serta kegiatan akademik terkait dengan
                                     pemrograman dan teknologi informasi. KBK biasanya terdiri dari sekelompok dosen dan

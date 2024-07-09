@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\LandingPage;
 
-use App\Http\Controllers\Controller;
 use App\Models\Berita;
+use App\Models\DosenKBK;
+use App\Models\JenisKbk;
 use App\Models\Pengurus_kbk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class LandingPageController extends Controller
 {
@@ -15,17 +17,31 @@ class LandingPageController extends Controller
      */
     public function index()
     {
-        $data_pengurus_kbk = Pengurus_kbk:: with('r_dosen', 'r_jenis_kbk', 'r_jabatan_kbk')
+        $data_pengurus_kbk = Pengurus_kbk::with('r_dosen', 'r_jenis_kbk', 'r_jabatan_kbk')
             ->orderByDesc('id_pengurus')
             ->get();
 
         $data_berita = DB::table('berita')
             ->orderBy('id_berita')
             ->get();
-            
-        return view('frontend.master', compact('data_berita', 'data_pengurus_kbk'));
+
+            $data_dosen_kbk = DosenKBK::select('jenis_kbk_id', DB::raw('count(*) as total_dosen'))
+            ->groupBy('jenis_kbk_id')
+            ->with('r_jenis_kbk')
+            ->get();
+    
+        // Membuat array untuk memudahkan akses data
+        $kbkData = DosenKBK::select('jenis_kbk_id', DB::raw('count(*) as total_dosen'))
+        ->groupBy('jenis_kbk_id')
+        ->pluck('total_dosen', 'jenis_kbk_id')
+        ->all();
+    
+        // Mengambil semua jenis KBK untuk memastikan semua KBK ditampilkan meskipun jumlah dosen 0
+        $jenisKbk = JenisKbk::all();
+
+        return view('frontend.master', compact('data_berita', 'data_pengurus_kbk', 'kbkData', 'jenisKbk'));
         //dd(compact('data_berita', 'data_pegurus_kbk'));
-    } 
+    }
 
     public function detail($id)
     {
