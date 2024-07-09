@@ -30,14 +30,14 @@ class LandingPageController extends Controller
             ->with('r_jenis_kbk')
             ->get();
     
-        // Membuat array untuk memudahkan akses data
+    
         $kbkData = DosenKBK::select('jenis_kbk_id', DB::raw('count(*) as total_dosen'))
         ->groupBy('jenis_kbk_id')
         ->pluck('total_dosen', 'jenis_kbk_id')
         ->all();
     
-        // Mengambil semua jenis KBK untuk memastikan semua KBK ditampilkan meskipun jumlah dosen 0
-        $jenisKbk = JenisKbk::all();
+    
+        $jenisKbk = JenisKbk::all()->keyBy('id_jenis_kbk');
 
         return view('frontend.master', compact('data_berita', 'data_pengurus_kbk', 'kbkData', 'jenisKbk'));
         //dd(compact('data_berita', 'data_pegurus_kbk'));
