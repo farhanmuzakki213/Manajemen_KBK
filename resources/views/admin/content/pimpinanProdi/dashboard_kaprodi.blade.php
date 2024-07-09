@@ -69,12 +69,12 @@
                                                 <div class="col-8">
                                                     <h5 class="card-title mb-9 fw-semibold">Unggahan RPS</h5>
                                                     @foreach ($data_rps['banyak_pengunggahan_smt'] as $data)
-                                                        <h4 class="fw-semibold mb-9">{{ $data }}</h4>
+                                                        <h4 class="fw-semibold mb-9">{{ $data ?? 0}}</h4>
                                                     @endforeach
                                                     <div class="d-flex align-items-center pb-1"></div>
                                                     <h5 class="card-title my-9 fw-semibold">Verifikasi RPS</h5>
                                                     @foreach ($data_rps['banyak_verifikasi_smt'] as $data)
-                                                        <h4 class="fw-semibold mb-9">{{ $data }}</h4>
+                                                        <h4 class="fw-semibold mb-9">{{ $data ?? 0}}</h4>
                                                     @endforeach
                                                 </div>
                                                 <div class="col-4">
@@ -97,12 +97,12 @@
                                                 <div class="col-8">
                                                     <h5 class="card-title mb-9 fw-semibold">Unggahan Soal UAS</h5>
                                                     @foreach ($data_uas['banyak_pengunggahan_smt'] as $data)
-                                                        <h4 class="fw-semibold mb-9">{{ $data }}</h4>
+                                                        <h4 class="fw-semibold mb-9">{{ $data ?? 0 }}</h4>
                                                     @endforeach
                                                     <div class="d-flex align-items-center pb-1"></div>
                                                     <h5 class="card-title my-9 fw-semibold">Verifikasi Soal UAS</h5>
                                                     @foreach ($data_uas['banyak_verifikasi_smt'] as $data)
-                                                        <h4 class="fw-semibold">{{ $data }}</h4>
+                                                        <h4 class="fw-semibold">{{ $data ?? 0}}</h4>
                                                     @endforeach
                                                 </div>
                                                 <div class="col-4">
@@ -124,11 +124,11 @@
                                             <div class="row align-items-start">
                                                 <div class="col-8">
                                                     <h5 class="card-title my-9 fw-semibold">Penugasan Review Proposal TA</h5>
-                                                    <h4 class="fw-semibold">{{ $total_jumlah_proposal }}</h4>
+                                                    <h4 class="fw-semibold">{{ $data_ta['total_jumlah_proposal_smt'] }}</h4>
                                                     <div class="d-flex align-items-center pb-1">
                                                     </div>
                                                     <h5 class="card-title my-9 fw-semibold">Review Proposal TA</h5>
-                                                    <h4 class="fw-semibold">{{ $total_jumlah_review_proposal }}</h4>
+                                                    <h4 class="fw-semibold">{{ $data_ta['total_jumlah_review_proposal_smt'] }}</h4>
 
                                                 </div>
                                                 <div class="col-4">
@@ -187,32 +187,37 @@
         document.addEventListener('DOMContentLoaded', function() {
             const dataRPS = @json($data_rps);
             const dataUAS = @json($data_uas);
-            const jumlahProposal = {{ $total_jumlah_proposal }};
-            const jumlahReviewProposal = {{ $total_jumlah_review_proposal }};
-
+            const dataTA = @json($data_ta);
+    
             let chart, chartRPS, chartUAS, chartTA;
-
+    
             function updateChart(type, value) {
                 let labels = [];
                 let pengunggahanDataRPS = [];
                 let verifikasiDataRPS = [];
                 let pengunggahanDataUAS = [];
                 let verifikasiDataUAS = [];
-
+                let penugasanDataTA = [];
+                let reviewDataTA = [];
+    
                 if (type === 'smt') {
                     labels = Object.keys(dataRPS.banyak_pengunggahan_smt);
                     pengunggahanDataRPS = Object.values(dataRPS.banyak_pengunggahan_smt);
                     verifikasiDataRPS = Object.values(dataRPS.banyak_verifikasi_smt);
                     pengunggahanDataUAS = Object.values(dataUAS.banyak_pengunggahan_smt);
                     verifikasiDataUAS = Object.values(dataUAS.banyak_verifikasi_smt);
+                    penugasanDataTA = [dataTA.total_jumlah_proposal_smt];
+                    reviewDataTA = [dataTA.total_jumlah_review_proposal_smt];
                 } else if (type === 'kbk') {
-                    labels = Object.keys(dataRPS.banyak_pengunggahan_kbk);
-                    pengunggahanDataRPS = Object.values(dataRPS.banyak_pengunggahan_kbk);
-                    verifikasiDataRPS = Object.values(dataRPS.banyak_verifikasi_kbk);
-                    pengunggahanDataUAS = Object.values(dataUAS.banyak_pengunggahan_kbk);
-                    verifikasiDataUAS = Object.values(dataUAS.banyak_verifikasi_kbk);
+                    labels = Object.keys(dataTA.pengunggahan_rps_kbk);
+                    pengunggahanDataRPS = Object.values(dataTA.pengunggahan_rps_kbk);
+                    verifikasiDataRPS = Object.values(dataTA.verifikasi_rps_kbk);
+                    pengunggahanDataUAS = Object.values(dataTA.pengunggahan_uas_kbk);
+                    verifikasiDataUAS = Object.values(dataTA.verifikasi_uas_kbk);
+                    penugasanDataTA = Object.values(dataTA.penugasan_kbk);
+                    reviewDataTA = Object.values(dataTA.review_kbk);
                 }
-
+    
                 const barOptions = {
                     series: [{
                             name: 'Banyak Pengunggahan RPS',
@@ -232,11 +237,11 @@
                         },
                         {
                             name: 'Penugasan Review Proposal TA',
-                            data: Array(labels.length).fill(jumlahProposal)
+                            data: penugasanDataTA
                         },
                         {
                             name: 'Review Proposal TA',
-                            data: Array(labels.length).fill(jumlahReviewProposal)
+                            data: reviewDataTA
                         }
                     ],
                     chart: {
@@ -315,8 +320,8 @@
                             ...verifikasiDataRPS,
                             ...pengunggahanDataUAS,
                             ...verifikasiDataUAS,
-                            jumlahProposal,
-                            jumlahReviewProposal
+                            ...penugasanDataTA,
+                            ...reviewDataTA
                         ) + 10,
                         tickAmount: 4,
                         labels: {
@@ -343,10 +348,8 @@
                                     return parseInt(val) + " RPS";
                                 } else if (seriesName.includes('UAS')) {
                                     return parseInt(val) + " UAS";
-                                } else if (seriesName.includes('Proposal')) {
-                                    return parseInt(val) + " Proposal";
                                 } else {
-                                    return parseInt(val) + " Review";
+                                    return parseInt(val) + " Proposal";
                                 }
                             }
                         }
@@ -362,37 +365,37 @@
                         }
                     }]
                 };
-
+    
                 if (chart) {
                     chart.updateOptions(barOptions);
                 } else {
                     chart = new ApexCharts(document.querySelector("#kaprodiChart"), barOptions);
                     chart.render();
                 }
-
-                // Update Donut Charts
                 updateDonutCharts();
             }
-
+    
             function updateDonutCharts() {
                 const totalBanyakPengunggahanRPS = Object.values(dataRPS.banyak_pengunggahan_smt).reduce((a, b) => a + b, 0);
                 const totalBanyakVerifikasiRPS = Object.values(dataRPS.banyak_verifikasi_smt).reduce((a, b) => a + b, 0);
                 const totalBanyakPengunggahanUAS = Object.values(dataUAS.banyak_pengunggahan_smt).reduce((a, b) => a + b, 0);
                 const totalBanyakVerifikasiUAS = Object.values(dataUAS.banyak_verifikasi_smt).reduce((a, b) => a + b, 0);
-
+                const totalBanyakpenugasanDataTA = [dataTA.total_jumlah_proposal_smt].reduce((a, b) => a + b, 0);
+                const totalBanyakreviewDataTA = [dataTA.total_jumlah_review_proposal_smt].reduce((a, b) => a + b, 0);
+    
                 chartRPS.updateOptions({
                     series: [totalBanyakPengunggahanRPS, totalBanyakVerifikasiRPS]
                 });
-
+    
                 chartUAS.updateOptions({
                     series: [totalBanyakPengunggahanUAS, totalBanyakVerifikasiUAS]
                 });
-
+    
                 chartTA.updateOptions({
-                    series: [jumlahProposal, jumlahReviewProposal]
+                    series: [totalBanyakpenugasanDataTA, totalBanyakreviewDataTA]
                 });
             }
-
+    
             var commonOptions = {
                 chart: {
                     type: 'donut',
@@ -424,7 +427,7 @@
                     position: 'bottom'
                 }
             };
-
+    
             chartRPS = new ApexCharts(document.querySelector("#chartRPS"), {
                 ...commonOptions,
                 series: [0, 0],
@@ -432,7 +435,7 @@
                 colors: ["#008FFB", "#49BEFF"]
             });
             chartRPS.render();
-
+    
             chartUAS = new ApexCharts(document.querySelector("#chartUAS"), {
                 ...commonOptions,
                 series: [0, 0],
@@ -440,15 +443,15 @@
                 colors: ["#50B498", "#9CDBA6"]
             });
             chartUAS.render();
-
+    
             chartTA = new ApexCharts(document.querySelector("#chartTA"), {
                 ...commonOptions,
                 series: [0, 0],
-                labels: ['Proposal', 'Review'],
+                labels: ['Penugasan', 'Review'],
                 colors: ["#FFC700", "#FFF455"]
             });
             chartTA.render();
-
+    
             document.getElementById('filterType').addEventListener('change', function() {
                 const type = this.value;
                 const filterValueSelect = document.getElementById('filterValue');
@@ -458,7 +461,7 @@
                 if (type === 'smt') {
                     options = dataRPS.semester;
                 } else if (type === 'kbk') {
-                    options = dataRPS.kbk;
+                    options = dataTA.jenis_kbk || [];
                 }
 
                 options.forEach(option => {
@@ -478,6 +481,7 @@
 
             document.getElementById('filterType').dispatchEvent(new Event('change'));
         });
-</script>
+    </script>
+    
 
 @endsection

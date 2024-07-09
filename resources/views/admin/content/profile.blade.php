@@ -52,6 +52,11 @@
                                                 {{ session('gambar') }}
                                             </div>
                                         @endif
+                                        @if (session('error'))
+                                            <div class="alert alert-success" role="alert">
+                                                {{ session('error') }}
+                                            </div>
+                                        @endif
                                         @if (session('reset'))
                                             <div class="alert alert-success" role="alert">
                                                 {{ session('reset') }}
