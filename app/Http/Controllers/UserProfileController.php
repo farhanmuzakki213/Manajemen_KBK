@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Dosen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -41,17 +42,18 @@ class UserProfileController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
         ]);
-
+        
         $user = Auth::user();
-
+        $dosen = Dosen::where('nama_dosen', $user->name)->where('email', $user->email)->first(); 
+        // dd($user, $dosen);
         if ($request->hasFile('profile_picture')) {
             $image = $request->file('profile_picture');
             $name = time() . '.' . $image->getClientOriginalExtension();
             $destinationPath = public_path('/profile_pictures');
             $image->move($destinationPath, $name);
-
+        
             // Hapus gambar lama jika ada
             if ($user->profile_picture) {
                 $oldImagePath = public_path('/profile_pictures/' . $user->profile_picture);
@@ -59,11 +61,29 @@ class UserProfileController extends Controller
                     unlink($oldImagePath);
                 }
             }
-
-            $user->profile_picture = $name;
+            if ($dosen && $dosen->image) { // Pastikan $dosen ada dan memiliki image
+                $oldImagePath = public_path('/profile_pictures/' . $dosen->image);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
+            }
+            DB::beginTransaction();
+            try {
+                $user->profile_picture = $name;
+                $user->save();
+        
+                // Simpan nama file gambar ke dalam kolom 'image' pada tabel 'dosen'
+                if ($dosen) {
+                    $dosen->image = $name;
+                    $dosen->save();
+                }
+        
+                DB::commit();
+            } catch (\Throwable $th) {
+                DB::rollback();
+                return redirect()->route('profile.edit')->with('error', 'Profile updated failed');
+            }
         }
-        //dd($user->profile_picture);
-        $user->save();
 
         return redirect()->route('profile.edit')->with('gambar', 'Profile updated successfully');
     }
@@ -71,18 +91,29 @@ class UserProfileController extends Controller
     public function resetProfilePicture()
     {
         $user = Auth::user();
-
+        $dosen = Dosen::where('nama_dosen', $user->name)->where('email', $user->email)->first();
         if ($user->profile_picture) {
             $oldImagePath = public_path('/profile_pictures/' . $user->profile_picture);
             if (file_exists($oldImagePath)) {
                 unlink($oldImagePath);
             }
         }
-
-        $user->profile_picture = null;
-        //dd($user->profile_picture);
-        $user->save();
-
+        DB::beginTransaction();
+            try {
+                $user->profile_picture = null;
+                $user->save();
+        
+                // Simpan nama file gambar ke dalam kolom 'image' pada tabel 'dosen'
+                if ($dosen) {
+                    $dosen->image = null;
+                    $dosen->save();
+                }
+        
+                DB::commit();
+            } catch (\Throwable $th) {
+                DB::rollback();
+                return redirect()->route('profile.edit')->with('error', 'Profile Reset failed');
+            }
         return redirect()->route('profile.edit')->with('reset', 'Profile Reset successfully');
     }
 

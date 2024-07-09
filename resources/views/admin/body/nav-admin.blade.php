@@ -111,7 +111,7 @@
                         style="min-width: 360px;">
                         <div class="message-body">
                             <div class="d-flex align-items-center py-9 mx-7 border-bottom">
-                                <img src="{{ asset('backend/assets/images/profile/user-1.jpg') }}"
+                                <img src="{{ asset('profile_pictures/' . (auth()->user()->profile_picture ?? '../backend/assets/images/profile/user-1.jpg')) }}"
                                     class="rounded-circle" width="80" height="80" alt="modernize-img">
                                 <div class="ms-3">
                                     <h5 class="mb-1 fs-3">{{ Auth::user()->name }}</h5>

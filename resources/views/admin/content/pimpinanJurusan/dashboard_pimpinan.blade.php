@@ -249,7 +249,7 @@
                 ],
                 chart: {
                     type: "bar",
-                    height: 600,
+                    height: 720,
                     offsetX: -15,
                     toolbar: {
                         show: true

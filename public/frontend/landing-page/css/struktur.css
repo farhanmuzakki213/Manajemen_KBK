@@ -76,7 +76,8 @@ a {
 }
 
 .card__img {
-  width: 180px;
+  width: 230px;
+  /* width: 180px; */
   margin: 0 auto;
   position: relative;
   z-index: 5;
