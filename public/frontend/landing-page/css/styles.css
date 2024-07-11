@@ -73,8 +73,8 @@
   --bs-border-radius-xl: 1rem;
   --bs-border-radius-2xl: 2rem;
   --bs-border-radius-pill: 50rem;
-  --bs-link-color: #ffc800;
-  --bs-link-hover-color: #cca000;
+  --bs-link-color: #0dcaf0;
+  --bs-link-hover-color: #0dcaf0;
   --bs-code-color: #d63384;
   --bs-highlight-bg: #fff4cc;
 }
@@ -88,10 +88,13 @@
 @media (prefers-reduced-motion: no-preference) {
   :root {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
 }
 
+
 body {
+  overflow-x: hidden;
   margin: 0;
   font-family: var(--bs-body-font-family);
   font-size: var(--bs-body-font-size);
@@ -102,6 +105,20 @@ body {
   background-color: var(--bs-body-bg);
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+body::-webkit-scrollbar {
+  width: 12px;             
+}
+
+body::-webkit-scrollbar-track {
+  background: rgb(255, 255, 255);       
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: rgb(0, 0, 0);    
+  border-radius: 20px;       
+  border: 3px solid rgb(255, 255, 255);  
 }
 
 hr {
@@ -642,47 +659,251 @@ progress {
   margin-left: auto;
 }
 
+
+
 .container-prodi{
   position: relative;
-  margin-top: -16.5rem;
-  max-width: 800px;
-  padding-right: calc(var(--bs-gutter-x) * 0.5);
-  padding-left: calc(var(--bs-gutter-x) * 0.5);
-  margin-right: auto;
-  margin-left: auto;
+  display: flex;
+  max-width: 100%; 
+  margin: 0 auto;
+  overflow: hidden;
+  justify-content: center;   
+  align-items: center; 
+  /* padding: 0;  */
+} 
+
+.shadow_prodi {
+  display: block;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  width: 100%;
+  max-width: 100%; /* Ensure it doesn’t exceed container width */
+  overflow: hidden; /* Ensure the shadow container doesn't overflow */
+  margin: 0 auto; /* Center the shadow box */
+}
+.row_prodi {
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+  width: 100%; /* Ensure it uses full width */
+  gap: 10px; /* Add spacing between columns */
 }
 
+/* .row_prodi > .col_prodi {
+  flex: 1 1 auto;
+  text-align: center; 
+  padding: 0; 
+  margin: 0;
+} */
+
+.swiper-container-prodi {
+  width: 100%;
+  overflow: hidden; /* Ensure slides don't overflow */
+
+}
+
+.swiper-wrapper-prodi {
+  display: flex;
+  align-items: center;
+}
+
+.swiper-slide-prodi {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.img-prodi {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+
+
+
+
+/* .img-prodi {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0; 
+  padding: 0; 
+} */
+
+
+.shadow_prodi-sm {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+
+.shadow_prodi-lg {
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+}
+
+.shadow_prodi-none {
+  box-shadow: none !important;
+}
+
+/* Gaya untuk Container Prodi */
+@media (min-width: 320px) {
+  .container-prodi {
+    max-width: 65vw; /* Menggunakan lebar viewport */
+    margin-top: -2.5rem;
+  }
+}
+
+@media (min-width: 360px) {
+  .container-prodi {
+    max-width: 70vw; /* Menggunakan lebar viewport */
+    margin-top: -3rem;
+  }
+}
+
+@media (min-width: 390px) {
+  .container-prodi {
+    max-width: 75vw; /* Menggunakan lebar viewport */
+    margin-top: -3rem;
+  }
+}
+
+/* @media (min-width: 427px) {
+  .container-prodi {
+    max-width: 70vw; 
+    margin-top: -12rem;
+  }
+} */
 @media (min-width: 576px) {
   .container-prodi {
-  max-width: 230px;
-  margin-top: -8rem;
+    max-width: 70vw; /* Menggunakan lebar viewport */
+    margin-top: -4rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .container-prodi {
+    max-width: 70vw; /* Menggunakan lebar viewport */
+    margin-top: -4rem;
+  }
+}
+
+@media (min-width: 767px) {
+  .container-prodi {
+    max-width: 65vw; /* Menggunakan lebar viewport */
+    margin-top: -4.5rem;
+  }
+}
+
+@media (min-width: 1023px) {
+  .container-prodi {
+    max-width: 60vw; /* Menggunakan lebar viewport */
+    margin-top: -6rem;
+  }
+}
+
+
+
+@media (min-width: 1279px) {
+  .container-prodi {
+    max-width: 55vw; 
+    margin-top: -6rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container-prodi {
+    max-width: 50vw; 
+    margin-top: -6rem;
+  }
+}
+
+@media (min-width: 2047px) {
+  .container-prodi {
+    max-width: 40vw; 
+    margin-top: -6rem;
+  }
+}
+@media (min-width: 2304px) {
+  .container-prodi {
+    max-width: 35vw; 
+    margin-top: -6rem;
+  }
+}
+
+@media (min-width: 2559px) {
+  .container-prodi {
+    max-width: 25vw; 
+    margin-top: -6rem;
+  }
+}
+
+/* @media (min-width: 2500px) {
+  .container-prodi {
+    max-width: 25vw; 
+    margin-top: -6rem;
+  }
+} */
+
+@media (min-width: 4000px) {
+  .container-prodi {
+    max-width: 20vw; 
+    margin-top: -6rem;
+  }
+}
+
+@media (min-width: 4609px) {
+  .container-prodi {
+    max-width: 15vw; 
+    margin-top: -6rem;
+  }
+}
+
+
+
+/* .container-prodi {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 15px; 
+  margin-top: -8rem; 
+}
+
+
+@media (min-width: 210px) {
+  .container-prodi {
+    margin-top: -6rem;
+  }
+}
+@media (min-width: 576px) {
+  .container-prodi {
+    margin-top: -4rem;
   }
 }
 
 @media (min-width: 768px) {
   .container-prodi {
-    max-width: 400px;
-    margin-top: -13.5rem;
+    margin-top: -20rem;
   }
 }
+
 @media (min-width: 992px) {
   .container-prodi {
-    max-width: 500px;
-    margin-top: -14rem;
+    margin-top: -14rem; 
   }
 }
+
 @media (min-width: 1200px) {
   .container-prodi {
-    max-width: 600px;
-    margin-top: -15rem;
+  margin-top: -15rem;
   }
-}
-@media (min-width: 1400px) {
+  }
+  
+  @media (min-width: 1400px) {
   .container-prodi {
-    max-width: 750px;
-    margin-top: -16rem;
+  margin-top: -16rem; 
   }
-}
+  } */
+
+
+
 
 @media (min-width: 576px) {
   .container-sm, .container {
@@ -709,6 +930,29 @@ progress {
     max-width: 1320px;
   }
 }
+
+/* .row_prodi
+{
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(-1 * var(--bs-gutter-y));
+  margin-right: calc(-0.5 * var(--bs-gutter-x));
+  margin-left: calc(-0.5 * var(--bs-gutter-x));  
+} */
+
+/* .row_prodi {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px; 
+} */
+
+
+
+
+
 .row {
   --bs-gutter-x: 1.5rem;
   --bs-gutter-y: 0;
@@ -718,6 +962,7 @@ progress {
   margin-right: calc(-0.5 * var(--bs-gutter-x));
   margin-left: calc(-0.5 * var(--bs-gutter-x));
 }
+
 .row > * {
   flex-shrink: 0;
   width: 100%;
@@ -3670,6 +3915,7 @@ textarea.form-control-lg {
   text-decoration: none;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
 }
+
 @media (prefers-reduced-motion: reduce) {
   .nav-link {
     transition: none;
@@ -3796,6 +4042,16 @@ textarea.form-control-lg {
   justify-content: space-between;
   padding: var(--bs-navbar-padding-y) var(--bs-navbar-padding-x);
 }
+
+
+.navbar-detail {
+  background-color: #343a40; /* Warna latar belakang yang Anda inginkan */
+}
+
+.navbar-detail.bg-dark {
+  background-color: #343a40; /* Ganti dengan warna latar belakang yang Anda inginkan */
+}
+
 .navbar > .container,
 .navbar > .container-fluid,
 .navbar > .container-sm,
@@ -4192,7 +4448,7 @@ textarea.form-control-lg {
   --bs-navbar-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
-.card {
+/* .card {
   --bs-card-spacer-y: 1rem;
   --bs-card-spacer-x: 1rem;
   --bs-card-title-spacer-y: 0.5rem;
@@ -4372,7 +4628,7 @@ textarea.form-control-lg {
   .card-group > .card:not(:first-child) .card-footer {
     border-bottom-left-radius: 0;
   }
-}
+} */
 
 .accordion {
   --bs-accordion-color: #212529;
@@ -8079,7 +8335,7 @@ textarea.form-control-lg {
 /* rtl:end:remove */
 .text-primary {
   --bs-text-opacity: 1;
-  color: rgba(var(--bs-primary-rgb), var(--bs-text-opacity)) !important;
+  color: rgba(var(--bs-info-rgb), var(--bs-text-opacity)) !important;
 }
 
 .text-secondary {
@@ -10896,11 +11152,12 @@ p {
   margin-bottom: 4rem;
 }
 
-@media (min-width: 768px) {
+/* @media (min-width: 768px) {
   section {
     padding-top: 9rem;
   }
-}
+} */
+
 .btn-xl {
   padding: 1.25rem 2.5rem;
   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -10947,7 +11204,7 @@ p {
   letter-spacing: 0.0625em;
 }
 #mainNav .navbar-nav .nav-item .nav-link.active, #mainNav .navbar-nav .nav-item .nav-link:hover {
-  color: #ffc800;
+  color: #0dcaf0;
 }
 
 @media (min-width: 992px) {
@@ -10986,92 +11243,256 @@ p {
   }
 }
 
+/* Gaya Umum untuk Header */
 header.masthead {
+  /* margin-top: -10.5rem; */
   padding-top: 10.5rem;
   padding-bottom: 6rem;
   text-align: left;
   color: #fff;
-  background-image: url("../assets/img/header2.png");
+  background-image: url("../assets/img/header.svg");
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-position: center center;
-  background-size: cover;
+  background-size: cover; /* Pastikan gambar menutupi area */
 }
 
-header.masthead .masthead-subheading-sim {
-  font-size: 1.1rem;
-  font-style: Arial;
-  line-height: 1.8rem;
-  margin-bottom: 18px;
-  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  text-transform: uppercase;
-  margin-left: 9rem;
-  font-weight: bold;
-}
 
-header.masthead .masthead-subheading {
-  font-size: 1.1rem;
-  font-style: Arial;
-  line-height: 1.8rem;
-  margin-bottom: 18px;
-  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  text-transform: uppercase;
-  margin-left: 10rem;
-  font-weight: bold;
-}
-header.masthead .masthead-subheading-text {
-  font-size: 0.1rem;
-  font-style: Arial;
-  line-height: 1.8rem;
-  margin-bottom: 18px;
-  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  text-transform: uppercase;
-  margin-left: 10rem;
-}
 
-header.masthead .masthead-heading {
-  font-size: 3.25rem;
-  font-weight: 700;
-  line-height: 3.25rem;
-  margin-bottom: 2rem;
-  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-}
-
-@media (min-width: 768px) {
+/* Pastikan gambar latar belakang responsif */
+@media (min-width: 320px) {
   header.masthead {
-    padding-top: 13rem;
-    padding-bottom: 12.5rem;
-  }
-
-  header.masthead .masthead-subheading-sim {
-    font-size: 2.23rem;
-    font-style: Arial;
-    line-height: 2rem;
-    margin-bottom: 1rem;
-    margin-left: 9rem;
-  }
-
-  header.masthead .masthead-subheading {
-    font-size: 2.23rem;
-    font-style: Arial;
-    line-height: 2rem;
-    margin-bottom: 1rem;
-    margin-left: 8.9rem;
-  }
-  header.masthead .masthead-subheading-text {
-    font-size: 1.1rem;
-    font-style: Arial;
-    line-height: 2rem;
-    margin-bottom: 1rem;
-    margin-left: 9rem;
-  }
-  header.masthead .masthead-heading {
-    font-size: 4.5rem;
-    font-weight: 700;
-    line-height: 4.5rem;
-    margin-bottom: 4rem;
+    padding-top: 6rem;
+    padding-bottom: 2rem;
+    background-position: top center; /* Sesuaikan posisi gambar */
   }
 }
+
+@media (min-width: 360px) {
+  header.masthead {
+    padding-top: 7rem;
+    padding-bottom: 3rem;
+    background-position: top center; /* Sesuaikan posisi gambar */
+  }
+}
+
+@media (min-width: 390px) {
+  header.masthead {
+    padding-top: 7rem;
+    padding-bottom: 3rem;
+    background-position: top center; /* Sesuaikan posisi gambar */
+  }
+}
+
+/* @media (min-width: 427px) {
+  header.masthead {
+    padding-top: 20rem;
+    background-position: top center; 
+  }
+} */
+
+@media (min-width: 575px) {
+  header.masthead {
+    padding-top: 8rem;
+    padding-bottom: 4rem;
+    background-position: top center; /* Sesuaikan posisi gambar */
+  }
+}
+
+@media (min-width: 640px)  {
+  header.masthead {
+    padding-top: 9rem;
+    padding-bottom: 5rem;
+    background-position: center center; /* Sesuaikan posisi gambar */
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  header.masthead {
+    padding-top: 10rem;
+    padding-bottom: 6rem;
+    background-position: center center; /* Sesuaikan posisi gambar */
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  header.masthead {
+    padding-top: 11rem;
+    padding-bottom: 7rem;
+    background-position: center center; /* Sesuaikan posisi gambar */
+  }
+}
+
+@media (min-width: 1200px) {
+  header.masthead {
+    padding-top: 17rem;
+    /* padding-top: 12rem; */
+    padding-bottom: 8rem;
+    background-position: center center; /* Sesuaikan posisi gambar */
+  }
+}
+
+/* Gaya Umum untuk Subheading */
+header.masthead .masthead-subheading-sim,
+header.masthead .masthead-subheading {
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
+  font-weight: bold;
+  position: relative;
+  z-index: 1;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+/* Gaya Umum untuk Subheading Text */
+header.masthead .masthead-subheading-text {
+  font-family: "Montserrat", sans-serif;
+  font-weight: normal; /* Berat font lebih ringan */
+  position: relative;
+  z-index: 1;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+/* Gaya untuk Ukuran Kecil */
+@media (min-width: 320px)  {
+  header.masthead .masthead-subheading-sim,
+  header.masthead .masthead-subheading {
+    font-size: 0.6rem;
+    padding-left: 0.5rem;
+  }
+
+  header.masthead .masthead-subheading-text {
+    font-size: 0.6rem; /* Ukuran lebih kecil */
+    padding-left: 0.5rem;
+  }
+
+  header.masthead .masthead-heading {
+    font-size: 0.25rem;
+    line-height: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+@media (min-width: 360px)  {
+  header.masthead .masthead-subheading-sim,
+  header.masthead .masthead-subheading {
+    font-size: 0.8rem;
+    padding-left: 0.5rem;
+  }
+
+  header.masthead .masthead-subheading-text {
+    font-size: 0.6rem; /* Ukuran lebih kecil */
+    padding-left: 0.5rem;
+  }
+
+  header.masthead .masthead-heading {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (min-width: 390px) {
+  header.masthead .masthead-subheading-sim,
+  header.masthead .masthead-subheading {
+    font-size: 1rem;
+    padding-left: 1rem;
+  }
+
+  header.masthead .masthead-subheading-text {
+    font-size: 0.8rem; /* Ukuran lebih kecil */
+    padding-left: 1rem;
+  }
+
+  header.masthead .masthead-heading {
+    font-size: 1.75rem;
+    line-height: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* Gaya untuk Ukuran Menengah */
+@media (min-width: 576px) and (max-width: 767px) {
+  header.masthead .masthead-subheading-sim,
+  header.masthead .masthead-subheading {
+    font-size: 1.2rem;
+    padding-left: 0.5rem;
+  }
+
+  header.masthead .masthead-subheading-text {
+    font-size: 1rem; /* Ukuran lebih kecil */
+    padding-left: 0.5rem;
+  }
+
+  header.masthead .masthead-heading {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+    margin-bottom: 2rem;
+    
+  }
+}
+
+/* Gaya untuk Ukuran Sedang */
+@media (min-width: 768px) and (max-width: 991px) {
+  header.masthead .masthead-subheading-sim,
+  header.masthead .masthead-subheading {
+    font-size: 1.4rem;
+  }
+
+  header.masthead .masthead-subheading-text {
+    font-size: 1.1rem; /* Ukuran lebih kecil */
+  }
+
+  header.masthead .masthead-heading {
+    font-size: 2.75rem;
+    line-height: 3rem;
+    margin-bottom: 2.5rem;
+  }
+}
+
+/* Gaya untuk Ukuran Lebih Besar */
+@media (min-width: 992px) and (max-width: 1199px) {
+  header.masthead .masthead-subheading-sim,
+  header.masthead .masthead-subheading {
+    font-size: 1.6rem;
+  }
+
+  header.masthead .masthead-subheading-text {
+    font-size: 1.3rem; /* Ukuran lebih kecil */
+  }
+
+  header.masthead .masthead-heading {
+    font-size: 3.25rem;
+    line-height: 3.5rem;
+    margin-bottom: 3rem;
+  }
+}
+
+/* Gaya untuk Ukuran Sangat Besar */
+@media (min-width: 1200px) {
+  header.masthead .masthead-subheading-sim,
+  header.masthead .masthead-subheading {
+    font-size: 1.8rem;
+  }
+
+  header.masthead .masthead-subheading-text {
+    font-size: 1.5rem; /* Ukuran lebih kecil */
+  }
+
+  header.masthead .masthead-heading {
+    font-size: 3.75rem;
+    line-height: 4rem;
+    margin-bottom: 3.5rem;
+  }
+}
+
+
+
+
+
+
+
 #portfolio .portfolio-item {
   max-width: 26rem;
   margin-left: auto;

@@ -5,10 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dashboard-KBK</title>
-    <link rel="shortcut icon" type="image/png" href="backend/assets/images/logos/favicon.png" />
+    <link rel="shortcut icon" type="image/png" href="backend/assets/images/logos/logo-kbk.svg" />
     <link rel="stylesheet" href="{{ asset('backend/assets/css/styles.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('backend/assets/css/admin.css') }}" />
     <!-- Custom styles for this DataTable -->
-    <link href="{{ asset('backend/assets/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('backend/assets/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    @yield('styles')
 </head>
 
 <body>
@@ -30,19 +33,17 @@
     </div>
     <script src="{{ asset('backend/assets/libs/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('backend/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/sidebarmenu.js') }}"></script>
     <script src="{{ asset('backend/assets/js/app.min.js') }}"></script>
     <script src="{{ asset('backend/assets/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
     <script src="{{ asset('backend/assets/libs/simplebar/dist/simplebar.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/dashboard.js') }}"></script>
-
-
     <!-- Page level plugins -->
     <script src="{{ asset('backend/assets/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('backend/assets/datatables/dataTables.bootstrap4.min.js') }}"></script>
     <!-- Page level custom scripts -->
     <script src="{{ asset('backend/assets/js/demo/datatables-demo.js') }}"></script>
-
+    <script src="{{ asset('backend/assets/js/sidebarmenu.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/side-drop.js') }}"></script>
+    @yield('scripts')
 </body>
 
 </html>

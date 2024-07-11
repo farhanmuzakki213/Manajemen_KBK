@@ -1,0 +1,9 @@
+
+.card-custom {
+    margin-top: 120px; /* Atur jarak atas sesuai kebutuhan */
+    margin-bottom: 20px; /* Atur jarak bawah sesuai kebutuhan */
+    padding: 15px; /* Atur padding di dalam card sesuai kebutuhan */
+    border: 1px solid #e3e3e3; /* Tambahkan border jika diperlukan */
+    border-radius: 8px; /* Tambahkan border-radius untuk tampilan lebih halus */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Tambahkan shadow untuk efek 3D */
+}
