@@ -4,7 +4,6 @@
         <div class="card__container swiper">
             <div class="card__content">
                 <div class="swiper-wrapper">
-
                     @foreach ($data_pengurus_kbk as $data)
                         <article class="card__article swiper-slide">
                             <div class="card__image">
