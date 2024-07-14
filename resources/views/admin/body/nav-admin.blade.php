@@ -1,3 +1,22 @@
+
+<style> 
+    .simplebar-content::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .simplebar-content::-webkit-scrollbar-track {
+            background: #fff;
+        }
+
+        .simplebar-content::-webkit-scrollbar-thumb {
+            background-color: #000;
+            border-radius: 20px;
+            border: 3px solid #fff;
+        }
+
+    </style>
+
+
 <header class="app-header">
     <nav class="navbar navbar-expand-lg navbar-light">
         <ul class="navbar-nav">
@@ -13,12 +32,15 @@
                 @hasanyrole('dosenMatkul|dosenKbk')
                     <li class="nav-item nav-icon-hover-bg rounded-circle dropdown">
                         <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="ti ti-bell-ringing"></i>
-                            <div class="notification bg-primary rounded-circle"></div>
-                        </a>
+   data-bs-toggle="dropdown" aria-expanded="false">
+    <i class="ti ti-bell-ringing"></i>
+    <div class="notification bg-primary rounded-circle"></div>
+</a>
+
+
+
                         <div class="dropdown-menu content-dd dropdown-menu-end dropdown-menu-animate-up"
-                            aria-labelledby="drop2" style="min-width: 360px;">
+                            aria-labelledby="drop2" style="width: 360px;">
                             <div class="d-flex align-items-center justify-content-between py-3 px-7">
                                 <h5 class="mb-0 fs-5 fw-semibold">Notifications</h5>
                                 <span
@@ -26,7 +48,7 @@
                             </div>
                             @hasrole('dosenMatkul')
                                 {{-- dosen matkul --}}
-                                <div class="simplebar-content" style="padding: 0px;">
+                                <div class="simplebar-content" style="padding: 0px; max-height: 300px; overflow-y: auto;">
                                     @foreach (auth()->user()->unreadNotifications as $notification)
                                         @if (isset($notification->data['id_ver_rps_uas']))
                                             @php
@@ -52,9 +74,10 @@
                                                 <div class="w-100">
                                                     <h6 class="mb-1 fw-semibold lh-base">
                                                         {{ $notification->data['pengurus_kbk'] }}</h6>
-                                                    <p class="fs-2 d-block text-body-secondary">
-                                                        {{ ucwords($notification->data['rekomendasi']) }}<br>Mata Kuliah :
-                                                        {{ $notification->data['matkul'] }}</p>
+                                                        <p class="fs-2 d-block text-body-secondary" style="max-width: 100%; overflow-wrap: break-word; word-break: break-word; white-space: normal;">
+                                                            {{ ucwords($notification->data['rekomendasi']) }}<br>Mata Kuliah : {{ $notification->data['matkul'] }}
+                                                        </p>
+                                                        
                                                     <small>{{ $notification->created_at->diffForHumans() }}</small>
                                                 </div>
                                             </a>
@@ -157,7 +180,7 @@
                             height="35" class="rounded-circle">
                     </a>
                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2"
-                        style="min-width: 360px;">
+                        style="width: 360px;">
                         <div class="message-body">
                             <div class="d-flex align-items-center py-9 mx-7 border-bottom">
                                 <img src="{{ $image ?? asset('profile_pictures/avatar-1.png') }}"

@@ -2,6 +2,10 @@
 
 @section('styles')
     <style>
+
+        .apexcharts-toolbar{
+            z-index: none;
+        }
         .apexcharts-legend {
             display: flex;
             flex-wrap: wrap;

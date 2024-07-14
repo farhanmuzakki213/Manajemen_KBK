@@ -2,6 +2,70 @@
     width: 11%;
 }
 
+
+@media (max-width:1450px) {
+    .col-2-kembali{
+        width: 14%;
+    }
+}
+
+@media (max-width:1115px) {
+    .col-2-kembali{
+        width: 12%;
+    }
+}
+
+@media (max-width:900px) {
+    .col-2-kembali {
+        width: 16%;
+    }
+}
+
+@media (max-width:835px) {
+    .col-2-kembali {
+        width: 17%;
+    }
+}
+
+@media (max-width:770px) {
+    .col-2-kembali {
+        width: 19%;
+    }
+}
+
+@media (max-width:430px) {
+    .col-2-kembali {
+        width: 42%;
+    }
+}
+
+
+@media (max-width:415px) {
+    .col-2-kembali {
+        width: 45%;
+    }
+}
+
+@media (max-width:400px) {
+    .col-2-kembali {
+        width: 50%;
+    }
+}
+
+@media (max-width:380px) {
+    .col-2-kembali {
+        width: 52%;
+    }
+}
+
+@media (max-width:365px) {
+    .col-2-kembali {
+        width: 58%;
+    }
+}
+
+
+
 .message-body {
     max-height: 360px;
 }

@@ -139,7 +139,8 @@
 @endsection
 @section('scripts')
     <!-- Load ApexCharts Library -->
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> --}}
+    {{-- <script src="{{ asset('backend/assets/js/apexchart.js') }}"></script> --}}
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function() {
             // Data from Blade variables

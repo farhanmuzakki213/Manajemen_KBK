@@ -11,6 +11,22 @@
             max-width: 60%;
             height: auto;
         }
+
+        
+    .simplebar-content::-webkit-scrollbar {
+        width: 12px;               /* lebar seluruh scrollbar */
+    }
+
+    .simplebar-content::-webkit-scrollbar-track {
+        background: #fff;          /* warna area tracking */
+    }
+
+    .simplebar-content::-webkit-scrollbar-thumb {
+        background-color: #000;    /* warna thumb scrollbar */
+        border-radius: 20px;       /* kebulatan thumb scrollbar */
+        border: 3px solid #fff;    /* border untuk memberi padding sekitar thumb */
+    }
+
     </style>
 @endsection
 @section('admin')
@@ -23,7 +39,7 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item">
-                                    <a class="text-muted text-decoration-none" href="../main/index.html">Home</a>
+                                    <a class="text-muted text-decoration-none" href="/">Home</a>
                                 </li>
                                 <li class="breadcrumb-item" aria-current="page">Account Setting</li>
                             </ol>

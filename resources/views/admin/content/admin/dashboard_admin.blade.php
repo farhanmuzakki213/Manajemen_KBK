@@ -2,6 +2,55 @@
 
 @section('styles')
     <style>
+        .respon-ta {
+            width: 100%;
+            padding: 0;
+            justify-content: center;
+
+        }
+
+        .card-respon {
+            width: 250px;
+        }
+
+        .card-satu {
+            justify-content: space-between;
+        }
+
+        @media (max-width:1440px) {
+            .card-respon {
+                width: 200px;
+            }
+        }
+
+        @media (max-width:900px) {
+            .col-lg-4 {
+                order: 1;
+            }
+
+            .col-lg-8 {
+                order: 2;
+            }
+        }
+
+        @media (max-width:550px) {
+
+            .card-satu,
+            .card-respon {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .col-lg-4 {
+                order: 1;
+            }
+
+            .col-lg-8 {
+                order: 2;
+            }
+        }
+
+
         .apexcharts-legend {
             display: flex;
             flex-wrap: nowrap;
@@ -34,25 +83,23 @@
 @endsection
 
 @section('admin')
-    <div class="container-fluid">
-
-        <div class="container-fluid">
+    <div class="container-fluid container-respons">
+        <div class="container-fluid container-respons">
             <div class="card-body">
                 <div class="card">
                     <div class="card-body">
-                        <div class="row">
-
-                            
-                        {{-- TA--}}
-                            <div class="row my-3">
-                                <div class="col-lg-12 d-flex flex-wrap">
-                                    <div class="col-lg-3 col-md-6" style="padding-right:20px;">
-                                        <div class="card mb-3">
+                        <div class="row justify-content-center">
+                            {{-- TA --}}
+                            <div class="row my-3 respon-ta">
+                                <div class="col-lg-12 card-satu d-flex flex-wrap">
+                                    <div class="">
+                                        <div class="card mb-3 card-respon">
                                             <div class="card-body">
                                                 <div class="row align-items-start">
                                                     <div class="col-8">
                                                         <h5 class="card-title mb-9 fw-semibold">Diajukan</h5>
-                                                        <h4 class="fw-semibold mb-9">{{ $totalCounts['Diajukan'] ?? 0 }}</h4>
+                                                        <h4 class="fw-semibold mb-9">{{ $totalCounts['Diajukan'] ?? 0 }}
+                                                        </h4>
                                                         <div class="d-flex align-items-center pb-1"></div>
                                                     </div>
                                                     <div class="col-4">
@@ -68,15 +115,16 @@
                                             <div id="earning"></div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-3 col-md-6" style="padding-right:20px;">
-                                        <div class="card mb-3">
+                                    <div class="">
+                                        <div class="card mb-3 card-respon">
                                             <div class="card-body">
                                                 <div class="row align-items-start">
                                                     <div class="col-8">
                                                         <h5 class="card-title mb-9 fw-semibold">Ditolak</h5>
                                                         <h4 class="fw-semibold mb-9">
-                                                            <h4 class="fw-semibold mb-9">{{ $totalCounts['Ditolak'] ?? 0 }}</h4>
-                                                        <div class="d-flex align-items-center pb-1"></div>
+                                                            <h4 class="fw-semibold mb-9">{{ $totalCounts['Ditolak'] ?? 0 }}
+                                                            </h4>
+                                                            <div class="d-flex align-items-center pb-1"></div>
                                                     </div>
                                                     <div class="col-4">
                                                         <div class="d-flex justify-content-end">
@@ -91,13 +139,14 @@
                                             <div id="earning"></div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-3 col-md-6" style="padding-right:20px;">
-                                        <div class="card mb-3">
+                                    <div class="">
+                                        <div class="card mb-3 card-respon">
                                             <div class="card-body">
                                                 <div class="row align-items-start">
                                                     <div class="col-8">
                                                         <h5 class="card-title mb-9 fw-semibold">Direvisi</h5>
-                                                        <h4 class="fw-semibold mb-9">{{ $totalCounts['Direvisi'] ?? 0 }}</h4>
+                                                        <h4 class="fw-semibold mb-9">{{ $totalCounts['Direvisi'] ?? 0 }}
+                                                        </h4>
                                                         <div class="d-flex align-items-center pb-1"></div>
                                                     </div>
                                                     <div class="col-4">
@@ -113,13 +162,14 @@
                                             <div id="earning"></div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-3 col-md-6" style="padding-right:20px;">
-                                        <div class="card mb-3">
+                                    <div class="">
+                                        <div class="card mb-3 card-respon">
                                             <div class="card-body">
                                                 <div class="row align-items-start">
                                                     <div class="col-8">
                                                         <h5 class="card-title mb-9 fw-semibold">Diterima</h5>
-                                                        <h4 class="fw-semibold mb-9">{{ $totalCounts['Diterima'] ?? 0 }}</h4>
+                                                        <h4 class="fw-semibold mb-9">{{ $totalCounts['Diterima'] ?? 0 }}
+                                                        </h4>
                                                         <div class="d-flex align-items-center pb-1"></div>
                                                     </div>
                                                     <div class="col-4">
@@ -150,204 +200,200 @@
                                 </div>
                             </div>
 
-                            {{-- RPS--}}
-                            <div class="col-lg-8 d-flex align-items-stretch">
-                                <div class="card w-100">
-                                    <div class="card-body">
-                                        <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
-                                            <div class="mb-3 mb-sm-0">
+                            {{-- RPS --}}
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8 d-flex align-items-stretch">
+                                    <div class="card w-100">
+                                        <div class="card-body">
+                                            <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+                                                <div class="mb-3 mb-sm-0">
+                                                </div>
+                                                <div>
+                                                </div>
                                             </div>
-                                            <div>
-                                            </div>
-                                        </div>
-                                        <h4>Chart RPS</h4>
-                                        <div id="chart-rps" style="min-height: 350px;"></div>
+                                            <h4>Chart RPS</h4>
+                                            <div id="chart-rps" style="min-height: 350px;"></div>
 
+                                        </div>
                                     </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="col-lg-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row align-items-start">
+                                                    <div class="col-8">
+                                                        <h5 class="card-title mb-9 fw-semibold">Unggahan RPS</h5>
+                                                        <h4 class="fw-semibold mb-9">
+                                                            {{ $banyak_pengunggahan_rps['2023/2024-Genap'] ?? 0 }}</h4>
+
+                                                        <div class="d-flex align-items-center pb-1">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="d-flex justify-content-end">
+                                                            <div
+                                                                class="text-white bg-primary rounded-circle p-6 d-flex align-items-center justify-content-center">
+                                                                <i class="ti ti-clipboard fs-6"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="earning"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 mt-3">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row align-items-start">
+                                                    <div class="col-8">
+                                                        <h5 class="card-title mb-9 fw-semibold">Verifikasi RPS</h5>
+                                                        <h4 class="fw-semibold mb-9">
+                                                            {{ $banyak_verifikasi_rps['2023/2024-Genap'] ?? 0 }}</h4>
+                                                        <div class="d-flex align-items-center pb-1">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="d-flex justify-content-end">
+                                                            <div
+                                                                class="text-white bg-success rounded-circle p-6 d-flex align-items-center justify-content-center">
+                                                                <i class="ti ti-receipt fs-6"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="earning"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 mt-3">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row align-items-start">
+                                                    <div class="col-8">
+                                                        <h5 class="card-title mb-9 fw-semibold">Berita Acara RPS</h5>
+                                                        <h4 class="fw-semibold mb-9">
+                                                            {{ $banyak_berita_rps['2023/2024-Genap'] ?? 0 }}</h4>
+                                                        <div class="d-flex align-items-center pb-1">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="d-flex justify-content-end">
+                                                            <div
+                                                                class="text-white bg-warning rounded-circle p-6 d-flex align-items-center justify-content-center">
+                                                                <i class="ti ti-news fs-6"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="earning"></div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
 
-                          
-                            <div class="col-lg-4">
-                                <div class="col-lg-12">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row align-items-start">
-                                                <div class="col-8">
-                                                    <h5 class="card-title mb-9 fw-semibold">Unggahan RPS</h5>
-                                                    <h4 class="fw-semibold mb-9">
-                                                        {{ $banyak_pengunggahan_rps['2023/2024-Genap'] ?? 0 }}</h4>
 
-                                                    <div class="d-flex align-items-center pb-1">
-                                                    </div>
-                                                </div>
-                                                <div class="col-4">
-                                                    <div class="d-flex justify-content-end">
-                                                        <div
-                                                            class="text-white bg-primary rounded-circle p-6 d-flex align-items-center justify-content-center">
-                                                            <i class="ti ti-clipboard fs-6"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="earning"></div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 mt-3">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row align-items-start">
-                                                <div class="col-8">
-                                                    <h5 class="card-title mb-9 fw-semibold">Verifikasi RPS</h5>
-                                                    <h4 class="fw-semibold mb-9">
-                                                        {{ $banyak_verifikasi_rps['2023/2024-Genap'] ?? 0 }}</h4>
-                                                    <div class="d-flex align-items-center pb-1">
-                                                    </div>
-                                                </div>
-                                                <div class="col-4">
-                                                    <div class="d-flex justify-content-end">
-                                                        <div
-                                                            class="text-white bg-success rounded-circle p-6 d-flex align-items-center justify-content-center">
-                                                            <i class="ti ti-receipt fs-6"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="earning"></div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 mt-3">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row align-items-start">
-                                                <div class="col-8">
-                                                    <h5 class="card-title mb-9 fw-semibold">Berita Acara RPS</h5>
-                                                    <h4 class="fw-semibold mb-9">
-                                                        {{ $banyak_berita_rps['2023/2024-Genap'] ?? 0 }}</h4>
-                                                    <div class="d-flex align-items-center pb-1">
-                                                    </div>
-                                                </div>
-                                                <div class="col-4">
-                                                    <div class="d-flex justify-content-end">
-                                                        <div
-                                                            class="text-white bg-warning rounded-circle p-6 d-flex align-items-center justify-content-center">
-                                                            <i class="ti ti-news fs-6"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="earning"></div>
-                                    </div>
-                                </div>
+                            {{-- UAS --}}
+                            <div class="row justify-content-center">
+                                <div class="col-lg-4">
+                                    <div class="col-lg-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row align-items-start">
+                                                    <div class="col-8">
+                                                        <h5 class="card-title mb-9 fw-semibold">Unggahan UAS</h5>
+                                                        <h4 class="fw-semibold mb-9">
+                                                            {{ $banyak_pengunggahan_uas['2023/2024-Genap'] ?? 0 }}</h4>
 
+                                                        <div class="d-flex align-items-center pb-1">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="d-flex justify-content-end">
+                                                            <div
+                                                                class="text-white bg-primary rounded-circle p-6 d-flex align-items-center justify-content-center">
+                                                                <i class="ti ti-clipboard fs-6"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="earning"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 mt-3">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row align-items-start">
+                                                    <div class="col-8">
+                                                        <h5 class="card-title mb-9 fw-semibold">Verifikasi Soal UAS</h5>
+                                                        <h4 class="fw-semibold mb-9">
+                                                            {{ $banyak_verifikasi_uas['2023/2024-Genap'] ?? 0 }}</h4>
+                                                        <div class="d-flex align-items-center pb-1">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="d-flex justify-content-end">
+                                                            <div
+                                                                class="text-white bg-success rounded-circle p-6 d-flex align-items-center justify-content-center">
+                                                                <i class="ti ti-receipt fs-6"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="earning"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 mt-3">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row align-items-start">
+                                                    <div class="col-8">
+                                                        <h5 class="card-title mb-9 fw-semibold">Berita Acara UAS</h5>
+                                                        <h4 class="fw-semibold mb-9">
+                                                            {{ $banyak_berita_uas['2023/2024-Genap'] ?? 0 }}</h4>
+                                                        <div class="d-flex align-items-center pb-1">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="d-flex justify-content-end">
+                                                            <div
+                                                                class="text-white bg-warning rounded-circle p-6 d-flex align-items-center justify-content-center">
+                                                                <i class="ti ti-news fs-6"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="earning"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 d-flex align-items-stretch">
+                                    <div class="card w-100">
+                                        <div class="card-body">
+                                            <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+                                                <div class="mb-3 mb-sm-0">
+                                                </div>
+                                                <div>
+                                                </div>
+                                            </div>
+                                            <h4>Chart UAS</h4>
+                                            <div id="chart-uas" style="min-height: 350px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
-
-                          {{-- UAS--}}
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <div class="col-lg-12">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row align-items-start">
-                                                <div class="col-8">
-                                                    <h5 class="card-title mb-9 fw-semibold">Unggahan UAS</h5>
-                                                    <h4 class="fw-semibold mb-9">
-                                                        {{ $banyak_pengunggahan_uas['2023/2024-Genap'] ?? 0 }}</h4>
-
-                                                    <div class="d-flex align-items-center pb-1">
-                                                    </div>
-                                                </div>
-                                                <div class="col-4">
-                                                    <div class="d-flex justify-content-end">
-                                                        <div
-                                                            class="text-white bg-primary rounded-circle p-6 d-flex align-items-center justify-content-center">
-                                                            <i class="ti ti-clipboard fs-6"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="earning"></div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 mt-3">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row align-items-start">
-                                                <div class="col-8">
-                                                    <h5 class="card-title mb-9 fw-semibold">Verifikasi Soal UAS</h5>
-                                                    <h4 class="fw-semibold mb-9">
-                                                        {{ $banyak_verifikasi_uas['2023/2024-Genap'] ?? 0 }}</h4>
-                                                    <div class="d-flex align-items-center pb-1">
-                                                    </div>
-                                                </div>
-                                                <div class="col-4">
-                                                    <div class="d-flex justify-content-end">
-                                                        <div
-                                                            class="text-white bg-success rounded-circle p-6 d-flex align-items-center justify-content-center">
-                                                            <i class="ti ti-receipt fs-6"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="earning"></div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 mt-3">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row align-items-start">
-                                                <div class="col-8">
-                                                    <h5 class="card-title mb-9 fw-semibold">Berita Acara UAS</h5>
-                                                    <h4 class="fw-semibold mb-9">
-                                                        {{ $banyak_berita_uas['2023/2024-Genap'] ?? 0 }}</h4>
-                                                    <div class="d-flex align-items-center pb-1">
-                                                    </div>
-                                                </div>
-                                                <div class="col-4">
-                                                    <div class="d-flex justify-content-end">
-                                                        <div
-                                                            class="text-white bg-warning rounded-circle p-6 d-flex align-items-center justify-content-center">
-                                                            <i class="ti ti-news fs-6"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="earning"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-8 d-flex align-items-stretch">
-                                <div class="card w-100">
-                                    <div class="card-body">
-                                        <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
-                                            <div class="mb-3 mb-sm-0">
-                                            </div>
-                                            <div>
-                                            </div>
-                                        </div>
-                                        <h4>Chart UAS</h4>
-                                        <div id="chart-uas" style="min-height: 350px;"></div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
-    
 @endsection
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
@@ -675,7 +721,7 @@
                 yaxis: {
                     show: true,
                     min: 0,
-                    max: Math.max(...seriesData.flatMap(s => s.data)) + 5, 
+                    max: Math.max(...seriesData.flatMap(s => s.data)) + 5,
                     tickAmount: 4,
                     labels: {
                         style: {
@@ -708,6 +754,5 @@
             chartTa.render();
 
         });
-        
     </script>
 @endsection
