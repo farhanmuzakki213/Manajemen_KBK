@@ -117,16 +117,20 @@
                                                 <th>{{ optional($data->r_jenis_kbk)->jenis_kbk }}</th>
                                                 <th style="width: 10%;">
                                                     <div class="row">
-                                                        @can('pimpinanProdi-update BeritaAcaraUasProdi')
-                                                            <a href="{{ route('berita_ver_uas.edit', ['id' => $data->id_berita_acara]) }}"
-                                                                class="btn btn-primary mb-2 d-flex align-items-center"><i
-                                                                    class="bi bi-pencil-square"></i>Upload</a>
-                                                        @endcan
+                                                        @if (!$data->file_berita_acara)
+                                                            <p style="color: red">File Belum Diupload</p>
+                                                        @else
+                                                            @can('pimpinanProdi-update BeritaAcaraUasProdi')
+                                                                <a href="{{ route('berita_ver_uas.edit', ['id' => $data->id_berita_acara]) }}"
+                                                                    class="btn btn-primary mb-2 d-flex align-items-center"><i
+                                                                        class="bi bi-pencil-square"></i>Upload</a>
+                                                            @endcan
 
-                                                        <a href="{{ asset('storage/uploads/uas/berita_acara/' . $data->file_berita_acara) }}"
-                                                            class="btn btn-success mb-2 d-flex align-items-center"
-                                                            target="_blank"><i
-                                                                class="bi bi-file-earmark-arrow-down"></i>Download</a>
+                                                            <a href="{{ asset('storage/uploads/uas/berita_acara/' . $data->file_berita_acara) }}"
+                                                                class="btn btn-success mb-2 d-flex align-items-center"
+                                                                target="_blank"><i
+                                                                    class="bi bi-file-earmark-arrow-down"></i>Download</a>
+                                                        @endif
                                                     </div>
                                                 </th>
                                             </tr>

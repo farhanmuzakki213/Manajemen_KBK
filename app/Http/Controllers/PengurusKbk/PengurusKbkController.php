@@ -14,7 +14,8 @@ use App\Models\ReviewProposalTaDetailPivot;
 
 class PengurusKbkController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('permission:pengurusKbk-dashboard', ['only' => ['dashboard_pengurus', 'getDosen']]);
         $this->middleware('permission:pengurusKbk-view GrafikRps', ['only' => ['grafik_rps', 'getDosen']]);
         $this->middleware('permission:pengurusKbk-view GrafikUas', ['only' => ['grafik_uas', 'getDosen']]);
@@ -83,10 +84,7 @@ class PengurusKbkController extends Controller
             })
             ->count();
 
-        $data_proposal_ta = ProposalTAModel::with('r_jenis_kbk')
-            // ->whereHas('r_jenis_kbk', function ($query) use ($pengurus) {
-            //     $query->where('jenis_kbk_id', $pengurus->jenis_kbk);
-            // })
+        $data_proposal_ta = ProposalTAModel::where('jenis_kbk_id', $pengurus->jenis_kbk_id)
             ->orderBy('proposal_ta.id_proposal_ta', 'desc')
             ->get();
 
@@ -181,7 +179,7 @@ class PengurusKbkController extends Controller
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('banyak_berita', 'smt_thnakd.smt_thnakd');
 
-            $banyak_berita_ver = DB::table('ver_rps_uas')
+        $banyak_berita_ver = DB::table('ver_rps_uas')
             ->join('ver_berita_acara_detail_pivot', 'ver_rps_uas.id_ver_rps_uas', '=', 'ver_berita_acara_detail_pivot.ver_rps_uas_id')
             ->join('ver_berita_acara', 'ver_berita_acara.id_berita_acara', '=', 'ver_berita_acara_detail_pivot.berita_acara_id')
             ->join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')
@@ -246,7 +244,7 @@ class PengurusKbkController extends Controller
             ->groupBy('smt_thnakd.smt_thnakd')
             ->pluck('banyak_berita', 'smt_thnakd.smt_thnakd');
 
-            $banyak_berita_ver = DB::table('ver_rps_uas')
+        $banyak_berita_ver = DB::table('ver_rps_uas')
             ->join('ver_berita_acara_detail_pivot', 'ver_rps_uas.id_ver_rps_uas', '=', 'ver_berita_acara_detail_pivot.ver_rps_uas_id')
             ->join('ver_berita_acara', 'ver_berita_acara.id_berita_acara', '=', 'ver_berita_acara_detail_pivot.berita_acara_id')
             ->join('rep_rps_uas', 'ver_rps_uas.rep_rps_uas_id', '=', 'rep_rps_uas.id_rep_rps_uas')

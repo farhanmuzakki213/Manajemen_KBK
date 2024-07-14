@@ -1,5 +1,3 @@
-
-
 <header class="app-header">
     <nav class="navbar navbar-expand-lg navbar-light">
         <ul class="navbar-nav">
@@ -8,14 +6,14 @@
                     <i class="ti ti-menu-2"></i>
                 </a>
             </li>
-            
+
         </ul>
         <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
                 @hasanyrole('dosenMatkul|dosenKbk')
                     <li class="nav-item nav-icon-hover-bg rounded-circle dropdown">
-                        <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
-                            aria-expanded="false">
+                        <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
+                            data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="ti ti-bell-ringing"></i>
                             <div class="notification bg-primary rounded-circle"></div>
                         </a>
@@ -31,17 +29,32 @@
                                 <div class="simplebar-content" style="padding: 0px;">
                                     @foreach (auth()->user()->unreadNotifications as $notification)
                                         @if (isset($notification->data['id_ver_rps_uas']))
-                                            <a href="#"
-                                                class="py-6 px-7 d-flex align-items-center dropdown-item">
+                                            @php
+                                                $image_user = App\Models\Dosen::where(
+                                                    'nama_dosen',
+                                                    $notification->data['pengurus_kbk'],
+                                                )->first();
+                                                if ($image_user->image) {
+                                                    $image = asset('profile_pictures/' . $image_user->image);
+                                                } else {
+                                                    if ($image_user->gender == 'Laki-laki') {
+                                                        $image = asset('profile_pictures/avatar-1.png');
+                                                    } else {
+                                                        $image = asset('profile_pictures/avatar-3.png');
+                                                    }
+                                                }
+                                            @endphp
+                                            <a href="#" class="py-6 px-7 d-flex align-items-center dropdown-item">
                                                 <span class="me-3">
-                                                    <img src="{{ asset('backend/assets/images/profile/user-1.jpg') }}"
-                                                        alt="user" class="rounded-circle" width="48" height="48">
+                                                    <img src="{{ $image }}" alt="user" class="rounded-circle"
+                                                        width="48" height="48">
                                                 </span>
                                                 <div class="w-100">
                                                     <h6 class="mb-1 fw-semibold lh-base">
                                                         {{ $notification->data['pengurus_kbk'] }}</h6>
                                                     <p class="fs-2 d-block text-body-secondary">
-                                                        {{ ucwords($notification->data['rekomendasi']) }}<br>Mata Kuliah : {{ $notification->data['matkul'] }}</p>
+                                                        {{ ucwords($notification->data['rekomendasi']) }}<br>Mata Kuliah :
+                                                        {{ $notification->data['matkul'] }}</p>
                                                     <small>{{ $notification->created_at->diffForHumans() }}</small>
                                                 </div>
                                             </a>
@@ -54,17 +67,33 @@
                                 <div class="simplebar-content" style="padding: 0px;">
                                     @foreach (auth()->user()->unreadNotifications as $notification)
                                         @if (isset($notification->data['id_penugasan']))
+                                            @php
+                                                $image_user = App\Models\Dosen::where(
+                                                    'nama_dosen',
+                                                    $notification->data['pengurus_kbk'],
+                                                )->first();
+                                                if ($image_user->image) {
+                                                    $image = asset('profile_pictures/' . $image_user->image);
+                                                } else {
+                                                    if ($image_user->gender == 'Laki-laki') {
+                                                        $image = asset('profile_pictures/avatar-1.png');
+                                                    } else {
+                                                        $image = asset('profile_pictures/avatar-3.png');
+                                                    }
+                                                }
+                                            @endphp
                                             <a href="{{ url($notification->data['url']) }}"
                                                 class="py-6 px-7 d-flex align-items-center dropdown-item">
                                                 <span class="me-3">
-                                                    <img src="{{ asset('backend/assets/images/profile/user-1.jpg') }}"
-                                                        alt="user" class="rounded-circle" width="48" height="48">
+                                                    <img src="{{ $image }}" alt="user" class="rounded-circle"
+                                                        width="48" height="48">
                                                 </span>
                                                 <div class="w-100">
                                                     <h6 class="mb-1 fw-semibold lh-base">
                                                         {{ $notification->data['pengurus_kbk'] }}</h6>
                                                     <p class="fs-2 d-block text-body-secondary">
-                                                        {{ $notification->data['pesan'] }}<br>Nama Mahasiswa : {{ $notification->data['nama_mahasiswa'] }}</p>
+                                                        {{ $notification->data['pesan'] }}<br>Nama Mahasiswa :
+                                                        {{ $notification->data['nama_mahasiswa'] }}</p>
                                                     <small>{{ $notification->created_at->diffForHumans() }}</small>
                                                 </div>
                                             </a>
@@ -101,17 +130,37 @@
                         </div>
                     </li>
                 @endhasanyrole
+                @php
+                    $user = Auth::user();
+                    $image_user = App\Models\Dosen::where('nama_dosen', $user->name)
+                        ->where('email', $user->email)
+                        ->first();
+
+                    if ($user->name == 'Admin User' || $user->name == 'Super Admin') {
+                        $image = asset('profile_pictures/avatar-2.png');
+                    } else {
+                        if ($image_user->image) {
+                            $image = asset('profile_pictures/' . $image_user->image);
+                        } else {
+                            if ($image_user->gender == 'Laki-laki') {
+                                $image = asset('profile_pictures/avatar-1.png');
+                            } else {
+                                $image = asset('profile_pictures/avatar-3.png');
+                            }
+                        }
+                    }
+                @endphp
                 <li class="nav-item dropdown">
                     <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="{{ asset('backend/assets/images/profile/user-1.jpg') }}" alt=""
-                            width="35" height="35" class="rounded-circle">
+                        <img src="{{ $image ?? asset('profile_pictures/avatar-1.png') }}" alt="" width="35"
+                            height="35" class="rounded-circle">
                     </a>
                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2"
                         style="min-width: 360px;">
                         <div class="message-body">
                             <div class="d-flex align-items-center py-9 mx-7 border-bottom">
-                                <img src="{{ asset('profile_pictures/' . (auth()->user()->profile_picture ?? '../backend/assets/images/profile/user-1.jpg')) }}"
+                                <img src="{{ $image ?? asset('profile_pictures/avatar-1.png') }}"
                                     class="rounded-circle" width="80" height="80" alt="modernize-img">
                                 <div class="ms-3">
                                     <h5 class="mb-1 fs-3">{{ Auth::user()->name }}</h5>
@@ -122,7 +171,8 @@
                                     </p>
                                 </div>
                             </div>
-                            <a href="{{route('profile.edit')}}" class="d-flex align-items-center gap-2 dropdown-item">
+                            <a href="{{ route('profile.edit') }}"
+                                class="d-flex align-items-center gap-2 dropdown-item">
                                 <i class="ti ti-user fs-6"></i>
                                 <p class="mb-0 fs-3">My Profile</p>
                             </a>
@@ -144,7 +194,6 @@
     </nav>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Inisialisasi SimpleBar pada elemen dengan data-simplebar
             new SimpleBar(document.querySelector('.message-body'));
         });
     </script>

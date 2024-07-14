@@ -121,13 +121,13 @@
                                                                     class="btn btn-primary mb-2 d-flex align-items-center"><i
                                                                         class="bi bi-pencil-square"></i>Upload</a>
                                                             @endcan
+                                                            <a href="{{ asset('storage/uploads/rps/berita_acara/' . $data->file_berita_acara) }}"
+                                                                class="btn btn-success mb-2 d-flex align-items-center"
+                                                                target="_blank"><i
+                                                                    class="bi bi-file-earmark-arrow-down"></i>Download</a>
+                                                        @else
+                                                                <p style="color: red">File belum diperiksa kaprodi</p>
                                                         @endif
-
-
-                                                        <a href="{{ asset('storage/uploads/rps/berita_acara/' . $data->file_berita_acara) }}"
-                                                            class="btn btn-success mb-2 d-flex align-items-center"
-                                                            target="_blank"><i
-                                                                class="bi bi-file-earmark-arrow-down"></i>Download</a>
                                                     </div>
                                                 </th>
                                             </tr>

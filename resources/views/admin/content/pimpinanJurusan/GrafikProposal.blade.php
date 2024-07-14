@@ -28,7 +28,7 @@
                                             <th>Judul Proposal</th>
                                             <th>Tanggal Penugasan</th>
                                             <th>Tanggal Review</th>
-                                            <th>Status Proposal</th>
+                                            <th>Status Final</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -39,7 +39,7 @@
                                             <th>Judul Proposal</th>
                                             <th>Tanggal Penugasan</th>
                                             <th>Tanggal Review</th>
-                                            <th>Status Proposal</th>
+                                            <th>Status Final</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>

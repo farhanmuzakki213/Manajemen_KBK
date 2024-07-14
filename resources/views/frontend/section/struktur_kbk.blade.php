@@ -10,13 +10,13 @@
                             <div class="card__image">
                                 {{-- <img src="{{ asset('frontend/landing-page/assets/img/struktur/avatar-1.png') }}" alt="image" class="card__img"> --}}
                                 @if ($data->r_dosen->image)
-                                    <img src="{{ asset($data->r_dosen->image) }}" alt="image" class="card__img">
+                                    <img src="{{ asset('profile_pictures/' .$data->r_dosen->image) }}" alt="image" class="card__img">
                                 @else
                                     @if ($data->r_dosen->gender == 'Laki-laki')
-                                        <img src="{{ asset('frontend/landing-page/assets/img/struktur/avatar-1.png') }}"
+                                        <img src="{{ asset('profile_pictures/avatar-1.png') }}"
                                             alt="image" class="card__img">
                                     @else
-                                        <img src="{{ asset('frontend/landing-page/assets/img/struktur/avatar-3.png') }}"
+                                        <img src="{{ asset('profile_pictures/avatar-3.png') }}"
                                             alt="image" class="card__img">
                                     @endif
                                 @endif
@@ -40,11 +40,11 @@
 
             <!-- Navigation buttons -->
             <div class="swiper-button-next">
-                {{-- <i class="ri-arrow-right-s-line"></i> --}}
+                <i class="ri-arrow-right-s-line"></i>
             </div>
 
             <div class="swiper-button-prev">
-                {{-- <i class="ri-arrow-left-s-line"></i> --}}
+                <i class="ri-arrow-left-s-line"></i>
             </div>
 
             <!-- Pagination -->

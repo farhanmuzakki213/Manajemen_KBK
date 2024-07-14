@@ -62,6 +62,25 @@
                                                 {{ session('reset') }}
                                             </div>
                                         @endif
+                                        @php
+                                            $user = Auth::user();
+                                            $image_user = App\Models\Dosen::where('nama_dosen', $user->name)
+                                                ->where('email', $user->email)
+                                                ->first();
+                                            if ($user->name == 'Admin User' || $user->name == 'Super Admin') {
+                                                $image = asset('profile_pictures/avatar-2.png');
+                                            } else {
+                                                if ($image_user->image) {
+                                                    $image = asset('profile_pictures/' . $image_user->image);
+                                                } else {
+                                                    if ($image_user->gender == 'Laki-laki') {
+                                                        $image = asset('profile_pictures/avatar-1.png');
+                                                    } else {
+                                                        $image = asset('profile_pictures/avatar-3.png');
+                                                    }
+                                                }
+                                            }
+                                        @endphp
                                         <div class="text-center mt-4">
                                             <form action="{{ route('profile.update') }}" method="POST"
                                                 enctype="multipart/form-data">
@@ -69,9 +88,8 @@
                                                 @method('PUT')
 
                                                 <!-- Display Current Profile Picture -->
-                                                <img src="{{ asset('profile_pictures/' . (auth()->user()->profile_picture ?? '../backend/assets/images/profile/user-1.jpg')) }}"
-                                                    alt="Profile Picture" class="img-fluid rounded-circle" width="120"
-                                                    height="120">
+                                                <img src="{{ $image }}" alt="Profile Picture"
+                                                    class="img-fluid rounded-circle" width="120" height="120">
 
                                                 <!-- Upload Button -->
                                                 <div class="d-flex align-items-center justify-content-center my-4 gap-6">
@@ -81,9 +99,9 @@
                                                             class="d-none" onchange="this.form.submit()">
                                                     </label>
                                                     <button type="button" class="btn bg-danger-subtle text-danger"
-                                                        id="reset-button">Reset</button>
+                                                        id="reset-button">Hapus</button>
                                                 </div>
-                                                <small class="mb-0">Allowed JPG, GIF or PNG. Max size of 800K</small>
+                                                <small class="mb-0">Hanya JPEG, JPG, GIF or PNG. Maksimal 10MB</small>
                                             </form>
                                         </div>
                                     </div>
@@ -92,7 +110,7 @@
                             <div class="col-lg-6 d-flex align-items-stretch">
                                 <div class="card w-100 border position-relative overflow-hidden">
                                     <div class="card-body p-4">
-                                        <h4 class="card-title mb-4">Change Password</h4>
+                                        <h4 class="card-title mb-4">Ubah Password</h4>
                                         @if (session('password'))
                                             <div class="alert alert-success" role="alert">
                                                 {{ session('password') }}
@@ -104,7 +122,7 @@
                                             @method('PUT')
 
                                             <div class="mb-3">
-                                                <label for="current_password" class="form-label">Current Password</label>
+                                                <label for="current_password" class="form-label">Password Lama</label>
                                                 <input type="password" class="form-control" id="current_password"
                                                     name="current_password" required>
                                                 @error('current_password')
@@ -113,7 +131,7 @@
                                             </div>
 
                                             <div class="mb-3">
-                                                <label for="new_password" class="form-label">New Password</label>
+                                                <label for="new_password" class="form-label">Password Baru</label>
                                                 <input type="password" class="form-control" id="new_password"
                                                     name="new_password" required>
                                                 @error('new_password')
@@ -122,8 +140,9 @@
                                             </div>
 
                                             <div class="mb-3">
-                                                <label for="new_password_confirmation" class="form-label">Confirm
-                                                    Password</label>
+                                                <label for="new_password_confirmation" class="form-label">Password
+                                                    Konfirmasi
+                                                </label>
                                                 <input type="password" class="form-control" id="new_password_confirmation"
                                                     name="new_password_confirmation" required>
                                                 @error('new_password_confirmation')
@@ -132,7 +151,7 @@
                                             </div>
 
                                             <button type="submit" id="submit-update-password"
-                                                class="btn btn-primary mt-3">Change Password</button>
+                                                class="btn btn-primary mt-3">Ubah</button>
                                         </form>
                                     </div>
                                 </div>
