@@ -1,20 +1,18 @@
-
-<style> 
+<style>
     .simplebar-content::-webkit-scrollbar {
-            width: 12px;
-        }
+        width: 12px;
+    }
 
-        .simplebar-content::-webkit-scrollbar-track {
-            background: #fff;
-        }
+    .simplebar-content::-webkit-scrollbar-track {
+        background: #fff;
+    }
 
-        .simplebar-content::-webkit-scrollbar-thumb {
-            background-color: #000;
-            border-radius: 20px;
-            border: 3px solid #fff;
-        }
-
-    </style>
+    .simplebar-content::-webkit-scrollbar-thumb {
+        background-color: #000;
+        border-radius: 20px;
+        border: 3px solid #fff;
+    }
+</style>
 
 
 <header class="app-header">
@@ -32,10 +30,10 @@
                 @hasanyrole('dosenMatkul|dosenKbk')
                     <li class="nav-item nav-icon-hover-bg rounded-circle dropdown">
                         <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
-   data-bs-toggle="dropdown" aria-expanded="false">
-    <i class="ti ti-bell-ringing"></i>
-    <div class="notification bg-primary rounded-circle"></div>
-</a>
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="ti ti-bell-ringing"></i>
+                            <div class="notification bg-primary rounded-circle"></div>
+                        </a>
 
 
 
@@ -74,10 +72,12 @@
                                                 <div class="w-100">
                                                     <h6 class="mb-1 fw-semibold lh-base">
                                                         {{ $notification->data['pengurus_kbk'] }}</h6>
-                                                        <p class="fs-2 d-block text-body-secondary" style="max-width: 100%; overflow-wrap: break-word; word-break: break-word; white-space: normal;">
-                                                            {{ ucwords($notification->data['rekomendasi']) }}<br>Mata Kuliah : {{ $notification->data['matkul'] }}
-                                                        </p>
-                                                        
+                                                    <p class="fs-2 d-block text-body-secondary"
+                                                        style="max-width: 100%; overflow-wrap: break-word; word-break: break-word; white-space: normal;">
+                                                        {{ ucwords($notification->data['rekomendasi']) }}<br>Mata Kuliah :
+                                                        {{ $notification->data['matkul'] }}
+                                                    </p>
+
                                                     <small>{{ $notification->created_at->diffForHumans() }}</small>
                                                 </div>
                                             </a>

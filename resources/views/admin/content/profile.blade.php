@@ -47,7 +47,7 @@
                     </div>
                     <div class="col-3">
                         <div class="text-center mb-5">
-                            <img src="{{ asset('frontend/landing-page/assets/img/logo-putih1.svg') }}" alt="modernize-img"
+                            <img src="{{ asset('backend/assets/images/logos/e-kbk.svg') }}" alt="modernize-img"
                                 class="img-fluid mb-n4">
                         </div>
                     </div>
