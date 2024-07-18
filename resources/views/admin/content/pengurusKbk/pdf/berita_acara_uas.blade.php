@@ -110,10 +110,25 @@
             text-align: center;
         }
 
+        .semester {
+            max-width: 5px;
+            overflow: hidden;
+            text-align: justify;
+            /* word-wrap: break-word; */
+        }
+
+        .nama_matkul {
+            max-width: 30px;
+            overflow: hidden;
+            text-align: justify;
+            /* word-wrap: break-word; */
+        }
+
         .evaluasi {
             max-width: 200px;
             overflow: hidden;
             text-align: justify;
+            word-wrap: break-word;
         }
 
         .signatures {
@@ -256,7 +271,7 @@
                                 }
                             @endphp
                         </td>
-                        <td>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->nama_matkul }}</td>
+                        <td class="nama_matkul">{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->nama_matkul }}</td>
                         <td class="evaluasi">{{ $data_ver->saran }}</td>
                     </tr>
                 @endforeach

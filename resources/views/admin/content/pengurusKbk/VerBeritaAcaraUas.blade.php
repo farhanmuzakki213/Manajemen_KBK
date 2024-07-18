@@ -4,26 +4,20 @@
     <style>
         .dropdown-item {
             width: auto;
-            /* Lebar menyesuaikan dengan konten */
             white-space: nowrap;
-            /* Konten tidak akan melintasi baris */
         }
 
         .dropdown-item .row {
             display: flex;
-            /* Menggunakan flexbox untuk mengatur kolom */
             flex-wrap: nowrap;
-            /* Konten tidak akan melintasi baris */
         }
 
         .dropdown-item .col-lg-3 {
             flex: 1;
-            /* Kolom kode_matkul mengambil 1 bagian */
         }
 
         .dropdown-item .col-lg-4 {
             flex: 3;
-            /* Kolom nama_matkul mengambil 3 bagian */
         }
     </style>
 @endsection
@@ -149,7 +143,7 @@
                                                             <a href="{{ asset('storage/uploads/uas/repositori_files/' . $data_ver->r_rep_rps_uas->file) }}"
                                                                 class="btn btn-primary mb-2 d-flex align-items-center"
                                                                 target="_blank"><i
-                                                                    class="bi bi-file-earmark-arrow-down"></i>FileRPS</a>
+                                                                    class="bi bi-file-earmark-arrow-down"></i>Lihat</a>
                                                             <a data-bs-toggle="modal"
                                                                 data-bs-target="#detail{{ $data_ver->id_ver_rps_uas }}"
                                                                 class="btn btn-secondary mb-2 d-flex align-items-center"><i

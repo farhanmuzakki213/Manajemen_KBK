@@ -393,7 +393,7 @@
                                             <div class="round-16 d-flex align-items-center justify-content-center">
                                                 <i class="ti ti-circle"></i>
                                             </div>
-                                            <span class="hide-menu">Verifikasi Berita Acara RPS</span>
+                                            <span class="hide-menu">Berita Acara RPS</span>
                                         </a>
                                     </li>
                                 @endcan
@@ -436,7 +436,7 @@
                                             <div class="round-16 d-flex align-items-center justify-content-center">
                                                 <i class="ti ti-circle"></i>
                                             </div>
-                                            <span class="hide-menu">Verifikasi Berita Acara UAS</span>
+                                            <span class="hide-menu">Berita Acara Soal UAS</span>
                                         </a>
                                     </li>
                                 @endcan
@@ -486,74 +486,6 @@
 
                             </ul>
                         </li>
-
-
-
-
-                        {{-- <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('rep_rps_jurusan') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Repositori RPS</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('rep_soal_uas_jurusan') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Repositori Soal UAS</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('rep_proposal_ta_jurusan') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Repositori Proposal TA</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('grafik_rps') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Tabel & Grafik RPS</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('grafik_uas') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Tabel & Grafik UAS</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('grafik_proposal') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Tabel & Grafik Proposal TA</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('kajur_berita_ver_rps') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Verifikasi Berita Acara RPS</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('kajur_berita_ver_uas') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Verifikasi Berita Acara UAS</span>
-                            </a>
-                        </li> --}}
                     @endhasrole
                     @hasrole('pimpinanProdi')
                         <li class="nav-small-cap">
@@ -586,7 +518,7 @@
                                             <div class="round-16 d-flex align-items-center justify-content-center">
                                                 <i class="ti ti-circle"></i>
                                             </div>
-                                            <span class="hide-menu">Verifikasi Berita Acara RPS</span>
+                                            <span class="hide-menu">Berita Acara RPS</span>
                                         </a>
                                     </li>
                                 @endcan
@@ -630,7 +562,7 @@
                                             <div class="round-16 d-flex align-items-center justify-content-center">
                                                 <i class="ti ti-circle"></i>
                                             </div>
-                                            <span class="hide-menu">Verifikasi Berita Acara UAS</span>
+                                            <span class="hide-menu">Berita Acara Soal UAS</span>
                                         </a>
                                     </li>
                                 @endcan
@@ -671,65 +603,6 @@
 
                             </ul>
                         </li>
-
-
-
-                        {{-- <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('rep_rps') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Repositori RPS </span>
-                            </a>
-                        </li> --}}
-                        {{-- <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('rep_soal_uas') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Repositori Soal UAS </span>
-                            </a>
-                        </li> --}}
-                        {{-- <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('hasil_review_proposal_ta') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Hasil Review Proposal TA</span>
-                            </a>
-                        </li> --}}
-                        {{-- <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('berita_ver_rps') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Verifikasi Berita Acara RPS</span>
-                            </a>
-                        </li> --}}
-                        {{-- <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('berita_ver_uas') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Verifikasi Berita Acara UAS</span>
-                            </a>
-                        </li> --}}
-                        {{-- <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('grafik_rps_prodi') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Tabel & Grafik RPS</span>
-                            </a>
-                        </li> --}}
-                        {{-- <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('grafik_uas_prodi') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Tabel & Grafik UAS</span>
-                            </a>
-                        </li> --}}
                     @endhasrole
 
 
@@ -764,7 +637,7 @@
                                             <div class="round-16 d-flex align-items-center justify-content-center">
                                                 <i class="ti ti-circle"></i>
                                             </div>
-                                            <span class="hide-menu">Upload Berita Acara RPS</span>
+                                            <span class="hide-menu">Berita Acara RPS</span>
                                         </a>
                                     </li>
                                 @endcan
@@ -807,7 +680,7 @@
                                             <div class="round-16 d-flex align-items-center justify-content-center">
                                                 <i class="ti ti-circle"></i>
                                             </div>
-                                            <span class="hide-menu">Verifikasi Berita Acara UAS</span>
+                                            <span class="hide-menu">Berita Acara Soal UAS</span>
                                         </a>
                                     </li>
                                 @endcan
@@ -855,86 +728,13 @@
                                 @endcan
                             </ul>
                         </li>
-
-
-                        {{-- <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('PenugasanReview') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Penugasan Review </span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('HasilReview') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Hasil Review </span>
-                            </a>
-                        </li> --}}
-                        {{-- <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('ver_rps') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Verifikasi RPS </span>
-                            </a>
-                        </li> --}}
-                        {{-- <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('ver_soal_uas') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Verifikasi Soal UAS </span>
-                            </a>
-                        </li> --}}
-                        {{-- <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('upload_rps_berita_acara') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Upload Berita Acara RPS </span>
-                            </a>
-                        </li> --}}
-                        {{-- <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('upload_uas_berita_acara') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Upload Berita Acara UAS </span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('grafik_rps_pengurus') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Tabel & Grafik RPS</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('grafik_uas_pengurus') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-aperture"></i>
-                                </span>
-                                <span class="hide-menu">Tabel & Grafik UAS</span>
-                            </a>
-                        </li> --}}
                     @endhasrole
+
                     @hasrole('dosenMatkul')
                         <li class="nav-small-cap">
                             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                             <span class="hide-menu">Dosen Pengampu</span>
                         </li>
-                        {{-- <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ route('dashboard_pengampu') }}" aria-expanded="false">
-                            <span>
-                                <i class="ti ti-aperture"></i>
-                            </span>
-                            <span class="hide-menu">Dashboard Pengampu</span>
-                        </a>
-                    </li> --}}
                         @can('dosenMatkul-view DosenMatkul')
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="{{ route('dosen_matkul') }}" aria-expanded="false">
@@ -946,19 +746,12 @@
                             </li>
                         @endcan
                     @endhasrole
+                    
                     @hasrole('dosenKbk')
                         <li class="nav-small-cap">
                             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                             <span class="hide-menu">Dosen KBK</span>
                         </li>
-                        {{-- <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ route('dashboard_dosenKbk') }}" aria-expanded="false">
-                            <span>
-                                <i class="ti ti-aperture"></i>
-                            </span>
-                            <span class="hide-menu">Dashboard Dosen KBK</span>
-                        </a>
-                    </li> --}}
                         @can('dosenKbk-view ReviewProposalTA')
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="{{ route('review_proposal_ta') }}" aria-expanded="false">

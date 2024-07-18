@@ -21,6 +21,13 @@
                                     value="{{ $penugasan_id }}" readonly>
                                 <input type="hidden" class="form-control" id="reviewer" name="reviewer"
                                     value="{{ $dosen_review }}" readonly>
+                                    <div class="mb-3">
+                                        <label for="catatan" class="form-label">Catatan *</label>
+                                        <textarea class="form-control" id="catatan" name="catatan" rows="3">{{old('catatan')}}</textarea>
+                                        @error('catatan')
+                                            <small>{{ $message }}</small>
+                                        @enderror
+                                    </div>
                                 <div class="mb-3">
                                     <label for="status" class="form-label">Status</label><br>
                                     <div class="form-check form-check-inline">
@@ -42,13 +49,7 @@
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>
-                                <div class="mb-3">
-                                    <label for="catatan" class="form-label">Catatan</label>
-                                    <textarea class="form-control" id="catatan" name="catatan" rows="3">{{old('catatan')}}</textarea>
-                                    @error('catatan')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </div>
+                               
                                 <div class="mb-3">
                                     {{-- <label for="date" class="form-label">Tanggal Penugasan</label> --}}
                                     <input type="hidden" class="form-control" id="date" name="date"

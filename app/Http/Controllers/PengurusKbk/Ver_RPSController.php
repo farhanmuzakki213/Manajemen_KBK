@@ -255,7 +255,7 @@ class Ver_RPSController extends Controller
             'id_ver_rps' => 'required',
             'rep_rps_uas_id' => 'required',
             'rekomendasi' => 'required',
-            'evaluasi' => 'nullable',
+            'evaluasi' => 'required',
             'date' => 'required|date_format:Y-m-d H:i:s',
         ]);
 

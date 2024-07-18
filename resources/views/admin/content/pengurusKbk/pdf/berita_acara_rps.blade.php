@@ -20,7 +20,6 @@
             left: 56.8px;
             right: 56.8px;
             z-index: 0;
-           
         }
 
         .kepala table {
@@ -35,6 +34,7 @@
             display: block;
             margin-left: 10px;
             margin-top: 10px;
+            width: 100%;
         }
 
         .kepala tr.border-top {
@@ -47,10 +47,6 @@
             border: none;
         }
 
-        .kepala .logo img {
-            width: 100%;
-        }
-
         .kepala .header-content {
             vertical-align: top;
             border-top: 1px solid black;
@@ -59,12 +55,9 @@
         .badan {
             top: 160px;
             position: relative;
-            
-           
         }
 
         .details {
-            /* margin-top: 15px; */
             margin-bottom: 20px;
         }
 
@@ -77,7 +70,7 @@
             font-weight: bold;
         }
 
-        table .isi{
+        table .isi {
             page-break-inside: auto;
         }
 
@@ -85,9 +78,7 @@
             width: 100%;
             border-collapse: collapse;
             page-break-inside: auto;
-            /* margin-bottom: 5px; */
         }
-  
 
         table,
         th,
@@ -110,10 +101,25 @@
             text-align: center;
         }
 
+        .semester {
+            max-width: 5px;
+            overflow: hidden;
+            text-align: justify;
+            /* word-wrap: break-word; */
+        }
+
+        .nama_matkul {
+            max-width: 30px;
+            overflow: hidden;
+            text-align: justify;
+            /* word-wrap: break-word; */
+        }
+
         .evaluasi {
             max-width: 200px;
             overflow: hidden;
             text-align: justify;
+            word-wrap: break-word;
         }
 
         .signatures {
@@ -128,9 +134,8 @@
         }
 
         .signatures .left,
-        .signatures .right, {
+        .signatures .right {
             width: 50%;
-            /* margin-bottom: 50px; */
             text-align: center;
             border: none;
             page-break-inside: avoid;
@@ -141,14 +146,11 @@
             width: 100%;
             text-align: center;
             page-break-inside: avoid;
-            
         }
 
-        .signatures .center p { 
-            /* margin-bottom: 50px; */
+        .signatures .center p {
             page-break-after: avoid;
         }
-
     </style>
 </head>
 
@@ -162,16 +164,15 @@
                 </td>
                 <td class="header-content">
                     <center>
-<strong>
-                        <font style="font-size: 15px;">KEMENTRIAN PENDIDIKAN, KEBUDAYAAN,</font><br>
-                        <font style="font-size: 15px;">RISET, DAN TEKNOLOGI</font><br>
+                        <strong>
+                            <font style="font-size: 15px;">KEMENTRIAN PENDIDIKAN, KEBUDAYAAN,</font><br>
+                            <font style="font-size: 15px;">RISET, DAN TEKNOLOGI</font><br>
                         </strong>
                         <strong>
                             <font style="font-size: 15px;">POLITEKNIK NEGERI PADANG</font>
                         </strong><br>
                         <strong>
-                            <font style="font-size: 15px;">PUSAT PENINGKATAN DAN PENGEMBANGAN AKTIVITAS INSTITUSIONAL
-                            </font>
+                            <font style="font-size: 15px;">PUSAT PENINGKATAN DAN PENGEMBANGAN AKTIVITAS INSTITUSIONAL</font>
                         </strong><br>
                         <strong>
                             <font style="font-size: 15px;">(P3AI)</font>
@@ -195,10 +196,7 @@
                             <font style="font-size: 15px;">VERIFIKASI RENCANA PEMBELAJARAN SEMESTER</font>
                         </strong><br>
                         <strong>
-                            <font style="font-size: 15px;">
-                                JURUSAN : TEKNOLOGI INFORMASI PROGRAM STUDI :
-                                {{ strtoupper($selectedProdi->prodi) }}
-                            </font>
+                            <font style="font-size: 15px;">JURUSAN : TEKNOLOGI INFORMASI PROGRAM STUDI : {{ strtoupper($selectedProdi->prodi) }}</font>
                         </strong>
                         <br>
                     </center>
@@ -254,7 +252,8 @@
                                 }
                             @endphp
                         </td>
-                        <td>{{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->nama_matkul }}</td>
+                        <td class="nama_matkul">
+                            {{ optional($data_ver->r_rep_rps_uas)->r_matkulKbk->r_matkul->nama_matkul }}</td>
                         <td class="evaluasi">{{ $data_ver->saran }}</td>
                     </tr>
                 @endforeach
@@ -272,11 +271,10 @@
                     </td>
                     <td class="right" style="padding-left: 100px">
                         <p>Ketua KBK</p>
-                        <p style="font-style: italic;">{{$pengurus_kbk->r_jenis_kbk->jenis_kbk}}</p>
+                        <p style="font-style: italic;">{{ $pengurus_kbk->r_jenis_kbk->jenis_kbk }}</p>
                         <br><br><br><br>
-                        <p>{{$pengurus_kbk->r_dosen->nama_dosen}}</p>
+                        <p>{{ $pengurus_kbk->r_dosen->nama_dosen }}</p>
                     </td>
-
                 </tr>
             </table>
         </div>
@@ -285,13 +283,11 @@
             <div class="center">
                 <p>Mengetahui</p>
                 <br><br><br><br>
-                <p>{{$kajur->r_dosen->nama_dosen}}</p>
+                <p>{{ $kajur->r_dosen->nama_dosen }}</p>
             </div>
         </div>
     </div>
 
-
 </body>
-
 
 </html>
