@@ -20,6 +20,13 @@
                                 <input type="hidden" class="form-control" id="penugasan_id" name="penugasan_id" value="{{ $penugasan_id }}">
                                 <input type="hidden" class="form-control" id="reviewer" name="reviewer" value="{{ $dosen_review }}">
                                 <div class="mb-3">
+                                    <label for="catatan" class="form-label">Catatan *</label>
+                                    <textarea class="form-control" id="catatan" name="catatan" rows="3">{{ $data_dosen->catatan }}</textarea>
+                                    @error('catatan')
+                                        <small>{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
                                     <label for="status" class="form-label">Status</label><br>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="status" id="aktif" value="1" {{ $data_dosen->status_review_proposal == 1 ? 'checked' : '' }}>
@@ -34,13 +41,7 @@
                                         <label class="form-check-label" for="aktif">DiTerima</label>
                                     </div>                                   
                                 </div>
-                                <div class="mb-3">
-                                    <label for="catatan" class="form-label">Catatan</label>
-                                    <textarea class="form-control" id="catatan" name="catatan" rows="3">{{ $data_dosen->catatan }}</textarea>
-                                    @error('catatan')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </div>
+                               
                                 <div class="mb-3">
                                     {{-- <label for="date" class="form-label">Tanggal Review</label> --}}
                                     <input type="hidden" class="form-control" id="date" name="date" value="{{ \Carbon\Carbon::now()}}">

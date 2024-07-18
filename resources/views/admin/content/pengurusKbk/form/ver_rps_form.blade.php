@@ -22,6 +22,14 @@
                                     value="{{ $rep_id }}"readonly>
                                 <input type="hidden" class="form-control" id="id_pengurus_kbk" name="id_pengurus_kbk"
                                     value="{{ $data_dosen }}"readonly>
+
+                                    <div class="mb-3">
+                                        <label for="evaluasi" class="form-label">Evaluasi *</label>
+                                        <textarea class="form-control" id="evaluasi" name="evaluasi" rows="3">{{old('evaluasi')}}</textarea>
+                                        @error('evaluasi')
+                                            <small>{{ $message }}</small>
+                                        @enderror
+                                    </div>
                                 <div class="mb-3">
                                     <label for="rekomendasi" class="form-label">Rekomendasi</label><br>
                                     <div class="form-check form-check-inline">
@@ -43,13 +51,7 @@
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>
-                                <div class="mb-3">
-                                    <label for="evaluasi" class="form-label">Evaluasi</label>
-                                    <textarea class="form-control" id="evaluasi" name="evaluasi" rows="3">{{old('evaluasi')}}</textarea>
-                                    @error('evaluasi')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </div>
+                               
                                 {{-- <label for="date" class=" col-form-label">Tanggal Verifikasi</label> --}}
                                 <div class="col-5 mb-3">
                                     <div class="input-group date">
