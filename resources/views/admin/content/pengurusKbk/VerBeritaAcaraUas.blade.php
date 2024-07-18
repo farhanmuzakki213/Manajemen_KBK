@@ -391,12 +391,14 @@
                                                                 class="btn btn-danger mb-2 d-flex align-items-center"><i
                                                                     class="bi bi-trash"></i>Hapus</a>
                                                         @endcan
-
+                                                        @if($data->file_berita_acara == null)
+                                                            <small style="color: red">File belum di upload</small>
+                                                        @else
                                                         <a href="{{ asset('storage/uploads/uas/berita_acara/' . $data->file_berita_acara) }}"
                                                             class="btn btn-success mb-2 d-flex align-items-center"
                                                             target="_blank"><i
                                                                 class="bi bi-file-earmark-arrow-down"></i>Download</a>
-
+                                                        @endif
                                                     </div>
                                                 </th>
                                             </tr>

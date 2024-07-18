@@ -303,6 +303,30 @@ class VerBeritaAcaraRpsController extends Controller
                     'tanggal_upload' => $request->tanggal_upload,
                     'file_berita_acara' => $filename
                 ]);
+                if($request->status_kaprodi == '2'){
+                    $beritaAcara->update([
+                        'Status_dari_kaprodi' => '3',
+                        'tanggal_disetujui_kaprodi' => $request->tanggal_upload,
+                    ]);
+                }
+                if($request->status_kajur == '2'){
+                    $beritaAcara->update([
+                        'Status_dari_kajur' => '1',
+                        'tanggal_diketahui_kajur' => $request->tanggal_upload,
+                    ]);
+                }
+                if($request->status_kaprodi == '1'){
+                    $beritaAcara->update([
+                        'Status_dari_kaprodi' => '0',
+                        'tanggal_disetujui_kaprodi' => null,
+                    ]);
+                }
+                if($request->status_kajur == '1'){
+                    $beritaAcara->update([
+                        'Status_dari_kajur' => '0',
+                        'tanggal_diketahui_kajur' => null,
+                    ]);
+                }
             }
             DB::commit();
         } catch (\Throwable) {
@@ -316,10 +340,10 @@ class VerBeritaAcaraRpsController extends Controller
 
     public function delete(string $id)
     {
-        $data_berita_acara_rps = VerBeritaAcara::find($id);
+        $data_berita_acara_rps = VerBeritaAcara::where('id_berita_acara', $id)->first();
 
         // Menghapus file terkait jika ada
-        if ($data_berita_acara_rps && $data_berita_acara_rps->file_berita_acara) {
+        if (!is_null($data_berita_acara_rps->file_berita_acara)) {
             Storage::delete('public/uploads/rps/berita_acara/' . $data_berita_acara_rps->file_berita_acara);
         }
 

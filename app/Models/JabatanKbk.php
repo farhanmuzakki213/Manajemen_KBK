@@ -14,7 +14,7 @@ class JabatanKbk extends Model
         'jabatan', 'deskripsi'
     ];
     protected $table = 'jabatan_kbk';
-    protected $primaryKey = 'id_jabatan-kbk';
+    protected $primaryKey = 'id_jabatan_kbk';
 
     public function getActivitylogOptions(): LogOptions
     {

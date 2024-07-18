@@ -35,7 +35,43 @@
                                         <small>{{ $message }}</small>
                                     @enderror
                                 </div>
-                                
+                                <div class="mb-3">
+                                    <label for="status_kaprodi" class="form-label">Apakah file sudah di tanda tangani oleh koordinator prodi yang bersangkutan? *</label><br>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="status_kaprodi" id="belum"
+                                            value="1"
+                                            {{ old('status_kaprodi') == 1 ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="belum">Belum</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="status_kaprodi"
+                                            id="sudah" value="2"
+                                            {{ old('status_kaprodi') == 2 ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="sudah">Sudah</label>
+                                    </div>
+                                    @error('status_kaprodi')
+                                        <small>{{ $message }}</small>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="status_kajur" class="form-label">Apakah file sudah di tanda tangani oleh ketua jurusan yang bersangkutan? *</label><br>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="status_kajur" id="belum"
+                                            value="1"
+                                            {{ old('status_kajur') == 1 ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="belum">Belum</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="status_kajur"
+                                            id="sudah" value="2"
+                                            {{ old('status_kajur') == 2 ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="sudah">Sudah</label>
+                                    </div>
+                                    @error('status_kajur')
+                                        <small>{{ $message }}</small>
+                                    @enderror
+                                </div>
 
                                 <div class="col-5 mb-3">
                                     <div class="input-group tanggal_upload">

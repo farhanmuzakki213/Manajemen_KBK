@@ -23,8 +23,10 @@ class beritaAcaraUpdate extends FormRequest
     {
         return [
             'id_berita_acara' => 'required|integer',
-            'file_berita_acara' => 'sometimes|required|mimes:pdf',
+            'file_berita_acara' => 'required|mimes:pdf',
             'tanggal_upload' => 'required|date_format:Y-m-d H:i:s',
+            'status_kajur' => 'required',
+            'status_kaprodi' => 'required',
         ];
     }
 }

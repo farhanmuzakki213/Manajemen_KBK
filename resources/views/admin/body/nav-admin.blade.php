@@ -172,6 +172,83 @@
                             }
                         }
                     }
+                    $user = Auth::user();
+                    $roles = $user->roles->pluck('name')->toArray();
+                    $pengurusKbk = App\Models\Pengurus_kbk::with('r_dosen', 'r_jabatan_kbk', 'r_jenis_kbk')
+                        ->whereHas('r_dosen', function ($query) use ($user) {
+                            $query->where('nama_dosen', $user->name);
+                        })
+                        ->first();
+
+                    $pengurusKbk = App\Models\Pengurus_kbk::with('r_dosen', 'r_jabatan_kbk', 'r_jenis_kbk')
+                        ->whereHas('r_dosen', function ($query) use ($user) {
+                            $query->where('nama_dosen', $user->name);
+                        })
+                        ->first();
+                    $dosenKbk = App\Models\DosenKBK::with('r_dosen', 'r_jenis_kbk')
+                        ->whereHas('r_dosen', function ($query) use ($user) {
+                            $query->where('nama_dosen', $user->name);
+                        })
+                        ->first();
+
+                    $pimpinanJurusan = App\Models\PimpinanJurusan::with('r_dosen', 'r_jabatan_pimpinan')
+                        ->whereHas('r_dosen', function ($query) use ($user) {
+                            $query->where('nama_dosen', $user->name);
+                        })
+                        ->first();
+
+                    $pimpinanProdi = App\Models\PimpinanProdi::with('r_dosen', 'r_jabatan_pimpinan', 'r_prodi')
+                        ->whereHas('r_dosen', function ($query) use ($user) {
+                            $query->where('nama_dosen', $user->name);
+                        })
+                        ->first();
+
+                    $jabatans = [];
+
+                    if (in_array('pengurusKbk', $roles)) {
+                        if ($pengurusKbk) {
+                            $jabatanKbk =
+                                $pengurusKbk->r_jabatan_kbk->jabatan . ' ' . $pengurusKbk->r_jenis_kbk->jenis_kbk;
+                            $jabatans[] = $jabatanKbk;
+                        }
+                    }
+                    if (in_array('pimpinanJurusan', $roles)) {
+                        if ($pimpinanJurusan) {
+                            $jabatanKbk = $pimpinanJurusan->r_jabatan_pimpinan->jabatan_pimpinan;
+                            $jabatans[] = $jabatanKbk;
+                        }
+                    }
+
+                    if (in_array('pimpinanProdi', $roles)) {
+                        if ($pimpinanProdi) {
+                            $jabatanKbk =
+                                $pimpinanProdi->r_jabatan_pimpinan->jabatan_pimpinan .
+                                ' ' .
+                                $pimpinanProdi->r_prodi->kode_prodi;
+                            $jabatans[] = $jabatanKbk;
+                        }
+                    }
+
+                    if (in_array('dosenKbk', $roles)) {
+                        if ($dosenKbk) {
+                            $jabatanKbk =
+                                'Anggota KBK ' .
+                                $dosenKbk->r_jenis_kbk->jenis_kbk;
+                            $jabatans[] = $jabatanKbk;
+                        }
+                    }
+
+                    if (in_array('dosenMatkul', $roles)) {
+                        $jabatans[] = 'Dosen Pengampu Matkul';
+                    }
+                    if (in_array('admin', $roles)) {
+                        $jabatans[] = 'Admin';
+                    }
+                    if (in_array('superAdmin', $roles)) {
+                        $jabatans[] = 'Super Admin';
+                    }
+
+                    $jabatan = implode('<br>', $jabatans);
                 @endphp
                 <li class="nav-item dropdown">
                     <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
@@ -187,8 +264,7 @@
                                     class="rounded-circle" width="80" height="80" alt="modernize-img">
                                 <div class="ms-3">
                                     <h5 class="mb-1 fs-3">{{ Auth::user()->name }}</h5>
-                                    <span
-                                        class="mb-1 d-block">{{ implode(', ', Auth::user()->roles->pluck('name')->toArray()) }}</span>
+                                    <span class="mb-1 d-block">{!! nl2br($jabatan) !!}</span>
                                     <p class="mb-0 d-flex align-items-center gap-2">
                                         <i class="ti ti-mail fs-4"></i> {{ Auth::user()->email }}
                                     </p>
