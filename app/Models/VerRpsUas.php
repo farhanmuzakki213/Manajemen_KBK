@@ -51,4 +51,8 @@ class VerRpsUas extends Model
     {
         return $this->belongsToMany(VerBeritaAcara::class, 'ver_berita_acara_detail_pivot', 'ver_rps_uas_id', 'berita_acara_id');
     }
+
+    public function p_HasilVerifUas(){
+        return $this->hasMany(hasilVerifikasiSoalUjian::class, 'ver_rps_uas_id', 'id_ver_rps_uas');
+    }
 }

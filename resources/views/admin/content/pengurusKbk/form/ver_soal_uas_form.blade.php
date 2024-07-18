@@ -14,52 +14,242 @@
                                     <p><a href="{{ route('ver_soal_uas') }}" class="btn btn-success"> Kembali</a></p>
                                 </div>
                             </div>
-                            <form method="post" action="{{ route('ver_soal_uas.store') }}" enctype="multipart/form-data">
+                            <form method="post" action="{{ route('ver_soal_uas.store') }}" enctype="multipart/form-data"
+                                id="soalForm">
                                 @csrf
                                 <input type="hidden" class="form-control" id="id_ver_uas" name="id_ver_uas"
-                                value="{{ $nextNumber }}"readonly>
-                            <input type="hidden" class="form-control" id="id_rep_uas" name="id_rep_uas"
-                                value="{{ $rep_id }}"readonly>
-                            <input type="hidden" class="form-control" id="id_pengurus_kbk" name="id_pengurus_kbk"
-                                value="{{ $data_dosen }}"readonly>
-                            <div class="mb-3">
-                                <label for="rekomendasi" class="form-label">Rekomendasi</label><br>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="rekomendasi"
-                                        id="belum_diverifikasi" value="2" {{ old('rekomendasi') == 2 ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="aktif">Butuh Revisi</label>
+                                    value="{{ $nextNumber }}"readonly>
+                                <input type="hidden" class="form-control" id="id_rep_uas" name="id_rep_uas"
+                                    value="{{ $rep_id }}"readonly>
+                                <input type="hidden" class="form-control" id="id_pengurus_kbk" name="id_pengurus_kbk"
+                                    value="{{ $data_dosen }}"readonly>
+                                <div class="mb-3">
+                                    <label for="evaluasi" class="form-label">Evaluasi *</label>
+                                    <textarea class="form-control" id="evaluasi" name="evaluasi" rows="3">{{ old('evaluasi') }}</textarea>
+                                    @error('evaluasi')
+                                        <small>{{ $message }}</small>
+                                    @enderror
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="rekomendasi"
-                                        id="tidak_layak_pakai" value="1" {{ old('rekomendasi') == 1 ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="tidak_aktif">Tidak layak Pakai</label>
+                                <div class="mb-3">
+                                    <label for="rekomendasi" class="form-label">Rekomendasi *</label><br>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="rekomendasi" id="butuh_revisi"
+                                            value="2" {{ old('rekomendasi') == 2 ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="butuh_revisi">Butuh Revisi</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="rekomendasi"
+                                            id="tidak_layak_pakai" value="1"
+                                            {{ old('rekomendasi') == 1 ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="tidak_layak_pakai">Tidak layak Pakai</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="rekomendasi" id="layak_pakai"
+                                            value="3" {{ old('rekomendasi') == 3 ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="layak_pakai">layak Pakai</label>
+                                    </div>
+                                    @error('rekomendasi')
+                                        <small>{{ $message }}</small>
+                                    @enderror
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="rekomendasi" id="layak_pakai"
-                                        value="3" {{ old('rekomendasi') == 3 ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="tidak_aktif">layak Pakai</label>
+                                <div class="mb-3">
+                                    <label class="form-label" for="jumlah_soal">Jumlah Soal *</label>
+                                    <input type="number" class="form-control" placeholder="Input Jumlah Soal Ujian"
+                                        name="jumlah_soal" id="jumlah_soal" value="{{ old('jumlah_soal') }}">
+                                    @error('jumlah_soal')
+                                        <small>{{ $message }}</small>
+                                    @enderror
                                 </div>
-                                @error('rekomendasi')
-                                    <small>{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <div class="mb-3">
-                                <label for="evaluasi" class="form-label">Evaluasi</label>
-                                <textarea class="form-control" id="evaluasi" name="evaluasi" rows="3">{{old('evaluasi')}}</textarea>
-                                @error('evaluasi')
-                                    <small>{{ $message }}</small>
-                                @enderror
-                            </div>
-                            {{-- <label for="date" class=" col-form-label">Tanggal Verifikasi</label> --}}
-                            <div class="col-5 mb-3">
-                                <div class="input-group date">
-                                    <input type="hidden" class="form-control" id="date" name="date"
-                                        value="{{ \Carbon\Carbon::now()}}" />
+                                <div id="dynamic_content">
+                                    @if (old('jumlah_soal'))
+                                        <div class="row">
+                                            <div
+                                                class="col-md-6 d-flex justify-content-center align-items-center text-center">
+                                                <label class="form-label">Validasi Isi *</label><br>
+                                            </div>
+                                            <div
+                                                class="col-md-6 d-flex justify-content-center align-items-center text-center">
+                                                <label class="form-label">Bahasa dan Penulisan Soal *</label><br>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label class="form-label">Butir Soal</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label class="form-label">Tidak Valid</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label class="form-label">Kurang Valid</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label class="form-label">Cukup Valid</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label class="form-label">Valid</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label class="form-label">Sangat Valid</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label class="form-label">Butir Soal</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label class="form-label">Tidak Baik</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label class="form-label">Kurang Baik</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label class="form-label">Cukup Baik</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label class="form-label">Baik</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label class="form-label">Sangat Baik</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @php
+                                            $validasi_isi = old('validasi_isi_', []);
+                                            $bahasa_soal = old('bahasa_soal_', []);
+                                        @endphp
+
+                                        @foreach (range(1, old('jumlah_soal', 0)) as $i)
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-2">
+                                                            <label for="validasi_isi_[{{ $i }}]"
+                                                                class="form-label">{{ $i }}</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline col-md-2"
+                                                            style="margin-right: 0;">
+                                                            <input class="form-check-input" type="radio"
+                                                                id="validasi_isi_{{ $i }}_1"
+                                                                name="validasi_isi_[{{ $i }}]" value="1"
+                                                                {{ isset($validasi_isi[$i]) && $validasi_isi[$i] == 1 ? 'checked' : '' }}>
+                                                            <label class="form-check-label"
+                                                                for="validasi_isi_{{ $i }}_1">TV</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline col-md-2"
+                                                            style="margin-right: 0;">
+                                                            <input class="form-check-input" type="radio"
+                                                                id="validasi_isi_{{ $i }}_2"
+                                                                name="validasi_isi_[{{ $i }}]" value="2"
+                                                                {{ isset($validasi_isi[$i]) && $validasi_isi[$i] == 2 ? 'checked' : '' }} >
+                                                            <label class="form-check-label"
+                                                                for="validasi_isi_{{ $i }}_2">KV</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline col-md-2"
+                                                            style="margin-right: 0;">
+                                                            <input class="form-check-input" type="radio"
+                                                                id="validasi_isi_{{ $i }}_3"
+                                                                name="validasi_isi_[{{ $i }}]" value="3"
+                                                                {{ isset($validasi_isi[$i]) && $validasi_isi[$i] == 3 ? 'checked' : '' }}>
+                                                            <label class="form-check-label"
+                                                                for="validasi_isi_{{ $i }}_3">CV</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline col-md-2"
+                                                            style="margin-right: 0;">
+                                                            <input class="form-check-input" type="radio"
+                                                                id="validasi_isi_{{ $i }}_4"
+                                                                name="validasi_isi_[{{ $i }}]" value="4"
+                                                                {{ isset($validasi_isi[$i]) && $validasi_isi[$i] == 4 ? 'checked' : '' }}>
+                                                            <label class="form-check-label"
+                                                                for="validasi_isi_{{ $i }}_4">V</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline col-md-2"
+                                                            style="margin-right: 0;">
+                                                            <input class="form-check-input" type="radio"
+                                                                id="validasi_isi_{{ $i }}_5"
+                                                                name="validasi_isi_[{{ $i }}]" value="5"
+                                                                {{ isset($validasi_isi[$i]) && $validasi_isi[$i] == 5 ? 'checked' : '' }}>
+                                                            <label class="form-check-label"
+                                                                for="validasi_isi_{{ $i }}_5">SV</label>
+                                                        </div>
+                                                    </div>
+                                                    @error("validasi_isi_[{{ $i }}]")
+                                                        <small class="text-danger">{{ $message }}</small>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-2">
+                                                            <label for="bahasa_soal_[{{ $i }}]"
+                                                                class="form-label">{{ $i }}</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline col-md-2"
+                                                            style="margin-right: 0;">
+                                                            <input class="form-check-input" type="radio"
+                                                                id="bahasa_soal_{{ $i }}_1"
+                                                                name="bahasa_soal_[{{ $i }}]" value="1"
+                                                                {{ isset($bahasa_soal[$i]) && $bahasa_soal[$i] == 1 ? 'checked' : '' }}>
+                                                            <label class="form-check-label"
+                                                                for="bahasa_soal_{{ $i }}_1">TB</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline col-md-2"
+                                                            style="margin-right: 0;">
+                                                            <input class="form-check-input" type="radio"
+                                                                id="bahasa_soal_{{ $i }}_2"
+                                                                name="bahasa_soal_[{{ $i }}]" value="2"
+                                                                {{ isset($bahasa_soal[$i]) && $bahasa_soal[$i] == 2 ? 'checked' : '' }}>
+                                                            <label class="form-check-label"
+                                                                for="bahasa_soal_{{ $i }}_2">KB</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline col-md-2"
+                                                            style="margin-right: 0;">
+                                                            <input class="form-check-input" type="radio"
+                                                                id="bahasa_soal_{{ $i }}_3"
+                                                                name="bahasa_soal_[{{ $i }}]" value="3"
+                                                                {{ isset($bahasa_soal[$i]) && $bahasa_soal[$i] == 3 ? 'checked' : '' }}>
+                                                            <label class="form-check-label"
+                                                                for="bahasa_soal_{{ $i }}_3">CB</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline col-md-2"
+                                                            style="margin-right: 0;">
+                                                            <input class="form-check-input" type="radio"
+                                                                id="bahasa_soal_{{ $i }}_4"
+                                                                name="bahasa_soal_[{{ $i }}]" value="4"
+                                                                {{ isset($bahasa_soal[$i]) && $bahasa_soal[$i] == 4 ? 'checked' : '' }}>
+                                                            <label class="form-check-label"
+                                                                for="bahasa_soal_{{ $i }}_4">B</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline col-md-2"
+                                                            style="margin-right: 0;">
+                                                            <input class="form-check-input" type="radio"
+                                                                id="bahasa_soal_{{ $i }}_5"
+                                                                name="bahasa_soal_[{{ $i }}]" value="5"
+                                                                {{ isset($bahasa_soal[$i]) && $bahasa_soal[$i] == 5 ? 'checked' : '' }}>
+                                                            <label class="form-check-label"
+                                                                for="bahasa_soal_{{ $i }}_5">SB</label>
+                                                        </div>
+                                                    </div>
+                                                    @error("bahasa_soal_[{{ $i }}]")
+                                                        <small class="text-danger">{{ $message }}</small>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @endif
                                 </div>
-                                @error('date')
-                                    <small>{{ $message }}</small>
-                                @enderror
-                            </div>
+                                <div class="col-5 mb-3">
+                                    <div class="input-group date">
+                                        <input type="hidden" class="form-control" id="date" name="date"
+                                            value="{{ \Carbon\Carbon::now() }}" />
+                                    </div>
+                                    @error('date')
+                                        <small>{{ $message }}</small>
+                                    @enderror
+                                </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
                         </div>
@@ -67,80 +257,139 @@
                 </div>
             </div>
         </div>
-    </div>{{-- 
-
+    </div>
+@endsection
+@section('scripts')
     <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const statusDiverifikasi = document.getElementById('status_diverifikasi');
-    const statusTidakDiverifikasi = document.getElementById('status_tidak_diverifikasi');
-    const saranBelumDiverifikasi = document.getElementById('saran_belum_diverifikasi');
-    const saranLayak = document.getElementById('saran_layak');
-    const saranButuhRevisi = document.getElementById('saran_butuh_revisi');
-    const saranTidakLayak = document.getElementById('saran_tidak_layak');
-    const saranSection = document.getElementById('saran_section');
-    const catatanSection = document.getElementById('catatan_section');
-    const catatanElement = document.getElementById('catatan');
+        document.addEventListener('DOMContentLoaded', function() {
+            const jumlahSoalInput = document.getElementById('jumlah_soal');
+            const dynamicContent = document.getElementById('dynamic_content');
+            const soalForm = document.getElementById('soalForm');
+            const soalDataInput = document.getElementById('soal_data');
 
+            jumlahSoalInput.addEventListener('change', function() {
+                const jumlahSoal = parseInt(jumlahSoalInput.value);
+                dynamicContent.innerHTML = ''; // Clear existing content
 
-    function updateSections() {
-    if (statusDiverifikasi.checked) {
-        saranSection.style.display = 'block';
-        // Reset saran radio buttons and catatan field
-        saranBelumDiverifikasi.checked = false;
-        saranLayak.checked = false;
-        saranButuhRevisi.checked = false;
-        saranTidakLayak.checked = false;
-        catatanElement.value = '';
-        catatanSection.style.display = 'none';
-    } else if (statusTidakDiverifikasi.checked) {
-        saranSection.style.display = 'none';
-        catatanSection.style.display = 'none';
-        catatanElement.value = 'Soal Belum Diverifikasi';
-    } else {
-        saranSection.style.display = 'none';
-        catatanSection.style.display = 'none';
-        catatanElement.value = 'Soal Belum Diverifikasi';
-        // Jika tidak ada status yang dipilih, atur saran ke "Belum Diverifikasi"
-        saranBelumDiverifikasi.checked = true;
-    }
-}
-
-function updateCatatan() {
-    if (saranBelumDiverifikasi.checked) {
-        catatanSection.style.display = 'none';
-        catatanElement.value = 'Soal Belum Diverifikasi';
-    } else if (saranLayak.checked) {
-        catatanSection.style.display = 'none';
-        catatanElement.value = 'Soal Layak Pakai';
-    } else if (saranButuhRevisi.checked) {
-        catatanSection.style.display = 'block';
-        catatanElement.value = '';
-    } else if (saranTidakLayak.checked) {
-        catatanSection.style.display = 'none';
-        catatanElement.value = 'Soal tidak layak dipakai';
-    }
-}
-
-    function validateForm(event) {
-        if (statusDiverifikasi.checked) {
-            if (!saranLayak.checked && !saranButuhRevisi.checked && !saranTidakLayak.checked) {
-                alert('Silakan pilih saran jika status diverifikasi dipilih.');
-                event.preventDefault();
-            }
-        }
-    }
-
-    statusDiverifikasi.addEventListener('change', updateSections);
-    statusTidakDiverifikasi.addEventListener('change', updateSections);
-    saranBelumDiverifikasi.addEventListener('change', updateCatatan);
-    saranLayak.addEventListener('change', updateCatatan);
-    saranButuhRevisi.addEventListener('change', updateCatatan);
-    saranTidakLayak.addEventListener('change', updateCatatan);
-    form.addEventListener('submit', validateForm);
-
-    // Initialize sections based on default or pre-filled values
-    updateSections();
-});
-
-    </script> --}}
+                // Insert static content
+                dynamicContent.innerHTML += `
+                <div class="row">
+                    <div class="col-md-6 d-flex justify-content-center align-items-center text-center">
+                        <label class="form-label">Validasi Isi *</label><br>
+                    </div>
+                    <div class="col-md-6 d-flex justify-content-center align-items-center text-center">
+                        <label class="form-label">Bahasa dan Penulisan Soal *</label><br>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label class="form-label">Butir Soal</label>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Tidak Valid</label>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Kurang Valid</label>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Cukup Valid</label>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Valid</label>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Sangat Valid</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label class="form-label">Butir Soal</label>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Tidak Baik</label>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Kurang Baik</label>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Cukup Baik</label>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Baik</label>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Sangat Baik</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+                // Insert dynamic content
+                for (let i = 1; i <= jumlahSoal; i++) {
+                    dynamicContent.innerHTML += `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row mb-3">
+                                <div class="col-md-2">
+                                    <label for="validasi_isi_[${i}]" class="form-label">${i}</label>
+                                </div>
+                                <div class="form-check form-check-inline col-md-2" style="margin-right: 0;">
+                                    <input class="form-check-input" type="radio" id="validasi_isi_${i}_1" name="validasi_isi_[${i}]" value="1">
+                                    <label class="form-check-label" for="validasi_isi_${i}_1">TV</label>
+                                </div>
+                                <div class="form-check form-check-inline col-md-2" style="margin-right: 0;">
+                                    <input class="form-check-input" type="radio" id="validasi_isi_${i}_2" name="validasi_isi_[${i}]" value="2">
+                                    <label class="form-check-label" for="validasi_isi_${i}_2">KV</label>
+                                </div>
+                                <div class="form-check form-check-inline col-md-2" style="margin-right: 0;">
+                                    <input class="form-check-input" type="radio" id="validasi_isi_${i}_3" name="validasi_isi_[${i}]" value="3">
+                                    <label class="form-check-label" for="validasi_isi_${i}_3">CV</label>
+                                </div>
+                                <div class="form-check form-check-inline col-md-2" style="margin-right: 0;">
+                                    <input class="form-check-input" type="radio" id="validasi_isi_${i}_4" name="validasi_isi_[${i}]" value="4">
+                                    <label class="form-check-label" for="validasi_isi_${i}_4">V</label>
+                                </div>
+                                <div class="form-check form-check-inline col-md-2" style="margin-right: 0;">
+                                    <input class="form-check-input" type="radio" id="validasi_isi_${i}_5" name="validasi_isi_[${i}]" value="5">
+                                    <label class="form-check-label" for="validasi_isi_${i}_5">SV</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row mb-3">
+                                <div class="col-md-2">
+                                    <label for="bahasa_soal_[${i}]" class="form-label">${i}</label>
+                                </div>
+                                <div class="form-check form-check-inline col-md-2" style="margin-right: 0;">
+                                    <input class="form-check-input" type="radio" id="bahasa_soal_${i}_1" name="bahasa_soal_[${i}]" value="1">
+                                    <label class="form-check-label" for="bahasa_soal_${i}_1">TB</label>
+                                </div>
+                                <div class="form-check form-check-inline col-md-2" style="margin-right: 0;">
+                                    <input class="form-check-input" type="radio" id="bahasa_soal_${i}_2" name="bahasa_soal_[${i}]" value="2">
+                                    <label class="form-check-label" for="bahasa_soal_${i}_2">KB</label>
+                                </div>
+                                <div class="form-check form-check-inline col-md-2" style="margin-right: 0;">
+                                    <input class="form-check-input" type="radio" id="bahasa_soal_${i}_3" name="bahasa_soal_[${i}]" value="3">
+                                    <label class="form-check-label" for="bahasa_soal_${i}_3">CB</label>
+                                </div>
+                                <div class="form-check form-check-inline col-md-2" style="margin-right: 0;">
+                                    <input class="form-check-input" type="radio" id="bahasa_soal_${i}_4" name="bahasa_soal_[${i}]" value="4">
+                                    <label class="form-check-label" for="bahasa_soal_${i}_4">B</label>
+                                </div>
+                                <div class="form-check form-check-inline col-md-2" style="margin-right: 0;">
+                                    <input class="form-check-input" type="radio" id="bahasa_soal_${i}_5" name="bahasa_soal_[${i}]" value="5">
+                                    <label class="form-check-label" for="bahasa_soal_${i}_5">SB</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                }
+            });
+        });
+    </script>
 @endsection
