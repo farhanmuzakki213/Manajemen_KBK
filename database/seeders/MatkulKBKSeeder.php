@@ -30,6 +30,7 @@ class MatkulKBKSeeder extends Seeder
             [14, 27, 2, 6],
             [15, 28, 1, 7],
             [16, 29, 3, 7],
+            [17, 15, 3, 7],
         ];
 
         foreach ($PPData as $data) {

@@ -15,10 +15,10 @@ class JenisKBKSeeder extends Seeder
     {
         $JenisData = [
             [1, 'Programming', ''],
-            [2, 'IT Infrastruktur', ''],
-            [3, 'Networking and Cybersec', ''],
-            [4, 'CAIT', ''],
-            [5, 'SOFTAM', '']
+            [2, 'Network, Security and Infrastructure', ''],
+            [3, 'Design, Animation, and Multimedia', ''],
+            [4, 'Artificial Intelligence', ''],
+            [5, 'Software Technology and Management', '']
         ];
 
         foreach ($JenisData as $data) {
