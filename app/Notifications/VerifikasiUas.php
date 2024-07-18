@@ -16,10 +16,12 @@ class VerifikasiUas extends Notification
      */
     protected $repRpsUas;
     protected $verRpsUas;
-    public function __construct($repRpsUas, $verRpsUas)
+    protected $hasilVerUas;
+    public function __construct($repRpsUas, $verRpsUas, $hasilVerUas)
     {
         $this->repRpsUas = $repRpsUas;
         $this->verRpsUas = $verRpsUas;
+        $this->hasilVerUas = $hasilVerUas;
     }
 
     /**

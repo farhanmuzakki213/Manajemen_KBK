@@ -10,11 +10,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\DosenPengampuMatkul;
+use App\Models\hasilVerifikasiSoalUjian;
 use App\Models\Pengurus_kbk;
 use App\Models\User;
 use App\Notifications\VerifikasiUas;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -23,7 +24,8 @@ use Illuminate\Support\Facades\Validator;
 class Ver_Soal_UASController extends Controller
 {
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('permission:pengurusKbk-view VerUas', ['only' => ['index', 'getDosen']]);
         $this->middleware('permission:pengurusKbk-create VerUas', ['only' => ['create', 'store', 'getCariNomor', 'getDosen']]);
         $this->middleware('permission:pengurusKbk-update VerUas', ['only' => ['edit', 'update']]);
@@ -182,6 +184,13 @@ class Ver_Soal_UASController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
+        // Tambahkan aturan validasi kustom
+        Validator::extend('array_size', function ($attribute, $value, $parameters, $validator) {
+            $expectedSize = intval($parameters[0]);
+            return count($value) === $expectedSize;
+        }, 'The :attribute must contain exactly :size items.');
+
         $validator = Validator::make($request->all(), [
             'id_ver_uas' => 'required',
             'id_rep_uas' => 'required',
@@ -189,13 +198,25 @@ class Ver_Soal_UASController extends Controller
             'rekomendasi' => 'required',
             'evaluasi' => 'required',
             'date' => 'required|date_format:Y-m-d H:i:s',
+            'jumlah_soal' => 'required|integer|min:1',
+            'validasi_isi_' => 'required|array|array_size:' . $request->jumlah_soal,
+            'bahasa_soal_' => 'required|array|array_size:' . $request->jumlah_soal,
         ]);
 
+        // Memvalidasi data
         if ($validator->fails()) {
-            return redirect()->back()->withInput()->withErrors($validator);
+            return redirect()->back()
+                ->withInput()
+                ->withErrors($validator);
         }
-
-        $data = [
+        //dd($validator);
+        // Membuat struktur data untuk soal_data
+        $soal_data = [
+            'validasi_isi' => $request->validasi_isi_,
+            'bahasa_soal' => $request->bahasa_soal_,
+        ];
+        //dd($soal_data);
+        $dataVer = [
             'id_ver_rps_uas' => $request->id_ver_uas,
             'rep_rps_uas_id' => $request->id_rep_uas,
             'pengurus_id' => $request->id_pengurus_kbk,
@@ -203,16 +224,24 @@ class Ver_Soal_UASController extends Controller
             'saran' => $request->evaluasi,
             'tanggal_diverifikasi' => $request->date,
         ];
+
+        $dataHasil = [
+            'ver_rps_uas_id' => $request->id_ver_uas,
+            'jumlah_soal' => $request->jumlah_soal,
+            'soal_data' => $soal_data,
+        ];
         DB::beginTransaction();
         try {
-            VerRpsUas::create($data);
+            VerRpsUas::create($dataVer);
+            hasilVerifikasiSoalUjian::create($dataHasil);
             $repRpsUas = RepRpsUas::with('r_dosen_matkul.r_dosen', 'r_dosen_matkul.p_matkulKbk')->where('id_rep_rps_uas', $request->id_rep_uas)->first();
             $verRpsUas = VerRpsUas::with('r_pengurus.r_dosen')->where('id_ver_rps_uas', $request->id_ver_uas)->first();
+            $hasilVerUas = hasilVerifikasiSoalUjian::where('ver_rps_uas_id', $request->id_ver_uas)->first();
             $dosenMatkul = User::where('name', $repRpsUas->r_dosen_matkul->r_dosen->nama_dosen)
                 ->where('email', $repRpsUas->r_dosen_matkul->r_dosen->email)->first();
 
             if ($dosenMatkul) {
-                Notification::send($dosenMatkul, new VerifikasiUas($repRpsUas, $verRpsUas));
+                Notification::send($dosenMatkul, new VerifikasiUas($repRpsUas, $verRpsUas, $hasilVerUas));
             }
             DB::commit();
         } catch (\Throwable) {
@@ -239,44 +268,69 @@ class Ver_Soal_UASController extends Controller
     public function edit(string $id)
     {
         $data_ver_soal_uas = VerRpsUas::where('id_ver_rps_uas', $id)->first();
-        debug(compact('data_ver_soal_uas'));
-        return view('admin.content.pengurusKbk.form.ver_soal_uas_edit', compact('data_ver_soal_uas'));
+        $data_hasil = hasilVerifikasiSoalUjian::where('ver_rps_uas_id', $id)->first();
+        debug($data_ver_soal_uas->toArray(), $data_hasil->toArray());
+        return view('admin.content.pengurusKbk.form.ver_soal_uas_edit', compact('data_ver_soal_uas', 'data_hasil'));
     }
 
     public function update(Request $request, string $id)
     {
+        Validator::extend('array_size', function ($attribute, $value, $parameters, $validator) {
+            $expectedSize = intval($parameters[0]);
+            return count($value) === $expectedSize;
+        }, 'The :attribute must contain exactly :size items.');
+
         $validator = Validator::make($request->all(), [
             'id_ver_uas' => 'required',
             'rep_rps_uas_id' => 'required',
             'rekomendasi' => 'required',
             'evaluasi' => 'required',
             'date' => 'required|date_format:Y-m-d H:i:s',
+            'jumlah_soal' => 'required|integer|min:1',
+            'validasi_isi_' => 'required|array|array_size:' . $request->jumlah_soal,
+            'bahasa_soal_' => 'required|array|array_size:' . $request->jumlah_soal,
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
         }
-        $data = [
+        //dd($validator);
+        $soal_data = [
+            'validasi_isi' => $request->validasi_isi_,
+            'bahasa_soal' => $request->bahasa_soal_,
+        ];
+        //dd($soal_data);
+        $dataVer = [
             'id_ver_rps_uas' => $request->id_ver_uas,
             'rep_rps_uas_id' => $request->rep_rps_uas_id,
             'rekomendasi' => $request->rekomendasi,
             'saran' => $request->evaluasi,
             'tanggal_diverifikasi' => $request->date,
         ];
+        $dataHasil = [
+            'ver_rps_uas_id' => $request->id_ver_uas,
+            'jumlah_soal' => $request->jumlah_soal,
+            'soal_data' => $soal_data,
+        ];
         DB::beginTransaction();
         try {
             $VerRpsUas = VerRpsUas::find($id);
+            $hasilVerif = hasilVerifikasiSoalUjian::find($id);
 
             if ($VerRpsUas) {
-                $VerRpsUas->update($data);
+                $VerRpsUas->update($dataVer);
+            }
+            if ($hasilVerif) {
+                $hasilVerif->update($dataHasil);
             }
             $repRpsUas = RepRpsUas::with('r_dosen_matkul.r_dosen', 'r_dosen_matkul.p_matkulKbk')->where('id_rep_rps_uas', $request->rep_rps_uas_id)->first();
             $verRpsUas = VerRpsUas::with('r_pengurus.r_dosen')->where('id_ver_rps_uas', $request->id_ver_uas)->first();
+            $hasilVerUas = hasilVerifikasiSoalUjian::where('ver_rps_uas_id', $request->id_ver_uas)->first();
             $dosenMatkul = User::where('name', $repRpsUas->r_dosen_matkul->r_dosen->nama_dosen)
                 ->where('email', $repRpsUas->r_dosen_matkul->r_dosen->email)->first();
 
             if ($dosenMatkul) {
-                Notification::send($dosenMatkul, new VerifikasiUas($repRpsUas, $verRpsUas));
+                Notification::send($dosenMatkul, new VerifikasiUas($repRpsUas, $verRpsUas, $hasilVerUas));
             }
             DB::commit();
         } catch (\Throwable) {
