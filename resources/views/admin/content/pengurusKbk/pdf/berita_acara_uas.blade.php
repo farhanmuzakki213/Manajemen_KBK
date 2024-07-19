@@ -113,7 +113,7 @@
         .semester {
             max-width: 5px;
             overflow: hidden;
-            text-align: justify;
+            text-align: left;
             /* word-wrap: break-word; */
         }
 

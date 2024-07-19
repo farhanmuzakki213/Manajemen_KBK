@@ -19,6 +19,7 @@ use App\Http\Requests\Auth\BeritaAcara\beritaAcaraUpdate;
 use App\Models\ThnAkademik;
 use App\Models\VerBeritaAcaraDetail;
 use Carbon\Carbon;
+use ZipArchive;
 
 class VerBeritaAcaraUasController extends Controller
 {
@@ -57,7 +58,8 @@ class VerBeritaAcaraUasController extends Controller
             'r_pengurus.r_dosen',
             'r_rep_rps_uas',
             'r_rep_rps_uas.r_smt_thnakd',
-            'r_rep_rps_uas.r_matkulKbk'
+            'r_rep_rps_uas.r_matkulKbk',
+            'p_HasilVerifUas'
         ])
             ->whereHas('r_rep_rps_uas', function ($query) use ($pengurus_kbk, $selectedProdiId) {
                 $query->whereHas('r_matkulKbk', function ($nestedQuery) use ($pengurus_kbk, $selectedProdiId) {
@@ -89,8 +91,6 @@ class VerBeritaAcaraUasController extends Controller
             ])
             ->where('type', '=', '1')
             ->get();
-
-
         debug($data_berita_acara->toArray());
         return view('admin.content.pengurusKbk.VerBeritaAcaraUas', compact('data_ver_rps', 'data_berita_acara', 'prodiList', 'selectedProdiId'));
     }
@@ -119,7 +119,8 @@ class VerBeritaAcaraUasController extends Controller
                 'r_pengurus.r_dosen',
                 'r_rep_rps_uas',
                 'r_rep_rps_uas.r_smt_thnakd',
-                'r_rep_rps_uas.r_matkulKbk'
+                'r_rep_rps_uas.r_matkulKbk',
+                'p_HasilVerifUas'
             ])
                 ->whereHas('r_rep_rps_uas', function ($query) use ($pengurus_kbk, $selectedProdiId) {
                     $query->whereHas('r_matkulKbk', function ($nestedQuery) use ($pengurus_kbk) {
@@ -169,7 +170,7 @@ class VerBeritaAcaraUasController extends Controller
             DB::rollback();
             return redirect()->route('upload_uas_berita_acara')->with('error', 'Berita Acara Gagal di Upload.');
         }
-        $pdf = Pdf::loadView('admin.content.pengurusKbk.pdf.berita_acara_uas', [
+        $dataBeritaAcara = [
             'data_ver_rps' => $data_ver_rps,
             'selectedProdi' => $selectedProdi,
             'prodiList' => $prodiList,
@@ -177,10 +178,56 @@ class VerBeritaAcaraUasController extends Controller
             'semester' => $semester,
             'kajur' => $kajur,
             'pengurus_kbk' => $pengurus_kbk,
-        ]);
-
+        ];
+    
+        // Buat PDF pertama
+        $pdf1 = Pdf::loadView('admin.content.pengurusKbk.pdf.berita_acara_uas', $dataBeritaAcara);
+        $pdf1->setPaper('A4', 'landscape'); 
+        $pdf1Path = storage_path('app/public/Berita_Acara_UAS.pdf');
+        $pdf1->save($pdf1Path);
+    
+        // Buat file ZIP
+        $zip = new ZipArchive;
+        $zipFileName = 'BeritaAcara&VerifSoalUjian.zip';
+        $zipFilePath = storage_path('app/public/' . $zipFileName);
+    
+        if ($zip->open($zipFilePath, ZipArchive::CREATE) === TRUE) {
+            $zip->addFile($pdf1Path, 'Berita_Acara_UAS.pdf');
+    
+            // Buat PDF kedua dan seterusnya
+            $i = 1;
+            foreach ($data_ver_rps as $data) {
+                $dataVerUas = [
+                    'p_HasilVerifUas' => $data,
+                    'selectedProdi' => $selectedProdi,
+                    'prodiList' => $prodiList,
+                    'kaprodi' => $kaprodi,
+                    'semester' => $semester,
+                    'kajur' => $kajur,
+                    'pengurus_kbk' => $pengurus_kbk,
+                ];
+    
+                $pdfPath = storage_path('app/public/Verif_Soal_UAS_' . $i . '.pdf');
+                $pdf = Pdf::loadView('admin.content.pengurusKbk.pdf.verif_soal_uas', $dataVerUas);
+                $pdf->save($pdfPath);
+    
+                $zip->addFile($pdfPath, 'Verif_Soal_UAS_' . $i . '.pdf');
+                $i++;
+            }
+    
+            $zip->close();
+    
+            // Hapus file PDF sementara setelah menambahkan ke ZIP
+            unlink($pdf1Path);
+            for ($j = 1; $j < $i; $j++) {
+                unlink(storage_path('app/public/Verif_Soal_UAS_' . $j . '.pdf'));
+            }
+    
+            return response()->download($zipFilePath)->deleteFileAfterSend(true);
+        } else {
+            return response()->json(['error' => 'Could not create zip file'], 500);
+        }
         // return $pdf->stream('Berita_Acara_UAS.pdf');
-        return $pdf->download('Berita_Acara_UAS.pdf');
         // return $pdf->stream('Verif_Soal_UAS.pdf');
     }
 
@@ -314,25 +361,25 @@ class VerBeritaAcaraUasController extends Controller
                     'tanggal_upload' => $request->tanggal_upload,
                     'file_berita_acara' => $filename
                 ]);
-                if($request->status_kaprodi == '2'){
+                if ($request->status_kaprodi == '2') {
                     $beritaAcara->update([
                         'Status_dari_kaprodi' => '3',
                         'tanggal_disetujui_kaprodi' => $request->tanggal_upload,
                     ]);
                 }
-                if($request->status_kajur == '2'){
+                if ($request->status_kajur == '2') {
                     $beritaAcara->update([
                         'Status_dari_kajur' => '1',
                         'tanggal_diketahui_kajur' => $request->tanggal_upload,
                     ]);
                 }
-                if($request->status_kaprodi == '1'){
+                if ($request->status_kaprodi == '1') {
                     $beritaAcara->update([
                         'Status_dari_kaprodi' => '0',
                         'tanggal_disetujui_kaprodi' => null,
                     ]);
                 }
-                if($request->status_kajur == '1'){
+                if ($request->status_kajur == '1') {
                     $beritaAcara->update([
                         'Status_dari_kajur' => '0',
                         'tanggal_diketahui_kajur' => null,

@@ -8,7 +8,7 @@
         <meta name="author" content="" />
         <title>e-KBK</title>
         <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="{{asset('frontend/landing-page/assets/img/logos/e-kbk_putih.svg')}}" />
+        <link rel="icon" type="image/x-icon" href="{{ asset('frontend/landing-page/assets/img/logos/e-kbk_putih.svg') }}" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->

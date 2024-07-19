@@ -58,9 +58,10 @@
                                 @can('pengurusKbk-download BeritaAcaraUas')
                                     <!-- Print Button -->
                                     <a href="{{ route('cetak_uas_berita_acara.download', ['prodi_id' => $selectedProdiId]) }}"
-                                        class="btn btn-primary d-flex align-items-center" id="refreshButton">
+                                        class="btn btn-primary d-flex align-items-center" id="downloadButton">
                                         <i class="bi bi-box-arrow-in-up me-2"></i>Cetak
                                     </a>
+                                    <iframe id="downloadFrame" style="display: none;"></iframe>
                                 @endcan
 
                                 {{-- @can('pengurusKbk-create BeritaAcaraUas')
@@ -385,13 +386,13 @@
                                                                 class="btn btn-danger mb-2 d-flex align-items-center"><i
                                                                     class="bi bi-trash"></i>Hapus</a>
                                                         @endcan
-                                                        @if($data->file_berita_acara == null)
+                                                        @if ($data->file_berita_acara == null)
                                                             <small style="color: red">File belum di upload</small>
                                                         @else
-                                                        <a href="{{ asset('storage/uploads/uas/berita_acara/' . $data->file_berita_acara) }}"
-                                                            class="btn btn-success mb-2 d-flex align-items-center"
-                                                            target="_blank"><i
-                                                                class="bi bi-file-earmark-arrow-down"></i>Download</a>
+                                                            <a href="{{ asset('storage/uploads/uas/berita_acara/' . $data->file_berita_acara) }}"
+                                                                class="btn btn-success mb-2 d-flex align-items-center"
+                                                                target="_blank"><i
+                                                                    class="bi bi-file-earmark-arrow-down"></i>Download</a>
                                                         @endif
                                                     </div>
                                                 </th>
@@ -445,10 +446,17 @@
     <script src="{{ asset('backend/assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('backend/assets/js/multi-dropdown.js') }}"></script>
     <script>
-        document.getElementById('refreshButton').addEventListener('click', function() {
-            setTimeout(function() {
-                location.reload();
-            }, 3000); // Timer 4 detik
+        document.getElementById('downloadButton').addEventListener('click', function() {
+            var iframe = document.getElementById('downloadFrame');
+            var url = '/cetak_uas_berita_acara/download/pdf';
+
+            iframe.onload = function() {
+                setTimeout(function() {
+                    location.reload();
+                }, 3000);
+            };
+
+            iframe.src = url;
         });
     </script>
     <script>

@@ -7,6 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Verifikasi Soal UAS</title>
     <style>
+        /* @font-face {
+            font-family: 'CustomFont';
+            src: url('{{ asset('backend/assets/font/Times New Roman/times new roman.ttf') }}') format('truetype');
+        } */
+
         body {
             font-family: 'Times New Roman', Times, serif;
             margin: 1.5cm 1cm 4cm 0.3cm;
@@ -133,7 +138,7 @@
             margin-top: 40px;
             page-break-inside: avoid;
             border-bottom: 1px solid black;
-          
+
         }
 
         .signatures table {
@@ -148,7 +153,6 @@
         .signatures th {
             border: 1px solid black;
             font-size: 14px
-  
         }
 
         .signatures .left,
@@ -283,71 +287,34 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="table-light">
-                    <td>1</td>
-                    <td>√</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>√</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr class="table-light">
-                    <td>2</td>
-                    <td>√</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>√</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr class="table-light">
-                    <td>3</td>
-                    <td>√</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>√</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr class="table-light">
-                    <td>4</td>
-                    <td>√</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>√</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr class="table-light">
-                    <td>5</td>
-                    <td>√</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>√</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                @foreach ($p_HasilVerifUas->p_HasilVerifUas as $data)
+                    @php
+                        // Mendapatkan validasi isi dan bahasa soal
+                        $validasiIsi = $data['soal_data']['validasi_isi'] ?? [];
+                        $bahasaSoal = $data['soal_data']['bahasa_soal'] ?? [];
+                    @endphp
+
+                    @foreach ($validasiIsi as $index => $validasi)
+                        @php
+                            // Cek apakah ada data bahasa soal untuk indeks yang sama
+                            $bahasaSoalValue = $bahasaSoal[$index] ?? null;
+                        @endphp
+
+                        <tr class="table-light">
+                            <td>{{ $index }}</td>
+                            <td>{{ $validasi == 1 ? '✓' : '' }}</td>
+                            <td>{{ $validasi == 2 ? '✓' : '' }}</td>
+                            <td>{{ $validasi == 3 ? '✓' : '' }}</td>
+                            <td>{{ $validasi == 4 ? '✓' : '' }}</td>
+                            <td>{{ $validasi == 5 ? '✓' : '' }}</td>
+                            <td>{{ $bahasaSoalValue == 1 ? '✓' : '' }}</td>
+                            <td>{{ $bahasaSoalValue == 2 ? '✓' : '' }}</td>
+                            <td>{{ $bahasaSoalValue == 3 ? '✓' : '' }}</td>
+                            <td>{{ $bahasaSoalValue == 4 ? '✓' : '' }}</td>
+                            <td>{{ $bahasaSoalValue == 5 ? '✓' : '' }}</td>
+                        </tr>
+                    @endforeach
+                @endforeach
             </tbody>
         </table>
         <div class="spacing"></div>

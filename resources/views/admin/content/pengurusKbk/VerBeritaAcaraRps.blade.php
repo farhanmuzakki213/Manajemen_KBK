@@ -64,9 +64,10 @@
                                 @can('pengurusKbk-download BeritaAcaraRps')
                                     <!-- Print Button -->
                                     <a href="{{ route('cetak_rps_berita_acara.download', ['prodi_id' => $selectedProdiId]) }}"
-                                        class="btn btn-primary d-flex align-items-center" id="refreshButton">
+                                        class="btn btn-primary d-flex align-items-center" id="downloadButton">
                                         <i class="bi bi-box-arrow-in-up me-2"></i>Cetak
                                     </a>
+                                    <iframe id="downloadFrame" style="display: none;"></iframe>
                                 @endcan
 
                                 {{-- @can('pengurusKbk-create BeritaAcaraRps')
@@ -452,10 +453,17 @@
     <script src="{{ asset('backend/assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('backend/assets/js/multi-dropdown.js') }}"></script>
     <script>
-        document.getElementById('refreshButton').addEventListener('click', function() {
-            setTimeout(function() {
-                location.reload();
-            }, 3000); // Timer 4 detik
+        document.getElementById('downloadButton').addEventListener('click', function() {
+            var iframe = document.getElementById('downloadFrame');
+            var url = '/cetak_rps_berita_acara/download/pdf';
+
+            iframe.onload = function() {
+                setTimeout(function() {
+                    location.reload();
+                }, 3000);
+            };
+
+            iframe.src = url;
         });
     </script>
     <script>
