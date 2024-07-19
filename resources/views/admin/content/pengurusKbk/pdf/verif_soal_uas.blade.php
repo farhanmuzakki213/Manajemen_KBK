@@ -275,7 +275,7 @@
         <table class="isi" style="padding-left: 20px;">
             <thead>
                 <tr class="table-info">
-                    <th rowspan="2" style="text-align: center;">Butir Soal</th>
+                    <th rowspan="2" style="text-align: center; vertical-align: middle;">Butir Soal</th>
                     <th colspan="5">Validitas Isi</th>
                     <th colspan="5">Bahasa dan Penulisan Soal</th>
                 </tr>
@@ -307,17 +307,17 @@
                         @endphp
 
                         <tr class="table-light">
-                            <td>{{ $index }}</td>
-                            <td style="font-family: DejaVu Sans, sans-serif;">{{ $validasi == 1 ? '✔' : '' }}</td>
-                            <td style="font-family: DejaVu Sans, sans-serif;">{{ $validasi == 2 ? '✔' : '' }}</td>
-                            <td style="font-family: DejaVu Sans, sans-serif;">{{ $validasi == 3 ? '✔' : '' }}</td>
-                            <td style="font-family: DejaVu Sans, sans-serif;">{{ $validasi == 4 ? '✔' : '' }}</td>
-                            <td style="font-family: DejaVu Sans, sans-serif;">{{ $validasi == 5 ? '✔' : '' }}</td>
-                            <td style="font-family: DejaVu Sans, sans-serif;">{{ $bahasaSoalValue == 1 ? '✔' : '' }}</td>
-                            <td style="font-family: DejaVu Sans, sans-serif;">{{ $bahasaSoalValue == 2 ? '✔' : '' }}</td>
-                            <td style="font-family: DejaVu Sans, sans-serif;">{{ $bahasaSoalValue == 3 ? '✔' : '' }}</td>
-                            <td style="font-family: DejaVu Sans, sans-serif;">{{ $bahasaSoalValue == 4 ? '✔' : '' }}</td>
-                            <td style="font-family: DejaVu Sans, sans-serif;">{{ $bahasaSoalValue == 5 ? '✔' : '' }}</td>
+                            <td style="text-align: center;">{{ $index }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center;">{{ $validasi == 1 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center;">{{ $validasi == 2 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center;">{{ $validasi == 3 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center;">{{ $validasi == 4 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center;">{{ $validasi == 5 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center;">{{ $bahasaSoalValue == 1 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center;">{{ $bahasaSoalValue == 2 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center;">{{ $bahasaSoalValue == 3 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center;">{{ $bahasaSoalValue == 4 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center;">{{ $bahasaSoalValue == 5 ? '✔' : '' }}</td>
                         </tr>
 
                        
