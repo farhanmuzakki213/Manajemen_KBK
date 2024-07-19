@@ -289,7 +289,7 @@
                     </td>
                     <td class="right" style="padding-left: 100px">
                         <p>Ketua KBK</p>
-                        <p style="font-style: italic;">{{ $pengurus_kbk->r_jenis_kbk->deskripsi }}</p>
+                        <p style="font-style: italic;">{{ $pengurus_kbk->r_jenis_kbk->jenis_kbk }}</p>
                         <br><br><br><br>
                         <p>{{ $pengurus_kbk->r_dosen->nama_dosen }}</p>
                     </td>
