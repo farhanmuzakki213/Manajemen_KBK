@@ -66,7 +66,7 @@
                                                 </th>
                                                 <th>
                                                     @if ($data['status_satu'] == 0)
-                                                        Diajukan
+                                                        Belum Diverifikasi
                                                     @elseif ($data['status_satu'] == 1)
                                                         Ditolak
                                                     @elseif ($data['status_satu'] == 2)
@@ -79,7 +79,7 @@
                                                 </th>
                                                 <th>
                                                     @if ($data['status_dua'] == 0)
-                                                        Diajukan
+                                                        Belum Diverifikasi
                                                     @elseif ($data['status_dua'] == 1)
                                                         Ditolak
                                                     @elseif ($data['status_dua'] == 2)
@@ -90,7 +90,7 @@
                                                 </th>
                                                 <th>
                                                     @if ($data['status_final_proposal'] == 0)
-                                                        Diajukan
+                                                        Belum Diverifikasi
                                                     @elseif ($data['status_final_proposal'] == 1)
                                                         Ditolak
                                                     @elseif ($data['status_final_proposal'] == 2)
@@ -102,16 +102,22 @@
                                                 <th style="width: 14%;">
                                                     <div class="row">
                                                         @can('pimpinanProdi-update ProposalTaFinal')
-                                                            <a data-bs-toggle="modal"
-                                                                data-bs-target="#edit{{ $data['penugasan_id'] }}"
-                                                                class="btn btn-primary mb-2 d-flex align-items-center">
-                                                                <i class="bi bi-pencil-square"></i> Ubah Status
-                                                            </a>
+                                                            @if ($data['status_satu'] >= 1 && $data['status_dua'] >= 1)
+                                                                <a data-bs-toggle="modal"
+                                                                    data-bs-target="#edit{{ $data['penugasan_id'] }}"
+                                                                    class="btn btn-primary mb-2 d-flex align-items-center me-1">
+                                                                    <i class="bi bi-pencil-square"></i>Ubah Status
+                                                                </a>
+                                                            @else
+                                                                <a class="btn btn-primary mb-2 d-flex align-items-center me-1">
+                                                                    <i class="bi bi-pencil-square"></i>Ubah Status
+                                                                </a>
+                                                            @endif
                                                         @endcan
 
                                                         <a data-bs-toggle="modal"
                                                             data-bs-target="#detail{{ $data['penugasan_id'] }}"
-                                                            class="btn btn-secondary d-flex align-items-center">
+                                                            class="btn btn-secondary d-flex align-items-center me-1">
                                                             <i class="bi bi-three-dots-vertical"></i>Detail
                                                         </a>
                                                     </div>
@@ -134,12 +140,14 @@
                                                                     class="form-label">Nama_mahasiswa</label>
                                                                 <input type="text" class="form-control"
                                                                     id="nama_mahasiswa"
-                                                                    value="{{ $data['nama_mahasiswa'] ?? ($data_review_proposal_ta->firstWhere('penugasan_id', $data['penugasan_id'])->p_reviewProposal['proposal_ta']['r_mahasiswa']['nama'] ?? 'null')}}" readonly>
+                                                                    value="{{ $data['nama_mahasiswa'] ?? ($data_review_proposal_ta->firstWhere('penugasan_id', $data['penugasan_id'])->p_reviewProposal['proposal_ta']['r_mahasiswa']['nama'] ?? 'null') }}"
+                                                                    readonly>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="nim" class="form-label">NIM</label>
                                                                 <input type="text" class="form-control" id="nim"
-                                                                    value="{{ $data['nim_mahasiswa'] ?? ($data_review_proposal_ta->firstWhere('penugasan_id', $data['penugasan_id'])->p_reviewProposal['proposal_ta']['r_mahasiswa']['nim'] ?? 'null') }}" readonly>
+                                                                    value="{{ $data['nim_mahasiswa'] ?? ($data_review_proposal_ta->firstWhere('penugasan_id', $data['penugasan_id'])->p_reviewProposal['proposal_ta']['r_mahasiswa']['nim'] ?? 'null') }}"
+                                                                    readonly>
                                                             </div>
 
                                                             <div class="mb-3">
@@ -148,9 +156,9 @@
                                                                         <label for="nama_dosen"
                                                                             class="form-label">pembimbing
                                                                             1:</label>
-                                                                            <input type="text" class="form-control"
+                                                                        <input type="text" class="form-control"
                                                                             id="pembimbing_satu"
-                                                                            value="{{ $data['pembimbing_satu'] ?? ($data_ta->firstWhere('proposal_ta_id', $data['proposal_ta_id_satu'] ?? $data['proposal_ta_id_dua'] )->proposal_ta->r_pembimbing_satu->nama_dosen ?? 'Tidak Ada') }}"
+                                                                            value="{{ $data['pembimbing_satu'] ?? ($data_ta->firstWhere('proposal_ta_id', $data['proposal_ta_id_satu'] ?? $data['proposal_ta_id_dua'])->proposal_ta->r_pembimbing_satu->nama_dosen ?? 'Tidak Ada') }}"
                                                                             readonly>
                                                                     </div>
 
@@ -159,7 +167,7 @@
                                                                             class="form-label">Pembimbing 2:</label>
                                                                         <input type="text" class="form-control"
                                                                             id="pembimbing_dua"
-                                                                            value="{{ $data['pembimbing_dua'] ?? ($data_ta->firstWhere('proposal_ta_id', $data['proposal_ta_id_satu'] ?? $data['proposal_ta_id_dua'] )->proposal_ta->r_pembimbing_dua->nama_dosen ?? 'Tidak Ada') }}"
+                                                                            value="{{ $data['pembimbing_dua'] ?? ($data_ta->firstWhere('proposal_ta_id', $data['proposal_ta_id_satu'] ?? $data['proposal_ta_id_dua'])->proposal_ta->r_pembimbing_dua->nama_dosen ?? 'Tidak Ada') }}"
                                                                             readonly>
                                                                     </div>
                                                                 </div>
@@ -170,9 +178,9 @@
                                                                     <div class="col">
                                                                         <label for="nama_dosen" class="form-label">Reviewer
                                                                             1:</label>
-                                                                            <input type="text" class="form-control"
+                                                                        <input type="text" class="form-control"
                                                                             id="reviewer_satu"
-                                                                            value="{{ $data['status_satu'] == 0 ? 'Diajukan' : ($data['status_satu'] == 1 ? 'Ditolak' : ($data['status_satu'] == 2 ? 'Direvisi' : 'Diterima')) }}"
+                                                                            value="{{ $data['status_satu'] == 0 ? 'Belum Diverifikasi' : ($data['status_satu'] == 1 ? 'Ditolak' : ($data['status_satu'] == 2 ? 'Direvisi' : 'Diterima')) }}"
                                                                             readonly>
                                                                     </div>
                                                                     <div class="col">
@@ -180,7 +188,7 @@
                                                                             class="form-label">Reviewer 2:</label>
                                                                         <input type="text" class="form-control"
                                                                             id="reviewer_dua"
-                                                                            value="{{ $data['status_dua'] == 0 ? 'Diajukan' : ($data['status_dua'] == 1 ? 'Ditolak' : ($data['status_dua'] == 2 ? 'Direvisi' : 'Diterima')) }}"
+                                                                            value="{{ $data['status_dua'] == 0 ? 'Belum Diverifikasi' : ($data['status_dua'] == 1 ? 'Ditolak' : ($data['status_dua'] == 2 ? 'Direvisi' : 'Diterima')) }}"
                                                                             readonly>
                                                                     </div>
                                                                 </div>
@@ -188,9 +196,10 @@
                                                             <div class="mb-3">
                                                                 <div class="row">
                                                                     <div class="col">
-                                                                        <label for="nama_dosen" class="form-label">Status Reviewer
+                                                                        <label for="nama_dosen" class="form-label">Status
+                                                                            Reviewer
                                                                             1:</label>
-                                                                            <input type="text" class="form-control"
+                                                                        <input type="text" class="form-control"
                                                                             id="reviewer_satu"
                                                                             value="{{ $data['reviewer_satu'] ?? ($data_review_proposal_ta->firstWhere('penugasan_id', $data['penugasan_id'])->p_reviewProposal['reviewer_satu_dosen']['r_dosen']['nama_dosen'] ?? 'Tidak Ada') }}"
                                                                             readonly>
@@ -208,12 +217,13 @@
 
                                                             <div class="mb-3">
                                                                 <label for="Judul" class="form-label">Judul</label>
-                                                                <textarea class="form-control" id="Judul" name="Judul" rows="3" readonly>{{ $data['judul'] ?? ($data_review_proposal_ta->firstWhere('penugasan_id', $data['penugasan_id'])->p_reviewProposal['proposal_ta']['judul'] ?? 'null')}}</textarea>
+                                                                <textarea class="form-control" id="Judul" name="Judul" rows="3" readonly>{{ $data['judul'] ?? ($data_review_proposal_ta->firstWhere('penugasan_id', $data['penugasan_id'])->p_reviewProposal['proposal_ta']['judul'] ?? 'null') }}</textarea>
                                                             </div>
                                                             <div class="mb-3">
-                                                                <label for="status" class="form-label">Status Final</label>
+                                                                <label for="status" class="form-label">Status
+                                                                    Final</label>
                                                                 <input type="text" class="form-control" id="status"
-                                                                    value="{{ $data['status_final_proposal'] == 0 ? 'Diajukan' : ($data['status_final_proposal'] == 1 ? 'Ditolak' : ($data['status_final_proposal'] == 2 ? 'Direvisi' : 'Diterima')) }}"
+                                                                    value="{{ $data['status_final_proposal'] == 0 ? 'Belum Diverifikasi' : ($data['status_final_proposal'] == 1 ? 'Ditolak' : ($data['status_final_proposal'] == 2 ? 'Direvisi' : 'Diterima')) }}"
                                                                     readonly>
                                                             </div>
 

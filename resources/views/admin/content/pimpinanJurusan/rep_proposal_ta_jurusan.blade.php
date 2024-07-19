@@ -56,7 +56,7 @@
                                                 <th>{{ optional($data->proposal_ta)->r_mahasiswa->r_jurusan->jurusan }}</th>
                                                 <th>
                                                     @if ($data->status_final_proposal == 0)
-                                                        Diajukan
+                                                        Belum Diverifikasi
                                                     @elseif ($data->status_final_proposal == 1)
                                                         Ditolak
                                                     @elseif ($data->status_final_proposal == 2)
@@ -102,7 +102,7 @@
                                                             <div class="mb-3">
                                                                 <label for="status" class="form-label">Status Proposal</label>
                                                                 <input type="text" class="form-control" id="status"
-                                                                    value="@if ($data->status_review_proposal == 0) Di Ajukan @elseif ($data->status_review_proposal == 1) Di Tolak @elseif ($data->status_review_proposal == 2) Di Revisi @else Di Terima @endif"
+                                                                    value="@if ($data->status_review_proposal == 0) Belum Diverifikasi @elseif ($data->status_review_proposal == 1) Di Tolak @elseif ($data->status_review_proposal == 2) Di Revisi @else Di Terima @endif"
                                                                     readonly>
                                                             </div>
                                                             <div class="mb-3">

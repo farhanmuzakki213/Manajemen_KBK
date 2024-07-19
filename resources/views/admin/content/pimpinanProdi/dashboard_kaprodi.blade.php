@@ -67,14 +67,17 @@
                                         <div class="card-body">
                                             <div class="row align-items-start">
                                                 <div class="col-8">
-                                                    <h5 class="card-title mb-9 fw-semibold">Unggahan RPS</h5>
+                                                    <h5 class="card-title mb-1 fw-semibold">Belum Unggah RPS</h5>
+                                                    <h4 class="fw-semibold">{{ $banyak_belum_unggah_rps }}</h4>
+                                                    <div class="d-flex align-items-center pb-1"></div>
+                                                    <h5 class="card-title mb-1 fw-semibold">Unggahan RPS</h5>
                                                     @foreach ($data_rps['banyak_pengunggahan_smt'] as $data)
-                                                        <h4 class="fw-semibold mb-9">{{ $data ?? 0}}</h4>
+                                                        <h4 class="fw-semibold">{{ $data ?? 0 }}</h4>
                                                     @endforeach
                                                     <div class="d-flex align-items-center pb-1"></div>
-                                                    <h5 class="card-title my-9 fw-semibold">Verifikasi RPS</h5>
+                                                    <h5 class="card-title my-1 fw-semibold">Verifikasi RPS</h5>
                                                     @foreach ($data_rps['banyak_verifikasi_smt'] as $data)
-                                                        <h4 class="fw-semibold mb-9">{{ $data ?? 0}}</h4>
+                                                        <h4 class="fw-semibold">{{ $data ?? 0 }}</h4>
                                                     @endforeach
                                                 </div>
                                                 <div class="col-4">
@@ -95,14 +98,17 @@
                                         <div class="card-body">
                                             <div class="row align-items-start">
                                                 <div class="col-8">
-                                                    <h5 class="card-title mb-9 fw-semibold">Unggahan Soal UAS</h5>
+                                                    <h5 class="card-title mb-1 fw-semibold">Belum Unggah Soal UAS</h5>
+                                                    <h4 class="fw-semibold">{{ $banyak_belum_unggah_uas }}</h4>
+                                                    <div class="d-flex align-items-center pb-1"></div>
+                                                    <h5 class="card-title mb-1 fw-semibold">Unggahan Soal UAS</h5>
                                                     @foreach ($data_uas['banyak_pengunggahan_smt'] as $data)
-                                                        <h4 class="fw-semibold mb-9">{{ $data ?? 0 }}</h4>
+                                                        <h4 class="fw-semibold">{{ $data ?? 0 }}</h4>
                                                     @endforeach
                                                     <div class="d-flex align-items-center pb-1"></div>
-                                                    <h5 class="card-title my-9 fw-semibold">Verifikasi Soal UAS</h5>
+                                                    <h5 class="card-title my-1 fw-semibold">Verifikasi Soal UAS</h5>
                                                     @foreach ($data_uas['banyak_verifikasi_smt'] as $data)
-                                                        <h4 class="fw-semibold">{{ $data ?? 0}}</h4>
+                                                        <h4 class="fw-semibold">{{ $data ?? 0 }}</h4>
                                                     @endforeach
                                                 </div>
                                                 <div class="col-4">
@@ -123,12 +129,17 @@
                                         <div class="card-body">
                                             <div class="row align-items-start">
                                                 <div class="col-8">
-                                                    <h5 class="card-title my-9 fw-semibold">Penugasan Review Proposal TA</h5>
+                                                    <h5 class="card-title mb-1 fw-semibold">Belum Ditugaskan Review Proposal TA</h5>
+                                                    <h4 class="fw-semibold">{{ $total_proposal_ta }}</h4>
+                                                    <div class="d-flex align-items-center pb-1"></div>
+                                                    <h5 class="card-title my-1 fw-semibold">Penugasan Review Proposal TA
+                                                    </h5>
                                                     <h4 class="fw-semibold">{{ $data_ta['total_jumlah_proposal_smt'] }}</h4>
                                                     <div class="d-flex align-items-center pb-1">
                                                     </div>
-                                                    <h5 class="card-title my-9 fw-semibold">Review Proposal TA</h5>
-                                                    <h4 class="fw-semibold">{{ $data_ta['total_jumlah_review_proposal_smt'] }}</h4>
+                                                    <h5 class="card-title my-1 fw-semibold">Review Proposal TA</h5>
+                                                    <h4 class="fw-semibold">
+                                                        {{ $data_ta['total_jumlah_review_proposal_smt'] }}</h4>
 
                                                 </div>
                                                 <div class="col-4">
@@ -188,9 +199,9 @@
             const dataRPS = @json($data_rps);
             const dataUAS = @json($data_uas);
             const dataTA = @json($data_ta);
-    
+
             let chart, chartRPS, chartUAS, chartTA;
-    
+
             function updateChart(type, value) {
                 let labels = [];
                 let pengunggahanDataRPS = [];
@@ -199,7 +210,7 @@
                 let verifikasiDataUAS = [];
                 let penugasanDataTA = [];
                 let reviewDataTA = [];
-    
+
                 if (type === 'smt') {
                     labels = Object.keys(dataRPS.banyak_pengunggahan_smt);
                     pengunggahanDataRPS = Object.values(dataRPS.banyak_pengunggahan_smt);
@@ -217,7 +228,7 @@
                     penugasanDataTA = Object.values(dataTA.penugasan_kbk);
                     reviewDataTA = Object.values(dataTA.review_kbk);
                 }
-    
+
                 const barOptions = {
                     series: [{
                             name: 'Banyak Pengunggahan RPS',
@@ -342,7 +353,11 @@
                     tooltip: {
                         theme: "light",
                         y: {
-                            formatter: function(val, { seriesIndex, dataPointIndex, w }) {
+                            formatter: function(val, {
+                                seriesIndex,
+                                dataPointIndex,
+                                w
+                            }) {
                                 const seriesName = w.globals.seriesNames[seriesIndex];
                                 if (seriesName.includes('RPS')) {
                                     return parseInt(val) + " RPS";
@@ -365,7 +380,7 @@
                         }
                     }]
                 };
-    
+
                 if (chart) {
                     chart.updateOptions(barOptions);
                 } else {
@@ -374,28 +389,33 @@
                 }
                 updateDonutCharts();
             }
-    
+
             function updateDonutCharts() {
-                const totalBanyakPengunggahanRPS = Object.values(dataRPS.banyak_pengunggahan_smt).reduce((a, b) => a + b, 0);
-                const totalBanyakVerifikasiRPS = Object.values(dataRPS.banyak_verifikasi_smt).reduce((a, b) => a + b, 0);
-                const totalBanyakPengunggahanUAS = Object.values(dataUAS.banyak_pengunggahan_smt).reduce((a, b) => a + b, 0);
-                const totalBanyakVerifikasiUAS = Object.values(dataUAS.banyak_verifikasi_smt).reduce((a, b) => a + b, 0);
+                const totalBanyakPengunggahanRPS = Object.values(dataRPS.banyak_pengunggahan_smt).reduce((a, b) =>
+                    a + b, 0);
+                const totalBanyakVerifikasiRPS = Object.values(dataRPS.banyak_verifikasi_smt).reduce((a, b) => a +
+                    b, 0);
+                const totalBanyakPengunggahanUAS = Object.values(dataUAS.banyak_pengunggahan_smt).reduce((a, b) =>
+                    a + b, 0);
+                const totalBanyakVerifikasiUAS = Object.values(dataUAS.banyak_verifikasi_smt).reduce((a, b) => a +
+                    b, 0);
                 const totalBanyakpenugasanDataTA = [dataTA.total_jumlah_proposal_smt].reduce((a, b) => a + b, 0);
-                const totalBanyakreviewDataTA = [dataTA.total_jumlah_review_proposal_smt].reduce((a, b) => a + b, 0);
-    
+                const totalBanyakreviewDataTA = [dataTA.total_jumlah_review_proposal_smt].reduce((a, b) => a + b,
+                0);
+
                 chartRPS.updateOptions({
                     series: [totalBanyakPengunggahanRPS, totalBanyakVerifikasiRPS]
                 });
-    
+
                 chartUAS.updateOptions({
                     series: [totalBanyakPengunggahanUAS, totalBanyakVerifikasiUAS]
                 });
-    
+
                 chartTA.updateOptions({
                     series: [totalBanyakpenugasanDataTA, totalBanyakreviewDataTA]
                 });
             }
-    
+
             var commonOptions = {
                 chart: {
                     type: 'donut',
@@ -427,7 +447,7 @@
                     position: 'bottom'
                 }
             };
-    
+
             chartRPS = new ApexCharts(document.querySelector("#chartRPS"), {
                 ...commonOptions,
                 series: [0, 0],
@@ -435,7 +455,7 @@
                 colors: ["#008FFB", "#49BEFF"]
             });
             chartRPS.render();
-    
+
             chartUAS = new ApexCharts(document.querySelector("#chartUAS"), {
                 ...commonOptions,
                 series: [0, 0],
@@ -443,7 +463,7 @@
                 colors: ["#50B498", "#9CDBA6"]
             });
             chartUAS.render();
-    
+
             chartTA = new ApexCharts(document.querySelector("#chartTA"), {
                 ...commonOptions,
                 series: [0, 0],
@@ -451,7 +471,7 @@
                 colors: ["#FFC700", "#FFF455"]
             });
             chartTA.render();
-    
+
             document.getElementById('filterType').addEventListener('change', function() {
                 const type = this.value;
                 const filterValueSelect = document.getElementById('filterValue');
@@ -482,6 +502,4 @@
             document.getElementById('filterType').dispatchEvent(new Event('change'));
         });
     </script>
-    
-
 @endsection

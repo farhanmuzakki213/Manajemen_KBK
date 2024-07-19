@@ -49,17 +49,12 @@
                                 </form>
                             </div>
                         </div>
-
                         @php
                             $selectedProdi = $prodi->firstWhere('id_prodi', request('prodi_id'));
                             $title = $selectedProdi ? $selectedProdi->prodi : 'Semua Prodi';
                         @endphp
-
                         <h2 class="text-center mb-5">{{ $title }}</h2>
-
-
                         {{-- <h3 class="fw-semibold text-center">Pengunggahan dan Verifikasi</h3> --}}
-
                         <div class="row">
                             <div class="col-lg-8 d-flex align-items-stretch">
                                 <div class="card w-100">
@@ -71,31 +66,24 @@
                                             </div>
                                         </div>
                                         <div id="kajurChart"></div>
-
                                     </div>
                                 </div>
                             </div>
-
-
                             <div class="col-lg-4">
-
                                 <div class="col-lg-12">
                                     <div class="card">
                                         <div class="card-body">
-
                                             <div class="row align-items-start">
-
                                                 <div class="col-8">
-
-                                                    <h5 class="card-title mb-9 fw-semibold">Unggahan RPS</h5>
-                                                    <h4 class="fw-semibold mb-9">{{ $total_banyak_pengunggahan_rps }}</h4>
+                                                    <h5 class="card-title mb-1 fw-semibold">Belum Unggah RPS</h5>
+                                                    <h4 class="fw-semibold">{{ $banyak_belum_unggah_rps }}</h4>
+                                                    <div class="d-flex align-items-center pb-1"></div>
+                                                    <h5 class="card-title mb-1 fw-semibold">Unggahan RPS</h5>
+                                                    <h4 class="fw-semibold">{{ $total_banyak_pengunggahan_rps }}</h4>
                                                     <div class="d-flex align-items-center pb-1">
                                                     </div>
-                                                    <h5 class="card-title my-9 fw-semibold">Verifikasi RPS</h5>
+                                                    <h5 class="card-title my-1 fw-semibold">Verifikasi RPS</h5>
                                                     <h4 class="fw-semibold">{{ $total_banyak_verifikasi_rps }}</h4>
-                                                    
-                                                    
-
                                                 </div>
                                                 <div class="col-4">
                                                     <div class="d-flex justify-content-end">
@@ -115,14 +103,15 @@
                                         <div class="card-body">
                                             <div class="row align-items-start">
                                                 <div class="col-8">
-                                                    <h5 class="card-title mb-9 fw-semibold">Unggahan Soal UAS</h5>
-                                                    <h4 class="fw-semibold mb-9">{{ $total_banyak_pengunggahan_uas }}</h4>
-                                                    
+                                                    <h5 class="card-title mb-1 fw-semibold">Belum Unggah Soal UAS</h5>
+                                                    <h4 class="fw-semibold">{{ $banyak_belum_unggah_rps }}</h4>
+                                                    <div class="d-flex align-items-center pb-1"></div>
+                                                    <h5 class="card-title mb-1 fw-semibold">Unggahan Soal UAS</h5>
+                                                    <h4 class="fw-semibold">{{ $total_banyak_pengunggahan_uas }}</h4>
                                                     <div class="d-flex align-items-center pb-1">
                                                     </div>
-                                                    <h5 class="card-title my-9 fw-semibold">Verifikasi Soal UAS</h5>
+                                                    <h5 class="card-title my-1 fw-semibold">Verifikasi Soal UAS</h5>
                                                     <h4 class="fw-semibold">{{ $total_banyak_verifikasi_uas }}</h4>
-
                                                 </div>
                                                 <div class="col-4">
                                                     <div class="d-flex justify-content-end">
@@ -142,14 +131,15 @@
                                         <div class="card-body">
                                             <div class="row align-items-start">
                                                 <div class="col-8">
-                                                    <h5 class="card-title my-9 fw-semibold">Penugasan Review Proposal TA</h5>
+                                                    <h5 class="card-title mb-1 fw-semibold">Belum Ditugaskan Review Proposal TA</h5>
+                                                    <h4 class="fw-semibold">{{ $total_proposal_belum_review }}</h4>
+                                                    <div class="d-flex align-items-center pb-1"></div>
+                                                    <h5 class="card-title my-1 fw-semibold">Proposal TA</h5>
                                                     <h4 class="fw-semibold">{{ $total_jumlah_proposal }}</h4>
                                                     <div class="d-flex align-items-center pb-1">
                                                     </div>
-                                                    <h5 class="card-title my-9 fw-semibold">Review Proposal TA</h5>
+                                                    <h5 class="card-title my-1 fw-semibold">Review Proposal TA</h5>
                                                     <h4 class="fw-semibold">{{ $total_jumlah_review_proposal }}</h4>
-                                                   
-
                                                 </div>
                                                 <div class="col-4">
                                                     <div class="d-flex justify-content-end">
@@ -164,7 +154,6 @@
                                         <div id="earning"></div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
 

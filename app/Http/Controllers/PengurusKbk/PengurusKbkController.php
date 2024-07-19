@@ -7,6 +7,7 @@ use App\Models\VerRpsUas;
 use App\Models\ThnAkademik;
 use App\Models\ProposalTAModel;
 use App\Http\Controllers\Controller;
+use App\Models\DosenPengampuMatkul;
 use App\Models\Pengurus_kbk;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -117,13 +118,39 @@ class PengurusKbkController extends Controller
         $percentProposalTA = $total_ta > 0 ? ($jumlah_proposal / $total_ta) * 100 : 0;
         $percentReviewProposalTA = $total_ta > 0 ? ($jumlah_review_proposal / $total_ta) * 100 : 0;
 
-        // $percentVerifiedRPS = $banyak_pengunggahan_rps > 0 ? ($banyak_verifikasi_rps / $banyak_pengunggahan_rps) * 100 : 0;
-        // $percentUploadedRPS = 100 - $percentVerifiedRPS;
-        // $percentVerifiedUAS = $banyak_pengunggahan_uas > 0 ? ($banyak_verifikasi_uas / $banyak_pengunggahan_uas) * 100 : 0;
-        // $percentUploadedUAS = 100 - $percentVerifiedUAS;
-        // $percentReviewProposalTA = $jumlah_proposal > 0 ? ($jumlah_review_proposal / $jumlah_proposal) * 100 : 0;
-        // $percentProposalTA = 100 - $percentReviewProposalTA;
+        $data_matkul_kbk = DosenPengampuMatkul::with([
+            'p_matkulKbk.r_matkul', 'p_kelas', 'r_dosen', 'r_smt_thnakd', 'p_matkulKbk'
+        ])
+            ->whereHas('r_smt_thnakd', function ($query) {
+                $query->where('status_smt_thnakd', '=', '1');
+            })
+            ->whereHas('p_matkulKbk', function ($query) use ($pengurus) {
+                $query->where('jenis_kbk_id', $pengurus->jenis_kbk_id);
+            })
+            ->orderByDesc('id_dosen_matkul')
+            ->get();
 
+        $data_array = $data_matkul_kbk->flatMap(function ($item) use ($pengurus) {
+            return $item->p_matkulKbk->where('jenis_kbk_id', $pengurus->jenis_kbk_id)->map(function ($matkulKbk) use ($item) {
+                return [
+                    'nama_dosen' => $item->r_dosen->nama_dosen,
+                    'smt_thnakd' => $item->r_smt_thnakd->smt_thnakd,
+                    'kode_matkul' => optional($matkulKbk->r_matkul)->kode_matkul,
+                    'semester' => optional($matkulKbk->r_matkul)->semester,
+                    'prodi' => optional($matkulKbk->r_matkul)->semester,
+                    'matkul_kbk_id' => $matkulKbk->id_matkul_kbk,
+                    'dosen_matkul_id' => $item->id_dosen_matkul
+                ];
+            });
+        })->unique(function ($item) {
+            return $item['dosen_matkul_id'] . '-' . $item['matkul_kbk_id'];
+        })->count();
+
+        $banyak_belum_unggah_rps = $data_array - $banyak_pengunggahan_rps;
+        $banyak_belum_unggah_uas = $data_array - $banyak_pengunggahan_uas;
+        
+        debug($banyak_belum_unggah_rps);
+        debug($banyak_belum_unggah_uas);
         debug($percentVerifiedRPS);
         debug($percentUploadedRPS);
         debug($percentVerifiedUAS);
@@ -144,6 +171,8 @@ class PengurusKbkController extends Controller
             'banyak_verifikasi_uas',
             'jumlah_proposal',
             'jumlah_review_proposal',
+            'banyak_belum_unggah_rps',
+            'banyak_belum_unggah_uas',
         ));
     }
 

@@ -80,16 +80,16 @@
                                                             <div class="row">
                                                                 @can('pengurusKbk-create VerRps')
                                                                     <a href="{{ route('ver_rps.create', ['id' => $data_rep['id_rep_rps_uas']]) }}"
-                                                                        class="btn btn-primary mb-2 d-flex align-items-center">
+                                                                        class="btn btn-success mb-2 d-flex align-items-center me-1">
                                                                         <i class="bi bi-pencil-square"></i> Verifikasi
                                                                     </a>
                                                                 @endcan
 
                                                                 <!-- Pastikan path file sesuai dengan struktur dan nama yang benar -->
                                                                 <a href="{{ asset('storage/uploads/rps/repositori_files/' . $data_rep['file']) }}"
-                                                                    class="btn btn-primary mb-2 d-flex align-items-center"
+                                                                    class="btn btn-primary mb-2 d-flex align-items-center me-1"
                                                                     target="_blank">
-                                                                    <i class="bi bi-file-earmark-arrow-down"></i>Lihat
+                                                                    <i class="bi bi-file-earmark-arrow-down"></i>Lihat File
                                                                 </a>
                                                             </div>
                                                         @else
@@ -171,28 +171,28 @@
                                                 @endif
                                             </th>
                                             <th>{{ $data_ver->saran }}</th>
-                                            <th style="width: 10%;">
+                                            <th style="width: 12%;">
                                                 <div class="row">
                                                     @can('pengurusKbk-update VerRps')
                                                         <a href="{{ route('ver_rps.edit', ['id' => $data_ver->id_ver_rps_uas]) }}"
-                                                            class="btn btn-primary mb-2 d-flex align-items-center"><i
-                                                                class="bi bi-pencil-square"></i>Revisi</a>
+                                                            class="btn btn-success mb-2 d-flex align-items-center me-1"><i
+                                                                class="bi bi-pencil-square"></i>Edit Verif</a>
                                                     @endcan
                                                     @can('pengurusKbk-delete VerRps')
                                                         <a data-bs-toggle="modal"
                                                             data-bs-target="#staticBackdrop{{ $data_ver->id_ver_rps_uas }}"
-                                                            class="btn btn-danger mb-2 d-flex align-items-center"><i
+                                                            class="btn btn-danger mb-2 d-flex align-items-center me-1"><i
                                                                 class="bi bi-trash"></i>Hapus</a>
                                                     @endcan
 
                                                     <a href="{{ asset('storage/uploads/rps/repositori_files/' . $data_ver->r_rep_rps_uas->file) }}"
-                                                        class="btn btn-primary mb-2 d-flex align-items-center"
+                                                        class="btn btn-primary mb-2 d-flex align-items-center me-1"
                                                         target="_blank"><i
-                                                            class="bi bi-file-earmark-arrow-down"></i>Lihat</a>
+                                                            class="bi bi-file-earmark-arrow-down"></i>Lihat File</a>
 
                                                     <a data-bs-toggle="modal"
                                                         data-bs-target="#detail{{ $data_ver->id_ver_rps_uas }}"
-                                                        class="btn btn-secondary mb-2 d-flex align-items-center"><i
+                                                        class="btn btn-secondary mb-2 d-flex align-items-center me-1"><i
                                                             class="bi bi-three-dots-vertical"></i>Detail</a>
 
                                                 </div>

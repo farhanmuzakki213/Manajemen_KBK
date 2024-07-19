@@ -43,7 +43,7 @@
                                 </div>
                                 
                                 <div class="mb-3">
-                                    <label for="reviewer_satu" class="form-label">Nama Reviewer 1</label>
+                                    <label for="reviewer_satu" class="form-label">Nama Reviewer 1 *</label>
                                     <select class="form-select" aria-label="Default select example" name="reviewer_satu"
                                         id="reviewer_satu" required>
                                         <option selected disabled>Pilih Nama Reviewer 1</option>
@@ -59,7 +59,7 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="reviewer_dua" class="form-label">Nama Reviewer 2</label>
+                                    <label for="reviewer_dua" class="form-label">Nama Reviewer 2 *</label>
                                     <select class="form-select" aria-label="Default select example" name="reviewer_dua"
                                         id="reviewer_dua" required>
                                         <option selected disabled>Pilih Nama Reviewer 2</option>

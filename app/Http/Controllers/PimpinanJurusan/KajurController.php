@@ -65,6 +65,9 @@ class KajurController extends Controller
         $total_banyak_verifikasi_uas = 0;
         $total_jumlah_proposal = 0;
         $total_jumlah_review_proposal = 0;
+        $total_proposal_ta = 0;
+        $total_belum_unggah_rps = 0;
+        $total_belum_unggah_uas = 0;
 
         // Get selected Prodi ID from request
         $prodi_id = $request->input('prodi_id');
@@ -80,7 +83,7 @@ class KajurController extends Controller
                 ->whereHas('r_smt_thnakd', function ($query) use ($smt_thnakd_saat_ini) {
                     $query->where('id_smt_thnakd', $smt_thnakd_saat_ini->id_smt_thnakd);
                 })
-                ->whereHas('r_dosen_matkul.p_kelas.r_prodi', function ($query) use ($single_prodi) {
+                ->whereHas('r_matkulKbk.r_matkul.r_kurikulum', function ($query) use ($single_prodi) {
                     $query->where('prodi_id', $single_prodi->id_prodi);
                 });
 
@@ -91,13 +94,13 @@ class KajurController extends Controller
 
             $total_banyak_pengunggahan_rps += $banyak_pengunggahan_rps;
             $total_banyak_verifikasi_rps += $banyak_verifikasi_rps;
-
+            debug($total_banyak_pengunggahan_rps);
             // Count UAS uploads and verifications for this Prodi
             $queryUAS = RepRpsUas::where('type', '=', '1')
                 ->whereHas('r_smt_thnakd', function ($query) use ($smt_thnakd_saat_ini) {
                     $query->where('id_smt_thnakd', $smt_thnakd_saat_ini->id_smt_thnakd);
                 })
-                ->whereHas('r_dosen_matkul.p_kelas.r_prodi', function ($query) use ($single_prodi) {
+                ->whereHas('r_matkulKbk.r_matkul.r_kurikulum', function ($query) use ($single_prodi) {
                     $query->where('prodi_id', $single_prodi->id_prodi);
                 });
 
@@ -109,25 +112,70 @@ class KajurController extends Controller
             $total_banyak_pengunggahan_uas += $banyak_pengunggahan_uas;
             $total_banyak_verifikasi_uas += $banyak_verifikasi_uas;
 
+            $data_matkul_kbk = DosenPengampuMatkul::with([
+                'p_matkulKbk.r_matkul', 'p_kelas', 'r_dosen', 'r_smt_thnakd', 'p_matkulKbk', 'p_matkulKbk.r_matkul.r_kurikulum'
+            ])
+                ->whereHas('r_smt_thnakd', function ($query) {
+                    $query->where('status_smt_thnakd', '=', '1');
+                })
+                ->whereHas('p_matkulKbk.r_matkul.r_kurikulum', function ($query) use ($single_prodi) {
+                    $query->where('prodi_id', $single_prodi->id_prodi);
+                })
+                ->orderByDesc('id_dosen_matkul')
+                ->get();
+    
+            $data_array = $data_matkul_kbk->flatMap(function ($item) use ($single_prodi) {
+                return $item->p_matkulKbk->filter(function ($matkulKbk) use ($single_prodi) {
+                    return $matkulKbk->r_matkul->r_kurikulum->prodi_id == $single_prodi->id_prodi;
+                })->map(function ($matkulKbk) use ($item) {
+                    return [
+                        'nama_dosen' => $item->r_dosen->nama_dosen,
+                        'smt_thnakd' => $item->r_smt_thnakd->smt_thnakd,
+                        'kode_matkul' => optional($matkulKbk->r_matkul)->kode_matkul,
+                        'semester' => optional($matkulKbk->r_matkul)->semester,
+                        'prodi' => optional($matkulKbk->r_matkul->r_kurikulum)->prodi_id,
+                        'matkul_kbk_id' => $matkulKbk->id_matkul_kbk,
+                        'dosen_matkul_id' => $item->id_dosen_matkul
+                    ];
+                });
+            })->unique(function ($item) {
+                return $item['dosen_matkul_id'] . '-' . $item['matkul_kbk_id'];
+            })->count();
+            //debug($data_array);
+            $total_belum_unggah_rps += $data_array;
+            $banyak_belum_unggah_rps = $total_belum_unggah_rps - $total_banyak_pengunggahan_rps;
+            $total_belum_unggah_uas += $data_array;
+            $banyak_belum_unggah_uas = $total_belum_unggah_uas - $total_banyak_pengunggahan_uas;
+
+
             // Count Thesis Proposal data for this Prodi
             $jumlah_proposal = ReviewProposalTAModel::whereHas('proposal_ta.r_mahasiswa', function ($query) use ($single_prodi) {
                 $query->where('prodi_id', $single_prodi->id_prodi);
             })->count();
 
-            $total_jumlah_proposal += $jumlah_proposal * 2;
+            $total_jumlah_proposal += $jumlah_proposal;
 
             // Count Thesis Proposal Review data for this Prodi
             $jumlah_review_proposal = ReviewProposalTaDetailPivot::whereHas('p_reviewProposal.proposal_ta.r_mahasiswa', function ($query) use ($single_prodi) {
                 $query->where('prodi_id', $single_prodi->id_prodi);
-            })->count();
+            })
+            ->distinct('penugasan_id')
+            ->count('penugasan_id');
+        
 
             $total_jumlah_review_proposal += $jumlah_review_proposal;
-
+    
+            $proposal_ta = ProposalTAModel::whereHas('r_mahasiswa', function ($query) use ($single_prodi) {
+                $query->where('prodi_id', $single_prodi->id_prodi);
+            })->count();
+            /* debug($proposal_ta); */
+            $total_proposal_ta += $proposal_ta;
+            $total_proposal_belum_review = $total_proposal_ta - $total_jumlah_proposal;
             if ($prodi_id) {
                 break; // Stop the loop if specific Prodi is selected to prevent unnecessary iterations
             }
         }
-
+        
         // Calculate totals
         $total_rps = $total_banyak_pengunggahan_rps + $total_banyak_verifikasi_rps;
         $total_uas = $total_banyak_pengunggahan_uas + $total_banyak_verifikasi_uas;
@@ -147,12 +195,14 @@ class KajurController extends Controller
         // $percentUploadedUAS = 100 - $percentVerifiedUAS;
         // $percentReviewProposalTA = $total_jumlah_proposal > 0 ? ($total_jumlah_review_proposal / $total_jumlah_proposal) * 100 : 0;
         // $percentProposalTA = 100 - $percentReviewProposalTA;
-        debug($percentVerifiedUAS);
+        /* debug($banyak_belum_unggah_rps);
+        debug($banyak_belum_unggah_uas); */
+        /* debug($percentVerifiedUAS);
         debug($percentUploadedUAS);
         debug($percentVerifiedRPS);
         debug($percentUploadedRPS);
         debug($percentReviewProposalTA);
-        debug($percentProposalTA);
+        debug($percentProposalTA); */
         // Return view with data
         return view('admin.content.PimpinanJurusan.dashboard_pimpinan', compact(
             'percentUploadedRPS',
@@ -160,6 +210,9 @@ class KajurController extends Controller
             'percentUploadedUAS',
             'percentVerifiedUAS',
             'percentProposalTA',
+            'total_proposal_belum_review',
+            'banyak_belum_unggah_rps',
+            'banyak_belum_unggah_uas',
             'percentReviewProposalTA',
             'total_banyak_pengunggahan_rps',
             'total_banyak_verifikasi_rps',
@@ -691,9 +744,9 @@ class KajurController extends Controller
     public function grafik_proposal()
     {
         $kajur = $this->getDosen();
-        $statuses = ['Diajukan', 'Ditolak', 'Direvisi', 'Diterima'];
+        $statuses = ['Belum Diverifikasi', 'Ditolak', 'Direvisi', 'Diterima'];
         $status_mapping = [
-            0 => 'Diajukan',
+            0 => 'Belum Diverifikasi',
             1 => 'Ditolak',
             2 => 'Direvisi',
             3 => 'Diterima'
@@ -780,8 +833,11 @@ class KajurController extends Controller
 
         $data_proposal = ReviewProposalTaDetailPivot::with('p_reviewProposal')
             ->get();
-
-        return view('admin.content.pimpinanJurusan.GrafikProposal', compact('review', 'statuses', 'bulan', 'data_proposal'));
+        $data_rep_proposal_jurusan = ReviewProposalTAModel::with('proposal_ta', 'reviewer_satu_dosen', 'reviewer_dua_dosen', 'p_reviewDetail')
+            ->orderByDesc('id_penugasan')
+            ->get();
+        debug($data_rep_proposal_jurusan->toArray());
+        return view('admin.content.pimpinanJurusan.GrafikProposal', compact('review', 'statuses', 'bulan', 'data_proposal', 'data_rep_proposal_jurusan'));
     }
 
 
