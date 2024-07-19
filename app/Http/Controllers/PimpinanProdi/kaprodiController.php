@@ -10,6 +10,7 @@ use App\Models\PimpinanProdi;
 use App\Models\ProposalTAModel;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\DosenPengampuMatkul;
 use App\Models\JenisKbk;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ReviewProposalTAModel;
@@ -58,11 +59,15 @@ class kaprodiController extends Controller
         $total_jumlah_proposal_smt = 0;
         $total_jumlah_review_proposal_smt = 0;
 
+        $proposal_ta = ProposalTAModel::whereHas('r_mahasiswa', function ($query) use ($kaprodi) {
+            $query->where('prodi_id', $kaprodi->prodi_id);
+        })->count();
+        debug($proposal_ta);
         $jumlah_proposal_smt = ReviewProposalTAModel::whereHas('proposal_ta.r_mahasiswa', function ($query) use ($kaprodi) {
             $query->where('prodi_id', $kaprodi->prodi_id);
         })->count();
-
-        $total_jumlah_proposal_smt += $jumlah_proposal_smt * 2;
+        $total_proposal_ta = $proposal_ta - $jumlah_proposal_smt;
+        $total_jumlah_proposal_smt += $jumlah_proposal_smt;
 
         $jumlah_review_proposal_smt = ReviewProposalTaDetailPivot::whereHas('p_reviewProposal.proposal_ta.r_mahasiswa', function ($query) use ($kaprodi) {
             $query->where('prodi_id', $kaprodi->prodi_id);
@@ -83,24 +88,24 @@ class kaprodiController extends Controller
         $total_jumlah_review_proposal_kbk = 0;
 
         $jumlah_proposal_kbk = DB::table('review_proposal_ta as rpta')
-        ->join('proposal_ta as pt', 'rpta.proposal_ta_id', '=', 'pt.id_proposal_ta')
-        ->join('mahasiswa as m', 'pt.mahasiswa_id', '=', 'm.id_mahasiswa')
-        ->join('jenis_kbk as jk', 'pt.jenis_kbk_id', '=', 'jk.id_jenis_kbk')
-        ->where('m.prodi_id', $kaprodi->prodi_id)
-        ->select('jk.jenis_kbk', DB::raw('COUNT(*) * 2 as count'))
-        ->groupBy('jk.jenis_kbk')
-        ->pluck('count', 'jenis_kbk');
-        
+            ->join('proposal_ta as pt', 'rpta.proposal_ta_id', '=', 'pt.id_proposal_ta')
+            ->join('mahasiswa as m', 'pt.mahasiswa_id', '=', 'm.id_mahasiswa')
+            ->join('jenis_kbk as jk', 'pt.jenis_kbk_id', '=', 'jk.id_jenis_kbk')
+            ->where('m.prodi_id', $kaprodi->prodi_id)
+            ->select('jk.jenis_kbk', DB::raw('COUNT(*) * 2 as count'))
+            ->groupBy('jk.jenis_kbk')
+            ->pluck('count', 'jenis_kbk');
+
 
         $jumlah_review_proposal_kbk = DB::table('review_proposal_ta_detail_pivot as rptadp')
-        ->join('review_proposal_ta as rpta', 'rptadp.penugasan_id', '=', 'rpta.id_penugasan')
-        ->join('proposal_ta as pt', 'rpta.proposal_ta_id', '=', 'pt.id_proposal_ta')
-        ->join('mahasiswa as m', 'pt.mahasiswa_id', '=', 'm.id_mahasiswa')
-        ->join('jenis_kbk as jk', 'pt.jenis_kbk_id', '=', 'jk.id_jenis_kbk')
-        ->where('m.prodi_id', $kaprodi->prodi_id)
-        ->select('jk.jenis_kbk', DB::raw('COUNT(*) as count'))
-        ->groupBy('jk.jenis_kbk')
-        ->pluck('count', 'jenis_kbk');
+            ->join('review_proposal_ta as rpta', 'rptadp.penugasan_id', '=', 'rpta.id_penugasan')
+            ->join('proposal_ta as pt', 'rpta.proposal_ta_id', '=', 'pt.id_proposal_ta')
+            ->join('mahasiswa as m', 'pt.mahasiswa_id', '=', 'm.id_mahasiswa')
+            ->join('jenis_kbk as jk', 'pt.jenis_kbk_id', '=', 'jk.id_jenis_kbk')
+            ->where('m.prodi_id', $kaprodi->prodi_id)
+            ->select('jk.jenis_kbk', DB::raw('COUNT(*) as count'))
+            ->groupBy('jk.jenis_kbk')
+            ->pluck('count', 'jenis_kbk');
 
         $jenis_kbk = JenisKbk::pluck('jenis_kbk');
         /* TA */
@@ -126,13 +131,51 @@ class kaprodiController extends Controller
             $count = $data_uas['banyak_pengunggahan_kbk']->get($item, 0);
             return [$item => $count];
         });
-        
+
         $verifikasi_uas_kbk = $jenis_kbk->mapWithKeys(function ($item) use ($data_uas) {
             $count = $data_uas['banyak_verifikasi_kbk']->get($item, 0);
             return [$item => $count];
         });
         $semester = ThnAkademik::pluck('smt_thnakd');
-        /* debug($semester); */
+        $data_matkul_kbk = DosenPengampuMatkul::with([
+            'p_matkulKbk.r_matkul', 'p_kelas', 'r_dosen', 'r_smt_thnakd', 'p_matkulKbk', 'p_matkulKbk.r_matkul.r_kurikulum'
+        ])
+            ->whereHas('r_smt_thnakd', function ($query) {
+                $query->where('status_smt_thnakd', '=', '1');
+            })
+            ->whereHas('p_matkulKbk.r_matkul.r_kurikulum', function ($query) use ($kaprodi) {
+                $query->where('prodi_id', $kaprodi->prodi_id);
+            })
+            ->orderByDesc('id_dosen_matkul')
+            ->get();
+
+        $data_array = $data_matkul_kbk->flatMap(function ($item) use ($kaprodi) {
+            return $item->p_matkulKbk->filter(function ($matkulKbk) use ($kaprodi) {
+                return $matkulKbk->r_matkul->r_kurikulum->prodi_id == $kaprodi->prodi_id;
+            })->map(function ($matkulKbk) use ($item) {
+                return [
+                    'nama_dosen' => $item->r_dosen->nama_dosen,
+                    'smt_thnakd' => $item->r_smt_thnakd->smt_thnakd,
+                    'kode_matkul' => optional($matkulKbk->r_matkul)->kode_matkul,
+                    'semester' => optional($matkulKbk->r_matkul)->semester,
+                    'prodi' => optional($matkulKbk->r_matkul->r_kurikulum)->prodi_id,
+                    'matkul_kbk_id' => $matkulKbk->id_matkul_kbk,
+                    'dosen_matkul_id' => $item->id_dosen_matkul
+                ];
+            });
+        })->unique(function ($item) {
+            return $item['dosen_matkul_id'] . '-' . $item['matkul_kbk_id'];
+        })->count();
+        debug($data_array);
+        foreach($data_rps['banyak_pengunggahan_smt'] as $data){
+            $banyak_belum_unggah_rps = $data_array - $data;
+        }
+        foreach($data_uas['banyak_pengunggahan_smt'] as $data){
+            $banyak_belum_unggah_uas = $data_array - $data;
+        }
+
+        debug($banyak_belum_unggah_rps);
+        debug($banyak_belum_unggah_uas);
         /* debug($pengunggahan_rps_kbk);
         debug($verifikasi_rps_kbk);
         debug($pengunggahan_uas_kbk);
@@ -148,11 +191,15 @@ class kaprodiController extends Controller
             'total_jumlah_review_proposal_smt' => $total_jumlah_review_proposal_smt,
         ];
         debug($data_ta);
+        debug($data_rps['banyak_pengunggahan_smt']);
 
         return view('admin.content.PimpinanProdi.dashboard_kaprodi', compact(
             'data_uas',
             'data_rps',
             'data_ta',
+            'banyak_belum_unggah_rps',
+            'banyak_belum_unggah_uas',
+            'total_proposal_ta',
         ));
     }
 
@@ -352,7 +399,7 @@ class kaprodiController extends Controller
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
-            $jenis_kbk = JenisKbk::pluck('jenis_kbk');
+        $jenis_kbk = JenisKbk::pluck('jenis_kbk');
         /* RPS */
         $pengunggahan_rps_kbk = $jenis_kbk->mapWithKeys(function ($item) use ($banyak_pengunggahan_kbk) {
             $count = $banyak_pengunggahan_kbk->get($item, 0);
@@ -535,16 +582,16 @@ class kaprodiController extends Controller
             })
             ->orderByDesc('id_ver_rps_uas')
             ->get();
-            $jenis_kbk = JenisKbk::pluck('jenis_kbk');
-            $pengunggahan_uas_kbk = $jenis_kbk->mapWithKeys(function ($item) use ($banyak_pengunggahan_kbk) {
-                $count = $banyak_pengunggahan_kbk->get($item, 0);
-                return [$item => $count];
-            });
-            
-            $verifikasi_uas_kbk = $jenis_kbk->mapWithKeys(function ($item) use ($banyak_verifikasi_kbk) {
-                $count = $banyak_verifikasi_kbk->get($item, 0);
-                return [$item => $count];
-            });
+        $jenis_kbk = JenisKbk::pluck('jenis_kbk');
+        $pengunggahan_uas_kbk = $jenis_kbk->mapWithKeys(function ($item) use ($banyak_pengunggahan_kbk) {
+            $count = $banyak_pengunggahan_kbk->get($item, 0);
+            return [$item => $count];
+        });
+
+        $verifikasi_uas_kbk = $jenis_kbk->mapWithKeys(function ($item) use ($banyak_verifikasi_kbk) {
+            $count = $banyak_verifikasi_kbk->get($item, 0);
+            return [$item => $count];
+        });
 
         $data = [
             'banyak_pengunggahan_smt' => $banyak_pengunggahan_smt,

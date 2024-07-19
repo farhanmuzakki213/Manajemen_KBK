@@ -43,20 +43,20 @@
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        @foreach ($data_proposal as $data)
+                                        @foreach ($data_rep_proposal_jurusan as $data)
                                         <tr class="table-Light">
                                             <th>{{ $loop->iteration }}</th>
-                                            <th>{{ optional($data->p_reviewProposal)->proposal_ta->r_mahasiswa->nama }}</th>
-                                            <th>{{ optional($data->p_reviewProposal)->proposal_ta->r_mahasiswa->nim }}</th>
-                                            <th>{{ optional($data->p_reviewProposal)->proposal_ta->judul }}</th>
-                                            <th>{{ optional($data->p_reviewProposal)->tanggal_penugasan }}</th>
-                                            <th>{{ $data->tanggal_review }}</th>
+                                            <th>{{ optional($data->proposal_ta)->r_mahasiswa->nama }}</th>
+                                            <th>{{ optional($data->proposal_ta)->r_mahasiswa->nim }}</th>
+                                            <th>{{ optional($data->proposal_ta)->judul }}</th>
+                                            <th>{{ $data->tanggal_penugasan }}</th>
+                                            <th>{{ optional($data->p_reviewDetail->first())->tanggal_review }}</th>
                                             <th>
-                                                @if ($data->p_reviewProposal->status_final_proposal == 0)
-                                                    Diajukan
-                                                @elseif ($data->p_reviewProposal->status_final_proposal == 1)
+                                                @if ($data->status_final_proposal == 0)
+                                                    Belum Diverifikasi
+                                                @elseif ($data->status_final_proposal == 1)
                                                     Ditolak
-                                                @elseif ($data->p_reviewProposal->status_final_proposal == 2)
+                                                @elseif ($data->status_final_proposal == 2)
                                                     Direvisi
                                                 @else
                                                     Diterima

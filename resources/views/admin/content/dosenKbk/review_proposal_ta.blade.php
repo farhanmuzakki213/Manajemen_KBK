@@ -72,12 +72,12 @@
                                                         <div class="row">
                                                             @can('dosenKbk-create ReviewProposalTA')
                                                                 <a href="{{ route('review_proposal_ta.create', ['id' => $data->id_penugasan, 'dosen' => $data->dosen_r]) }}"
-                                                                    class="btn btn-primary mb-2 d-flex align-items-center"><i
+                                                                    class="btn btn-success mb-2 d-flex align-items-center me-1"><i
                                                                         class="bi bi-pencil-square"></i>Verifikasi</a>
                                                             @endcan
                                                             <a data-bs-toggle="modal"
                                                                 data-bs-target="#detail{{ $data->id_penugasan }}"
-                                                                class="btn btn-primary d-flex align-items-center"><i
+                                                                class="btn btn-primary d-flex align-items-center me-1"><i
                                                                     class="bi bi-three-dots-vertical"></i>Detail</a>
                                                         </div>
                                                     @else

@@ -27,18 +27,18 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="status" class="form-label">Status</label><br>
+                                    <label for="status" class="form-label">Status *</label><br>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="status" id="aktif" value="1" {{ $data_dosen->status_review_proposal == 1 ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="aktif">DiTolak</label>
+                                        <label class="form-check-label" for="aktif">Ditolak</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="status" id="aktif" value="2" {{ $data_dosen->status_review_proposal == 2 ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="aktif">DiRevisi</label>
+                                        <label class="form-check-label" for="aktif">Direvisi</label>
                                     </div> 
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="status" id="aktif" value="3" {{ $data_dosen->status_review_proposal == 3 ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="aktif">DiTerima</label>
+                                        <label class="form-check-label" for="aktif">Diterima</label>
                                     </div>                                   
                                 </div>
                                

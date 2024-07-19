@@ -70,13 +70,16 @@
                                             
                                             <div class="col-8">
                                                 
-                                                <h5 class="card-title mb-9 fw-semibold">Unggahan RPS</h5>
-                                                <h4 class="fw-semibold mb-9">{{ $banyak_pengunggahan_rps }}</h4>
+                                                <h5 class="card-title my-1 fw-semibold">Belum Unggah RPS</h5>
+                                                <h4 class="fw-semibold">{{ $banyak_belum_unggah_rps }}</h4>
                                                 <div class="d-flex align-items-center pb-1"> 
                                                 </div>
-                                                <h5 class="card-title my-9 fw-semibold">Verifikasi RPS</h5>
+                                                <h5 class="card-title mb-1 fw-semibold">Unggahan RPS</h5>
+                                                <h4 class="fw-semibold">{{ $banyak_pengunggahan_rps }}</h4>
+                                                <div class="d-flex align-items-center pb-1"> 
+                                                </div>
+                                                <h5 class="card-title my-1 fw-semibold">Verifikasi RPS</h5>
                                                 <h4 class="fw-semibold">{{ $banyak_verifikasi_rps }}</h4>
-                                               
                                             </div>
                                             <div class="col-4">
                                                 <div class="d-flex justify-content-end">
@@ -96,13 +99,16 @@
                                     <div class="card-body">
                                         <div class="row align-items-start">
                                             <div class="col-8">
-                                                <h5 class="card-title mb-9 fw-semibold">Unggahan Soal UAS</h5>
-                                                <h4 class="fw-semibold mb-9">{{ $banyak_pengunggahan_uas }}</h4>
+                                                <h5 class="card-title my-1 fw-semibold">Belum Unggah Soal UAS</h5>
+                                                <h4 class="fw-semibold">{{ $banyak_belum_unggah_uas }}</h4>
                                                 <div class="d-flex align-items-center pb-1">
                                                 </div>
-                                                <h5 class="card-title my-9 fw-semibold">Verifikasi Soal UAS</h5>
+                                                <h5 class="card-title mb-1 fw-semibold">Unggahan Soal UAS</h5>
+                                                <h4 class="fw-semibold">{{ $banyak_pengunggahan_uas }}</h4>
+                                                <div class="d-flex align-items-center pb-1">
+                                                </div>
+                                                <h5 class="card-title my-1 fw-semibold">Verifikasi Soal UAS</h5>
                                                 <h4 class="fw-semibold">{{ $banyak_verifikasi_uas }}</h4>
-                                                
                                             </div>
                                             <div class="col-4">
                                                 <div class="d-flex justify-content-end">

@@ -14,11 +14,11 @@ class JenisKBKSeeder extends Seeder
     public function run(): void
     {
         $JenisData = [
-            [1, 'Programming', ''],
-            [2, 'Network, Security and Infrastructure', ''],
-            [3, 'Design, Animation, and Multimedia', ''],
-            [4, 'Artificial Intelligence', ''],
-            [5, 'Software Technology and Management', '']
+            [1, 'Programming', 'Center Of Programing'],
+            [2, 'IT Infrastructure', 'Center Of IT Infrastructure'],
+            [3, 'NCS', 'Center Of Networking and Cyber Security'],
+            [4, 'CAIT', 'Center Of Artificial Intelligence Technology'],
+            [5, 'SOFTAM', 'Center Of Software Technology and Management']
         ];
 
         foreach ($JenisData as $data) {

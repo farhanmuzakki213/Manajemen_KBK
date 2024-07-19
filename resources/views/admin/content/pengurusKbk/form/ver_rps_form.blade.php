@@ -31,7 +31,7 @@
                                         @enderror
                                     </div>
                                 <div class="mb-3">
-                                    <label for="rekomendasi" class="form-label">Rekomendasi</label><br>
+                                    <label for="rekomendasi" class="form-label">Rekomendasi *</label><br>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="rekomendasi"
                                             id="belum_diverifikasi" value="2" {{ old('rekomendasi') == 2 ? 'checked' : '' }}>

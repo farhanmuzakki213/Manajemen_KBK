@@ -341,7 +341,7 @@ class VerBeritaAcaraRpsController extends Controller
     public function delete(string $id)
     {
         $data_berita_acara_rps = VerBeritaAcara::where('id_berita_acara', $id)->first();
-
+        //dd($data_berita_acara_rps);
         // Menghapus file terkait jika ada
         if (!is_null($data_berita_acara_rps->file_berita_acara)) {
             Storage::delete('public/uploads/rps/berita_acara/' . $data_berita_acara_rps->file_berita_acara);

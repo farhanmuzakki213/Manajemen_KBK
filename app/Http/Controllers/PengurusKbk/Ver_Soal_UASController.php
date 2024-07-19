@@ -69,7 +69,7 @@ class Ver_Soal_UASController extends Controller
             ->orderByDesc('id_ver_rps_uas')
             ->get();
         debug($data_ver_uas);
-        $data_matkul_kbk = DosenPengampuMatkul::with([
+        /* $data_matkul_kbk = DosenPengampuMatkul::with([
             'p_matkulKbk.r_matkul', 'p_kelas', 'r_dosen', 'r_smt_thnakd', 'p_matkulKbk'
         ])
             ->whereHas('r_smt_thnakd', function ($query) {
@@ -80,7 +80,7 @@ class Ver_Soal_UASController extends Controller
             })
             ->orderByDesc('id_dosen_matkul')
             ->get();
-        /* debug($data_matkul_kbk); */
+        debug($data_matkul_kbk);
         $data_array = $data_matkul_kbk->flatMap(function ($item) use ($pengurus_kbk) {
             if ($item->p_matkulKbk->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id)->first()) {
                 return $item->p_matkulKbk->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id)->map(function ($matkulKbk) use ($item) {
@@ -94,6 +94,33 @@ class Ver_Soal_UASController extends Controller
             } else {
                 return [];
             }
+        })->toArray(); */
+        $data_matkul_kbk = DosenPengampuMatkul::with([
+            'p_matkulKbk.r_matkul', 'p_kelas', 'r_dosen', 'r_smt_thnakd', 'p_matkulKbk'
+        ])
+            ->whereHas('r_smt_thnakd', function ($query) {
+                $query->where('status_smt_thnakd', '=', '1');
+            })
+            ->whereHas('p_matkulKbk', function ($query) use ($pengurus_kbk) {
+                $query->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id);
+            })
+            ->orderByDesc('id_dosen_matkul')
+            ->get();
+
+        $data_array = $data_matkul_kbk->flatMap(function ($item) use ($pengurus_kbk) {
+            return $item->p_matkulKbk->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id)->map(function ($matkulKbk) use ($item) {
+                return [
+                    'nama_dosen' => $item->r_dosen->nama_dosen,
+                    'smt_thnakd' => $item->r_smt_thnakd->smt_thnakd,
+                    'kode_matkul' => optional($matkulKbk->r_matkul)->kode_matkul,
+                    'semester' => optional($matkulKbk->r_matkul)->semester,
+                    'prodi' => optional($matkulKbk->r_matkul)->semester,
+                    'matkul_kbk_id' => $matkulKbk->id_matkul_kbk,
+                    'dosen_matkul_id' => $item->id_dosen_matkul
+                ];
+            });
+        })->unique(function ($item) {
+            return $item['dosen_matkul_id'] . '-' . $item['matkul_kbk_id'];
         })->toArray();
 
         /* debug($data_array); */
