@@ -95,6 +95,7 @@ class VerBeritaAcaraUasController extends Controller
         return view('admin.content.pengurusKbk.VerBeritaAcaraUas', compact('data_ver_rps', 'data_berita_acara', 'prodiList', 'selectedProdiId'));
     }
 
+    
     public function download_pdf(Request $request)
     {
         $pengurus_kbk = $this->getDosen();
@@ -182,7 +183,7 @@ class VerBeritaAcaraUasController extends Controller
     
         // Buat PDF pertama
         $pdf1 = Pdf::loadView('admin.content.pengurusKbk.pdf.berita_acara_uas', $dataBeritaAcara);
-        $pdf1->setPaper('A4', 'landscape'); 
+        $pdf1->setPaper('A4', 'potrait'); 
         $pdf1Path = storage_path('app/public/Berita_Acara_UAS.pdf');
         $pdf1->save($pdf1Path);
     

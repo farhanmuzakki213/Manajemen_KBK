@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top navbar-detail" id="mainNav">
     <div class="container">
-        <a class="navbar-brand"><img src="{{asset('frontend/landing-page/assets/img/logos/e-kbk.svg')}}"/></a>
+        <a class="navbar-brand"><img src="{{asset('frontend/landing-page/assets/img/logos/Logo-E-KBK-White.svg')}}"/></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             Menu
             <i class="fas fa-bars ms-1"></i>

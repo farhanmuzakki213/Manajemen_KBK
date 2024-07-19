@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\PimpinanProdi;
 
+use ZipArchive;
 use Illuminate\Http\Request;
 use App\Models\PimpinanProdi;
 use App\Http\Controllers\Controller;
@@ -9,9 +10,11 @@ use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\ReviewProposalTAModel;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Exports\ExportHasil_final_proposal;
 use App\Models\ReviewProposalTaDetailPivot;
+use App\Exports\Export_hasil_final_proposal_mahasiswa;
 
 class HAsilFinalProposalTAController extends Controller
 {
@@ -182,13 +185,36 @@ class HAsilFinalProposalTAController extends Controller
             ->where('pimpinan_prodi_id', $kaprodi->id_pimpinan_prodi)
             ->where('status_final_proposal', '=', '3')
             ->get();
-        //dd($data_review_proposal_ta);
-        // Cek apakah ada data dengan status_final_proposal = 1
+    
         if ($data_review_proposal_ta->isNotEmpty()) {
-            // Jika ada data final, unduh file Excel
-            return Excel::download(new ExportHasil_final_proposal($data_review_proposal_ta), "hasil_final_proposal.xlsx");
+            // Buat file Excel pertama untuk mahasiswa
+            $filePath1 = 'hasil_final_proposal_mahasiswa.xlsx';
+            Excel::store(new Export_hasil_final_proposal_mahasiswa($data_review_proposal_ta), $filePath1, 'public');
+    
+            // Buat file Excel kedua untuk dosen
+            $filePath2 = 'hasil_final_proposal_dosen.xlsx';
+            Excel::store(new ExportHasil_final_proposal($data_review_proposal_ta), $filePath2, 'public');
+    
+            // Buat file ZIP
+            $zipFileName = 'hasil_final_proposal.zip';
+            $zipFilePath = storage_path('app/public/' . $zipFileName);
+    
+            $zip = new ZipArchive;
+            if ($zip->open($zipFilePath, ZipArchive::CREATE) === TRUE) {
+                $zip->addFile(storage_path('app/public/' . $filePath1), $filePath1);
+                $zip->addFile(storage_path('app/public/' . $filePath2), $filePath2);
+                $zip->close();
+    
+                // Hapus file Excel sementara setelah menambahkan ke ZIP
+                Storage::disk('public')->delete($filePath1);
+                Storage::disk('public')->delete($filePath2);
+    
+                // Return ZIP file for download
+                return response()->download($zipFilePath)->deleteFileAfterSend(true);
+            } else {
+                return redirect()->route('hasil_review_proposal_ta')->with('error', 'Could not create zip file.');
+            }
         } else {
-            // Jika tidak ada data final, redirect dengan pesan kesalahan
             return redirect()->route('hasil_review_proposal_ta')->with('error', 'Data final/diterima belum ada.');
         }
     }

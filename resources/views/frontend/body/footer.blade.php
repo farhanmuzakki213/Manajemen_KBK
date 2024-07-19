@@ -2,7 +2,7 @@
     <div class="container-fruid">
         <div class="row align-items-center">
             <div class="col-md-5 text-center text-md-left" style="padding-right: ">
-                <img src="{{ asset('frontend/landing-page/assets/img/logos/e-kbk.svg') }}" alt="Footer Image"
+                <img src="{{ asset('frontend/landing-page/assets/img/logos/Logo-E-KBK-White.svg') }}" alt="Footer Image"
                     class="img-fluid mb-2 mb-md-0" style="max-width: 30%">
             </div>
             <div class="col-md-7 tutup px-5">

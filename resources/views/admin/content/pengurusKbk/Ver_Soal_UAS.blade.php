@@ -317,10 +317,10 @@
                                                                             class="form-label">Rekomendasi</label>
                                                                         <input type="text" class="form-control"
                                                                             id="saran"
-                                                                            value="@if ($data_ver->saran == 0) Belum Diverifikasi
-                                                                                   @elseif ($data_ver->saran == 1) Tidak Layak Dipakai
-                                                                                   @elseif ($data_ver->saran == 2) Butuh Revisi
-                                                                                   @elseif ($data_ver->saran == 3) Layak Dipakai @endif"
+                                                                            value="@if ($data_ver->rekomendasi == 0) Belum Diverifikasi
+                                                                                   @elseif ($data_ver->rekomendasi == 1) Tidak Layak Dipakai
+                                                                                   @elseif ($data_ver->rekomendasi == 2) Butuh Revisi
+                                                                                   @elseif ($data_ver->rekomendasi == 3) Layak Dipakai @endif"
                                                                             readonly>
                                                                     </div>
 

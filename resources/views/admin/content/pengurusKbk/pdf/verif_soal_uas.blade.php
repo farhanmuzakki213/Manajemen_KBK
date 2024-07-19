@@ -2,9 +2,10 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+    {{-- <meta charset="UTF-8"> --}}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Verifikasi Soal UAS</title>
     <style>
         /* @font-face {
@@ -12,6 +13,11 @@
             src: url('{{ asset('backend/assets/font/Times New Roman/times new roman.ttf') }}') format('truetype');
         } */
 
+        @media print {
+    body {
+        font-family: 'Times New Roman', Times, serif;
+    }
+}
         body {
             font-family: 'Times New Roman', Times, serif;
             margin: 1.5cm 1cm 4cm 0.3cm;
@@ -302,17 +308,19 @@
 
                         <tr class="table-light">
                             <td>{{ $index }}</td>
-                            <td>{{ $validasi == 1 ? '✓' : '' }}</td>
-                            <td>{{ $validasi == 2 ? '✓' : '' }}</td>
-                            <td>{{ $validasi == 3 ? '✓' : '' }}</td>
-                            <td>{{ $validasi == 4 ? '✓' : '' }}</td>
-                            <td>{{ $validasi == 5 ? '✓' : '' }}</td>
-                            <td>{{ $bahasaSoalValue == 1 ? '✓' : '' }}</td>
-                            <td>{{ $bahasaSoalValue == 2 ? '✓' : '' }}</td>
-                            <td>{{ $bahasaSoalValue == 3 ? '✓' : '' }}</td>
-                            <td>{{ $bahasaSoalValue == 4 ? '✓' : '' }}</td>
-                            <td>{{ $bahasaSoalValue == 5 ? '✓' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif;">{{ $validasi == 1 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif;">{{ $validasi == 2 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif;">{{ $validasi == 3 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif;">{{ $validasi == 4 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif;">{{ $validasi == 5 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif;">{{ $bahasaSoalValue == 1 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif;">{{ $bahasaSoalValue == 2 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif;">{{ $bahasaSoalValue == 3 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif;">{{ $bahasaSoalValue == 4 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif;">{{ $bahasaSoalValue == 5 ? '✔' : '' }}</td>
                         </tr>
+
+                       
                     @endforeach
                 @endforeach
             </tbody>
