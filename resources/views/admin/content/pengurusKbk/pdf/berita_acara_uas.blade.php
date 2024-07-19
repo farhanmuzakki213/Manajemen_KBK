@@ -232,8 +232,8 @@
             </p>
             <p style="padding-left: 50px;">Dengan hasil sebagai berikut:</p>
         </div>
-
-        <table class="isi">
+      
+        <table class="isi">      
             <thead>
                 <tr class="table-info">
                     <th>No</th>

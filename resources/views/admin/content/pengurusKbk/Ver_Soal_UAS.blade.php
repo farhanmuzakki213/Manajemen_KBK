@@ -280,7 +280,7 @@
                                                                         <label class="form-label">Dosen
                                                                             Verifikasi</label>
                                                                         <input type="text" class="form-control"
-                                                                            value="{{ optional($data_ver->r_dosen)->nama_dosen }}"
+                                                                            value="{{ optional($data_ver->r_pengurus)->r_dosen->nama_dosen}}"
                                                                             readonly>
                                                                     </div>
                                                                 </div>

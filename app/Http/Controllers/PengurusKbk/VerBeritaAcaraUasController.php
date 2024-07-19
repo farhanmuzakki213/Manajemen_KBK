@@ -150,7 +150,7 @@ class VerBeritaAcaraUasController extends Controller
             $ver_rps_uas_to_process = array_diff($ver_rps_uas_ids, $existing_ver_rps_uas_ids);
 
             if (empty($ver_rps_uas_to_process)) {
-                return redirect()->route('upload_rps_berita_acara')->with('error', 'Semua data verifikasi RPS pada prodi ini sudah diproses');
+                return redirect()->route('upload_uas_berita_acara')->with('error', 'Semua data verifikasi RPS pada prodi ini sudah diproses');
             }
 
             $verBeritaAcara = VerBeritaAcara::create([
@@ -167,7 +167,7 @@ class VerBeritaAcaraUasController extends Controller
             DB::commit();
         } catch (\Throwable) {
             DB::rollback();
-            return redirect()->route('upload_rps_berita_acara')->with('error', 'Berita Acara Gagal di Upload.');
+            return redirect()->route('upload_uas_berita_acara')->with('error', 'Berita Acara Gagal di Upload.');
         }
         $pdf = Pdf::loadView('admin.content.pengurusKbk.pdf.berita_acara_uas', [
             'data_ver_rps' => $data_ver_rps,
@@ -181,6 +181,7 @@ class VerBeritaAcaraUasController extends Controller
 
         // return $pdf->stream('Berita_Acara_UAS.pdf');
         return $pdf->download('Berita_Acara_UAS.pdf');
+        // return $pdf->stream('Verif_Soal_UAS.pdf');
     }
 
 
