@@ -382,7 +382,7 @@
                                                         @endcan
                                                         @can('pengurusKbk-delete BeritaAcaraUas')
                                                             <a data-bs-toggle="modal"
-                                                                data-bs-target="#staticBackdrop{{ $data->id_berita_acara }}"
+                                                                data-bs-target="#hapusBeritaAcaraUas{{ $data->id_berita_acara}}"
                                                                 class="btn btn-danger mb-2 d-flex align-items-center"><i
                                                                     class="bi bi-trash"></i>Hapus</a>
                                                         @endcan
@@ -398,15 +398,15 @@
                                                 </th>
                                             </tr>
                                             {{-- Modal Konfirmasi hapus data --}}
-                                            <div class="modal fade" id="staticBackdrop{{ $data->id_berita_acara }}"
+                                            <div class="modal fade" id="hapusBeritaAcaraUas{{ $data->id_berita_acara}}"
                                                 data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                                                aria-labelledby="staticBackdropLabel" aria-hidden="true">>
+                                                aria-labelledby="hapusBeritaAcaraUasLabel" aria-hidden="true">>
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h4 class="modal-title fs-5" id="staticBackdropLabel">
+                                                            <h4 class="modal-title fs-5" id="hapusBeritaAcaraUasLabel">
                                                                 Konfirmasi
-                                                                Hapus Data</h4>
+                                                                Hapus Data </h4>
                                                             <button type="button" class="btn-close"
                                                                 data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>

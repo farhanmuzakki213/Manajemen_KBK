@@ -5,7 +5,7 @@
     {{-- <meta charset="UTF-8"> --}}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Verifikasi Soal UAS</title>
     <style>
         /* @font-face {
@@ -14,10 +14,11 @@
         } */
 
         @media print {
-    body {
-        font-family: 'Times New Roman', Times, serif;
-    }
-}
+            body {
+                font-family: 'Times New Roman', Times, serif;
+            }
+        }
+
         body {
             font-family: 'Times New Roman', Times, serif;
             margin: 1.5cm 1cm 4cm 0.3cm;
@@ -56,7 +57,7 @@
         }
 
         .kepala .logo img {
-            width: 100%;
+            width: 80%;
         }
 
         .kepala .header-content {
@@ -70,7 +71,7 @@
         }
 
         .details {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .details p {
@@ -98,11 +99,13 @@
 
         .details-table .label {
             /* font-weight: bold; */
+            font-size: 11pt;
             padding-right: 10px;
             white-space: nowrap;
         }
 
         .details-table .value {
+            font-size: 11pt;
             padding-left: 5px;
         }
 
@@ -115,7 +118,7 @@
         table,
         th,
         td {
-            border: 1px solid black;
+            border: 1px solid #000;
         }
 
         th,
@@ -157,7 +160,7 @@
 
         .signatures td,
         .signatures th {
-            border: 1px solid black;
+            border: 0.5px solid black;
             font-size: 14px
         }
 
@@ -180,8 +183,8 @@
             page-break-after: avoid;
         }
 
-        .table-light {
-            background-color: #f9f9f9;
+        .table-head {
+            background-color: #d9d9d9;
         }
 
         .table-light td {
@@ -204,10 +207,10 @@
                 </td>
                 <td class="header-content">
                     <center>
-                        <strong>
-                            <font style="font-size: 15px;">KEMENTERIAN PENDIDIKAN, KEBUDAYAAN,</font><br>
-                            <font style="font-size: 15px;">RISET, DAN TEKNOLOGI</font><br>
-                        </strong>
+                        <div>
+                            <font style="font-size: 20px;">KEMENTERIAN PENDIDIKAN, KEBUDAYAAN,</font><br>
+                            <font style="font-size: 20px;">RISET, DAN TEKNOLOGI</font><br>
+                        </div>
                         <strong>
                             <font style="font-size: 15px;">POLITEKNIK NEGERI PADANG</font>
                         </strong><br>
@@ -238,7 +241,7 @@
                         </strong><br>
                         <strong>
                             <font style="font-size: 15px;">
-                                JURUSAN : TEKNOLOGI INFORMASI PROGRAM STUDI : D4 Teknologi Rekayasa Perangkat Lunak
+                                JURUSAN : TEKNOLOGI INFORMASI PROGRAM STUDI : {{ strtoupper($selectedProdi->prodi) }}
                             </font>
                         </strong>
                         <br>
@@ -252,44 +255,54 @@
         <div class="details">
             <strong>A. Identitas Matakuliah</strong>
             <table class="details-table" style="padding-left: 20px;">
+                @php
+                    $smt_thnakd = $p_HasilVerifUas->r_rep_rps_uas->r_smt_thnakd->smt_thnakd ?? 'N/A';
+                    $parts = explode('-', $smt_thnakd);
+                    $semester = isset($parts[1]) ? $parts[1] : 'N/A';
+                    $thnAkd = isset($parts[0]) ? $parts[0] : 'N/A';
+                @endphp
                 <tr>
                     <td class="label">Mata Kuliah/ Kode Matakuliah</td>
-                    <td class="value">: Project 1 ( Desktop) / RPL4403</td>
+                    <td class="value">:
+                        {{ $p_HasilVerifUas->r_rep_rps_uas->r_matkulKbk->r_matkul->nama_matkul ?? 'N/A' }}
+                        /
+                        {{ $p_HasilVerifUas->r_rep_rps_uas->r_matkulKbk->r_matkul->kode_matkul ?? 'N/A' }}</td>
                 </tr>
                 <tr>
                     <td class="label">Dosen</td>
-                    <td class="value">: Yunus C, Yori Adi Atma</td>
+                    <td class="value">:
+                        {{ $p_HasilVerifUas->r_rep_rps_uas->r_dosen_matkul->r_dosen->nama_dosen ?? 'N/A' }}</td>
                 </tr>
                 <tr>
                     <td class="label">Semester</td>
-                    <td class="value">: Ganjil/Genap*</td>
+                    <td class="value">: {{ $semester }}</td>
                 </tr>
                 <tr>
                     <td class="label">Tahun Akademik</td>
-                    <td class="value">: 2022/2023</td>
+                    <td class="value">: {{ $thnAkd }}</td>
                 </tr>
             </table>
         </div>
 
         <strong style="margin-bottom: 10px; display: block;">B. Hasil Verifikasi Soal</strong>
-        <table class="isi" style="padding-left: 20px;">
+        <table style="padding-left: 20px;">
             <thead>
-                <tr class="table-info">
-                    <th rowspan="2" style="text-align: center; vertical-align: middle;">Butir Soal</th>
-                    <th colspan="5">Validitas Isi</th>
-                    <th colspan="5">Bahasa dan Penulisan Soal</th>
+                <tr class="table-info table-head">
+                    <th rowspan="2" style="text-align: center; vertical-align: middle; font-size: 11pt; font-weight: normal;">Butir Soal</th>
+                    <th colspan="5" style="font-size: 11pt;">Validitas Isi</th>
+                    <th colspan="5" style="font-size: 11pt;">Bahasa dan Penulisan Soal</th>
                 </tr>
-                <tr class="table-info">
-                    <th>Tidak Valid</th>
-                    <th>Kurang Valid</th>
-                    <th>Cukup Valid</th>
-                    <th>Valid</th>
-                    <th>Sangat Valid</th>
-                    <th>Tidak Baik</th>
-                    <th>Kurang Baik</th>
-                    <th>Cukup Baik</th>
-                    <th>Baik</th>
-                    <th>Sangat Baik</th>
+                <tr class="table-info table-head">
+                    <th style="font-size: 11pt; font-weight: normal;">Tidak Valid</th>
+                    <th style="font-size: 11pt; font-weight: normal;">Kurang Valid</th>
+                    <th style="font-size: 11pt; font-weight: normal;">Cukup Valid</th>
+                    <th style="font-size: 11pt; font-weight: normal;">Valid</th>
+                    <th style="font-size: 11pt; font-weight: normal;">Sangat Valid</th>
+                    <th style="font-size: 11pt; font-weight: normal;">Tidak Baik</th>
+                    <th style="font-size: 11pt; font-weight: normal;">Kurang Baik</th>
+                    <th style="font-size: 11pt; font-weight: normal;">Cukup Baik</th>
+                    <th style="font-size: 11pt; font-weight: normal;">Baik</th>
+                    <th style="font-size: 11pt; font-weight: normal;">Sangat Baik</th>
                 </tr>
             </thead>
             <tbody>
@@ -306,21 +319,29 @@
                             $bahasaSoalValue = $bahasaSoal[$index] ?? null;
                         @endphp
 
-                        <tr class="table-light">
-                            <td style="text-align: center;">{{ $index }}</td>
-                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center;">{{ $validasi == 1 ? '✔' : '' }}</td>
-                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center;">{{ $validasi == 2 ? '✔' : '' }}</td>
-                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center;">{{ $validasi == 3 ? '✔' : '' }}</td>
-                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center;">{{ $validasi == 4 ? '✔' : '' }}</td>
-                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center;">{{ $validasi == 5 ? '✔' : '' }}</td>
-                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center;">{{ $bahasaSoalValue == 1 ? '✔' : '' }}</td>
-                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center;">{{ $bahasaSoalValue == 2 ? '✔' : '' }}</td>
-                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center;">{{ $bahasaSoalValue == 3 ? '✔' : '' }}</td>
-                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center;">{{ $bahasaSoalValue == 4 ? '✔' : '' }}</td>
-                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center;">{{ $bahasaSoalValue == 5 ? '✔' : '' }}</td>
+                        <tr>
+                            <td style="text-align: center; padding: 0px; font-size: 11pt;">{{ $index .'.' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center; padding: 0px; font-size: 11pt;">
+                                {{ $validasi == 1 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center; padding: 0px; font-size: 11pt;">
+                                {{ $validasi == 2 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center; padding: 0px; font-size: 11pt;">
+                                {{ $validasi == 3 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center; padding: 0px; font-size: 11pt;">
+                                {{ $validasi == 4 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center; padding: 0px; font-size: 11pt;">
+                                {{ $validasi == 5 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center; padding: 0px; font-size: 11pt;">
+                                {{ $bahasaSoalValue == 1 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center; padding: 0px; font-size: 11pt;">
+                                {{ $bahasaSoalValue == 2 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center; padding: 0px; font-size: 11pt;">
+                                {{ $bahasaSoalValue == 3 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center; padding: 0px; font-size: 11pt;">
+                                {{ $bahasaSoalValue == 4 ? '✔' : '' }}</td>
+                            <td style="font-family: DejaVu Sans, sans-serif; text-align: center; padding: 0px; font-size: 11pt;">
+                                {{ $bahasaSoalValue == 5 ? '✔' : '' }}</td>
                         </tr>
-
-                       
                     @endforeach
                 @endforeach
             </tbody>
@@ -328,11 +349,21 @@
         <div class="spacing"></div>
 
         <strong>C. Saran</strong>
-        <p style="padding-left: 20px;">yaaaaaaa</p>
+        <p style="padding-left: 20px;">{{ $p_HasilVerifUas->saran }}</p>
         <div class="spacing"></div>
 
         <strong>D. Rekomendasi</strong>
-        <p style="padding-left: 20px;">ok</p>
+        <p style="padding-left: 20px;">
+            @if ($p_HasilVerifUas->rekomendasi == 0)
+                Belum diverifikasi
+            @elseif ($p_HasilVerifUas->rekomendasi == 1)
+                Tidak layak dipakai
+            @elseif ($p_HasilVerifUas->rekomendasi == 2)
+                Layak untuk dipakai dengan revisi sesuai saran
+            @else
+                Layak untuk dipakai tanpa revisi
+            @endif
+        </p>
         <div class="spacing"></div>
 
 
@@ -340,28 +371,33 @@
             <table>
                 <thead>
                     <tr class="table-info">
-                        <th colspan="2" style="font-size: 14px">Divalidasi Ketua KBK / Koordinator Program Studi</th>
-                        <th colspan="2" style="font-size: 14px">Disetujui Ketua Jurusan</th>
+                        <th colspan="2" style="font-size: 11pt; padding: 2px; margin:20px">Divalidasi Ketua KBK
+                        </th>
+                        <th colspan="2" style="font-size: 11pt; padding: 2px; margin:20px">Disetujui Ketua Jurusan</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="table-light">
-                        <td>Tanggal</td>
-                        <td style="width: 40%;"></td>
-                        <td>Tanggal</td>
-                        <td style="width: 40%;"></td>
+                    @php
+                        $currentDate = \Carbon\Carbon::now()->format('Y-m-d');
+                    @endphp
+
+                    <tr style="width:auto;">
+                        <td style="font-size: 9pt; padding: 4px; padding-left: 8px;">Tanggal</td>
+                        <td style="font-size: 9pt; padding: 4px; padding-left: 8px;">{{ $currentDate }}</td>
+                        <td style="font-size: 9pt; padding: 4px; padding-left: 8px;">Tanggal</td>
+                        <td style="font-size: 9pt; padding: 4px; padding-left: 8px;">{{ $currentDate }}</td>
                     </tr>
-                    <tr class="table-light">
-                        <td>Oleh</td>
-                        <td>Yulherniwati, S.Kom.,MT</td>
-                        <td>Oleh</td>
-                        <td>Ronal Hadi, S.T., M.Kom</td>
+                    <tr style="width:auto;">
+                        <td style="font-size: 9pt;">Oleh</td>
+                        <td style="font-size: 9pt;">{{ $pengurus_kbk->r_dosen->nama_dosen }}</td>
+                        <td style="font-size: 9pt;">Oleh</td>
+                        <td style="font-size: 9pt;">{{ $kajur->r_dosen->nama_dosen }}</td>
                     </tr>
-                    <tr class="table-light">
-                        <td rowspan="2">Tanda Tangan</td>
-                        <td rowspan="2"></td>
-                        <td rowspan="2">Tanda Tangan</td>
-                        <td rowspan="2"></td>
+                    <tr style="width:auto;">
+                        <td rowspan="2" style="font-size: 9pt;">Tanda Tangan</td>
+                        <td rowspan="2" style="font-size: 9pt;">TDO</td>
+                        <td rowspan="2" style="font-size: 9pt;">Tanda Tangan</td>
+                        <td rowspan="2" style="font-size: 9pt;">TDO</td>
                     </tr>
                 </tbody>
             </table>

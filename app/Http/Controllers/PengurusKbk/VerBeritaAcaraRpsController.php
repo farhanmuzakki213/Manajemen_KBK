@@ -339,7 +339,7 @@ class VerBeritaAcaraRpsController extends Controller
 
 
     public function delete(string $id)
-    {
+    {      
         $data_berita_acara_rps = VerBeritaAcara::where('id_berita_acara', $id)->first();
         //dd($data_berita_acara_rps);
         // Menghapus file terkait jika ada

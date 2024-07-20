@@ -56,9 +56,9 @@ class VerBeritaAcaraUasController extends Controller
         $data_ver_rps = VerRpsUas::with([
             'r_pengurus',
             'r_pengurus.r_dosen',
-            'r_rep_rps_uas',
+            'r_rep_rps_uas.r_dosen_matkul.r_dosen',
             'r_rep_rps_uas.r_smt_thnakd',
-            'r_rep_rps_uas.r_matkulKbk',
+            'r_rep_rps_uas.r_matkulKbk.r_matkul',
             'p_HasilVerifUas'
         ])
             ->whereHas('r_rep_rps_uas', function ($query) use ($pengurus_kbk, $selectedProdiId) {
@@ -91,11 +91,18 @@ class VerBeritaAcaraUasController extends Controller
             ])
             ->where('type', '=', '1')
             ->get();
+        foreach ($data_ver_rps as $data) {
+            $dataVerUas = [
+                'p_HasilVerifUas' => $data->toArray(),
+                'pengurus_kbk' => $pengurus_kbk->toArray(),
+            ];
+        }
+        debug($dataVerUas);
         debug($data_berita_acara->toArray());
         return view('admin.content.pengurusKbk.VerBeritaAcaraUas', compact('data_ver_rps', 'data_berita_acara', 'prodiList', 'selectedProdiId'));
     }
 
-    
+
     public function download_pdf(Request $request)
     {
         $pengurus_kbk = $this->getDosen();
@@ -118,9 +125,9 @@ class VerBeritaAcaraUasController extends Controller
             $data_ver_rps = VerRpsUas::with([
                 'r_pengurus',
                 'r_pengurus.r_dosen',
-                'r_rep_rps_uas',
+                'r_rep_rps_uas.r_dosen_matkul.r_dosen',
                 'r_rep_rps_uas.r_smt_thnakd',
-                'r_rep_rps_uas.r_matkulKbk',
+                'r_rep_rps_uas.r_matkulKbk.r_matkul',
                 'p_HasilVerifUas'
             ])
                 ->whereHas('r_rep_rps_uas', function ($query) use ($pengurus_kbk, $selectedProdiId) {
@@ -180,21 +187,21 @@ class VerBeritaAcaraUasController extends Controller
             'kajur' => $kajur,
             'pengurus_kbk' => $pengurus_kbk,
         ];
-    
+
         // Buat PDF pertama
         $pdf1 = Pdf::loadView('admin.content.pengurusKbk.pdf.berita_acara_uas', $dataBeritaAcara);
-        $pdf1->setPaper('A4', 'potrait'); 
+        $pdf1->setPaper('A4', 'potrait');
         $pdf1Path = storage_path('app/public/Berita_Acara_UAS.pdf');
         $pdf1->save($pdf1Path);
-    
+
         // Buat file ZIP
         $zip = new ZipArchive;
         $zipFileName = 'BeritaAcara&VerifSoalUjian.zip';
         $zipFilePath = storage_path('app/public/' . $zipFileName);
-    
+
         if ($zip->open($zipFilePath, ZipArchive::CREATE) === TRUE) {
             $zip->addFile($pdf1Path, 'Berita_Acara_UAS.pdf');
-    
+
             // Buat PDF kedua dan seterusnya
             $i = 1;
             foreach ($data_ver_rps as $data) {
@@ -207,23 +214,23 @@ class VerBeritaAcaraUasController extends Controller
                     'kajur' => $kajur,
                     'pengurus_kbk' => $pengurus_kbk,
                 ];
-    
+
                 $pdfPath = storage_path('app/public/Verif_Soal_UAS_' . $i . '.pdf');
                 $pdf = Pdf::loadView('admin.content.pengurusKbk.pdf.verif_soal_uas', $dataVerUas);
                 $pdf->save($pdfPath);
-    
+
                 $zip->addFile($pdfPath, 'Verif_Soal_UAS_' . $i . '.pdf');
                 $i++;
             }
-    
+
             $zip->close();
-    
+
             // Hapus file PDF sementara setelah menambahkan ke ZIP
             unlink($pdf1Path);
             for ($j = 1; $j < $i; $j++) {
                 unlink(storage_path('app/public/Verif_Soal_UAS_' . $j . '.pdf'));
             }
-    
+
             return response()->download($zipFilePath)->deleteFileAfterSend(true);
         } else {
             return response()->json(['error' => 'Could not create zip file'], 500);
@@ -231,108 +238,6 @@ class VerBeritaAcaraUasController extends Controller
         // return $pdf->stream('Berita_Acara_UAS.pdf');
         // return $pdf->stream('Verif_Soal_UAS.pdf');
     }
-
-
-    /* public function create()
-    {
-        $pengurus_kbk = $this->getDosen();
-        debug($pengurus_kbk->toArray());
-        $nextNumber = $this->getCariNomor();
-        $data_ver_rps = VerRpsUas::with([
-            'r_pengurus',
-            'r_pengurus.r_dosen',
-            'r_rep_rps_uas',
-            'r_rep_rps_uas.r_dosen_matkul.p_kelas',
-            'r_rep_rps_uas.r_smt_thnakd',
-            'r_rep_rps_uas.r_matkulKbk.r_matkul',
-            'r_rep_rps_uas.r_matkulKbk.r_matkul.r_kurikulum',
-            'r_rep_rps_uas.r_matkulKbk.r_matkul.r_kurikulum.r_prodi',
-        ])
-            ->where(function ($query) use ($pengurus_kbk) {
-                $query->whereHas('r_rep_rps_uas', function ($subQuery) use ($pengurus_kbk) {
-                    $subQuery->whereHas('r_matkulKbk', function ($nestedQuery) use ($pengurus_kbk) {
-                        $nestedQuery->where('jenis_kbk_id', $pengurus_kbk->jenis_kbk_id);
-                    })
-                        ->whereHas('r_smt_thnakd', function ($nestedQuery) {
-                            $nestedQuery->where('status_smt_thnakd', '=', '1');
-                        })
-                        ->where('type', '=', '1');
-                });
-            })
-            ->orderByDesc('id_ver_rps_uas')
-            ->get()
-            ->map(function ($item) {
-                return [
-                    'kode_matkul' => $item->r_rep_rps_uas->r_matkulKbk->r_matkul->kode_matkul,
-                    'nama_matkul' => $item->r_rep_rps_uas->r_matkulKbk->r_matkul->nama_matkul,
-                    'prodi_id' => $item->r_rep_rps_uas->r_matkulKbk->r_matkul->r_kurikulum->prodi_id,
-                    'jurusan_id' => $item->r_rep_rps_uas->r_matkulKbk->r_matkul->r_kurikulum->r_prodi->jurusan_id,
-                    'id_ver_rps_uas' => $item->id_ver_rps_uas,
-                ];
-            });
-        debug($data_ver_rps->toArray());
-        // Mengambil prodi_id dan jurusan_id dari hasil map
-        $id_prodi = $data_ver_rps->pluck('prodi_id')->filter()->first();
-        $id_jurusan = $data_ver_rps->pluck('jurusan_id')->filter()->first();
-
-        $kajur = PimpinanJurusan::where('jurusan_id', $id_jurusan)->pluck('id_pimpinan_jurusan')->first();
-        $kaprodi = PimpinanProdi::where('prodi_id', $id_prodi)->pluck('id_pimpinan_prodi')->first();
-
-
-        debug($kajur, $kaprodi);
-        return view('admin.content.pengurusKbk.form.ver_uas_berita_acara_form', compact('data_ver_rps', 'pengurus_kbk', 'nextNumber', 'kajur', 'kaprodi'));
-    }
-
-    function getCariNomor()
-    {
-        // Mendapatkan semua ID dari tabel rep_rps
-        $id_berita_acara = VerBeritaAcara::pluck('id_berita_acara')->toArray();
-
-        // Loop untuk memeriksa nomor dari 1 sampai takhingga
-        for ($i = 1;; $i++) {
-            // Jika $i tidak ditemukan di dalam array $id_rep_rps, kembalikan nilai $i
-            if (!in_array($i, $id_berita_acara)) {
-                return $i;
-                break;
-            }
-        }
-        return $i;
-    }
-
-    public function store(beritaAcaraCreate $request)
-    {
-        DB::beginTransaction();
-        try {
-            if ($request->hasFile('file_berita_acara')) {
-                $file = $request->file('file_berita_acara');
-                $filename = $file->getClientOriginalName();
-                $path = 'public/uploads/uas/berita_acara/';
-                $file->storeAs($path, $filename);
-
-                $verBeritaAcara = VerBeritaAcara::create([
-                    'id_berita_acara' => $request->id_berita_acara,
-                    'kajur' => $request->kajur,
-                    'kaprodi' => $request->prodi,
-                    'jenis_kbk_id' => $request->jenis_kbk_id,
-                    'type' => $request->type,
-                    'file_berita_acara' => $filename,
-                    'tanggal_upload' => $request->tanggal_upload,
-                ]);
-
-                foreach ($request->ver_rps_uas_ids as $ver_rps_uas_id) {
-                    $verBeritaAcara->p_ver_rps_uas()->attach($ver_rps_uas_id);
-                }
-            } else {
-                return redirect()->back()->withInput()->withErrors(['file_berita_acara' => 'File harus diunggah.']);
-            }
-
-            DB::commit();
-        } catch (\Throwable) {
-            DB::rollback();
-            return redirect()->route('upload_uas_berita_acara')->with('error', 'Berita Acara Gagal di Upload.');
-        }
-        return redirect()->route('upload_uas_berita_acara')->with('success', 'Berita Acara Berhasil di Upload.');
-    } */
 
     public function edit(string $id)
     {
@@ -399,6 +304,7 @@ class VerBeritaAcaraUasController extends Controller
 
     public function delete(string $id)
     {
+
         $data_berita_acara_rps = VerBeritaAcara::where('id_berita_acara', $id)->first();
 
         if (!is_null($data_berita_acara_rps->file_berita_acara)) {

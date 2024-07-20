@@ -44,25 +44,25 @@
                                     </tfoot>
                                     <tbody>
                                         @foreach ($data_rep_proposal_jurusan as $data)
-                                        <tr class="table-Light">
-                                            <th>{{ $loop->iteration }}</th>
-                                            <th>{{ optional($data->proposal_ta)->r_mahasiswa->nama }}</th>
-                                            <th>{{ optional($data->proposal_ta)->r_mahasiswa->nim }}</th>
-                                            <th>{{ optional($data->proposal_ta)->judul }}</th>
-                                            <th>{{ $data->tanggal_penugasan }}</th>
-                                            <th>{{ optional($data->p_reviewDetail->first())->tanggal_review }}</th>
-                                            <th>
-                                                @if ($data->status_final_proposal == 0)
-                                                    Belum Diverifikasi
-                                                @elseif ($data->status_final_proposal == 1)
-                                                    Ditolak
-                                                @elseif ($data->status_final_proposal == 2)
-                                                    Direvisi
-                                                @else
-                                                    Diterima
-                                                @endif
-                                            </th>
-                                        </tr>
+                                            <tr class="table-Light">
+                                                <th>{{ $loop->iteration }}</th>
+                                                <th>{{ optional($data->proposal_ta)->r_mahasiswa->nama }}</th>
+                                                <th>{{ optional($data->proposal_ta)->r_mahasiswa->nim }}</th>
+                                                <th>{{ optional($data->proposal_ta)->judul }}</th>
+                                                <th>{{ $data->tanggal_penugasan }}</th>
+                                                <th>{{ optional($data->p_reviewDetail->first())->tanggal_review }}</th>
+                                                <th>
+                                                    @if ($data->status_final_proposal == 0)
+                                                        <small style="color: red">Belum Diverifikasi</small>
+                                                    @elseif ($data->status_final_proposal == 1)
+                                                        Ditolak
+                                                    @elseif ($data->status_final_proposal == 2)
+                                                        Direvisi
+                                                    @else
+                                                        Diterima
+                                                    @endif
+                                                </th>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -73,72 +73,71 @@
             </div>
         </div>
     </div>
-    
 @endsection
 @section('scripts')
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script type="text/javascript">
-    var review = <?php echo json_encode($review); ?>;
-    var statuses = <?php echo json_encode($statuses); ?>;
-    var bulan = <?php echo json_encode($bulan); ?>;
-    var colors = ['#008FFB', '#FF4560', '#FEB019', '#00E396']; // Tambahkan warna sesuai dengan jumlah status
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script type="text/javascript">
+        var review = <?php echo json_encode($review); ?>;
+        var statuses = <?php echo json_encode($statuses); ?>;
+        var bulan = <?php echo json_encode($bulan); ?>;
+        var colors = ['#008FFB', '#FF4560', '#FEB019', '#00E396']; // Tambahkan warna sesuai dengan jumlah status
 
-    var series = statuses.map((status, index) => ({
-        name: status,
-        data: review.map(monthlyData => monthlyData[status] ?? 0),
-        color: colors[index] // 
-    }));
+        var series = statuses.map((status, index) => ({
+            name: status,
+            data: review.map(monthlyData => monthlyData[status] ?? 0),
+            color: colors[index] // 
+        }));
 
-    var options = {
-        series: series,
-        chart: {
-            type: 'bar',
-            height: 350
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                columnWidth: '15%',
-                endingShape: 'rounded'
-            }
-        },
-        dataLabels: {
-            enabled: false
-        },
-        stroke: {
-            show: true,
-            width: 2,
-            colors: ['transparent']
-        },
-        xaxis: {
-            categories: bulan,
-        },
-        yaxis: {
-            title: {
-                text: 'Jumlah'
+        var options = {
+            series: series,
+            chart: {
+                type: 'bar',
+                height: 350
             },
-            labels: {
-                formatter: function (value) {
-                    if (Number.isInteger(value)) {
-                        return value;
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '15%',
+                    endingShape: 'rounded'
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                show: true,
+                width: 2,
+                colors: ['transparent']
+            },
+            xaxis: {
+                categories: bulan,
+            },
+            yaxis: {
+                title: {
+                    text: 'Jumlah'
+                },
+                labels: {
+                    formatter: function(value) {
+                        if (Number.isInteger(value)) {
+                            return value;
+                        }
+                        return '';
                     }
-                    return '';
+                }
+            },
+            fill: {
+                opacity: 1
+            },
+            tooltip: {
+                y: {
+                    formatter: function(val) {
+                        return parseInt(val) + " Proposal";
+                    }
                 }
             }
-        },
-        fill: {
-            opacity: 1
-        },
-        tooltip: {
-            y: {
-                formatter: function (val) {
-                    return parseInt(val) + " Proposal";
-                }
-            }
-        }
-    };
+        };
 
-    var chart = new ApexCharts(document.querySelector("#chart"), options);
-    chart.render();
-</script>
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+    </script>
 @endsection

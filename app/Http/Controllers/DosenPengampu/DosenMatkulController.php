@@ -6,8 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\DosenPengampuMatkul;
 use App\Models\Matkul;
 use App\Models\MatkulKBK;
+use App\Models\PimpinanJurusan;
+use App\Models\Prodi;
 use App\Models\RepRpsUas;
 use App\Models\VerRpsUas;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +19,8 @@ use Illuminate\Support\Facades\Validator;
 
 class DosenMatkulController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('permission:dosenMatkul-dashboard', ['only' => ['dashboard_pengampu', 'getDosen']]);
         $this->middleware('permission:dosenMatkul-view DosenMatkul', ['only' => ['index', 'getDosen']]);
         $this->middleware('permission:dosenMatkul-create RepRps', ['only' => ['create_rps', 'store_rps', 'getCariNomor', 'getDosen']]);
@@ -83,9 +87,9 @@ class DosenMatkulController extends Controller
         if (!$dosen_pengampu) {
             return redirect()->route('dashboard_pengampu')->withErrors('Dosen pengampu tidak ditemukan.');
         }
-    
+
         $data_matkul = $dosen_pengampu->p_matkulKbk->unique('id_matkul_kbk')->pluck('r_matkul.nama_matkul', 'id_matkul_kbk');
-    
+
         // Count RPS uploads
         $banyak_pengunggahan_rps = RepRpsUas::where('type', '=', '0')
             ->whereHas('r_smt_thnakd', function ($query) {
@@ -95,7 +99,7 @@ class DosenMatkulController extends Controller
                 $query->where('dosen_id', $dosen_pengampu->dosen_id);
             })
             ->count();
-    
+
         // Count RPS verifications
         $banyak_verifikasi_rps = VerRpsUas::whereHas('r_rep_rps_uas', function ($query) use ($dosen_pengampu) {
             $query->where('type', '=', '0')
@@ -107,7 +111,7 @@ class DosenMatkulController extends Controller
                 $query->where('status_smt_thnakd', '1');
             })
             ->count();
-    
+
         // Count UAS uploads
         $banyak_pengunggahan_uas = RepRpsUas::where('type', '=', '1')
             ->whereHas('r_smt_thnakd', function ($query) {
@@ -117,7 +121,7 @@ class DosenMatkulController extends Controller
                 $query->where('dosen_id', $dosen_pengampu->dosen_id);
             })
             ->count();
-    
+
         // Count UAS verifications
         $banyak_verifikasi_uas = VerRpsUas::whereHas('r_rep_rps_uas', function ($query) use ($dosen_pengampu) {
             $query->where('type', '=', '1')
@@ -129,130 +133,72 @@ class DosenMatkulController extends Controller
                 $query->where('status_smt_thnakd', '1');
             })
             ->count();
-    
+
         // Calculate percentages
         $total_rps = $banyak_pengunggahan_rps + $banyak_verifikasi_rps;
         $percentUploadedRPS = $total_rps > 0 ? ($banyak_pengunggahan_rps / $total_rps) * 100 : 0;
         $percentVerifiedRPS = $total_rps > 0 ? ($banyak_verifikasi_rps / $total_rps) * 100 : 0;
         // $percentVerifiedRPS = $banyak_pengunggahan_rps > 0 ? ($banyak_verifikasi_rps / $banyak_pengunggahan_rps) * 100 : 0;
         // $percentUploadedRPS = 100 - $percentVerifiedRPS;
-    
+
         $total_uas = $banyak_pengunggahan_uas + $banyak_verifikasi_uas;
         $percentUploadedUAS = $total_uas > 0 ? ($banyak_pengunggahan_uas / $total_uas) * 100 : 0;
         $percentVerifiedUAS = $total_uas > 0 ? ($banyak_verifikasi_uas / $total_uas) * 100 : 0;
         // $percentVerifiedUAS = $banyak_pengunggahan_uas > 0 ? ($banyak_verifikasi_uas / $banyak_pengunggahan_uas) * 100 : 0;
         // $percentUploadedUAS = 100 - $percentVerifiedUAS;
-        
+
         debug($banyak_pengunggahan_rps);
         debug($percentVerifiedRPS);
         debug($percentUploadedRPS);
         return view('admin.content.dosenPengampu.dashboard_pengampu', compact(
             'data_matkul',
             'dosen_pengampu',
-            'percentUploadedRPS', 'percentVerifiedRPS',
-            'percentUploadedUAS', 'percentVerifiedUAS',
-            'banyak_pengunggahan_rps', 'banyak_verifikasi_rps',
-            'banyak_pengunggahan_uas', 'banyak_verifikasi_uas'
+            'percentUploadedRPS',
+            'percentVerifiedRPS',
+            'percentUploadedUAS',
+            'percentVerifiedUAS',
+            'banyak_pengunggahan_rps',
+            'banyak_verifikasi_rps',
+            'banyak_pengunggahan_uas',
+            'banyak_verifikasi_uas'
         ));
     }
-    
-
-
-
-    //     public function dashboard()
-    // {
-    //     $dosen_pengampu = $this->getDosen();
-    //     if (!$dosen_pengampu) {
-    //         return redirect()->route('dashboard_pengampu')->withErrors('Dosen pengampu tidak ditemukan.');
-    //     }
-
-    //     $data_matkul = $dosen_pengampu->p_matkulKbk->unique('id_matkul_kbk')->pluck('r_matkul.nama_matkul', 'id_matkul_kbk');
-
-    //     // Count RPS uploads
-    //     $banyak_pengunggahan_rps = RepRpsUas::where('type', 0)
-    //         ->whereHas('r_smt_thnakd', function ($query) {
-    //             $query->where('status_smt_thnakd', '1');
-    //         })
-    //         ->whereHas('r_dosen_matkul', function ($query) use ($dosen_pengampu) {
-    //             $query->where('dosen_id', $dosen_pengampu->dosen_id);
-    //         })
-    //         ->count();
-
-    //     // Count RPS verifications
-    //     $banyak_verifikasi_rps = VerRpsUas::whereHas('r_rep_rps_uas', function ($query) use ($dosen_pengampu) {
-    //         $query->where('type', 0)
-    //             ->whereHas('r_dosen_matkul', function ($query) use ($dosen_pengampu) {
-    //                 $query->where('dosen_id', $dosen_pengampu->dosen_id);
-    //             });
-    //     })
-    //     ->whereHas('r_rep_rps_uas.r_smt_thnakd', function ($query) {
-    //         $query->where('status_smt_thnakd', '1');
-    //     })
-    //     ->count();
-
-    //     // Count UAS uploads
-    //     $banyak_pengunggahan_uas = RepRpsUas::where('type', 1)
-    //         ->whereHas('r_smt_thnakd', function ($query) {
-    //             $query->where('status_smt_thnakd', '1');
-    //         })
-    //         ->whereHas('r_dosen_matkul', function ($query) use ($dosen_pengampu) {
-    //             $query->where('dosen_id', $dosen_pengampu->dosen_id);
-    //         })
-    //         ->count();
-
-    //     // Count UAS verifications
-    //     $banyak_verifikasi_uas = VerRpsUas::whereHas('r_rep_rps_uas', function ($query) use ($dosen_pengampu) {
-    //         $query->where('type', 1)
-    //             ->whereHas('r_dosen_matkul', function ($query) use ($dosen_pengampu) {
-    //                 $query->where('dosen_id', $dosen_pengampu->dosen_id);
-    //             });
-    //     })
-    //     ->whereHas('r_rep_rps_uas.r_smt_thnakd', function ($query) {
-    //         $query->where('status_smt_thnakd', '1');
-    //     })
-    //     ->count();
-
-    //     // Calculate percentages
-    //     $total_rps = $banyak_pengunggahan_rps + $banyak_verifikasi_rps;
-    //     $percentUploadedRps = $total_rps > 0 ? ($banyak_pengunggahan_rps / $total_rps) * 100 : 0;
-    //     $percentVerifiedRps = $total_rps > 0 ? ($banyak_verifikasi_rps / $total_rps) * 100 : 0;
-
-    //     $total_uas = $banyak_pengunggahan_uas + $banyak_verifikasi_uas;
-    //     $percentUploadedUas = $total_uas > 0 ? ($banyak_pengunggahan_uas / $total_uas) * 100 : 0;
-    //     $percentVerifiedUas = $total_uas > 0 ? ($banyak_verifikasi_uas / $total_uas) * 100 : 0;
-
-    //     return view('admin.content.dashboard', compact(
-    //         'data_matkul',
-    //         'dosen_pengampu',
-    //         'banyak_pengunggahan_rps',
-    //         'banyak_verifikasi_rps',
-    //         'percentUploadedRps',
-    //         'percentVerifiedRps',
-    //         'banyak_pengunggahan_uas',
-    //         'banyak_verifikasi_uas',
-    //         'percentUploadedUas',
-    //         'percentVerifiedUas'
-    //     ));
-    // }
-
-
 
     /**
      * Show the form for creating a new resource.
      */
     public function show($dosen_matkul_id, $matkul_kbk_id)
     {
-        // Retrieve the dosen_matkul and related details by the given parameters
-        $dosenMatkul = DosenPengampuMatkul::with(['p_matkulKbk.r_matkul', 'p_kelas', 'r_dosen', 'r_smt_thnakd'])
-            ->where('id_dosen_matkul', $dosen_matkul_id) // Ganti $dosen_matkul_id dengan $id_dosen_matkul sesuai dengan yang didefinisikan
-            ->whereHas('p_matkulKbk', function ($query) use ($matkul_kbk_id) {
-                $query->where('matkul_kbk_id', $matkul_kbk_id);
-            })
-            ->firstOrFail();
+        $dosen_pengampu = $this->getDosen();
+        $data_ver_rps = VerRpsUas::with([
+            'r_pengurus',
+            'r_pengurus.r_dosen',
+            'r_rep_rps_uas.r_dosen_matkul.r_dosen',
+            'r_rep_rps_uas.r_smt_thnakd',
+            'r_rep_rps_uas.r_matkulKbk.r_matkul.r_kurikulum',
+            'p_HasilVerifUas'
+        ])->whereHas('r_rep_rps_uas', function ($query) use ($dosen_matkul_id, $matkul_kbk_id) {
+            $query->where('dosen_matkul_id', $dosen_matkul_id)
+                ->where('matkul_kbk_id', $matkul_kbk_id)
+                ->where('type', '=', '1');
+        })
+            ->orderByDesc('id_ver_rps_uas')
+            ->first();
+        $selectedProdi = Prodi::where('id_prodi', $data_ver_rps->r_rep_rps_uas->r_matkulKbk->r_matkul->r_kurikulum->prodi_id)->first();
+        $kajur = PimpinanJurusan::where('jurusan_id', $dosen_pengampu->r_dosen->jurusan_id)->first();
+        $pengurus_kbk = $data_ver_rps->r_pengurus->first();
+        debug($data_ver_rps->toArray(), $selectedProdi->toArray(), $kajur->toArray(), $pengurus_kbk->toArray());
+        $dataVerUas = [
+            'p_HasilVerifUas' => $data_ver_rps,
+            'selectedProdi' => $selectedProdi,
+            'kajur' => $kajur,
+            'pengurus_kbk' => $pengurus_kbk,
+        ];
+        // Mengatur PDF untuk di-download
+        $pdf = Pdf::loadView('admin.content.pengurusKbk.pdf.verif_soal_uas', $dataVerUas);
 
-
-        debug($dosenMatkul);
-        return view('dosen_matkul.show', compact('dosenMatkul'));
+        // Mengembalikan response download untuk PDF
+        return $pdf->download('verif_soal_uas.pdf');
     }
 
 

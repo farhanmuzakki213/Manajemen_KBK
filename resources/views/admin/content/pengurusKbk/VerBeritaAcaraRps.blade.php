@@ -389,7 +389,7 @@
                                                         @endcan
                                                         @can('pengurusKbk-delete BeritaAcaraRps')
                                                             <a data-bs-toggle="modal"
-                                                                data-bs-target="#staticBackdrop{{ $data->id_berita_acara }}"
+                                                                data-bs-target="#hapusBeritaAcaraRps{{ $data->id_berita_acara }}"
                                                                 class="btn btn-danger mb-2 d-flex align-items-center"><i
                                                                     class="bi bi-trash"></i>Hapus</a>
                                                         @endcan
@@ -405,13 +405,13 @@
                                                 </th>
                                             </tr>
                                             {{-- Modal Konfirmasi hapus data --}}
-                                            <div class="modal fade" id="staticBackdrop{{ $data->id_berita_acara }}"
+                                            <div class="modal fade" id="hapusBeritaAcaraRps{{ $data->id_berita_acara }}"
                                                 data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                                                aria-labelledby="staticBackdropLabel" aria-hidden="true">>
+                                                aria-labelledby="hapusBeritaAcaraRpsLabel" aria-hidden="true">>
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h4 class="modal-title fs-5" id="staticBackdropLabel">
+                                                            <h4 class="modal-title fs-5" id="hapusBeritaAcaraRpsLabel">
                                                                 Konfirmasi
                                                                 Hapus Data</h4>
                                                             <button type="button" class="btn-close"

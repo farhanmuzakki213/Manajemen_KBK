@@ -66,7 +66,7 @@
                                                 </th>
                                                 <th>
                                                     @if ($data['status_satu'] == 0)
-                                                        Belum Diverifikasi
+                                                        <small style="color: red">Belum Diverifikasi</small>
                                                     @elseif ($data['status_satu'] == 1)
                                                         Ditolak
                                                     @elseif ($data['status_satu'] == 2)
@@ -79,7 +79,7 @@
                                                 </th>
                                                 <th>
                                                     @if ($data['status_dua'] == 0)
-                                                        Belum Diverifikasi
+                                                        <small style="color: red">Belum Diverifikasi</small>
                                                     @elseif ($data['status_dua'] == 1)
                                                         Ditolak
                                                     @elseif ($data['status_dua'] == 2)
@@ -89,15 +89,20 @@
                                                     @endif
                                                 </th>
                                                 <th>
-                                                    @if ($data['status_final_proposal'] == 0)
-                                                        Belum Diverifikasi
-                                                    @elseif ($data['status_final_proposal'] == 1)
-                                                        Ditolak
-                                                    @elseif ($data['status_final_proposal'] == 2)
-                                                        Direvisi
+                                                    @if ($data['status_satu'] >= 1 && $data['status_dua'] >= 1)
+                                                        @if ($data['status_final_proposal'] == 0)
+                                                            Belum Diverifikasi
+                                                        @elseif ($data['status_final_proposal'] == 1)
+                                                            Ditolak
+                                                        @elseif ($data['status_final_proposal'] == 2)
+                                                            Direvisi
+                                                        @else
+                                                            Diterima
+                                                        @endif
                                                     @else
-                                                        Diterima
+                                                        <small style="color: red">Belum Diverifikasi</small>
                                                     @endif
+
                                                 </th>
                                                 <th style="width: 14%;">
                                                     <div class="row">
@@ -109,9 +114,9 @@
                                                                     <i class="bi bi-pencil-square"></i>Ubah Status
                                                                 </a>
                                                             @else
-                                                                <a class="btn btn-primary mb-2 d-flex align-items-center me-1">
+                                                                <p class="btn btn-primary mb-2 d-flex align-items-center me-1">
                                                                     <i class="bi bi-pencil-square"></i>Ubah Status
-                                                                </a>
+                                                                </p>
                                                             @endif
                                                         @endcan
 

@@ -64,7 +64,8 @@
                                                     }
                                                 }
                                             @endphp
-                                            <a href="#" class="py-6 px-7 d-flex align-items-center dropdown-item">
+                                            <a href="{{ isset($notification->data['url']) ? url($notification->data['url']) : '#' }}"
+                                                class="py-6 px-7 d-flex align-items-center dropdown-item">
                                                 <span class="me-3">
                                                     <img src="{{ $image }}" alt="user" class="rounded-circle"
                                                         width="48" height="48">
@@ -231,9 +232,7 @@
 
                     if (in_array('dosenKbk', $roles)) {
                         if ($dosenKbk) {
-                            $jabatanKbk =
-                                'Anggota KBK ' .
-                                $dosenKbk->r_jenis_kbk->jenis_kbk;
+                            $jabatanKbk = 'Anggota KBK ' . $dosenKbk->r_jenis_kbk->jenis_kbk;
                             $jabatans[] = $jabatanKbk;
                         }
                     }
