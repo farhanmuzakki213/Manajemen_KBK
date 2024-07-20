@@ -5,26 +5,20 @@
     <style>
         .dropdown-item {
             width: auto;
-            /* Lebar menyesuaikan dengan konten */
             white-space: nowrap;
-            /* Konten tidak akan melintasi baris */
         }
 
         .dropdown-item .row {
             display: flex;
-            /* Menggunakan flexbox untuk mengatur kolom */
             flex-wrap: nowrap;
-            /* Konten tidak akan melintasi baris */
         }
 
         .dropdown-item .col-lg-3 {
             flex: 1;
-            /* Kolom kode_matkul mengambil 1 bagian */
         }
 
         .dropdown-item .col-lg-4 {
             flex: 3;
-            /* Kolom nama_matkul mengambil 3 bagian */
         }
     </style>
 @endsection
@@ -94,11 +88,11 @@
                                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                             @foreach ($data->p_ver_rps_uas as $data_matkul)
                                                                 <div class="dropdown-item">
-                                                                    <div class="row">
-                                                                        <div class="col-lg-5">
+                                                                    <div class="d-flex justify-content-between" style="margin: 0;">
+                                                                        <div class="flex-shrink-0" style="padding: 0 10px 0 0;">
                                                                             {{ optional(optional($data_matkul->r_rep_rps_uas)->r_matkulKbk)->r_matkul->kode_matkul }}
                                                                         </div>
-                                                                        <div class="col-lg-5">
+                                                                        <div class="flex-grow-1" style="padding: 0;">
                                                                             {{ optional(optional($data_matkul->r_rep_rps_uas)->r_matkulKbk)->r_matkul->nama_matkul }}
                                                                         </div>
                                                                     </div>
